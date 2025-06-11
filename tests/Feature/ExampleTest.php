@@ -1,13 +1,7 @@
 <?php
 
-namespace Tests\Feature;
+it('returns a successful response', function () {
+    $response = $this->get('/');
 
-use Tests\TestCase;
-
-class ExampleTest extends TestCase
-{
-    public function test_example()
-    {
-        $this->assertTrue(true);
-    }
-}
+    $response->assertStatus(200);
+});
