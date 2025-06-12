@@ -10,8 +10,8 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return view('employee', compact('employees')); # Show me the Blade template from 
-    }                                                  # resources/views/employee.blade.php
+        return view('employee', compact('employees'));
+    }                                                 
 
     public function show(Employee $employee)
     {
