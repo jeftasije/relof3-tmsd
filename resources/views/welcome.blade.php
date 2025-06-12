@@ -20,10 +20,11 @@
             </style>
         @endif 
     </head>
-    <body class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <body>
+        @extends('layouts.header')
+        
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex-grow">
-                
             </main>
         </div>
 
