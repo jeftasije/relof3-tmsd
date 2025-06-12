@@ -33,7 +33,7 @@
       
       <div class="flex-grow md:flex-grow-0 md:basis-1/3 mb-6 md:mb-0">
         <a class="flex flex-col items-start">
-          <img class="h-8 mb-2" alt="LOGO" />
+          <x-application-logo/>
           <span class="text-2xl font-semibold whitespace-normal max-w-xs break-words dark:text-white">
             {{ $libraryData['name'] ?? '' }}
           </span>
