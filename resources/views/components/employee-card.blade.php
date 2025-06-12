@@ -1,7 +1,7 @@
 <div class="max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col">
-    <a href="{{ route('employees.show', $employee->id) }}">
+    <a href="{{ route('employees.show', $employee->id) }}" class="overflow-hidden rounded-t-lg group">
         <img
-            class="rounded-t-lg w-full h-48 object-cover"
+            class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105"
             src="{{ asset($employee->image_path) }}"
             alt="{{ $employee->name }}"
             onerror="this.src='{{ asset('/images/default.jpg') }}';"
