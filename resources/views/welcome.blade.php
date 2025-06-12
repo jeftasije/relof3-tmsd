@@ -85,6 +85,6 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
-        @inclde('layouts.footer')
+        @include('layouts.footer')
     </body>
 </html>
