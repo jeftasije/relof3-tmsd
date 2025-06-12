@@ -17,7 +17,6 @@ class CreateExtendedBiographiesTable extends Migration
             $table->json('skills');
             $table->timestamps();
 
-            // Foreign key constraint
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }

@@ -20,6 +20,6 @@ class CreateEmployeesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('employees');  # php artisan migrate:rollback
+        Schema::dropIfExists('employees');
     }
 };
