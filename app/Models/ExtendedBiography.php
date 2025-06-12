@@ -9,7 +9,7 @@ class ExtendedBiography extends Model
     protected $fillable = ['employee_id', 'biography', 'university', 'experience', 'skills'];
 
     protected $casts = [
-        'skills' => 'array', // Automatski parsira JSON u niz
+        'skills' => 'array',
     ];
 
     public function employee()
