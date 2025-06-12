@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-            $data = \App\Http\Controllers\Controller::getLibraryData();
+            $data = \App\Http\Controllers\LibraryDataController::getLibraryData();
             $view->with('libraryData', $data);
         });
     }
