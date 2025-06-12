@@ -15,6 +15,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                fadeIn: 'fadeIn 2s ease-in-out',
+            },
+            keyframes: {
+                fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+                },
+            },
         },
     },
 
@@ -22,4 +31,17 @@ export default {
         forms,
         require('flowbite/plugin')
     ],
+
+    extend: {
+        animation: {
+            fadeIn: 'fadeIn 2s ease-in-out',
+        },
+        keyframes: {
+            fadeIn: {
+            '0%': { opacity: 0 },
+            '100%': { opacity: 1 },
+            },
+        },
+    }
+
 };
