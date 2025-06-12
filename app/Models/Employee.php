@@ -34,4 +34,9 @@ class Employee extends Model
     protected $casts = [
         'biography' => 'string',
     ];
+
+    public function extendedBiography()
+    {
+        return $this->hasOne(ExtendedBiography::class);
+    }
 }
