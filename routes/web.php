@@ -26,6 +26,10 @@ Route::get('/usluge', function () {
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+Route::view('/kontakt', 'contact')->name('contact');
+
+
+
 
 
 
