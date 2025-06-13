@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
@@ -36,10 +37,9 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
-
-
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
-require __DIR__.'/auth.php';
+Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
+require __DIR__.'/auth.php';
