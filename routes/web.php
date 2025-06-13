@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\ContactController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,10 +29,12 @@ Route::get('/usluge', function () {
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
-Route::view('/kontakt', 'contact')->name('contact');
 
+Route::get('/kontakt', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.store');
 
-
+Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
+Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
 
 
