@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
@@ -28,13 +29,9 @@ Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 Route::view('/kontakt', 'contact')->name('contact');
 
-
-
-
-
-
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
-require __DIR__.'/auth.php';
+Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
+require __DIR__.'/auth.php';
