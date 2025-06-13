@@ -1,0 +1,61 @@
+<x-guest-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center w-full p-4" id="header">
+            <div></div>
+            <button id="theme-toggle" class="p-2 rounded-full text-gray-900 hover:bg-gray-200 focus:outline-none dark:text-white dark:hover:bg-gray-700">
+                <svg id="moon-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="sun-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"></path>
+                </svg>
+            </button>
+        </div>
+    </x-slot>
+
+    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12 dark:bg-gray-900">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <div class="bg-white dark:bg-gray-900">
+                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
+                    @if($news->image_path)
+                        <div class="relative w-full">
+                            <img class="w-full max-w-[200vw] h-[18rem] object-cover" src="{{ asset($news->image_path) }}" alt="{{ $news->title }}" onerror="this.src='{{ asset('/images/default-news.jpg') }}';">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <h1 class="text-3xl sm:text-4xl font-bold text-white dark:text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">{{ $news->title }}</h1>
+                            </div>
+                            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
+                                <span>👤 {{ $news->author ?? 'Nepoznat' }}</span> | <span>📅 {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="px-4 py-4 sm:px-6 sm:py-6 mt-2">
+                        <p class="text-gray-700 text-base sm:text-lg dark:text-gray-300 whitespace-pre-line">
+                            {{ $news->extended->content ?? 'Nema dodatnog sadržaja.' }}
+                        </p>
+                        @php
+                            $tags = is_array($news->extended->tags) ? $news->extended->tags : json_decode($news->extended->tags, true);
+                        @endphp
+                        @if($tags)
+                            <div class="px-4 pt-2 pb-2 mt-2">
+                                @foreach($tags as $tag)
+                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 dark:bg-gray-700 dark:text-gray-300">{{ $tag }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="px-4 py-2 sm:px-6 sm:py-4">
+                        <a href="{{ route('news.index') }}"
+                           class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Nazad na vesti
+                            <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-guest-layout>
