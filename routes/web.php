@@ -22,6 +22,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
-Route::get('nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
+Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
 require __DIR__.'/auth.php';
