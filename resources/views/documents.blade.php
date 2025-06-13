@@ -86,7 +86,6 @@
             });
 
             function handleDocumentSelect(doc) {
-                // Zatvori sve otvorene sekcije i resetuj boje
                 accordionButtons.forEach(button => {
                     button.setAttribute('aria-expanded', 'false');
                     const target = document.querySelector(button.getAttribute('data-accordion-target'));
