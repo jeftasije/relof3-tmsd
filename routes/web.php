@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
@@ -20,5 +21,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+
+Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
+
 
 require __DIR__.'/auth.php';
