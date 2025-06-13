@@ -12,11 +12,12 @@ class EmployeeController extends Controller
     {
         $employees = Employee::all();
 
-        $content = Storage::disk('public')->get('team-content.json');
+        $content = file_get_contents(base_path('config/team-content.json'));
         $text = json_decode($content, true);
 
         return view('employee', compact('employees', 'text'));
-    }                                               
+    }
+                                             
 
     public function show(Employee $employee)
     {
