@@ -25,8 +25,8 @@
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
-                        @foreach ($employees as $employee)
-                            <x-employee-card :employee="$employee" />
+                        @foreach ($news as $newsItem)
+                            <x-news-card :news="$newsItem" />
                         @endforeach
                     </div>
                 </div>
