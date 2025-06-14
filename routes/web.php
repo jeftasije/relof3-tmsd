@@ -37,5 +37,4 @@ Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procureme
 
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
 
-
 require __DIR__.'/auth.php';
