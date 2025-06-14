@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\OrganisationalStructureController; 
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,7 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 Route::get('/usluge', function () {
     return view('user.services');
@@ -45,5 +45,7 @@ Route::get('/lang/{locale}', function ($locale) {
     session(['locale' => $locale]);
     return redirect()->back();
 })->name('lang.switch');
+
+Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
 require __DIR__.'/auth.php';
