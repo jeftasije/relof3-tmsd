@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\OrganisationalStructureController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,5 +37,7 @@ Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
+
+Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
 require __DIR__.'/auth.php';
