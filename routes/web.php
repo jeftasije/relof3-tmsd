@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
@@ -33,5 +34,8 @@ Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
+
+Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
+
 
 require __DIR__.'/auth.php';
