@@ -7,7 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
-use App\Http\Controllers\OrganisationalStructureController; 
+use App\Http\Controllers\OrganisationalStructureController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,6 +29,7 @@ Route::get('/usluge', function () {
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+
 Route::view('/kontakt', 'contact')->name('contact');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
