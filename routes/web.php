@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LibraryDataController;
+use App\Http\Controllers\ProcurementController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,5 +38,12 @@ Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procureme
 
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['sr', 'en'])) {
+        abort(400);
+    }
+    session(['locale' => $locale]);
+    return redirect()->back();
+})->name('lang.switch');
 
 require __DIR__.'/auth.php';
