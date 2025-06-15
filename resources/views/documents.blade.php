@@ -37,7 +37,7 @@
                             @foreach($category->documents as $doc)
                             <li data-doc-id="{{ $doc->id }}" data-category-id="{{ $category->id }}">
                                 @php
-                                    $isPdf = substr($doc->redirect_url, -4) === '.pdf';
+                                    $isPdf = substr($doc->file_path, -4) === '.pdf';
                                 @endphp
                                 @if($isPdf)
                                     <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="hover:underline text-blue-600">
