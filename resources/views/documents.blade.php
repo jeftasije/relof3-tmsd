@@ -36,9 +36,18 @@
                         <ul class="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
                             @foreach($category->documents as $doc)
                             <li data-doc-id="{{ $doc->id }}" data-category-id="{{ $category->id }}">
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="hover:underline text-blue-600">
-                                    {{ $doc->title }}
-                                </a>
+                                @php
+                                    $isPdf = substr($doc->redirect_url, -4) === '.pdf';
+                                @endphp
+                                @if($isPdf)
+                                    <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="hover:underline text-blue-600">
+                                        {{ $doc->title }}
+                                    </a>
+                                @else
+                                    <a href="{{ $doc->file_path }}" target="_blank" class="hover:underline text-blue-600">
+                                        {{ $doc->title }}
+                                    </a>
+                                @endif
                             </li>
                             @endforeach
                         </ul>

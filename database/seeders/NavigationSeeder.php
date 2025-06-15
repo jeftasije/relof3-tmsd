@@ -30,7 +30,7 @@ class NavigationSeeder extends Seeder
         Navigation::create(['name' => 'Izveštaji o radu', 'parent_id' => $planoviIIzveštaji->id, 'is_deletable' => true, 'redirect_url' => '/dokumenti?category=Izveštaji o radu']);
         Navigation::create(['name' => 'Izveštaji o radu organa upravljanja', 'parent_id' => $planoviIIzveštaji->id, 'is_deletable' => true, 'redirect_url' => '/dokumenti?category=Izveštaji o radu organa upravljanja']);
 
-        Navigation::create(['name' => 'Informator o radu', 'parent_id' => $informacijeORaduIProcedurama->id, 'is_deletable' => true, 'redirect_url' => '/dokumenti?category=Informator o radu']);
+        Navigation::create(['name' => 'Informator o radu', 'parent_id' => $informacijeORaduIProcedurama->id, 'is_deletable' => true, 'redirect_url' => 'https://informator.poverenik.rs/informator?org=evvj4rSTdRPuDbbdT']);
         Navigation::create(['name' => 'Procedura o izboru direktora', 'parent_id' => $informacijeORaduIProcedurama->id, 'is_deletable' => true, 'redirect_url' => '/dokumenti?category=Procedura o izboru direktora']);
         
         $organizacija = Navigation::create(['name' => 'Organizacija', 'parent_id' => $oNama->id, 'is_deletable' => true]);
