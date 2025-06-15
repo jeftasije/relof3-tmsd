@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-white dark:bg-gray-900">
     @include('layouts.header')
 
     <div>
