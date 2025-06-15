@@ -7,7 +7,10 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,7 +33,11 @@ Route::get('/usluge', function () {
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
-Route::view('/kontakt', 'contact')->name('contact');
+Route::get('/kontakt', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
+Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
