@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LibraryDataController;
+use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\OrganisationalStructureController;
 
 Route::get('/', function () {
@@ -22,13 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
 Route::get('/usluge', function () {
     return view('user.services');
 });
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+
 Route::view('/kontakt', 'contact')->name('contact');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
@@ -37,6 +38,14 @@ Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['sr', 'en'])) {
+        abort(400);
+    }
+    session(['locale' => $locale]);
+    return redirect()->back();
+})->name('lang.switch');
 
 Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
