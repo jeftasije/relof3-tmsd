@@ -76,7 +76,7 @@
             </svg>
           </button>
           @else
-          <a href="#" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">{{ $section->name }}</a>
+          <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">{{ $section->name }}</a>
           @endif
         </li>
         @endif
@@ -95,7 +95,10 @@
         <ul class="space-y-1">
           @foreach ($subSection->children as $child)
           <li>
-            <a href="#" class="block p-1 md:p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm md:text-base">
+            @php
+            $isPdf = substr($child->redirect_url, -4) === '.pdf';
+            @endphp
+            <a href="{{ $child->redirect_url }}" {{ $isPdf ? 'target="_blank"' : '' }} class="block p-1 md:p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm md:text-base">
               <div class="font-semibold">{{ $child->name }}</div>
             </a>
           </li>
