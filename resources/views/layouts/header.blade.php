@@ -20,31 +20,29 @@
             id="default-search"
             class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="{{ __('header.search_placeholder') }}"
-            required
-          />
+            required />
           <button
             type="submit"
-            class="text-white absolute end-2.5 bottom-2.5 md:bottom-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 md:px-4 md:py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
+            class="text-white absolute end-2.5 bottom-2.5 md:bottom-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 md:px-4 md:py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             {{ __('header.search_button') }}
           </button>
         </div>
       </form>
       <div class="flex items-center space-x-2 md:space-x-1">
         @php
-          $locale = app()->getLocale();
-          $flags = [
-            'sr' => 'fi fi-rs',
-            'en' => 'fi fi-us',
-          ];
-          $languages = [
-            'sr' => __('language_sr'),  
-            'en' => __('language_en'),  
-          ];
+        $locale = app()->getLocale();
+        $flags = [
+        'sr' => 'fi fi-rs',
+        'en' => 'fi fi-us',
+        ];
+        $languages = [
+        'sr' => __('language_sr'),
+        'en' => __('language_en'),
+        ];
         @endphp
 
         <button type="button" data-dropdown-toggle="language-dropdown-menu"
-            class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
+          class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
           <span class="{{ $flags[$locale] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
           {{ $languages[$locale] ?? 'Srpski' }}
         </button>
@@ -97,7 +95,6 @@
     <div id="mega-menu-full" class="items-center justify-between font-medium hidden w-full md:flex md:w-auto md:order-1">
       <ul class="flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
         @foreach ($mainSections as $section)
-<<<<<<< nav-menu-redirect
         @if ($subSections->has($section->id) || !$subSections->has($section->id))
         <li>
           @if ($subSections->has($section->id))
@@ -109,28 +106,14 @@
           </button>
           @else
           <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">{{ $section->name }}</a>
-=======
-          @if ($subSections->has($section->id) || !$subSections->has($section->id))
-            <li>
-              @if ($subSections->has($section->id))
-                <button id="mega-menu-full-dropdown-button-{{ $section->id }}" data-collapse-toggle="mega-menu-full-dropdown-{{ $section->id }}" class="flex items-center justify-between w-full py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
-                  {{ $section->name }}
-                  <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                  </svg>
-                </button>
-              @else
-                <a href="#" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">{{ $section->name }}</a>
-              @endif
-            </li>
->>>>>>> develop
           @endif
+        </li>
+        @endif
         @endforeach
       </ul>
     </div>
   </div>
   @foreach ($mainSections as $section)
-<<<<<<< nav-menu-redirect
   @if ($subSections->has($section->id))
   <div id="mega-menu-full-dropdown-{{ $section->id }}" class="mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y dark:bg-gray-800 dark:border-gray-600 hidden overflow-y-auto max-h-64">
     <div class="grid max-w-screen-xl px-2 py-3 mx-auto text-gray-900 dark:text-white sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:px-4 md:py-4">
@@ -148,28 +131,12 @@
               <div class="font-semibold">{{ $child->name }}</div>
             </a>
           </li>
-=======
-    @if ($subSections->has($section->id))
-      <div id="mega-menu-full-dropdown-{{ $section->id }}" class="mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y dark:bg-gray-800 dark:border-gray-600 hidden overflow-y-auto max-h-64">
-        <div class="grid max-w-screen-xl px-2 py-3 mx-auto text-gray-900 dark:text-white sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:px-4 md:py-4">
-          @foreach ($subSections[$section->id] as $subSection)
-            <div>
-              <div class="font-semibold text-lg md:text-xl">{{ $subSection->name }}</div>
-              <hr class="border-t-2 border-white mb-2 w-10/12">
-              <ul class="space-y-1">
-                @foreach ($subSection->children as $child)
-                  <li>
-                    <a href="#" class="block p-1 md:p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm md:text-base">
-                      <div class="font-semibold">{{ $child->name }}</div>
-                    </a>
-                  </li>
-                @endforeach
-              </ul>
-            </div>
->>>>>>> develop
           @endforeach
-        </div>
+        </ul>
       </div>
-    @endif
+      @endforeach
+    </div>
+  </div>
+  @endif
   @endforeach
 </nav>
