@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrganisationalStructureController;
+use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,5 +40,9 @@ Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procureme
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
 
 Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
+
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+
+Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
 require __DIR__.'/auth.php';
