@@ -85,7 +85,6 @@ class SearchController extends Controller
 
         $news = News::where('title', 'like', "%{$query}%")
             ->orWhere('summary', 'like', "%{$query}%")
-            ->orWhere('image_path', 'like', "%{$query}%")
             ->orWhere('author', 'like', "%{$query}%")
             ->orWhereRaw('CAST(published_at AS CHAR) LIKE ?', ["%{$query}%"])
             ->get();
