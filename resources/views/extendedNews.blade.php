@@ -21,7 +21,9 @@
                         <div class="relative w-full">
                             <img class="w-full max-w-[200vw] h-[18rem] object-cover" src="{{ asset($news->image_path) }}" alt="{{ $news->title }}" onerror="this.src='{{ asset('/images/default-news.jpg') }}';">
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <h1 class="text-3xl sm:text-4xl font-bold text-white dark:text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">{{ $news->title }}</h1>
+                                <h1 class="text-3xl sm:text-4xl font-bold text-white dark:text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
+                                    {{ App::getLocale() === 'en' ? ($news->title_en ?? $news->title) : $news->title }}
+                                </h1>
                             </div>
                             <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                                 <span>👤 {{ $news->author ?? 'Nepoznat' }}</span> | <span>📅 {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}</span>
@@ -31,12 +33,19 @@
 
                     <div class="px-4 py-4 sm:px-6 sm:py-6 mt-2">
                         <p class="text-gray-700 text-base sm:text-lg dark:text-gray-300 whitespace-pre-line">
-                            {{ $news->extended->content ?? 'Nema dodatnog sadržaja.' }}
+                            {{ App::getLocale() === 'en' ? ($news->extended->content_en ?? $news->extended->content ?? 'No additional content.') : ($news->extended->content ?? 'Nema dodatnog sadržaja.') }}
                         </p>
                         @php
                             $tags = is_array($news->extended->tags) ? $news->extended->tags : json_decode($news->extended->tags, true);
+                            $tagsEn = is_array($news->extended->tags_en) ? $news->extended->tags_en : json_decode($news->extended->tags_en, true);
                         @endphp
-                        @if($tags)
+                        @if(App::getLocale() === 'en' && $tagsEn)
+                            <div class="px-4 pt-2 pb-2 mt-2">
+                                @foreach($tagsEn as $tag)
+                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 dark:bg-gray-700 dark:text-gray-300">{{ $tag }}</span>
+                                @endforeach
+                            </div>
+                        @elseif($tags)
                             <div class="px-4 pt-2 pb-2 mt-2">
                                 @foreach($tags as $tag)
                                     <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 dark:bg-gray-700 dark:text-gray-300">{{ $tag }}</span>
@@ -48,7 +57,7 @@
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
                         <a href="{{ route('news.index') }}"
                            class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Nazad na vesti
+                            {{ App::getLocale() === 'en' ? 'Back to news' : 'Nazad na vesti' }}
                             <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4"/>
                             </svg>

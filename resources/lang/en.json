@@ -1,0 +1,36 @@
+{
+  "team": {
+    "title": "Our Team!",
+    "description": "We are a dynamic group of individuals passionate about what we do and dedicated to delivering the best results for our clients."
+  },
+  "news": {
+    "title": "Latest News",
+    "description": "Stay updated with the latest events and happenings at our Public Library."
+  },
+  "library": {
+    "name": "Dositej Obradović Public Library Novi Pazar",
+    "address_label": "Address",
+    "address": "Stevana Nemanje 2, 36300 Novi Pazar",
+    "city": "Novi Pazar",
+    "pib_label": "PIB",
+    "pib": "101234567",
+    "phone_label": "Contact",
+    "phone": "+381 (0)20 331 010",
+    "email": "dositejbib@gmail.com",
+    "work_hours_label": "Working Hours",
+    "work_hours_formatted": [
+      "Monday - Friday: 08:00 - 16:00",
+      "Saturday: 08:00 - 14:00",
+      "Sunday: closed"
+    ],
+    "facebook": "#",
+    "twitter": "#",
+    "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+    "copyrights": "© 2023"
+  },
+  "header.search_placeholder": "Search the site...",
+  "header.search_button": "Search",
+  "header.library_name_line1": "Public Library \"Dositej Obradović\"",
+  "language_sr": "Serbian",
+  "language_en": "English"
+}
