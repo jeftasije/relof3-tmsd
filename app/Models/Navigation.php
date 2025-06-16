@@ -9,7 +9,8 @@ class Navigation extends Model
     protected $fillable = [
         'parent_id',
         'naziv',
-        'is_deletable'
+        'is_deletable',
+        'redirect_url',
     ];
 
     public function children()
