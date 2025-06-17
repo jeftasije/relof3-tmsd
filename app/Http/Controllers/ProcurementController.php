@@ -20,4 +20,28 @@ class ProcurementController extends Controller
         return view('procurements', compact('procurements'));
     }
 
+    public function destroy($id)
+    {
+        $procurement = Procurement::findOrFail($id);
+        $procurement->delete();
+
+        return response()->json(['message' => 'Dokument uspešno obrisan']);
+    }
+
+
+    public function edit(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $procurement = Procurement::findOrFail($id);
+        $procurement->title = $request->input('title');
+        $procurement->save();
+
+        return response()->json([
+            'message' => 'Dokument uspešno preimenovan',
+            'title' => $procurement->title
+        ]);
+    }
 }
