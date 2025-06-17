@@ -15,9 +15,9 @@ use App\Http\Controllers\SearchController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/dashboard', function () {
+Route::get('/kontrolni-panel', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -55,10 +55,10 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
+Route::get('/organizaciona-struktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
 require __DIR__.'/auth.php';
+
