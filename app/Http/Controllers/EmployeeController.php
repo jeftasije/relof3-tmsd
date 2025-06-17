@@ -87,12 +87,19 @@ class EmployeeController extends Controller
             'position_en' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
             'biography_en' => 'nullable|string',
-            'image_path' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+
+            $validated['image_path'] = 'images/' . $filename; 
+        }
 
         Employee::create($validated);
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
     }
-
 }
