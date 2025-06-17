@@ -25,9 +25,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::delete('dokumenti/{id}', [DocumentController::class, 'destroy'])->name('documents.delete');
     Route::patch('dokumenti/{id}', [DocumentController::class, 'edit'])->name('documents.edit');
     Route::post('dokumenti', [DocumentController::class, 'store'])->name('documents.store');
+
+    Route::delete('/nabavke/{id}', [ProcurementController::class, 'destroy'])->name('procurements.delete');
+    Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
+
 });
 
 Route::get('/usluge', function () {
