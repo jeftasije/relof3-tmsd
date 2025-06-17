@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/nabavke/{id}', [ProcurementController::class, 'destroy'])->name('procurements.delete');
     Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
 });
 
 Route::get('/usluge', function () {
