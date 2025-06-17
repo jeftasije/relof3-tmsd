@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Procurement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProcurementController extends Controller
 {
@@ -20,14 +21,24 @@ class ProcurementController extends Controller
         return view('procurements', compact('procurements'));
     }
 
-    public function destroy($id)
-    {
-        $procurement = Procurement::findOrFail($id);
-        $procurement->delete();
+public function destroy($id)
+{
+    $procurement = Procurement::findOrFail($id);
 
-        return response()->json(['message' => 'Dokument uspešno obrisan']);
+    if ($procurement->file_path) {
+        // Provera da li fajl postoji pre brisanja
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($procurement->file_path)) {
+            $deleted = \Illuminate\Support\Facades\Storage::disk('public')->delete($procurement->file_path);
+            if (!$deleted) {
+                return response()->json(['message' => 'Greška prilikom brisanja fajla iz fajl sistema'], 500);
+            }
+        }
     }
 
+    $procurement->delete();
+
+    return response()->json(['message' => 'Dokument uspešno obrisan']);
+}
 
     public function edit(Request $request, $id)
     {
