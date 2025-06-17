@@ -39,19 +39,33 @@ class EmployeeController extends Controller
         return response()->json(['message' => 'Updated']);
     }
 
-    public function uploadImage(Request $request, Employee $employee)
-    {
-        $request->validate([
-            'image' => 'required|image|max:2048', // max 2MB
-        ]);
+    public function uploadImage(Request $request, Employee $employee){
+        try {
 
-        $path = $request->file('image')->store('images', 'public'); // snima u storage/app/public/images
-
-        // Opcionalno možeš odmah update baze, ili samo vrati putanju, pa update kad se klikne save u frontendu
-        // $employee->image_path = 'storage/' . $path;
-        // $employee->save();
-
-        return response()->json(['path' => 'storage/' . $path]);
+            $employee->update([
+                'biography' => $validated['biography'],
+                'position' => $validated['position'],
+            ]);
+            
+            if ($request->hasFile('image')) {
+                if ($employee->image_path && Storage::disk('public')->exists($employee->image_path)) {
+                    Storage::disk('public')->delete($employee->image_path);
+                }
+                $employee->image_path = $request->file('image')->store('images', 'public');
+                $employee->save();
+            }
+            return response()->json([
+                'success' => true,
+                'employee' => [
+                    'biography' => $employee->translated_biography,
+                    'position' => $employee->translated_position,
+                    'image_path' => asset($employee->image_path),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Greška pri ažuriranju zaposlenog: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function destroy(Employee $employee)
@@ -64,4 +78,21 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')->with('success', 'Zaposleni je uspešno obrisan.');
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'position_en' => 'nullable|string|max:255',
+            'biography' => 'nullable|string',
+            'biography_en' => 'nullable|string',
+            'image_path' => 'nullable|string',
+        ]);
+
+        Employee::create($validated);
+
+        return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
+    }
+
 }
