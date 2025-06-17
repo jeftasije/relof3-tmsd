@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::delete('/nabavke/{id}', [ProcurementController::class, 'destroy'])->name('procurements.delete');
+    Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
 });
 
 Route::get('/usluge', function () {
