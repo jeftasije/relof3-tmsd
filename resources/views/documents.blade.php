@@ -9,15 +9,18 @@
 
         <div id="accordion-collapse" data-accordion="collapse" class="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
             @foreach($categories as $category)
+            @php
+            $isOpen = (string) $category->id === (string) $activeCategoryId;
+            @endphp
             <div class="rounded-lg border bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
                 <h2>
                     <button type="button"
-                        class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-600 dark:text-gray-400 rounded-lg bg-white dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        class="$isOpen ? flex items-center justify-between w-full p-4 font-medium text-left text-gray-600 dark:text-gray-400 rounded-lg bg-white dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700"
                         data-accordion-target="#accordion-body-{{ $category->id }}"
-                        aria-expanded="false"
+                        aria-expanded="{{ $isOpen ? 'true' : 'false' }}"
                         aria-controls="accordion-body-{{ $category->id }}">
                         <span>{{ $category->name }}</span>
-                        <svg data-accordion-icon class="w-5 h-5 rotate-0 shrink-0 transition-transform duration-300"
+                        <svg data-accordion-icon class="$isOpen ? w-5 h-5 rotate-0 shrink-0 transition-transform duration-300"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -25,7 +28,7 @@
                         </svg>
                     </button>
                 </h2>
-                <div id="accordion-body-{{ $category->id }}" class="hidden" aria-labelledby="accordion-heading-{{ $category->id }}">
+                <div id="accordion-body-{{ $category->id }}" class=" $isOpen ? '' : 'hidden' " aria-labelledby="accordion-heading-{{ $category->id }}">
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                         @if($category->documents->isEmpty())
                         <p class="text-sm text-gray-500 dark:text-gray-400">Nema dostupnih dokumenata.</p>
@@ -33,9 +36,18 @@
                         <ul class="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
                             @foreach($category->documents as $doc)
                             <li data-doc-id="{{ $doc->id }}" data-category-id="{{ $category->id }}">
-                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="hover:underline text-blue-600">
-                                    {{ $doc->title }}
-                                </a>
+                                @php
+                                    $isPdf = substr($doc->file_path, -4) === '.pdf';
+                                @endphp
+                                @if($isPdf)
+                                    <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" class="hover:underline text-blue-600">
+                                        {{ $doc->title }}
+                                    </a>
+                                @else
+                                    <a href="{{ $doc->file_path }}" target="_blank" class="hover:underline text-blue-600">
+                                        {{ $doc->title }}
+                                    </a>
+                                @endif
                             </li>
                             @endforeach
                         </ul>
@@ -102,7 +114,10 @@
                     targetAccordion.classList.remove('hidden');
                     button.classList.remove('text-gray-600', 'dark:text-gray-400');
                     button.classList.add('text-blue-800', 'dark:text-white');
-                    targetAccordion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetAccordion.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
                     searchDropdown.classList.add('hidden');
                     searchInput.value = '';
                     selectedIndex = -1;

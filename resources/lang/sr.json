@@ -1,0 +1,36 @@
+{
+  "team": {
+    "title": "Naš tim!",
+    "description": "Mi smo dinamična grupa pojedinaca koji su strastveni prema onome što radimo i posvećeni pružanju najboljih rezultata za naše klijente."
+  },
+  "news": {
+    "title": "Najnovije vesti",
+    "description": "Ostanite u toku sa najnovijim dešavanjima i događajima u našoj Narodnoj biblioteci."
+  },
+  "library": {
+    "name": "Narodna biblioteka \"Dositej Obradović\" Novi Pazar",
+    "address_label": "Adresa",
+    "address": "Stevana Nemanje 2, 36300 Novi Pazar",
+    "city": "Novi Pazar",
+    "pib_label": "PIB",
+    "pib": "101234567",
+    "phone_label": "Kontakt",
+    "phone": "+381 (0)20 331 010",
+    "email": "dositejbib@gmail.com",
+    "work_hours_label": "Radno vreme",
+    "work_hours_formatted": [
+      "Ponedeljak - Petak: 08:00 - 16:00",
+      "Subota: 08:00 - 14:00",
+      "Nedelja: neradna"
+    ],
+    "facebook": "#",
+    "twitter": "#",
+    "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+    "copyrights": "© 2023"
+  },
+  "header.search_placeholder": "Pretražite sajt...",
+  "header.search_button": "Pretraži",
+  "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
+  "language_sr": "Srpski",
+  "language_en": "Engleski"
+}

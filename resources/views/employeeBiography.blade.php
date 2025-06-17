@@ -18,7 +18,7 @@
             <div class="bg-white dark:bg-gray-900">
                 <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
                     <h1 class="text-3xl sm:text-4xl font-bold mb-2 text-center sm:text-left dark:text-white">
-                        {{ $employee->position }}
+                        {{ $employee->translate('position') }}
                     </h1>
 
                     <div class="flex flex-col lg:flex-row items-start gap-8 bg-white dark:bg-gray-900 p-6 sm:p-10 lg:p-12 mb-10">
@@ -34,12 +34,22 @@
                                 {{ $employee->name }}
                             </h2>
                             @if ($employee->extendedBiography)
-                                <p class="mb-4 text-gray-700 dark:text-gray-300">{{ $employee->extendedBiography->biography }}</p>
-                                <p class="mb-2 text-gray-700 dark:text-gray-300"><strong>Univerzitet:</strong> {{ $employee->extendedBiography->university }}</p>
-                                <p class="mb-2 text-gray-700 dark:text-gray-300"><strong>Iskustvo:</strong> {{ $employee->extendedBiography->experience }}</p>
+                                <p class="mb-4 text-gray-700 dark:text-gray-300">
+                                    {{ $employee->extendedBiography->translate('biography') }}
+                                </p>
                                 <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>Veštine:</strong>
-                                    {{ implode(', ', is_array($employee->extendedBiography->skills) ? $employee->extendedBiography->skills : json_decode($employee->extendedBiography->skills, true) ?? []) }}
+                                    <strong>{{ __('Univerzitet') }}:</strong> {{ $employee->extendedBiography->translate('university') }}
+                                </p>
+                                <p class="mb-2 text-gray-700 dark:text-gray-300">
+                                    <strong>{{ __('Iskustvo') }}:</strong> {{ $employee->extendedBiography->translate('experience') }}
+                                </p>
+                                <p class="mb-2 text-gray-700 dark:text-gray-300">
+                                    <strong>{{ __('Veštine') }}:</strong>
+                                    {{ implode(', ',
+                                        is_array($employee->extendedBiography->translate('skills'))
+                                            ? $employee->extendedBiography->translate('skills')
+                                            : []
+                                    ) }}
                                 </p>
                             @else
                                 <p class="mb-3 text-gray-700 dark:text-gray-300">Detaljna biografija nije dostupna.</p>
@@ -49,7 +59,7 @@
 
                     <a href="{{ route('employees.index') }}"
                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Nazad na zaposlene
+                        {{ App::getLocale() === 'en' ? 'Back to Employees' : 'Nazad na zaposlene' }}
                         <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
