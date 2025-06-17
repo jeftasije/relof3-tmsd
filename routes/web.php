@@ -10,6 +10,7 @@ use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
+use App\Http\Controllers\SearchController;
 
 
 Route::get('/', function () {
@@ -59,4 +60,8 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::get('/organizaciona-struktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
-require __DIR__ . '/auth.php';
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
+
+require __DIR__.'/auth.php';
+
