@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         DB::table('extended_news')->truncate();
         DB::table('navigations')->truncate();
         DB::table('procurements')->truncate();
+        DB::table('organisational_structures')->truncate(); 
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
             ExtendedNewsSeeder::class,
             NavigationSeeder::class,
             ProcurementSeeder::class,
+            OrganisationalStructureSeeder::class, 
         ]);
 
         if (!User::where('email', 'test@example.com')->exists()) {
@@ -45,5 +47,4 @@ class DatabaseSeeder extends Seeder
             ]);
         }
     }
-
 }
