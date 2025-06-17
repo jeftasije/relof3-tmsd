@@ -34,7 +34,7 @@ class NavigationSeeder extends Seeder
         Navigation::create(['name' => 'Procedura o izboru direktora', 'parent_id' => $informacijeORaduIProcedurama->id, 'is_deletable' => true, 'redirect_url' => '/dokumenti?category=Procedura o izboru direktora']);
         
         $organizacija = Navigation::create(['name' => 'Organizacija', 'parent_id' => $oNama->id, 'is_deletable' => true]);
-        Navigation::create(['name' => 'Organizaciona struktura', 'parent_id' => $organizacija->id, 'is_deletable' => true, 'redirect_url' => '/organizacionaStruktura']);
+        Navigation::create(['name' => 'Organizaciona struktura', 'parent_id' => $organizacija->id, 'is_deletable' => true, 'redirect_url' => '/organizaciona-struktura']);
         Navigation::create(['name' => 'Zaposleni', 'parent_id' => $organizacija->id, 'is_deletable' => true, 'redirect_url' => '/employees']);
         Navigation::create(['name' => 'Sistematizacija radnih mesta', 'parent_id' => $organizacija->id, 'is_deletable' => true, 'redirect_url' => '/storage/documents/Sistematizacija-2025.pdf']);
     }

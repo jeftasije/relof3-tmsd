@@ -14,9 +14,9 @@ use App\Http\Controllers\OrganisationalStructureController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/dashboard', function () {
+Route::get('/kontrolni-panel', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -54,6 +54,6 @@ Route::get('/lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang.switch');
 
-Route::get('/organizacionaStruktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
+Route::get('/organizaciona-struktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
