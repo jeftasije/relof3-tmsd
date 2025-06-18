@@ -25,12 +25,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
     Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
     Route::post('/employees/{employee}/upload-image', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
     Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
     Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
     Route::put('/employees/{employee}/extended-biography', [EmployeeController::class, 'updateExtendedBiography'])->name('employees.updateExtendedBiography');
+
+    Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
+    Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
+    Route::post('/vesti', [NewsController::class, 'store'])->name('news.store');
+    Route::put('/vesti/{news}', [NewsController::class, 'update'])->name('news.update');
+    Route::delete('/vesti/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+    Route::get('/vesti/kreiraj', [NewsController::class, 'create'])->name('news.create');
 });
 
 Route::get('/usluge', function () {

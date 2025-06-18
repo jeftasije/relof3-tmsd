@@ -24,6 +24,20 @@
                         {{ $text['description'] }}
                     </p>
 
+                    @auth
+                        <div class="flex justify-end mb-4">
+                            <a href="{{ route('news.create') }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                {{ App::getLocale() === 'en' ? 'Add News' : 'Dodaj vest' }}
+                            </a>
+                        </div>
+                    @endauth
+
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                         @foreach ($news as $newsItem)
                             <x-news-card :news="$newsItem" />
