@@ -102,4 +102,63 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
     }
+
+public function updateExtendedBiography(Request $request, Employee $employee)
+{
+    // Validacija svih mogućih polja
+    $validated = $request->validate([
+        'biography' => 'nullable|string',
+        'university' => 'nullable|string|max:255',
+        'experience' => 'nullable|string',
+        'skills' => 'nullable|string',
+        'biography_translated' => 'nullable|string',
+        'university_translated' => 'nullable|string|max:255',
+        'experience_translated' => 'nullable|string',
+        'skills_translated' => 'nullable|string',
+    ]);
+
+    if (!$employee->extendedBiography) {
+        $employee->extendedBiography()->create([]);
+    }
+
+    $updateData = [];
+
+    // Update srpskih kolona ako postoje u requestu
+    if ($request->has('biography')) {
+        $updateData['biography'] = $validated['biography'] ?? null;
+    }
+    if ($request->has('university')) {
+        $updateData['university'] = $validated['university'] ?? null;
+    }
+    if ($request->has('experience')) {
+        $updateData['experience'] = $validated['experience'] ?? null;
+    }
+    if ($request->has('skills')) {
+        $updateData['skills'] = $validated['skills'] ? array_map('trim', explode(',', $validated['skills'])) : [];
+    }
+
+    // Update engleskih (translated) kolona ako postoje u requestu
+    if ($request->has('biography_translated')) {
+        $updateData['biography_translated'] = $validated['biography_translated'] ?? null;
+    }
+    if ($request->has('university_translated')) {
+        $updateData['university_translated'] = $validated['university_translated'] ?? null;
+    }
+    if ($request->has('experience_translated')) {
+        $updateData['experience_translated'] = $validated['experience_translated'] ?? null;
+    }
+    if ($request->has('skills_translated')) {
+        $updateData['skills_translated'] = $validated['skills_translated'] ? array_map('trim', explode(',', $validated['skills_translated'])) : [];
+    }
+
+    $employee->extendedBiography->update($updateData);
+
+    return redirect()->route('employees.show', $employee->id)
+                     ->with('success', 'Extended biography updated successfully.');
+}
+
+
+
+
+
 }

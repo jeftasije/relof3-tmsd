@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
     Route::post('/employees/{employee}/upload-image', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
     Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/employees/{employee}/extended-biography', [EmployeeController::class, 'updateExtendedBiography'])->name('employees.updateExtendedBiography');
 });
 
 Route::get('/usluge', function () {
