@@ -34,6 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
     Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
 
+    Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
+    Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
+    Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
+
 });
 
 Route::get('/usluge', function () {
