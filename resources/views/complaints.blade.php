@@ -8,7 +8,7 @@
     <div class="w-full">
         <section 
             class="relative w-full bg-gray-900 bg-cover bg-center bg-no-repeat py-12" 
-            style="background-image: url('/images/contact.jpg');">
+            style="background-image: url('/images/comments.jpg');">
         
             <div class="absolute inset-0 bg-black/30"></div>
 
@@ -139,7 +139,7 @@
                             @csrf
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last Name' : 'Ime i prezime' }}"
+                                <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last name' : 'Ime i prezime' }}"
                                     value="{{ old('name') }}" required
                                     class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200">
                                 @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
