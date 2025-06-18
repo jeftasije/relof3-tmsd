@@ -11,6 +11,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
 
 
 Route::get('/', function () {
@@ -43,6 +44,8 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
+
+Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
