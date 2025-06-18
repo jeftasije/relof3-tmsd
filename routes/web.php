@@ -26,12 +26,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-    Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
-    Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
-    Route::post('/employees/{employee}/upload-image', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
-    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
-    Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('/employees/{employee}/extended-biography', [EmployeeController::class, 'updateExtendedBiography'])->name('employees.updateExtendedBiography');
+    Route::put('/zaposleni/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/zaposleni/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+    Route::post('/zaposleni/{employee}/dodaj-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
+    Route::post('/zaposleni', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('/zaposleni/{employee}/izmeni', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/zaposleni/{employee}/prosirena-biografija', [EmployeeController::class, 'updateExtendedBiography'])->name('employees.updateExtendedBiography');
 
     Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
     Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/vesti/{news}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/vesti/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
     Route::get('/vesti/kreiraj', [NewsController::class, 'create'])->name('news.create');
+    Route::put('/vesti/{news}/prosirena', [NewsController::class, 'updateExtendedNews'])->name('news.updateExtendedNews');
+
 });
 
 Route::get('/usluge', function () {

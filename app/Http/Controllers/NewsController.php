@@ -83,5 +83,38 @@ class NewsController extends Controller
         return redirect()->route('news.index')->with('success', 'Vest uspešno dodata!');
     }
 
+    public function updateExtendedNews(Request $request, News $news)
+    {
+        $validated = $request->validate([
+            'content' => 'nullable|string',
+            'content_en' => 'nullable|string',
+            'tags' => 'nullable|string',
+            'tags_en' => 'nullable|string',
+        ]);
+
+        $updateData = [];
+
+        if ($request->has('content')) {
+            $updateData['content'] = $validated['content'];
+        }
+        if ($request->has('content_en')) {
+            $updateData['content_en'] = $validated['content_en'];
+        }
+        if ($request->has('tags')) {
+            $updateData['tags'] = $validated['tags'] ? array_map('trim', explode(',', $validated['tags'])) : [];
+        }
+        if ($request->has('tags_en')) {
+            $updateData['tags_en'] = $validated['tags_en'] ? array_map('trim', explode(',', $validated['tags_en'])) : [];
+        }
+
+        if (!$news->extended) {
+            $news->extended()->create([]);
+            $news->refresh();
+        }
+        $news->extended->update($updateData);
+
+        return redirect()->route('news.show', $news->id)
+            ->with('success', 'Extended news updated successfully.');
+    }
 
 }
