@@ -52,7 +52,6 @@
                     }
                 </style>
 
-                <!-- Overview Cards -->
                 <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in">
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ App::getLocale() === 'en' ? 'Published Documents' : 'Objavljena dokumenta' }}</h3>
@@ -71,9 +70,7 @@
                     </div>
                 </section>
 
-                <!-- Charts Section -->
                 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 animate-fade-in">
-                    <!-- Relief Index -->
                     <div class="glass p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4">{{ App::getLocale() === 'en' ? 'Relof index' : 'Relof indeks' }}</h3>
                         <div class="w-48 h-48 relative">
@@ -85,7 +82,6 @@
                         </div>
                     </div>
 
-                    <!-- User Growth -->
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4 text-center">{{ App::getLocale() === 'en' ? 'User Growth' : 'Priliv korisnika' }}</h3>
                         <div class="w-full h-72">
@@ -93,7 +89,6 @@
                         </div>
                     </div>
 
-                    <!-- Traffic Sources -->
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4 text-center">{{ App::getLocale() === 'en' ? 'Traffic Sources' : 'Izvori saobraćaja' }}</h3>
                         <div class="w-full h-72">
@@ -102,7 +97,6 @@
                     </div>
                 </section>
 
-                <!-- Most Visited Section -->
                 <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12 animate-fade-in">
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-3">{{ App::getLocale() === 'en' ? 'Most Visited News' : 'Najposećenija vest' }}</h3>
@@ -121,7 +115,6 @@
                     </div>
                 </section>
 
-                <!-- Complaints & Testimonials -->
                 <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12 animate-fade-in">
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4">{{ App::getLocale() === 'en' ? 'Recent Complaints' : 'Skorašnje žalbe' }}</h3>
@@ -141,7 +134,6 @@
                     </div>
                 </section>
 
-                <!-- Documents Section -->
                 <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12 animate-fade-in">
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-blue-400 text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-3">{{ App::getLocale() === 'en' ? 'Most Downloaded Document' : 'Najviše puta pogledan dokument' }}</h3>
@@ -155,7 +147,6 @@
                     </div>
                 </section>
 
-                <!-- Recent Activity -->
                 <section class="glass p-6 rounded-2xl shadow-xl mb-12 animate-fade-in">
                     <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4">{{ App::getLocale() === 'en' ? 'Recent Activity' : 'Poslednje aktivnosti' }}</h3>
                     <ul class="space-y-3">
@@ -167,10 +158,8 @@
                 </section>
             </div>
 
-            <!-- Scripts -->
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
             <script>
-                // relof Chart
                 const reliefCtx = document.getElementById('reliefChart').getContext('2d');
                 new Chart(reliefCtx, {
                     type: 'doughnut',
@@ -190,7 +179,6 @@
                     }
                 });
 
-                // User Growth Chart
                 const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
                 new Chart(userGrowthCtx, {
                     type: 'line',
@@ -225,7 +213,6 @@
                     }
                 });
 
-                // Traffic Sources
                 const trafficSourcesCtx = document.getElementById('trafficSourcesChart').getContext('2d');
                 new Chart(trafficSourcesCtx, {
                     type: 'pie',
