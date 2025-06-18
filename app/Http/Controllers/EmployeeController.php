@@ -51,35 +51,36 @@ class EmployeeController extends Controller
         return response()->json(['message' => 'Updated']);
     }
 
+    public function uploadImage(Request $request, Employee $employee)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+        ]);
 
-    public function uploadImage(Request $request, Employee $employee){
         try {
-
-            $employee->update([
-                'biography' => $validated['biography'],
-                'position' => $validated['position'],
-            ]);
-            
-            if ($request->hasFile('image')) {
-                if ($employee->image_path && Storage::disk('public')->exists($employee->image_path)) {
-                    Storage::disk('public')->delete($employee->image_path);
-                }
-                $employee->image_path = $request->file('image')->store('images', 'public');
-                $employee->save();
+            if ($employee->image_path && \File::exists(public_path($employee->image_path))) {
+                \File::delete(public_path($employee->image_path));
             }
+
+            $file = $request->file('image');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+
+            $employee->image_path = 'images/' . $filename;
+            $employee->save();
+
             return response()->json([
                 'success' => true,
                 'employee' => [
-                    'biography' => $employee->translated_biography,
-                    'position' => $employee->translated_position,
                     'image_path' => asset($employee->image_path),
                 ],
             ]);
         } catch (\Exception $e) {
-            \Log::error('Greška pri ažuriranju zaposlenog: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            \Log::error('Greška pri uploadu slike: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
     }
+
 
     public function destroy(Employee $employee)
     {

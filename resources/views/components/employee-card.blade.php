@@ -7,7 +7,9 @@
     position: @js($employee->translated_position),
     originalBiography: @js($employee->translated_biography),
     originalPosition: @js($employee->translated_position),
+    imageSrc: '{{ asset($employee->image_path) }}',
     saving: false,
+    uploading: false,
     async save() {
       this.saving = true;
       try {
@@ -37,12 +39,33 @@
       this.biography = this.originalBiography;
       this.position = this.originalPosition;
       this.editing = false;
+    },
+    uploadImage(e) {
+      if (!e.target.files.length) return;
+      this.uploading = true;
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
+      formData.append('_token', '{{ csrf_token() }}');
+      fetch('/zaposleni/{{ $employee->id }}/izmeni-sliku', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(async r => {
+          let data;
+          try { data = await r.json(); } catch { data = null; }
+          if (r.ok && data && data.success) {
+            this.imageSrc = data.employee.image_path + '?' + (new Date()).getTime();
+          } else {
+            alert('Greška pri uploadu slike! ' + (data && data.error ? data.error : ''));
+          }
+        })
+        .catch(() => alert('Greška pri uploadu slike!'))
+        .finally(() => this.uploading = false);
     }
   }"
 >
     @auth
     <div class="absolute bottom-2 right-2 z-10">
-        <!-- Sakrij tri tackice ako je editing aktivan -->
         <template x-if="!editing">
           <div x-data="{ open: false }">
             <button @click="open = !open" class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white focus:outline-none">
@@ -71,14 +94,18 @@
     </div>
     @endauth
 
-    <a href="{{ route('employees.show', $employee->id) }}" class="overflow-hidden rounded-t-lg group" style="box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);">
+    <div class="relative overflow-hidden rounded-t-lg group" style="box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);">
         <img
-            class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105"
-            src="{{ asset($employee->image_path) }}"
+            class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+            :src="imageSrc"
             alt="{{ $employee->name }}"
-            onerror="this.src='{{ asset('/images/default.jpg') }}';"
+            @click.prevent="editing ? $refs.fileInput.click() : null"
         />
-    </a>
+        <input type="file" x-ref="fileInput" class="hidden" @change="uploadImage" accept="image/*">
+        <template x-if="editing">
+          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-white text-lg font-bold pointer-events-none">{{ App::getLocale() === 'en' ? 'Change image' : 'Promeni sliku' }}</div>
+        </template>
+    </div>
     <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset;">
         <div>
             <a href="{{ route('employees.show', $employee->id) }}">

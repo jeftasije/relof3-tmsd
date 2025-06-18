@@ -117,4 +117,20 @@ class NewsController extends Controller
             ->with('success', 'Extended news updated successfully.');
     }
 
+    public function uploadImage(Request $request, News $news)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $news->image_path = 'images/' . $filename;
+            $news->save();
+            return response()->json(['image_path' => asset($news->image_path)]);
+        }
+        return response()->json(['error' => 'No image uploaded'], 400);
+    }
+
 }

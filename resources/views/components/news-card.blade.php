@@ -1,5 +1,5 @@
 <div 
-  class="relative max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col" 
+  class="relative max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col"
   style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);"
   x-data="{
     editing: false,
@@ -7,10 +7,13 @@
     summary: @js($news->translate('summary')),
     originalTitle: @js($news->translate('title')),
     originalSummary: @js($news->translate('summary')),
+    image: '{{ asset($news->image_path ?? '/images/default-news.jpg') }}',
+    newImage: null,
     saving: false,
     async save() {
       this.saving = true;
       try {
+        // Prvo sacuvaj tekstualne izmene
         const response = await fetch('{{ route('news.update', $news->id) }}', {
           method: 'PUT',
           headers: {
@@ -25,9 +28,25 @@
           }),
         });
         if (!response.ok) throw new Error('Save failed');
+        // Ako ima nova slika, uploaduj je posebno
+        if(this.newImage) {
+          const formData = new FormData();
+          formData.append('image', this.newImage);
+          formData.append('_token', '{{ csrf_token() }}');
+          const imgResp = await fetch('{{ route('news.uploadImage', $news->id) }}', {
+            method: 'POST',
+            body: formData
+          });
+          if(!imgResp.ok) throw new Error('Image upload failed');
+          const imgData = await imgResp.json();
+          if (imgData.image_path) {
+            this.image = imgData.image_path;
+          }
+        }
         this.originalTitle = this.title;
         this.originalSummary = this.summary;
         this.editing = false;
+        this.newImage = null;
       } catch (e) {
         alert('Greška pri čuvanju podataka');
       } finally {
@@ -38,6 +57,15 @@
       this.title = this.originalTitle;
       this.summary = this.originalSummary;
       this.editing = false;
+      this.newImage = null;
+      this.image = '{{ asset($news->image_path ?? '/images/default-news.jpg') }}';
+    },
+    previewImage(event) {
+      const file = event.target.files[0];
+      if(file){
+        this.newImage = file;
+        this.image = URL.createObjectURL(file);
+      }
     }
   }"
 >
@@ -73,14 +101,30 @@
   </div>
   @endauth
 
-  <a href="{{ route('news.show', $news->id) }}" class="overflow-hidden rounded-t-lg group" style="box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);">
+  <div class="overflow-hidden rounded-t-lg group relative cursor-pointer" style="box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);">
     <img
       class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105"
-      src="{{ asset($news->image_path ?? '/images/default-news.jpg') }}"
+      :src="image"
       alt="{{ $news->title }}"
       onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
+      @click="editing ? $refs.imgInput.click() : null"
+      :class="editing ? 'ring-2 ring-blue-400 cursor-pointer' : ''"
+      title="{{ App::getLocale() === 'en' ? 'Change image' : 'Promeni sliku' }}"
     />
-  </a>
+    <input 
+      x-ref="imgInput"
+      type="file"
+      accept="image/*"
+      class="hidden"
+      @change="previewImage"
+      :disabled="!editing"
+    />
+    <template x-if="editing">
+      <span class="absolute bottom-3 right-3 bg-blue-600 text-white px-3 py-1 rounded shadow text-xs">
+        {{ App::getLocale() === 'en' ? 'Click to change image' : 'Klikni za izmenu slike' }}
+      </span>
+    </template>
+  </div>
 
   <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset;">
     <div>

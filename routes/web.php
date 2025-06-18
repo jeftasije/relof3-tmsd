@@ -40,7 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/vesti/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
     Route::get('/vesti/kreiraj', [NewsController::class, 'create'])->name('news.create');
     Route::put('/vesti/{news}/prosirena', [NewsController::class, 'updateExtendedNews'])->name('news.updateExtendedNews');
-
+    Route::post('/vesti/{news}/izmeni-sliku', [NewsController::class, 'uploadImage'])->name('news.uploadImage');
+    Route::post('/zaposleni/{employee}/izmeni-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
 });
 
 Route::get('/usluge', function () {

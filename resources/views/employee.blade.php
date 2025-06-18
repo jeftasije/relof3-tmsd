@@ -26,14 +26,16 @@
                     </p>
 
                     <div class="flex justify-end mb-6">
-                        <button @click="open = true" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
-                            {{ App::getLocale() === 'en' ? 'Add' : 'Dodaj' }}
-                        </button>
+                        @auth
+                            <button @click="open = true" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                {{ App::getLocale() === 'en' ? 'Add' : 'Dodaj' }}
+                            </button>
+                        @endauth
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
