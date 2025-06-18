@@ -57,6 +57,8 @@ class NewsController extends Controller
             'title_en' => 'nullable|string|max:255',
             'summary' => 'required|string|max:2000',
             'summary_en' => 'nullable|string|max:2000',
+            'author' => 'required|string|max:255',
+            'published_at' => 'nullable|date',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -68,8 +70,18 @@ class NewsController extends Controller
             $validated['image_path'] = 'images/' . $filename;
         }
 
-        News::create($validated);
+        $news = News::create($validated);
+
+        \App\Models\ExtendedNews::create([
+            'news_id' => $news->id,
+            'content' => '',
+            'content_en' => '',
+            'tags' => [],
+            'tags_en' => [],
+        ]);
 
         return redirect()->route('news.index')->with('success', 'Vest uspešno dodata!');
     }
+
+
 }
