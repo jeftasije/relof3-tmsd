@@ -19,7 +19,7 @@
                         data-accordion-target="#accordion-body-{{ $category->id }}"
                         aria-expanded="{{ $isOpen ? 'true' : 'false' }}"
                         aria-controls="accordion-body-{{ $category->id }}">
-                        <span>{{ $category->name }}</span>
+                        <span>{{ $category->translate('name') }}</span>
                         <svg data-accordion-icon class="$isOpen ? w-5 h-5 rotate-0 shrink-0 transition-transform duration-300"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
