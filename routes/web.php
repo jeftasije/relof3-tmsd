@@ -18,7 +18,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/kontrolni-panel', function () {
-    return view('dashboard');
+    return view('superAdmin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
