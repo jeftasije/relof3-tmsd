@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         DB::table('extended_news')->truncate();
         DB::table('navigations')->truncate();
         DB::table('procurements')->truncate();
-        db::table('organisational_structures')->truncate();
+        DB::table('organisational_structures')->truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
