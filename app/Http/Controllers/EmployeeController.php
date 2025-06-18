@@ -26,18 +26,31 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
-        $validated = $request->validate([
-            'biography' => 'nullable|string',
-            'position' => 'required|string|max:255',
-        ]);
+        $locale = app()->getLocale();
 
-        $employee->update([
-            'biography' => $validated['biography'],
-            'position' => $validated['position'],
-        ]);
+        if ($locale === 'en') {
+            $validated = $request->validate([
+                'biography' => 'nullable|string',
+                'position' => 'required|string|max:255',
+            ]);
+            $employee->update([
+                'biography_en' => $validated['biography'],
+                'position_en' => $validated['position'],
+            ]);
+        } else {
+            $validated = $request->validate([
+                'biography' => 'nullable|string',
+                'position' => 'required|string|max:255',
+            ]);
+            $employee->update([
+                'biography' => $validated['biography'],
+                'position' => $validated['position'],
+            ]);
+        }
 
         return response()->json(['message' => 'Updated']);
     }
+
 
     public function uploadImage(Request $request, Employee $employee){
         try {
@@ -105,52 +118,52 @@ class EmployeeController extends Controller
 
     public function updateExtendedBiography(Request $request, Employee $employee)
     {
-        $validated = $request->validate([
-            'biography' => 'nullable|string',
-            'university' => 'nullable|string|max:255',
-            'experience' => 'nullable|string',
-            'skills' => 'nullable|string',
-            'biography_translated' => 'nullable|string',
-            'university_translated' => 'nullable|string|max:255',
-            'experience_translated' => 'nullable|string',
-            'skills_translated' => 'nullable|string',
-        ]);
+        $locale = app()->getLocale();
 
         if (!$employee->extendedBiography) {
-            $employee->extendedBiography()->create([]);
+            $employee->extendedBiography()->create([
+                'biography' => '',
+                'university' => '',
+                'experience' => '',
+                'skills' => [],
+                'biography_translated' => '',
+                'university_translated' => '',
+                'experience_translated' => '',
+                'skills_translated' => [],
+            ]);
         }
 
-        $updateData = [];
-
-        if ($request->has('biography')) {
-            $updateData['biography'] = $validated['biography'] ?? null;
-        }
-        if ($request->has('university')) {
-            $updateData['university'] = $validated['university'] ?? null;
-        }
-        if ($request->has('experience')) {
-            $updateData['experience'] = $validated['experience'] ?? null;
-        }
-        if ($request->has('skills')) {
-            $updateData['skills'] = $validated['skills'] ? array_map('trim', explode(',', $validated['skills'])) : [];
-        }
-
-        if ($request->has('biography_translated')) {
-            $updateData['biography_translated'] = $validated['biography_translated'] ?? null;
-        }
-        if ($request->has('university_translated')) {
-            $updateData['university_translated'] = $validated['university_translated'] ?? null;
-        }
-        if ($request->has('experience_translated')) {
-            $updateData['experience_translated'] = $validated['experience_translated'] ?? null;
-        }
-        if ($request->has('skills_translated')) {
-            $updateData['skills_translated'] = $validated['skills_translated'] ? array_map('trim', explode(',', $validated['skills_translated'])) : [];
+        if ($locale === 'en') {
+            $validated = $request->validate([
+                'biography_translated' => 'nullable|string',
+                'university_translated' => 'nullable|string|max:255',
+                'experience_translated' => 'nullable|string',
+                'skills_translated' => 'nullable|string',
+            ]);
+            $updateData = [
+                'biography_translated' => $validated['biography_translated'] ?? null,
+                'university_translated' => $validated['university_translated'] ?? null,
+                'experience_translated' => $validated['experience_translated'] ?? null,
+                'skills_translated' => $validated['skills_translated'] ? array_map('trim', explode(',', $validated['skills_translated'])) : [],
+            ];
+        } else {
+            $validated = $request->validate([
+                'biography' => 'nullable|string',
+                'university' => 'nullable|string|max:255',
+                'experience' => 'nullable|string',
+                'skills' => 'nullable|string',
+            ]);
+            $updateData = [
+                'biography' => $validated['biography'] ?? null,
+                'university' => $validated['university'] ?? null,
+                'experience' => $validated['experience'] ?? null,
+                'skills' => $validated['skills'] ? array_map('trim', explode(',', $validated['skills'])) : [],
+            ];
         }
 
         $employee->extendedBiography->update($updateData);
 
         return redirect()->route('employees.show', $employee->id)
-                        ->with('success', 'Extended biography updated successfully.');
+            ->with('success', 'Extended biography updated successfully.');
     }
 }

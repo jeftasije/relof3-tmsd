@@ -19,15 +19,12 @@
         $tagsField = $locale === 'en' ? 'tags_en' : 'tags';
         $contentValue = old($contentField, $news->extended ? $news->extended->$contentField : '');
 
-        // Tagovi sigurni za prikaz: moze biti array, json string, string sa zarezom
         $rawTags = $news->extended ? $news->extended->$tagsField : [];
         if (is_string($rawTags)) {
-            // Da li je JSON array (npr. ["workshop","digital literacy"])?
             $decoded = json_decode($rawTags, true);
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                 $rawTags = $decoded;
             } else {
-                // Ako nije, razbij po zarezu (za svaki slučaj)
                 $rawTags = array_map('trim', explode(',', $rawTags));
             }
         }
@@ -92,7 +89,6 @@
             </div>
         </div>
 
-        <!-- MODAL -->
         <div
             x-show="editOpen"
             x-transition

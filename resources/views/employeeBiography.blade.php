@@ -1,3 +1,4 @@
+@php $locale = App::getLocale(); @endphp
 <x-guest-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
@@ -89,7 +90,6 @@
             </div>
         </div>
 
-        <!-- Modal za izmenu -->
         <div
             x-show="editOpen"
             x-transition
@@ -112,13 +112,11 @@
                     @method('PUT')
 
                     @php
-                        // Koja polja prikazujemo u zavisnosti od jezika
                         $bioField = $locale === 'en' ? 'biography_translated' : 'biography';
                         $uniField = $locale === 'en' ? 'university_translated' : 'university';
                         $expField = $locale === 'en' ? 'experience_translated' : 'experience';
                         $skillsField = $locale === 'en' ? 'skills_translated' : 'skills';
 
-                        // Vrednosti za inpute iz baze (ili stara vrednost)
                         $bioValue = old($bioField, $employee->extendedBiography ? $employee->extendedBiography->$bioField : '');
                         $uniValue = old($uniField, $employee->extendedBiography ? $employee->extendedBiography->$uniField : '');
                         $expValue = old($expField, $employee->extendedBiography ? $employee->extendedBiography->$expField : '');
