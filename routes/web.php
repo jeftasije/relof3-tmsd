@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
+    Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
+    Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 });
 
 Route::get('/usluge', function () {

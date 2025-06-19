@@ -221,43 +221,95 @@
                     </div>
                     <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
                         <p class="text-lg text-center font-semibold dark:text-white">{{ App::getLocale() === 'en' ? 'Navigation' : 'Navigacija' }}</p>
-                        <button id="toggle-sortable" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">{{ App::getLocale() === 'en' ? 'Reorder' : 'Promeni redosled' }}</button>
+                        <div class="flex flex-row justify-between items-center mt-4">
+                            <div class="flex items-center gap-2 px-4 py-2 border border-gray-400 text-gray-800 rounded-lg hover:bg-gray-100 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16M4 14h16" />
+                                </svg>
+                                <button id="toggle-sortable">
+                                    {{ App::getLocale() === 'en' ? 'Reorder' : 'Promeni redosled' }}
+                                </button>
+                            </div>
+                            <button id="delete-selected" class="px-2 py-2 bg-red-500 text-white rounded-3xl hover:bg-red-600 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </button>
+                        </div>
                         <ul id="nav-list" class="space-y-2 mt-4 dark:text-white">
                             @foreach($mainSections as $mainSection)
-                            <li class="flex items-center justify-between p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-id="{{ $mainSection->id }}">
-                                @if ($subSections->has($mainSection->id))
-                                <button type="button" class="flex items-center justify-between w-full" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
+                            <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
+                                <input {{ $mainSection->is_deletable ? '' : 'disabled' }} id="checkbox-{{ $mainSection->id }}" data-tooltip-target="tooltip-default-{{$mainSection->id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <div id="tooltip-default-{{ $mainSection->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                                    @if(App::getLocale() === 'en')
+                                    @if($mainSection->is_deletable)
+                                    Check to delete
+                                    @else
+                                    This section is required
+                                    @endif
+                                    @else
+                                    @if($mainSection->is_deletable)
+                                    Oznčite kako biste obrisali
+                                    @else
+                                    Ova sekcija je obavezna
+                                    @endif
+                                    @endif
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                                <button type="button" class="flex items-center justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
                                     <span>{{ $mainSection->name }}</span>
                                     <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </button>
-                                @else
-                                <button type="button" class="flex items-center justify-between w-full">
-                                    <span>{{ $mainSection->name }}</span>
-                                </button>
-                                @endif
+
                                 <span id="sort-icon-{{ $mainSection->id }}" class="hidden">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrows-move-vertical">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M9 18l3 3l3 -3" />
-                                        <path d="M12 15v6" />
-                                        <path d="M15 6l-3 -3l-3 3" />
-                                        <path d="M12 3v6" />
+                                        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                     </svg>
                                 </span>
                             </li>
-                            @if ($subSections->has($mainSection->id))
                             <div id="dropdown-section-{{ $mainSection->id }}" class="hidden mx-4">
-                                <div>
+                                <div class="flex flex-col items-start mx-4 gap-2">
+                                    @if ($subSections->has($mainSection->id))
                                     @foreach ($subSections[$mainSection->id] as $subSection)
                                     <div>
-                                        <button class="flex items-center justify-between p-2 mx-4 my-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-subSection-{{ $subSection->id }}">
-                                            <span>{{ $subSection->name }}</span>
-                                            <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                                            </svg>
-                                        </button>
+                                        <div class="flex flex-row items-center gap-1">
+                                            <input {{ $subSection->is_deletable ? '' : 'disabled' }} id="checkbox-{{ $subSection->id }}" data-tooltip-target="tooltip-default-{{$subSection->id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <div id="tooltip-default-{{ $subSection->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                                                @if(App::getLocale() === 'en')
+                                                @if($subSection->is_deletable)
+                                                Check to delete
+                                                @else
+                                                This section is required
+                                                @endif
+                                                @else
+                                                @if($subSection->is_deletable)
+                                                Oznčite kako biste obrisali
+                                                @else
+                                                Ova sekcija je obavezna
+                                                @endif
+                                                @endif
+                                                <div class="tooltip-arrow" data-popper-arrow></div>
+                                            </div>
+                                            <button class="flex items-center justify-between p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-subSection-{{ $subSection->id }}">
+                                                <span>{{ $subSection->name }}</span>
+                                                <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                         <div id="dropdown-subSection-{{ $subSection->id }}" class="hidden">
                                             <ul class="">
                                                 @foreach ($subSection->children as $child)
@@ -269,12 +321,145 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                    @endif
+                                    <button id="plus-section-{{ $mainSection->id }}" class="px-2 py-2 bg-blue-500 text-white rounded-3xl hover:bg-blue-600 focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 5l0 14" />
+                                            <path d="M5 12l14 0" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                            @endif
                             @endforeach
                         </ul>
-                        <button id="save-order" class="mt-4 px-4 py-2 w-auto bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">{{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}</button>
+                        <div class="flex flex-col items-start justify-center space-y-16 mt-4">
+                            <button id="plus" class="px-2 py-2 ml-6 bg-blue-500 text-white rounded-3xl hover:bg-blue-600 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 5l0 14" />
+                                    <path d="M5 12l14 0" />
+                                </svg>
+                            </button>
+                            <button id="save-order" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">
+                                {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                            </button>
+                            <button id="help-btn" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                    <path d="M12 17l0 .01" />
+                                    <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                                </svg>
+                                <span class="ml-3">{{ App::getLocale() === 'en' ? 'Help' : 'Pomoć' }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Plus Modal -->
+                    <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+                            <div class="mt-3 text-center">
+                                <h3 class="text-lg leading-6 font-medium dark:text-gray-100 text-gray-900">{{ App::getLocale() === 'en' ? 'Add New Section' : 'Dodaj novu sekciju' }}</h3>
+                                <div class="mt-2 px-7 py-3">
+                                    <input type="text" id="section-name" class="px-3 py-2 border border-gray-300 rounded-md w-full" placeholder="{{ App::getLocale() === 'en' ? 'Section Name' : 'Naziv sekcije' }}">
+                                </div>
+                                <div class="items-center px-4 py-3">
+                                    <button id="confirm-btn" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-24 mr-2">{{ App::getLocale() === 'en' ? 'Confirm' : 'Potvrdi' }}</button>
+                                    <button id="cancel-btn" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">{{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div id="delete-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+                            <div class="mt-3 text-center">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">
+                                    {{ App::getLocale() === 'en' ? 'Confirm Deletion' : 'Potvrda brisanja' }}
+                                </h3>
+                                <div class="mt-2 px-7 py-3">
+                                    <p id="delete-modal-message" class="text-sm text-gray-600 dark:text-gray-300">
+                                    </p>
+                                </div>
+                                <div class="items-center px-4 py-3 flex justify-center space-x-4">
+                                    <button id="delete-confirm-btn"
+                                        class="px-4 py-2 bg-red-500 text-white font-medium rounded-md w-24 hover:bg-red-600">
+                                        {{ App::getLocale() === 'en' ? 'Delete' : 'Obriši' }}
+                                    </button>
+                                    <button id="delete-cancel-btn"
+                                        class="px-4 py-2 bg-gray-500 text-white font-medium rounded-md w-24 hover:bg-gray-600">
+                                        {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Modal -->
+                    <div id="help-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                        <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-3xl shadow-lg rounded-md bg-white dark:bg-gray-800">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                    {{ App::getLocale() === 'en' ? 'How to use this page' : 'Kako koristiti ovu stranicu' }}
+                                </h3>
+                                <!-- X close button -->
+                                <button id="help-close-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="space-y-4 text-base text-gray-700 dark:text-gray-300">
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Reordering' : 'Promena redosleda' }}
+                                    </h4>
+                                    <p>
+                                        {{ App::getLocale() === 'en'
+              ? 'Click the "Reorder" button, then drag the ⋮⋮ icon next to each section to move it. When you finish, click "Save" to persist your changes.'
+              : 'Kliknite "Promeni redosled", potom prevucite ikonicu ⋮⋮ pored svake sekcije da je pomerite. Kada završite, kliknite "Sačuvaj" da biste sačuvali promene.' }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Adding a Main Section' : 'Dodavanje glavne sekcije' }}
+                                    </h4>
+                                    <p>
+                                        {{ App::getLocale() === 'en'
+              ? 'Press the "+" button at the bottom to add a new top‑level section. Enter its name and confirm.'
+              : 'Pritisnite "+" na dnu liste za dodavanje nove glavne sekcije. Unesite naziv i potvrdite.' }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Adding a Sub‑Section' : 'Dodavanje podsekcije' }}
+                                    </h4>
+                                    <p>
+                                        {{ App::getLocale() === 'en'
+              ? 'First, expand the main section where you want to add a subsection by clicking on it. Then, click the "+" button inside that section, enter the name, and confirm.'
+              : 'Prvo proširite glavnu sekciju u kojoj želite da dodate podsekciju klikom na nju. Zatim kliknite na dugme "+" unutar te sekcije, unesite naziv i potvrdite.' }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Deleting Sections' : 'Brisanje sekcija' }}
+                                    </h4>
+                                    <p>
+                                        {{ App::getLocale() === 'en'
+              ? 'Select the checkboxes next to the sections you want to delete (only those that are deletable). Then, click the trash icon located in the top right corner. In the confirmation window, confirm the deletion.'
+              : 'Označite kvadratiće pored sekcija koje želite da obrišete (samo one koje se mogu brisati). Zatim kliknite na ikonu kante u gornjem desnom uglu. U iskačućem prozoru potvrdite brisanje.' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </aside>
 
@@ -403,7 +588,6 @@
         let sortable = null;
         let isSortableActive = false;
 
-        // Toggle sortable and icons
         toggleButton.addEventListener('click', () => {
             isSortableActive = !isSortableActive;
 
@@ -450,7 +634,6 @@
             }
         });
 
-        // Save order functionality
         saveButton.addEventListener('click', () => {
             const items = [];
             const mainItems = navList.querySelectorAll('li[data-id]');
@@ -488,7 +671,6 @@
                 });
         });
 
-        // Handle dropdown toggle for all levels
         document.querySelectorAll('#default-sidebar [data-collapse-toggle], #aditional-sidebar [data-collapse-toggle]').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -502,6 +684,145 @@
                     }
                 }
             });
+        });
+
+        const modal = document.getElementById('modal');
+        const sectionNameInput = document.getElementById('section-name');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        let activeParentId = null;
+
+
+        document.querySelectorAll('#plus, [id^="plus-section-"]').forEach(button => {
+            button.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                sectionNameInput.focus();
+
+                if (button.id === 'plus') {
+                    activeParentId = null;
+                } else {
+                    activeParentId = button.id.replace('plus-section-', '');
+                }
+            });
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            const sectionName = sectionNameInput.value.trim();
+            if (sectionName) {
+                const plusButton = document.querySelector('#plus') || document.querySelector('[id^="plus-section-"]:focus');
+                const isMainSection = plusButton.id === 'plus';
+
+                fetch(`{{ route('navigation.store') }}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            name: sectionName,
+                            parent_id: activeParentId
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(locale === 'en' ? 'Section added successfully' : 'Sekcija uspešno dodata');
+                            window.location.reload();
+                        } else {
+                            alert(locale === 'en' ? 'Error adding section.' : 'Greška pri dodavanju sekcije.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert(locale === 'en' ? 'An error occurred.' : 'Došlo je do greške.');
+                    });
+            }
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            sectionNameInput.value = '';
+        });
+
+        const deleteBtn = document.getElementById('delete-selected');
+        const deleteModal = document.getElementById('delete-modal');
+        const deleteMsg = document.getElementById('delete-modal-message');
+        const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+        const deleteCancelBtn = document.getElementById('delete-cancel-btn');
+        let pendingDeleteIds = [];
+
+        deleteBtn.addEventListener('click', () => {
+            const checked = Array.from(
+                navList.querySelectorAll('input[type="checkbox"]:checked')
+            );
+            if (checked.length === 0) {
+                return alert(locale === 'en' ?
+                    'Please select at least one section to delete.' :
+                    'Označite bar jednu sekciju za brisanje.');
+            }
+
+            pendingDeleteIds = checked.map(cb => cb.id.split('-')[1]);
+
+            deleteMsg.textContent = locale === 'en' ?
+                `You are about to delete ${pendingDeleteIds.length} section(s).` :
+                `Upravo ćete obrisati ${pendingDeleteIds.length} sekciju(e).`;
+
+            deleteModal.classList.remove('hidden');
+        });
+
+        deleteCancelBtn.addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            pendingDeleteIds = [];
+        });
+
+        deleteConfirmBtn.addEventListener('click', () => {
+            fetch(`{{ route('navigation.destroy') }}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({
+                        ids: pendingDeleteIds
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(locale === 'en' ?
+                            'Deleted successfully!' :
+                            'Uspešno obrisano!');
+                        window.location.reload();
+                    } else {
+                        alert(locale === 'en' ?
+                            'Error deleting.' :
+                            'Greška pri brisanju.');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert(locale === 'en' ?
+                        'An error occurred.' :
+                        'Došlo je do greške.');
+                });
+        });
+
+        const helpBtn = document.getElementById('help-btn');
+        const helpModal = document.getElementById('help-modal');
+        const helpCloseBtn = document.getElementById('help-close-btn');
+
+        helpBtn.addEventListener('click', () => {
+            helpModal.classList.remove('hidden');
+        });
+
+        helpCloseBtn.addEventListener('click', () => {
+            helpModal.classList.add('hidden');
+        });
+
+        helpModal.addEventListener('click', e => {
+            if (e.target === helpModal) {
+                helpModal.classList.add('hidden');
+            }
         });
     });
 </script>
