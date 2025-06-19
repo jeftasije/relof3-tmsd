@@ -1,6 +1,8 @@
 <x-app-layout>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Uredi Podnožje</h1>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            {{ App::getLocale() === 'en' ? 'Edit Footer' : 'Uredi Podnožje' }}
+        </h1>
         
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
@@ -13,12 +15,15 @@
             @method('PATCH')
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Library Information -->
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Podaci o Biblioteci</h2>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ App::getLocale() === 'en' ? 'Library Information' : 'Podaci o Biblioteci' }}
+                    </h2>
                     
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Naziv Biblioteke</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Library Name' : 'Naziv Biblioteke' }}
+                        </label>
                         <textarea
                             id="name"
                             name="name"
@@ -30,7 +35,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Adresa</label>
+                        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Address' : 'Adresa' }}
+                        </label>
                         <textarea
                             id="address"
                             name="address"
@@ -42,7 +49,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="pib" class="block text-sm font-medium text-gray-700 dark:text-gray-300">PIB</label>
+                        <label for="pib" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB' }}
+                        </label>
                         <input
                             type="text"
                             id="pib"
@@ -55,7 +64,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="logo_light" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Učitaj Logo (Svetla Tema)</label>
+                        <label for="logo_light" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Učitaj Logo (Svetla Tema)' }}
+                        </label>
                         <input
                             type="file"
                             id="logo_light"
@@ -68,7 +79,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="logo_dark" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Učitaj Logo (Tamna Tema)</label>
+                        <label for="logo_dark" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Učitaj Logo (Tamna Tema)' }}
+                        </label>
                         <input
                             type="file"
                             id="logo_dark"
@@ -83,10 +96,14 @@
 
                 <!-- Contact Information -->
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Kontakt Informacije</h2>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ App::getLocale() === 'en' ? 'Contact Information' : 'Kontakt Informacije' }}
+                    </h2>
                     
                     <div class="mb-4">
-                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Phone' : 'Telefon' }}
+                        </label>
                         <input
                             type="text"
                             id="phone"
@@ -99,7 +116,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Email' : 'Email' }}
+                        </label>
                         <input
                             type="email"
                             id="email"
@@ -112,7 +131,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="facebook" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Facebook URL</label>
+                        <label for="facebook" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Facebook URL' : 'Facebook URL' }}
+                        </label>
                         <input
                             type="url"
                             id="facebook"
@@ -125,7 +146,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="twitter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Twitter URL</label>
+                        <label for="twitter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Twitter URL' : 'Twitter URL' }}
+                        </label>
                         <input
                             type="url"
                             id="twitter"
@@ -140,10 +163,14 @@
 
                 <!-- Work Hours -->
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Radno Vreme</h2>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}
+                    </h2>
                     
                     <div class="mb-4">
-                        <label for="work_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Radno Vreme (jedan po redu)</label>
+                        <label for="work_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Working Hours (one per line)' : 'Radno Vreme (jedan po redu)' }}
+                        </label>
                         <textarea
                             id="work_hours"
                             name="work_hours"
@@ -157,10 +184,14 @@
 
                 <!-- Map and Copyright -->
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Mapa i Autorska Prava</h2>
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ App::getLocale() === 'en' ? 'Map and Copyrights' : 'Mapa i Autorska Prava' }}
+                    </h2>
                     
                     <div class="mb-4">
-                        <label for="map_embed" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Google Maps Embed URL</label>
+                        <label for="map_embed" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Google Maps Embed URL' : 'Google Maps Embed URL' }}
+                        </label>
                         <input
                             type="url"
                             id="map_embed"
@@ -173,7 +204,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="copyrights" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tekst Autorskih Prava</label>
+                        <label for="copyrights" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Copyright Text' : 'Tekst Autorskih Prava' }}
+                        </label>
                         <textarea
                             id="copyrights"
                             name="copyrights"
@@ -191,14 +224,16 @@
                     type="submit"
                     class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                    Sačuvaj Promene
+                    {{ App::getLocale() === 'en' ? 'Save Changes' : 'Sačuvaj Promene' }}
                 </button>
             </div>
         </form>
 
         <!-- Footer Preview -->
         <div class="mt-12">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pregled Podnožja</h2>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                {{ App::getLocale() === 'en' ? 'Footer Preview' : 'Pregled Podnožja' }}
+            </h2>
             <div class="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
                 <footer id="footer-preview" class="bg-white dark:bg-gray-900">
                     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -211,15 +246,17 @@
                                         {{ $libraryData['name'] ?? '' }}
                                     </span>
                                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                        <p><span>{{ $libraryData['address_label'] ?? 'Adresa' }}:</span> <span id="preview-address">{{ $libraryData['address'] ?? '' }}</span></p>
-                                        <p><span>{{ $libraryData['pib_label'] ?? 'PIB' }}:</span> <span id="preview-pib">{{ $libraryData['pib'] ?? '' }}</span></p>
+                                        <p><span>{{ $libraryData['address_label'] ?? (App::getLocale() === 'en' ? 'Address' : 'Adresa') }}:</span> <span id="preview-address">{{ $libraryData['address'] ?? '' }}</span></p>
+                                        <p><span>{{ $libraryData['pib_label'] ?? (App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB') }}:</span> <span id="preview-pib">{{ $libraryData['pib'] ?? '' }}</span></p>
                                     </div>
                                 </a>
                             </div>
 
                             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2 md:basis-1/3 flex-grow">
                                 <div>
-                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">{{ $libraryData['work_hours_label'] ?? 'Radno vreme' }}</h2>
+                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                                        {{ $libraryData['work_hours_label'] ?? (App::getLocale() === 'en' ? 'Working Hours' : 'Radno vreme') }}
+                                    </h2>
                                     <ul id="preview-work_hours" class="text-gray-500 dark:text-gray-400 font-medium">
                                         @foreach ($libraryData['work_hours_formatted'] ?? [] as $line)
                                             <li>{{ $line }}</li>
@@ -228,7 +265,9 @@
                                 </div>
 
                                 <div>
-                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">{{ $libraryData['phone_label'] ?? 'Kontakt' }}</h2>
+                                    <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+                                        {{ $libraryData['phone_label'] ?? (App::getLocale() === 'en' ? 'Contact' : 'Kontakt') }}
+                                    </h2>
                                     <ul class="text-gray-500 dark:text-gray-400 font-medium space-y-2 mb-4">
                                         <li><i class="fas fa-phone me-2"></i> <span id="preview-phone">{{ $libraryData['phone'] ?? '' }}</span></li>
                                         <li><i class="fas fa-envelope me-2"></i> <span id="preview-email">{{ $libraryData['email'] ?? '' }}</span></li>

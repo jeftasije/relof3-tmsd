@@ -34,7 +34,50 @@ class FooterController extends Controller
 
     private function validateRequest(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $messages = [
+            'name.required' => __('validation.name_required'),
+            'name.string' => __('validation.name_string'),
+            'name.max' => __('validation.name_max'),
+
+            'address.required' => __('validation.address_required'),
+            'address.string' => __('validation.address_string'),
+            'address.max' => __('validation.address_max'),
+
+            'pib.required' => __('validation.pib_required'),
+            'pib.regex' => __('validation.pib_regex'),
+
+            'phone.required' => __('validation.phone_required'),
+            'phone.regex' => __('validation.phone_regex'),
+            'phone.max' => __('validation.phone_max'),
+
+            'email.required' => __('validation.email_required'),
+            'email.email' => __('validation.email_email'),
+            'email.max' => __('validation.email_max'),
+
+            'facebook.url' => __('validation.facebook_url'),
+            'facebook.max' => __('validation.facebook_max'),
+
+            'twitter.url' => __('validation.twitter_url'),
+            'twitter.max' => __('validation.twitter_max'),
+
+            'work_hours.required' => __('validation.work_hours_required'),
+            'work_hours.string' => __('validation.work_hours_string'),
+
+            'map_embed.url' => __('validation.map_embed_url'),
+            'map_embed.max' => __('validation.map_embed_max'),
+
+            'copyrights.required' => __('validation.copyrights_required'),
+            'copyrights.string' => __('validation.copyrights_string'),
+            'copyrights.max' => __('validation.copyrights_max'),
+
+            'logo_light.image' => __('validation.logo_light_image'),
+            'logo_light.max' => __('validation.logo_light_max'),
+
+            'logo_dark.image' => __('validation.logo_dark_image'),
+            'logo_dark.max' => __('validation.logo_dark_max'),
+        ];
+
+        $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'pib' => ['required', 'regex:/^\d{8,9}$/'],
@@ -47,12 +90,7 @@ class FooterController extends Controller
             'copyrights' => 'required|string|max:255',
             'logo_light' => 'nullable|image|max:2048',
             'logo_dark' => 'nullable|image|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            redirect()->back()->withErrors($validator)->withInput()->send();
-            exit; 
-        }
+        ], $messages);
     }
 
     private function buildLibraryData(Request $request)
