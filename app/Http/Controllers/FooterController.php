@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class FooterController extends Controller
 {
+    protected $translate;
+
+    public function __construct()
+    {
+        $this->translate = new GoogleTranslate();
+        $this->translate->setSource('sr');
+        $this->translate->setTarget('en');
+    }
+
     public function show()
     {
         $libraryData = LibraryDataController::getLibraryData();
@@ -27,6 +36,7 @@ class FooterController extends Controller
         $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
         $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
 
+        // Čuvanje u sr.json i prevođenje za en.json
         $this->saveToLangFiles($libraryData);
 
         return redirect()->back()->with('success', 'Podnožje uspešno ažurirano.');
@@ -38,41 +48,30 @@ class FooterController extends Controller
             'name.required' => __('validation.name_required'),
             'name.string' => __('validation.name_string'),
             'name.max' => __('validation.name_max'),
-
             'address.required' => __('validation.address_required'),
             'address.string' => __('validation.address_string'),
             'address.max' => __('validation.address_max'),
-
             'pib.required' => __('validation.pib_required'),
             'pib.regex' => __('validation.pib_regex'),
-
             'phone.required' => __('validation.phone_required'),
             'phone.regex' => __('validation.phone_regex'),
             'phone.max' => __('validation.phone_max'),
-
             'email.required' => __('validation.email_required'),
             'email.email' => __('validation.email_email'),
             'email.max' => __('validation.email_max'),
-
             'facebook.url' => __('validation.facebook_url'),
             'facebook.max' => __('validation.facebook_max'),
-
             'twitter.url' => __('validation.twitter_url'),
             'twitter.max' => __('validation.twitter_max'),
-
             'work_hours.required' => __('validation.work_hours_required'),
             'work_hours.string' => __('validation.work_hours_string'),
-
             'map_embed.url' => __('validation.map_embed_url'),
             'map_embed.max' => __('validation.map_embed_max'),
-
             'copyrights.required' => __('validation.copyrights_required'),
             'copyrights.string' => __('validation.copyrights_string'),
             'copyrights.max' => __('validation.copyrights_max'),
-
             'logo_light.image' => __('validation.logo_light_image'),
             'logo_light.max' => __('validation.logo_light_max'),
-
             'logo_dark.image' => __('validation.logo_dark_image'),
             'logo_dark.max' => __('validation.logo_dark_max'),
         ];
@@ -149,8 +148,12 @@ class FooterController extends Controller
 
         $this->ensureLangDirExists();
 
+        // Čuvanje u sr.json
         $this->saveLangFile($srPath, $libraryData);
-        $this->saveLangFile($enPath, $libraryData);
+
+        // Prevođenje podataka za en.json
+        $translatedData = $this->translateLibraryData($libraryData);
+        $this->saveLangFile($enPath, $translatedData);
     }
 
     private function ensureLangDirExists()
@@ -159,6 +162,52 @@ class FooterController extends Controller
         if (!file_exists($langDir)) {
             mkdir($langDir, 0755, true);
         }
+    }
+
+    private function translateLibraryData(array $libraryData): array
+    {
+        // Polja koja želimo da prevedemo
+        $translatableFields = [
+            'name',
+            'address',
+            'address_label',
+            'pib_label',
+            'phone_label',
+            'work_hours_label',
+            'copyrights',
+        ];
+
+        $translatedData = $libraryData;
+
+        // Prevod pojedinačnih polja
+        foreach ($translatableFields as $field) {
+            if (isset($libraryData[$field]) && !empty($libraryData[$field])) {
+                try {
+                    $translatedData[$field] = $this->translate->translate($libraryData[$field]);
+                } catch (\Exception $e) {
+                    Log::error("Greška pri prevođenju polja $field: " . $e->getMessage());
+                    $translatedData[$field] = $libraryData[$field]; // Zadrži original ako prevod ne uspe
+                }
+            }
+        }
+
+        // Prevod niza work_hours_formatted
+        if (isset($libraryData['work_hours_formatted']) && is_array($libraryData['work_hours_formatted'])) {
+            $translatedData['work_hours_formatted'] = [];
+            foreach ($libraryData['work_hours_formatted'] as $line) {
+                if (!empty($line)) {
+                    try {
+                        $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
+                    } catch (\Exception $e) {
+                        Log::error("Greška pri prevođenju radnog vremena: " . $e->getMessage());
+                        $translatedData['work_hours_formatted'][] = $line; // Zadrži original ako prevod ne uspe
+                    }
+                }
+            }
+        }
+
+        // Ostala polja (email, facebook, twitter, map_embed, pib, phone, logo_light, logo_dark) ostaju neprevedena
+        return $translatedData;
     }
 
     private function saveLangFile(string $filePath, array $libraryData)

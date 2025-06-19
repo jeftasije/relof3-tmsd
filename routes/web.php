@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
     Route::patch('/podnozje', [FooterController::class, 'edit'])->name('footer.edit');
+    Route::post('/footer/translate', [App\Http\Controllers\FooterController::class, 'translate'])->name('footer.translate');
 });
 
 Route::get('/usluge', function () {
