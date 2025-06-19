@@ -11,6 +11,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\HistoryController;
 
 
 Route::get('/', function () {
@@ -59,6 +60,10 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
+
+Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
+
 
 require __DIR__.'/auth.php';
 
