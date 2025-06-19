@@ -13,10 +13,32 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12 dark:bg-gray-900">
+    @php
+        $locale = App::getLocale();
+        $contentField = $locale === 'en' ? 'content_en' : 'content';
+        $tagsField = $locale === 'en' ? 'tags_en' : 'tags';
+        $contentValue = old($contentField, $news->extended ? $news->extended->$contentField : '');
+
+        $rawTags = $news->extended ? $news->extended->$tagsField : [];
+        if (is_string($rawTags)) {
+            $decoded = json_decode($rawTags, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $rawTags = $decoded;
+            } else {
+                $rawTags = array_map('trim', explode(',', $rawTags));
+            }
+        }
+        if (!is_array($rawTags)) {
+            $rawTags = [];
+        }
+        $tagsValue = old($tagsField, implode(',', $rawTags));
+    @endphp
+
+    <div x-data="{ editOpen: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12 dark:bg-gray-900">
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="bg-white dark:bg-gray-900">
                 <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
+
                     @if($news->image_path)
                         <div class="relative w-full">
                             <img class="w-full max-w-[200vw] h-[18rem] object-cover" src="{{ asset($news->image_path) }}" alt="{{ $news->title }}" onerror="this.src='{{ asset('/images/default-news.jpg') }}';">
@@ -24,6 +46,14 @@
                                 <h1 class="text-3xl sm:text-4xl font-bold text-white dark:text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                                     {{ App::getLocale() === 'en' ? ($news->title_en ?? $news->title) : $news->title }}
                                 </h1>
+                                @auth
+                                    <button
+                                        @click.stop="editOpen = true"
+                                        class="absolute top-4 right-6 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded z-20"
+                                    >
+                                        {{ __('Edit') }}
+                                    </button>
+                                @endauth
                             </div>
                             <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                                 <span>👤 {{ $news->author ?? 'Nepoznat' }}</span> | <span>📅 {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}</span>
@@ -32,23 +62,15 @@
                     @endif
 
                     <div class="px-4 py-4 sm:px-6 sm:py-6 mt-2">
-                        <p class="text-gray-700 text-base sm:text-lg dark:text-gray-300 whitespace-pre-line">
+                        <p class="text-gray-700 text-base sm:text-lg dark:text-gray-300 whitespace-pre-line text-center font-semibold text-2xl">
                             {{ App::getLocale() === 'en' ? ($news->extended->content_en ?? $news->extended->content ?? 'No additional content.') : ($news->extended->content ?? 'Nema dodatnog sadržaja.') }}
                         </p>
-                        @php
-                            $tags = is_array($news->extended->tags) ? $news->extended->tags : json_decode($news->extended->tags, true);
-                            $tagsEn = is_array($news->extended->tags_en) ? $news->extended->tags_en : json_decode($news->extended->tags_en, true);
-                        @endphp
-                        @if(App::getLocale() === 'en' && $tagsEn)
-                            <div class="px-4 pt-2 pb-2 mt-2">
-                                @foreach($tagsEn as $tag)
-                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 dark:bg-gray-700 dark:text-gray-300">{{ $tag }}</span>
-                                @endforeach
-                            </div>
-                        @elseif($tags)
-                            <div class="px-4 pt-2 pb-2 mt-2">
-                                @foreach($tags as $tag)
-                                    <span class="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 dark:bg-gray-700 dark:text-gray-300">{{ $tag }}</span>
+                        @if(count($rawTags))
+                            <div class="flex flex-wrap justify-center gap-2 px-4 pt-2 pb-2 mt-2">
+                                @foreach($rawTags as $tag)
+                                    @if($tag)
+                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-base font-semibold text-gray-700 mb-2 dark:bg-gray-700 dark:text-gray-300 border border-gray-400">{{ $tag }}</span>
+                                    @endif
                                 @endforeach
                             </div>
                         @endif
@@ -64,6 +86,52 @@
                         </a>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div
+            x-show="editOpen"
+            x-transition
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            style="display: none;"
+            @click.self="editOpen = false"
+        >
+            <div
+                x-show="editOpen"
+                x-transition
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                @keydown.escape.window="editOpen = false"
+            >
+                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white text-center">
+                    {{ __('Edit Extended News') }}
+                </h2>
+                <form method="POST" action="{{ route('news.updateExtendedNews', $news->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $contentField }}">
+                        {{ $locale === 'en' ? 'Content (English)' : 'Sadržaj (Srpski)' }}
+                    </label>
+                    <textarea name="{{ $contentField }}" id="{{ $contentField }}" rows="5" required
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $contentValue }}</textarea>
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $tagsField }}">
+                        {{ $locale === 'en' ? 'Tags (comma separated)' : 'Tagovi (zarezom odvojeni)' }}
+                    </label>
+                    <input type="text" name="{{ $tagsField }}" id="{{ $tagsField }}"
+                        value="{{ $tagsValue }}"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                    <p class="text-xs text-gray-500 mb-4">{{ __('Separate tags with commas') }}</p>
+
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                            {{ __('Cancel') }}
+                        </button>
+                        <button type="submit" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600 text-white">
+                            {{ __('Save') }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
