@@ -13,16 +13,30 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <div x-data="{ open: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="bg-white dark:bg-gray-900">
                 <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center dark:text-white">
                         {{ $text['title'] }}
                     </h1>
+
                     <p class="text-gray-700 mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto dark:text-gray-300">
                         {{ $text['description'] }}
                     </p>
+
+                    <div class="flex justify-end mb-6">
+                        @auth
+                            <button @click="open = true" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                {{ App::getLocale() === 'en' ? 'Add' : 'Dodaj' }}
+                            </button>
+                        @endauth
+                    </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                         @foreach ($employees as $employee)
@@ -30,6 +44,74 @@
                         @endforeach
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div
+            x-show="open"
+            x-transition
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            style="display: none;"
+            @click.self="open = false"
+        >
+            <div
+                x-show="open"
+                x-transition
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                @keydown.escape.window="open = false"
+            >
+                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                    {{ App::getLocale() === 'en' ? 'Add Employee' : 'Dodaj zaposlenog' }}
+                </h2>
+
+                <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="name">
+                        {{ App::getLocale() === 'en' ? 'Name' : 'Ime' }}
+                    </label>
+                    <input type="text" name="name" id="name" required
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="position">
+                        {{ App::getLocale() === 'en' ? 'Position' : 'Pozicija' }}
+                    </label>
+                    <input type="text" name="position" id="position" required
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="position_en">
+                        {{ App::getLocale() === 'en' ? 'Position (English)' : 'Pozicija (Engleski)' }}
+                    </label>
+                    <input type="text" name="position_en" id="position_en"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography">
+                        {{ App::getLocale() === 'en' ? 'Biography' : 'Biografija' }}
+                    </label>
+                    <textarea name="biography" id="biography" rows="3"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography_en">
+                        {{ App::getLocale() === 'en' ? 'Biography (English)' : 'Biografija (Engleski)' }}
+                    </label>
+                    <textarea name="biography_en" id="biography_en" rows="3"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
+                        {{ App::getLocale() === 'en' ? 'Upload Image' : 'Upload slike' }}
+                    </label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" @click="open = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                            {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                        </button>
+                        <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                            {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

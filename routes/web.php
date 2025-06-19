@@ -19,13 +19,42 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/kontrolni-panel', function () {
-    return view('dashboard');
+    return view('superAdmin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::put('/zaposleni/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/zaposleni/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+    Route::post('/zaposleni/{employee}/dodaj-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
+    Route::post('/zaposleni', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('/zaposleni/{employee}/izmeni', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/zaposleni/{employee}/prosirena-biografija', [EmployeeController::class, 'updateExtendedBiography'])->name('employees.updateExtendedBiography');
+
+    Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
+    Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
+    Route::post('/vesti', [NewsController::class, 'store'])->name('news.store');
+    Route::put('/vesti/{news}', [NewsController::class, 'update'])->name('news.update');
+    Route::delete('/vesti/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+    Route::get('/vesti/kreiraj', [NewsController::class, 'create'])->name('news.create');
+    Route::put('/vesti/{news}/prosirena', [NewsController::class, 'updateExtendedNews'])->name('news.updateExtendedNews');
+    Route::post('/vesti/{news}/izmeni-sliku', [NewsController::class, 'uploadImage'])->name('news.uploadImage');
+    Route::post('/zaposleni/{employee}/izmeni-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
+
+    Route::delete('dokumenti/{id}', [DocumentController::class, 'destroy'])->name('documents.delete');
+    Route::patch('dokumenti/{id}', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::post('dokumenti', [DocumentController::class, 'store'])->name('documents.store');
+
+    Route::delete('/nabavke/{id}', [ProcurementController::class, 'destroy'])->name('procurements.delete');
+    Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
+
+    Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
+    Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
+    Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
 });
 
 Route::get('/usluge', function () {
@@ -64,6 +93,4 @@ Route::get('/search-results', [SearchController::class, 'search'])->name('search
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
-
 require __DIR__.'/auth.php';
-

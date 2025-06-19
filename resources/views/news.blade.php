@@ -13,7 +13,7 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <div x-data="{ open: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="bg-white dark:bg-gray-900">
                 <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
@@ -24,12 +24,102 @@
                         {{ $text['description'] }}
                     </p>
 
+                    @auth
+                    <div class="flex justify-end mb-4">
+                        <button
+                            @click="open = true"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
+                        >
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            {{ App::getLocale() === 'en' ? 'Add News' : 'Dodaj vest' }}
+                        </button>
+                    </div>
+                    @endauth
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                         @foreach ($news as $newsItem)
                             <x-news-card :news="$newsItem" />
                         @endforeach
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div
+            x-show="open"
+            x-transition
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            style="display: none;"
+            @click.self="open = false"
+        >
+            <div
+                x-show="open"
+                x-transition
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                @keydown.escape.window="open = false"
+            >
+                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                    {{ App::getLocale() === 'en' ? 'Add News' : 'Dodaj vest' }}
+                </h2>
+                <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title">
+                        {{ App::getLocale() === 'en' ? 'Title (Serbian)' : 'Naslov (Srpski)' }}
+                    </label>
+                    <input type="text" name="title" id="title" required
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title_en">
+                        {{ App::getLocale() === 'en' ? 'Title (English)' : 'Naslov (Engleski)' }}
+                    </label>
+                    <input type="text" name="title_en" id="title_en"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary">
+                        {{ App::getLocale() === 'en' ? 'Summary (Serbian)' : 'Kratak opis (Srpski)' }}
+                    </label>
+                    <textarea name="summary" id="summary" rows="2" required
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary_en">
+                        {{ App::getLocale() === 'en' ? 'Summary (English)' : 'Kratak opis (Engleski)' }}
+                    </label>
+                    <textarea name="summary_en" id="summary_en" rows="2"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
+                        {{ App::getLocale() === 'en' ? 'Upload Image' : 'Dodaj sliku' }}
+                    </label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="author">
+                        {{ App::getLocale() === 'en' ? 'Author' : 'Autor' }}
+                    </label>
+                    <input type="text" name="author" id="author"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="published_at">
+                        {{ App::getLocale() === 'en' ? 'Publish Date' : 'Datum objave' }}
+                    </label>
+                    <input type="date" name="published_at" id="published_at"
+                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+
+                    <div class="flex justify-end gap-2 mt-4">
+                        <button type="button" @click="open = false"
+                            class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                            {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                            {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
