@@ -33,19 +33,22 @@
         @php
         $locale = app()->getLocale();
         $flags = [
-        'sr' => 'fi fi-rs',
-        'en' => 'fi fi-us',
+          'sr' => 'fi fi-rs',
+          'sr_cy' => 'fi fi-rs',
+          'en' => 'fi fi-us',
         ];
         $languages = [
-        'sr' => __('language_sr'),
-        'en' => __('language_en'),
+          'sr' => __('language_sr'),
+          'sr_cy' => __('language_sr_cy'),
+          'en' => __('language_en'),
         ];
+        $localeKey = $locale === 'sr-Cyrl' ? 'sr_cy' : $locale;
         @endphp
 
         <button type="button" data-dropdown-toggle="language-dropdown-menu"
           class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
-          <span class="{{ $flags[$locale] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
-          {{ $languages[$locale] ?? 'Srpski' }}
+          <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
+          {{ $languages[$localeKey] ?? 'Srpski' }}
         </button>
 
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700" id="language-dropdown-menu">
@@ -56,7 +59,17 @@
                 role="menuitem">
                 <div class="inline-flex items-center">
                   <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                  Srpski
+                  {{ __('language_sr') }}
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('lang.switch', ['locale' => 'sr-Cyrl']) }}"
+                class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white md:px-4 md:py-2"
+                role="menuitem">
+                <div class="inline-flex items-center">
+                  <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
+                  {{ __('language_sr_cy') }}
                 </div>
               </a>
             </li>
@@ -66,7 +79,7 @@
                 role="menuitem">
                 <div class="inline-flex items-center">
                   <span class="fi fi-us h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                  English
+                  {{ __('language_en') }}
                 </div>
               </a>
             </li>

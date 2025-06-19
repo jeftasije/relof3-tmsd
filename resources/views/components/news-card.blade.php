@@ -83,7 +83,7 @@
             @click.prevent="editing = true; open = false" 
             class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
           >
-            {{ App::getLocale() === 'en' ? 'Edit' : 'Izmeni' }}
+            {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
           </button>
           <form method="POST" action="{{ route('news.destroy', $news->id) }}">
             @csrf
@@ -92,7 +92,7 @@
               class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600"
               onclick="return confirm('{{ __('Are you sure you want to delete this news?') }}');"
             >
-              {{ App::getLocale() === 'en' ? 'Delete' : 'Obriši' }}
+              {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
             </button>
           </form>
         </div>
@@ -109,7 +109,7 @@
       onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
       @click="editing ? $refs.imgInput.click() : null"
       :class="editing ? 'ring-2 ring-blue-400 cursor-pointer' : ''"
-      title="{{ App::getLocale() === 'en' ? 'Change image' : 'Promeni sliku' }}"
+      title="{{ App::getLocale() === 'en' ? 'Change image' : (App::getLocale() === 'sr-Cyrl' ? 'Промени слику' : 'Promeni sliku') }}"
     />
     <input 
       x-ref="imgInput"
@@ -121,7 +121,7 @@
     />
     <template x-if="editing">
       <span class="absolute bottom-3 right-3 bg-blue-600 text-white px-3 py-1 rounded shadow text-xs">
-        {{ App::getLocale() === 'en' ? 'Click to change image' : 'Klikni za izmenu slike' }}
+        {{ App::getLocale() === 'en' ? 'Click to change image' : (App::getLocale() === 'sr-Cyrl' ? 'Кликни за измену слике' : 'Klikni za izmenu slike') }}
       </span>
     </template>
   </div>
@@ -136,7 +136,7 @@
       </template>
 
       <p class="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-        {{ $news->author ?? 'Nepoznat autor' }} • {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}
+        {{ $news->author ?? (App::getLocale() === 'en' ? 'Unknown author' : (App::getLocale() === 'sr-Cyrl' ? 'Непознат аутор' : 'Nepoznat autor')) }} • {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}
       </p>
 
       <template x-if="!editing">
@@ -155,14 +155,14 @@
             :disabled="saving"
             class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
           >
-            {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
           </button>
           <button 
             @click.prevent="cancel()" 
             :disabled="saving"
             class="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 disabled:opacity-50"
           >
-            {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Одустани' : 'Otkaži') }}
           </button>
         </div>
       </template>
@@ -170,7 +170,7 @@
       <a href="{{ route('news.show', $news->id) }}"
          class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
          style="box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
-        {{ App::getLocale() === 'en' ? 'Show more' : 'Prikaži više' }}
+        {{ App::getLocale() === 'en' ? 'Show more' : (App::getLocale() === 'sr-Cyrl' ? 'Прикажи више' : 'Prikaži više') }}
         <svg class="rtl:rotate-180 w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
              fill="none" viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
