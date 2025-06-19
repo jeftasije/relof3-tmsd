@@ -10,13 +10,13 @@ class NavigationSeeder extends Seeder
 
     public function run()
     {
-        $oNama = Navigation::create(['name' => 'O nama', 'is_deletable' => false]);
-        Navigation::create(['name' => 'Vesti', 'is_deletable' => false, 'redirect_url' => '/news']);
-        $dokumenta = Navigation::create(['name' => 'Dokumenta', 'is_deletable' => false]);
-        Navigation::create(['name' => 'Usluge', 'is_deletable' => false, 'redirect_url' => '/usluge']);
-        Navigation::create(['name' => 'Javne nabavke', 'is_deletable' => false, 'redirect_url' => '/nabavke']);
-        Navigation::create(['name' => 'Žalbe', 'is_deletable' => false]);
-        Navigation::create(['name' => 'Kontakt', 'is_deletable' => false, 'redirect_url' => '/kontakt']);
+        $oNama = Navigation::create(['name' => 'O nama', 'is_deletable' => false, 'order'=>1]);
+        Navigation::create(['name' => 'Vesti', 'is_deletable' => false, 'redirect_url' => '/news', 'order'=>2]);
+        $dokumenta = Navigation::create(['name' => 'Dokumenta', 'is_deletable' => false, 'order'=>3]);
+        Navigation::create(['name' => 'Usluge', 'is_deletable' => false, 'redirect_url' => '/usluge', 'order'=>4]);
+        Navigation::create(['name' => 'Javne nabavke', 'is_deletable' => false, 'redirect_url' => '/nabavke', 'order'=>5]);
+        Navigation::create(['name' => 'Žalbe', 'is_deletable' => false, 'order'=>6]);
+        Navigation::create(['name' => 'Kontakt', 'is_deletable' => false, 'redirect_url' => '/kontakt', 'order'=>7]);
 
         $pravnaDokumentacija = Navigation::create(['name' => 'Poslovodstvo', 'parent_id' => $dokumenta->id, 'is_deletable' => true]);
         $planoviIIzveštaji = Navigation::create(['name' => 'O radu', 'parent_id' => $dokumenta->id, 'is_deletable' => true]);

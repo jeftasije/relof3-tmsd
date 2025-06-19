@@ -8,7 +8,8 @@ class Navigation extends Model
 {
     protected $fillable = [
         'parent_id',
-        'naziv',
+        'name',
+        'order',
         'is_deletable',
         'redirect_url',
     ];
