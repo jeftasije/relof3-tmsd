@@ -1,36 +1,37 @@
 {
-  "team": {
-    "title": "Our Team!",
-    "description": "We are a dynamic group of individuals passionate about what we do and dedicated to delivering the best results for our clients."
-  },
-  "news": {
-    "title": "Latest News",
-    "description": "Stay updated with the latest events and happenings at our Public Library."
-  },
-  "library": {
-    "name": "Dositej Obradović Public Library Novi Pazar",
-    "address_label": "Address",
-    "address": "Stevana Nemanje 2, 36300 Novi Pazar",
-    "city": "Novi Pazar",
-    "pib_label": "PIB",
-    "pib": "101234567",
-    "phone_label": "Contact",
-    "phone": "+381 (0)20 331 010",
-    "email": "dositejbib@gmail.com",
-    "work_hours_label": "Working Hours",
-    "work_hours_formatted": [
-      "Monday - Friday: 08:00 - 16:00",
-      "Saturday: 08:00 - 14:00",
-      "Sunday: closed"
-    ],
-    "facebook": "#",
-    "twitter": "#",
-    "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
-    "copyrights": "© 2023"
-  },
-  "header.search_placeholder": "Search the site...",
-  "header.search_button": "Search",
-  "header.library_name_line1": "Public Library \"Dositej Obradović\"",
-  "language_sr": "Serbian",
-  "language_en": "English"
+    "team": {
+        "title": "Our Team!",
+        "description": "We are a dynamic group of individuals passionate about what we do and dedicated to delivering the best results for our clients."
+    },
+    "news": {
+        "title": "Latest News",
+        "description": "Stay updated with the latest events and happenings at our Public Library."
+    },
+    "library": {
+        "name": "Narodna biblioteka \"Dositej Obradović\" novi23",
+        "address": "Stevana Nemanje 23, 36300 Novi Pazar",
+        "address_label": "Adresa",
+        "pib": "101234566",
+        "pib_label": "PIB",
+        "phone": "+381 (0)20 331 010",
+        "phone_label": "Kontakt",
+        "email": "dositejbib@gmail.com",
+        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "twitter": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "work_hours_formatted": [
+            "Monday - Friday: 08:00 - 16:00",
+            "Saturday: 08:00 - 14:00",
+            "Sunday: closed"
+        ],
+        "work_hours_label": "Radno Vreme",
+        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "copyrights": "© 2023",
+        "logo_light": "images/nbnp-logo.png",
+        "logo_dark": "images/nbnp-logo-dark.png"
+    },
+    "header.search_placeholder": "Search the site...",
+    "header.search_button": "Search",
+    "header.library_name_line1": "Public Library \"Dositej Obradović\"",
+    "language_sr": "Serbian",
+    "language_en": "English"
 }

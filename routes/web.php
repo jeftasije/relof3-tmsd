@@ -11,6 +11,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FooterController;
 
 
 Route::get('/', function () {
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
 
+    Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
+    Route::patch('/podnozje', [FooterController::class, 'edit'])->name('footer.edit');
 });
 
 Route::get('/usluge', function () {

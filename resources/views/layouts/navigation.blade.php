@@ -45,14 +45,16 @@
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-pages-1" data-collapse-toggle="dropdown-pages-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-bottombar">
+                                        <a href="{{ route('footer.show') }}" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-pages-1" data-collapse-toggle="dropdown-pages-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-navbar">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                                                <path d="M4 15l16 0" />
+                                                <path d="M4 9l16 0" />
                                             </svg>
-                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Footer' : 'Podnožje' }}</span>
-                                        </button>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                {{ App::getLocale() === 'en' ? 'Edit Footer' : 'Uredi podnožje' }}
+                                            </span>
+                                        </a>
                                     </li>
                                 </ul>
                             <li>

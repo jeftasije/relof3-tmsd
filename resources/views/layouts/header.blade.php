@@ -3,7 +3,7 @@
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <x-application-logo />
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-        {{ __('header.library_name_line1') }}<br /> Novi Pazar
+        {{ $libraryData['name'] ?? '' }}<br /> {{ $libraryData['city'] ?? '' }}
       </span>
     </a>
     <div class="flex flex-col md:flex-row items-center justify-end flex-grow space-y-2 md:space-y-0 md:space-x-4">
