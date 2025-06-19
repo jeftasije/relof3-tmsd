@@ -11,7 +11,6 @@ class FooterController extends Controller
 {
     public function show()
     {
-        // Fetch library data using LibraryDataController
         $libraryData = LibraryDataController::getLibraryData();
 
         return view('superAdmin.footer', [
@@ -21,11 +20,25 @@ class FooterController extends Controller
 
     public function edit(Request $request)
     {
+        $this->validateRequest($request);
+
+        $libraryData = $this->buildLibraryData($request);
+
+        $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
+        $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
+
+        $this->saveToLangFiles($libraryData);
+
+        return redirect()->back()->with('success', 'Podnožje uspešno ažurirano.');
+    }
+
+    private function validateRequest(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'pib' => 'required|string|max:50',
-            'phone' => 'required|string|max:50',
+            'pib' => ['required', 'regex:/^\d{8,9}$/'],
+            'phone' => ['required', 'regex:/^\+?[0-9\s\-\(\)]+$/', 'max:50'],
             'email' => 'required|email|max:255',
             'facebook' => 'nullable|url|max:255',
             'twitter' => 'nullable|url|max:255',
@@ -37,12 +50,16 @@ class FooterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            redirect()->back()->withErrors($validator)->withInput()->send();
+            exit; 
         }
+    }
 
+    private function buildLibraryData(Request $request)
+    {
         $work_hours_formatted = array_filter(array_map('trim', explode("\n", $request->input('work_hours'))));
 
-        $libraryData = [
+        return [
             'name' => $request->input('name'),
             'address' => $request->input('address'),
             'address_label' => $request->input('address_label', 'Adresa'),
@@ -60,90 +77,69 @@ class FooterController extends Controller
             'logo_light' => 'images/nbnp-logo.png',
             'logo_dark' => 'images/nbnp-logo-dark.png',
         ];
+    }
 
-        $oldLightPath = public_path('images/nbnp-logo.png');
-        $oldDarkPath = public_path('images/nbnp-logo-dark.png');
+    private function handleLogoUpload(Request $request, $inputName, $fileName)
+    {
+        if (!$request->hasFile($inputName)) {
+            return;
+        }
 
-    if ($request->hasFile('logo_light')) {
-        if (file_exists($oldLightPath)) {
+        $filePath = public_path("images/{$fileName}");
+
+        if (file_exists($filePath)) {
             try {
-                unlink($oldLightPath);
+                unlink($filePath);
             } catch (\Exception $e) {
-                Log::error('Neuspešno brisanje starog svetlog loga: ' . $e->getMessage());
+                Log::error("Neuspešno brisanje starog fajla $fileName: " . $e->getMessage());
             }
         }
 
         try {
-            $request->file('logo_light')->move(public_path('images'), 'nbnp-logo.png');
+            $request->file($inputName)->move(public_path('images'), $fileName);
         } catch (\Exception $e) {
-            Log::error('Neuspešno učitavanje svetlog loga: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Greška pri učitavanju svetlog loga.');
+            Log::error("Neuspešno učitavanje loga $fileName: " . $e->getMessage());
+            redirect()->back()->with('error', "Greška pri učitavanju loga $fileName.")->send();
+            exit;
         }
     }
 
-    // Tamni logo
-    if ($request->hasFile('logo_dark')) {
-        if (file_exists($oldDarkPath)) {
-            try {
-                unlink($oldDarkPath);
-            } catch (\Exception $e) {
-                Log::error('Neuspešno brisanje starog tamnog loga: ' . $e->getMessage());
-            }
-        }
+    private function saveToLangFiles(array $libraryData)
+    {
+        $srPath = resource_path('lang/sr.json');
+        $enPath = resource_path('lang/en.json');
 
-        try {
-            $request->file('logo_dark')->move(public_path('images'), 'nbnp-logo-dark.png');
-        } catch (\Exception $e) {
-            Log::error('Neuspešno učitavanje tamnog loga: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Greška pri učitavanju tamnog loga.');
-        }
+        $this->ensureLangDirExists();
+
+        $this->saveLangFile($srPath, $libraryData);
+        $this->saveLangFile($enPath, $libraryData);
     }
 
-        if ($request->hasFile('logo_light')) {
-            try {
-                $request->file('logo_light')->move(public_path('images'), 'nbnp-logo.png');
-            } catch (\Exception $e) {
-                Log::error('Neuspešno učitavanje svetlog loga: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'Greška pri učitavanju svetlog loga.');
-            }
-        }
-
-        if ($request->hasFile('logo_dark')) {
-            try {
-                $request->file('logo_dark')->move(public_path('images'), 'nbnp-logo-dark.png');
-            } catch (\Exception $e) {
-                Log::error('Neuspešno učitavanje tamnog loga: ' . $e->getMessage());
-                return redirect()->back()->with('error', 'Greška pri učitavanju tamnog loga.');
-            }
-        }
-
+    private function ensureLangDirExists()
+    {
         $langDir = resource_path('lang');
         if (!file_exists($langDir)) {
             mkdir($langDir, 0755, true);
         }
+    }
 
-        $srFilePath = resource_path('lang/sr.json');
-        $existingSrData = file_exists($srFilePath) ? json_decode(file_get_contents($srFilePath), true) ?? [] : [];
-        $existingSrData['library'] = $libraryData;
+    private function saveLangFile(string $filePath, array $libraryData)
+    {
+        $existingData = file_exists($filePath)
+            ? json_decode(file_get_contents($filePath), true) ?? []
+            : [];
 
-        $enFilePath = resource_path('lang/en.json');
-        $existingEnData = file_exists($enFilePath) ? json_decode(file_get_contents($enFilePath), true) ?? [] : [];
-        $existingEnData['library'] = $libraryData;
-
-        try {
-            file_put_contents($srFilePath, json_encode($existingSrData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        } catch (\Exception $e) {
-            Log::error('Neuspešno čuvanje JSON fajla: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Greška pri čuvanju podataka.');
-        }
+        $existingData['library'] = $libraryData;
 
         try {
-            file_put_contents($enFilePath, json_encode($existingEnData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            file_put_contents(
+                $filePath,
+                json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            );
         } catch (\Exception $e) {
-            Log::error('Neuspešno čuvanje JSON fajla: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Greška pri čuvanju podataka.');
+            Log::error("Greška pri čuvanju fajla $filePath: " . $e->getMessage());
+            redirect()->back()->with('error', 'Greška pri čuvanju podataka.')->send();
+            exit;
         }
-
-        return redirect()->back()->with('success', 'Podnožje uspešno ažurirano.');
     }
 }

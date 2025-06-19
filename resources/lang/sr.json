@@ -8,14 +8,14 @@
         "description": "Ostanite u toku sa najnovijim dešavanjima i događajima u našoj Narodnoj biblioteci."
     },
     "library": {
-        "name": "Narodna biblioteka \"Dositej Obradović\" novi23",
+        "name": "Narodna biblioteka \"Dositej Obradović\"",
         "address": "Stevana Nemanje 23, 36300 Novi Pazar",
         "address_label": "Adresa",
-        "pib": "101234566",
+        "pib": "101234567",
         "pib_label": "PIB",
         "phone": "+381 (0)20 331 010",
         "phone_label": "Kontakt",
-        "email": "dositejbib@gmail.com",
+        "email": "bibl@gmail.com",
         "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "twitter": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "work_hours_formatted": [
