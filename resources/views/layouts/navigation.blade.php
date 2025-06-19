@@ -489,7 +489,7 @@
         });
 
         // Handle dropdown toggle for all levels
-        document.querySelectorAll('[data-collapse-toggle]').forEach(button => {
+        document.querySelectorAll('#default-sidebar [data-collapse-toggle], #aditional-sidebar [data-collapse-toggle]').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = button.getAttribute('data-collapse-toggle');
