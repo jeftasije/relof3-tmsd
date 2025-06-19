@@ -28,7 +28,7 @@
                             @click="editOpen = true"
                             class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded"
                         >
-                            {{ __('Edit') }}
+                            {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                         </button>
                         @endauth
                     </div>
@@ -47,7 +47,6 @@
                             </h2>
                             @if ($employee->extendedBiography)
                                 @php
-                                    $locale = App::getLocale();
                                     $bioKey = $locale === 'en' ? 'biography_translated' : 'biography';
                                     $uniKey = $locale === 'en' ? 'university_translated' : 'university';
                                     $expKey = $locale === 'en' ? 'experience_translated' : 'experience';
@@ -62,24 +61,32 @@
                                     {{ $employee->extendedBiography->$bioKey }}
                                 </p>
                                 <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>{{ __('Univerzitet') }}:</strong> {{ $employee->extendedBiography->$uniKey }}
+                                    <strong>
+                                        {{ $locale === 'en' ? 'University' : ($locale === 'sr-Cyrl' ? 'Универзитет' : 'Univerzitet') }}:
+                                    </strong> {{ $employee->extendedBiography->$uniKey }}
                                 </p>
                                 <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>{{ __('Iskustvo') }}:</strong> {{ $employee->extendedBiography->$expKey }}
+                                    <strong>
+                                        {{ $locale === 'en' ? 'Experience' : ($locale === 'sr-Cyrl' ? 'Искуство' : 'Iskustvo') }}:
+                                    </strong> {{ $employee->extendedBiography->$expKey }}
                                 </p>
                                 <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>{{ __('Veštine') }}:</strong>
+                                    <strong>
+                                        {{ $locale === 'en' ? 'Skills' : ($locale === 'sr-Cyrl' ? 'Вештине' : 'Veštine') }}:
+                                    </strong>
                                     {{ implode(', ', $skills) }}
                                 </p>
                             @else
-                                <p class="mb-3 text-gray-700 dark:text-gray-300">Detaljna biografija nije dostupna.</p>
+                                <p class="mb-3 text-gray-700 dark:text-gray-300">
+                                    {{ $locale === 'en' ? 'Detailed biography not available.' : ($locale === 'sr-Cyrl' ? 'Детаљна биографија није доступна.' : 'Detaljna biografija nije dostupna.') }}
+                                </p>
                             @endif
                         </div>
                     </div>
 
                     <a href="{{ route('employees.index') }}"
                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        {{ $locale === 'en' ? 'Back to Employees' : 'Nazad na zaposlene' }}
+                        {{ $locale === 'en' ? 'Back to Employees' : ($locale === 'sr-Cyrl' ? 'Назад на запослене' : 'Nazad na zaposlene') }}
                         <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -104,7 +111,7 @@
                 @keydown.escape.window="editOpen = false"
             >
                 <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {{ __('Edit Employee Details') }}
+                    {{ $locale === 'en' ? 'Edit Employee Details' : ($locale === 'sr-Cyrl' ? 'Измени детаље запосленог' : 'Izmeni detalje zaposlenog') }}
                 </h2>
 
                 <form method="POST" action="{{ route('employees.updateExtendedBiography', $employee->id) }}">
@@ -124,38 +131,40 @@
                     @endphp
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $bioField }}">
-                        {{ __('Biography') }}
+                        {{ $locale === 'en' ? 'Biography' : ($locale === 'sr-Cyrl' ? 'Биографија' : 'Biografija') }}
                     </label>
                     <textarea name="{{ $bioField }}" id="{{ $bioField }}" rows="3" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $bioValue }}</textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $uniField }}">
-                        {{ __('University') }}
+                        {{ $locale === 'en' ? 'University' : ($locale === 'sr-Cyrl' ? 'Универзитет' : 'Univerzitet') }}
                     </label>
                     <input type="text" name="{{ $uniField }}" id="{{ $uniField }}" required
                         value="{{ $uniValue }}"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $expField }}">
-                        {{ __('Experience') }}
+                        {{ $locale === 'en' ? 'Experience' : ($locale === 'sr-Cyrl' ? 'Искуство' : 'Iskustvo') }}
                     </label>
                     <textarea name="{{ $expField }}" id="{{ $expField }}" rows="3" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $expValue }}</textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $skillsField }}">
-                        {{ __('Skills') }}
+                        {{ $locale === 'en' ? 'Skills' : ($locale === 'sr-Cyrl' ? 'Вештине' : 'Veštine') }}
                     </label>
                     <input type="text" name="{{ $skillsField }}" id="{{ $skillsField }}"
                         value="{{ $skillsValue }}"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
-                    <p class="text-xs text-gray-500 mb-4">{{ __('Separate skills with commas') }}</p>
+                    <p class="text-xs text-gray-500 mb-4">
+                        {{ $locale === 'en' ? 'Separate skills with commas' : ($locale === 'sr-Cyrl' ? 'Одвојите вештине запетама' : 'Odvojite veštine zapetama') }}
+                    </p>
 
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" @click="editOpen = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
-                            {{ __('Cancel') }}
+                            {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                         <button type="submit" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600 text-white">
-                            {{ __('Save') }}
+                            {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
                 </form>

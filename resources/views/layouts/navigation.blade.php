@@ -28,7 +28,13 @@
                                         <path d="M12 9h.01" />
                                         <path d="M11 12h1v4h1" />
                                     </svg>
-                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Basic information' : 'Osnovni podaci' }}</span>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Basic information @break
+                                            @case('sr-Cyrl') Основни подаци @break
+                                            @default Osnovni podaci
+                                        @endswitch
+                                    </span>
                                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                     </svg>
@@ -41,7 +47,13 @@
                                                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
                                                 <path d="M4 9l16 0" />
                                             </svg>
-                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Header' : 'Zaglavlje' }}</span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Header @break
+                                                    @case('sr-Cyrl') Заглавље @break
+                                                    @default Zaglavlje
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                     <li>
@@ -51,7 +63,13 @@
                                                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
                                                 <path d="M4 15l16 0" />
                                             </svg>
-                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Footer' : 'Podnožje' }}</span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Footer @break
+                                                    @case('sr-Cyrl') Подножје @break
+                                                    @default Podnožje
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                 </ul>
@@ -63,7 +81,13 @@
                                         <path d="M8 16l2 -6l6 -2l-2 6l-6 2" />
                                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                                     </svg>
-                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Navigation' : 'Navigacija' }}</span>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Navigation @break
+                                            @case('sr-Cyrl') Навигација @break
+                                            @default Navigacija
+                                        @endswitch
+                                    </span>
                                 </button>
                             </li>
                             <li>
@@ -74,7 +98,13 @@
                                         <path d="M17.58 10.21c2.54 .69 4.42 3.03 4.42 5.79c0 3.31 -2.69 6 -6 6a5.93 5.93 0 0 1 -4 -1.54" />
                                         <path d="M12 8m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" />
                                     </svg>
-                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Styles' : 'Stilovi' }}</span>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Styles @break
+                                            @case('sr-Cyrl') Стилови @break
+                                            @default Stilovi
+                                        @endswitch
+                                    </span>
                                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                     </svg>
@@ -89,7 +119,13 @@
                                                 <path d="M3 13h7" />
                                                 <path d="M21 12v7" />
                                             </svg>
-                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Typography' : 'Tipografija' }}</span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Typography @break
+                                                    @case('sr-Cyrl') Типографија @break
+                                                    @default Tipografija
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                     <li>
@@ -101,7 +137,13 @@
                                                 <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                                 <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                             </svg>
-                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ App::getLocale() === 'en' ? 'Color' : 'Boje' }}</span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Color @break
+                                                    @case('sr-Cyrl') Боје @break
+                                                    @default Boje
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                 </ul>
@@ -116,7 +158,13 @@
                                         <path d="M14 16l6 0" />
                                         <path d="M14 20l6 0" />
                                     </svg>
-                                    <span class="ml-3">{{ App::getLocale() === 'en' ? 'Pages' : 'Stranice' }}</span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Pages @break
+                                            @case('sr-Cyrl') Странице @break
+                                            @default Stranice
+                                        @endswitch
+                                    </span>
                                 </button>
                             </li>
                             <li>
@@ -127,7 +175,13 @@
                                         <path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z" />
                                         <path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2" />
                                     </svg>
-                                    <span class="ml-3">{{ App::getLocale() === 'en' ? 'Documents' : 'Dokumenti' }}</span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Documents @break
+                                            @case('sr-Cyrl') Документи @break
+                                            @default Dokumenti
+                                        @endswitch
+                                    </span>
                                 </button>
                             </li>
                         </ul>
@@ -143,7 +197,13 @@
                                         <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
                                         <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
                                     </svg>
-                                    <span class="ml-3">{{ App::getLocale() === 'en' ? 'Editors' : 'Urednici' }}</span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Editors @break
+                                            @case('sr-Cyrl') Уредници @break
+                                            @default Urednici
+                                        @endswitch
+                                    </span>
                                 </a>
                             </li>
                             <li>
@@ -154,7 +214,13 @@
                                         <path d="M12 17l0 .01" />
                                         <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
                                     </svg>
-                                    <span class="ml-3">{{ App::getLocale() === 'en' ? 'Help' : 'Pomoć' }}</span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Help @break
+                                            @case('sr-Cyrl') Помоћ @break
+                                            @default Pomoć
+                                        @endswitch
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -164,19 +230,22 @@
                             @php
                             $locale = app()->getLocale();
                             $flags = [
-                            'sr' => 'fi fi-rs',
-                            'en' => 'fi fi-us',
+                                'sr' => 'fi fi-rs',
+                                'sr-Cyrl' => 'fi fi-rs',
+                                'en' => 'fi fi-us',
                             ];
                             $languages = [
-                            'sr' => __('language_sr'),
-                            'en' => __('language_en'),
+                                'sr' => __('language_sr'),
+                                'sr-Cyrl' => __('language_sr_cy'),
+                                'en' => __('language_en'),
                             ];
+                            $localeKey = $locale === 'sr-Cyrl' ? 'sr-Cyrl' : ($locale === 'sr' ? 'sr' : 'en');
                             @endphp
 
                             <button type="button" data-dropdown-toggle="language-dropdown-menu-admin"
                                 class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
-                                <span class="{{ $flags[$locale] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
-                                {{ $languages[$locale] ?? 'Srpski' }}
+                                <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
+                                {{ $languages[$localeKey] ?? 'Srpski' }}
                             </button>
 
                             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700" id="language-dropdown-menu-admin">
@@ -187,7 +256,17 @@
                                             role="menuitem">
                                             <div class="inline-flex items-center">
                                                 <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                                                Srpski
+                                                {{ __('language_sr') }}
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('lang.switch', ['locale' => 'sr-Cyrl']) }}"
+                                            class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white md:px-4 md:py-2"
+                                            role="menuitem">
+                                            <div class="inline-flex items-center">
+                                                <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
+                                                {{ __('language_sr_cy') }}
                                             </div>
                                         </a>
                                     </li>
@@ -197,7 +276,7 @@
                                             role="menuitem">
                                             <div class="inline-flex items-center">
                                                 <span class="fi fi-us h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                                                English
+                                                {{ __('language_en') }}
                                             </div>
                                         </a>
                                     </li>
@@ -206,35 +285,38 @@
                         </div>
                     </div>
                 </aside>
-
-
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ App::getLocale() === 'en' ? 'Dashboard' : 'Kontrolni panel' }}
+                        @switch(App::getLocale())
+                            @case('en') Dashboard @break
+                            @case('sr-Cyrl') Контролни панел @break
+                            @default Kontrolni panel
+                        @endswitch
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('welcome')" :active="!request()->routeIs('dashboard')">
-                        {{ App::getLocale() === 'en' ? 'Edit content' : 'Uredi sadržај' }}
+                        @switch(App::getLocale())
+                            @case('en') Edit content @break
+                            @case('sr-Cyrl') Уреди садржај @break
+                            @default Uredi sadržај
+                        @endswitch
                     </x-nav-link>
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
-
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -242,16 +324,13 @@
                             </div>
                         </button>
                     </x-slot>
-
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
@@ -261,7 +340,6 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
@@ -273,7 +351,6 @@
             </div>
         </div>
     </div>
-
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
@@ -281,23 +358,19 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
-
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
-
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
-
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">
