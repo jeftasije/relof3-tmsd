@@ -18,14 +18,14 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/kontrolni-panel', function () {
-    return view('dashboard');
+    return view('superAdmin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     Route::put('/zaposleni/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::delete('/zaposleni/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
     Route::post('/zaposleni/{employee}/dodaj-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
@@ -42,6 +42,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/vesti/{news}/prosirena', [NewsController::class, 'updateExtendedNews'])->name('news.updateExtendedNews');
     Route::post('/vesti/{news}/izmeni-sliku', [NewsController::class, 'uploadImage'])->name('news.uploadImage');
     Route::post('/zaposleni/{employee}/izmeni-sliku', [EmployeeController::class, 'uploadImage'])->name('employees.uploadImage');
+
+    Route::delete('dokumenti/{id}', [DocumentController::class, 'destroy'])->name('documents.delete');
+    Route::patch('dokumenti/{id}', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::post('dokumenti', [DocumentController::class, 'store'])->name('documents.store');
+
+    Route::delete('/nabavke/{id}', [ProcurementController::class, 'destroy'])->name('procurements.delete');
+    Route::patch('/nabavke/{id}', [ProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::post('/nabavke', [ProcurementController::class, 'store'])->name('procurements.store');
+
+    Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
+    Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
+    Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
 });
 
 Route::get('/usluge', function () {
@@ -78,4 +90,3 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
 require __DIR__.'/auth.php';
-
