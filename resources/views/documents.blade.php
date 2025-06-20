@@ -1,7 +1,12 @@
 <x-guest-layout>
     <div class="max-w-4xl mx-auto p-4">
         <div class="relative mb-24 mt-5">
-            <input type="text" id="searchInput" placeholder="{{ App::getLocale() === 'en' ? 'Search documents...' : 'Pretraži dokumente...' }}" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+            <input type="text" id="searchInput" placeholder="{{ App::getLocale() === 'en'
+                ? 'Search documents...'
+                : (App::getLocale() === 'sr-Cyrl'
+                    ? 'Претражи документе...'
+                    : 'Pretraži dokumente...') }}"
+                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
             <div id="searchDropdown" class="absolute z-10 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg mt-1 hidden">
                 <ul id="searchResults" class="max-h-40 overflow-y-auto"></ul>
             </div>
@@ -19,7 +24,7 @@
                         data-accordion-target="#accordion-body-{{ $category->id }}"
                         aria-expanded="{{ $isOpen ? 'true' : 'false' }}"
                         aria-controls="accordion-body-{{ $category->id }}">
-                        <span>{{ $category->name }}</span>
+                        <span>{{ $category->translate('name') }}</span>
                         <svg data-accordion-icon class="$isOpen ? w-5 h-5 rotate-0 shrink-0 transition-transform duration-300"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -31,7 +36,13 @@
                 <div id="accordion-body-{{ $category->id }}" class=" $isOpen ? '' : 'hidden' " aria-labelledby="accordion-heading-{{ $category->id }}">
                     <div class="p-5 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                         @if($category->documents->isEmpty())
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Nema dostupnih dokumenata.</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ App::getLocale() === 'en'
+                                ? 'No documents available.'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Нема доступних докумената.'
+                                    : 'Nema dostupnih dokumenata.') }}
+                        </p>
                         @else
                         <ul class="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
                             @foreach($category->documents as $doc)
@@ -63,10 +74,22 @@
                                     <div id="dropdownDots-{{ $doc->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                                             <li>
-                                                <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ App::getLocale() === 'en' ? 'Rename' : 'Preimenuj' }}</button>
+                                                <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    {{ App::getLocale() === 'en'
+                                                        ? 'Rename'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Преименуј'
+                                                            : 'Preimenuj') }}
+                                                </button>
                                             </li>
                                             <li>
-                                                <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600">{{ App::getLocale() === 'en' ? 'Delete' : 'Obriši' }}</button>
+                                                <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                    {{ App::getLocale() === 'en'
+                                                        ? 'Delete'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Обриши'
+                                                            : 'Obriši') }}
+                                                </button>
                                             </li>
                                         </ul>
                                     </div>
@@ -77,7 +100,13 @@
                         </ul>
                         @auth
                         <form id="uploadForm-{{ $category->id }}" class="mb-4 mt-7" enctype="multipart/form-data">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input-{{ $category->id }}">{{ App::getLocale() === 'en' ? 'Upload a new document' : 'Otpremite novi dokument' }}</label>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input-{{ $category->id }}">
+                                {{ App::getLocale() === 'en'
+                                    ? 'Upload a new document'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Постави нови документ'
+                                        : 'Otpremite novi dokument') }}
+                            </label>
                             <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                 aria-describedby="file_input_help-{{ $category->id }}"
                                 id="file_input-{{ $category->id }}"
@@ -85,12 +114,22 @@
                                 type="file"
                                 accept=".pdf,.doc,.docx,.xlsx,.xls"
                                 required>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help-{{ $category->id }}">{{ App::getLocale() === 'en' ? 'Supported extensions: (.pdf, .doc, .docx, .xlsx) Maximum size: 2 MB' : 'Podržane ekstenzije: (.pdf, .doc, .docx, .xlsx) Maksimalna veličina: 2 MB' }}</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help-{{ $category->id }}">
+                                {{ App::getLocale() === 'en'
+                                    ? 'Supported extensions: (.pdf, .doc, .docx, .xlsx) Maximum size: 2 MB'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Подржане екстензије: (.pdf, .doc, .docx, .xlsx) Максимална величина: 2 MB'
+                                        : 'Podržane ekstenzije: (.pdf, .doc, .docx, .xlsx) Maksimalna veličina: 2 MB') }}
+                            </p>
                             <input type="hidden" name="category_id" value="{{ $category->id }}">
                             <input type="hidden" name="category_name" value="{{ $category->name }}">
                             <div class="flex items-center mt-2">
                                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
-                                    {{ App::getLocale() === 'en' ? 'Upload' : 'Objavi' }}
+                                    {{ App::getLocale() === 'en'
+                                        ? 'Upload'
+                                        : (App::getLocale() === 'sr-Cyrl'
+                                            ? 'Постави'
+                                            : 'Objavi') }}
                                 </button>
                                 <div role="status" class="ml-5">
                                     <svg id="spinner-{{ $category->id }}" aria-hidden="true" class="hidden w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,11 +154,28 @@
             <div class="relative w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div class="p-6 text-center">
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{ App::getLocale() === 'en' ? 'Are you sure you want to delete?' : 'Da li ste sigurni da želite da obrišete' }}"<span id="deleteModalTitle"></span>"?</h3>
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            {{ App::getLocale() === 'en'
+                                ? 'Are you sure you want to delete?'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Да ли сте сигурни да желите да обришете'
+                                    : 'Da li ste sigurni da želite da obrišete') }}
+                            "<span id="deleteModalTitle"></span>"?
+                        </h3>
                         <button data-modal-hide="deleteModal" id="confirmDeleteButton" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                            {{ App::getLocale() === 'en' ? 'Confirm' : 'Potvrdi' }}
+                            {{ App::getLocale() === 'en'
+                                ? 'Confirm'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Потврди'
+                                    : 'Potvrdi') }}
                         </button>
-                        <button data-modal-hide="deleteModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">{{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}</button>
+                        <button data-modal-hide="deleteModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            {{ App::getLocale() === 'en'
+                                ? 'Cancel'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Откажи'
+                                    : 'Otkaži') }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -130,13 +186,29 @@
             <div class="relative w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div class="p-6">
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{ App::getLocale() === 'en' ? 'Rename document' : 'Preimenuj dokument' }}</h3>
-                        <input type="text" id="renameInput" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="Unesite novi naziv">
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            {{ App::getLocale() === 'en'
+                                ? 'Rename document'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Преименуј документ'
+                                    : 'Preimenuj dokument') }}
+                        </h3>
+                        <input type="text" id="renameInput" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}">
                         <div class="mt-4 text-center">
                             <button data-modal-hide="renameModal" id="confirmRenameButton" type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                                {{ App::getLocale() === 'en'
+                                    ? 'Save'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Сачувај'
+                                        : 'Sačuvaj') }}
                             </button>
-                            <button data-modal-hide="renameModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">{{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}</button>
+                            <button data-modal-hide="renameModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
+                                {{ App::getLocale() === 'en'
+                                    ? 'Cancel'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Откажи'
+                                        : 'Otkaži') }}
+                            </button>
                         </div>
                     </div>
                 </div>

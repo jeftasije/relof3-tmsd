@@ -31,6 +31,7 @@
   "header.search_placeholder": "Search the site...",
   "header.search_button": "Search",
   "header.library_name_line1": "Public Library \"Dositej Obradović\"",
-  "language_sr": "Serbian",
+  "language_sr": "Serbian (Latin)",
+  "language_sr_cy": "Serbian (Cyrillic)",
   "language_en": "English"
 }
