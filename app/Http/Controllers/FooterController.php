@@ -35,8 +35,6 @@ class FooterController extends Controller
         ]);
     }
 
-
-    
     public function editSr(Request $request)
     {
         $this->validateRequest($request);
@@ -46,12 +44,12 @@ class FooterController extends Controller
         $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
         $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
 
-        $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);           
+        $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);
 
         $translatedData = $this->translateLibraryData($libraryData);
-        $this->saveLangFile(resource_path('lang/en.json'), $translatedData);        
+        $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
 
-        return redirect()->back()->with('success', 'Footer edited succesfully.');
+        return redirect()->back()->with('success', 'Footer edited successfully.');
     }
 
     public function editEn(Request $request)

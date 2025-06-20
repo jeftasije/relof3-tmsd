@@ -605,8 +605,8 @@
                         <a href="#" class="hover:underline" id="preview-name_footer">{{ $libraryData['name'] ?? '' }}</a>.
                     </div>
                 </div>
-                </footer>
-            </div>
+            </footer>
+        </div>
 
             <script>
             document.addEventListener('DOMContentLoaded', () => {
