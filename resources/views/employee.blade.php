@@ -33,7 +33,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
-                                {{ App::getLocale() === 'en' ? 'Add' : 'Dodaj' }}
+                                {{ App::getLocale() === 'en' ? 'Add' : (App::getLocale() === 'sr-Cyrl' ? 'Додај' : 'Dodaj') }}
                             </button>
                         @endauth
                     </div>
@@ -61,54 +61,54 @@
                 @keydown.escape.window="open = false"
             >
                 <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {{ App::getLocale() === 'en' ? 'Add Employee' : 'Dodaj zaposlenog' }}
+                    {{ App::getLocale() === 'en' ? 'Add Employee' : (App::getLocale() === 'sr-Cyrl' ? 'Додај запосленог' : 'Dodaj zaposlenog') }}
                 </h2>
 
                 <form method="POST" action="{{ route('employees.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="name">
-                        {{ App::getLocale() === 'en' ? 'Name' : 'Ime' }}
+                        {{ App::getLocale() === 'en' ? 'Name' : (App::getLocale() === 'sr-Cyrl' ? 'Име' : 'Ime') }}
                     </label>
                     <input type="text" name="name" id="name" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="position">
-                        {{ App::getLocale() === 'en' ? 'Position' : 'Pozicija' }}
+                        {{ App::getLocale() === 'en' ? 'Position' : (App::getLocale() === 'sr-Cyrl' ? 'Позиција' : 'Pozicija') }}
                     </label>
                     <input type="text" name="position" id="position" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="position_en">
-                        {{ App::getLocale() === 'en' ? 'Position (English)' : 'Pozicija (Engleski)' }}
+                        {{ App::getLocale() === 'en' ? 'Position (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Позиција (енглески)' : 'Pozicija (Engleski)') }}
                     </label>
                     <input type="text" name="position_en" id="position_en"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography">
-                        {{ App::getLocale() === 'en' ? 'Biography' : 'Biografija' }}
+                        {{ App::getLocale() === 'en' ? 'Biography' : (App::getLocale() === 'sr-Cyrl' ? 'Биографија' : 'Biografija') }}
                     </label>
                     <textarea name="biography" id="biography" rows="3"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography_en">
-                        {{ App::getLocale() === 'en' ? 'Biography (English)' : 'Biografija (Engleski)' }}
+                        {{ App::getLocale() === 'en' ? 'Biography (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Биографија (енглески)' : 'Biografija (Engleski)') }}
                     </label>
                     <textarea name="biography_en" id="biography_en" rows="3"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
-                        {{ App::getLocale() === 'en' ? 'Upload Image' : 'Upload slike' }}
+                        {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
                     </label>
                     <input type="file" name="image" id="image" accept="image/*"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" @click="open = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
-                            {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                         <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
-                            {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
                 </form>

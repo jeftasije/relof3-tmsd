@@ -77,7 +77,7 @@ Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procureme
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
 
 Route::get('/lang/{locale}', function ($locale) {
-    if (!in_array($locale, ['sr', 'en'])) {
+    if (!in_array($locale, ['sr', 'en', 'sr-Cyrl'])) {
         abort(400);
     }
     session(['locale' => $locale]);

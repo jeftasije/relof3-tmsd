@@ -10,6 +10,7 @@ class Navigation extends Model
         'parent_id',
         'name',
         'name_en',
+        'name_cy',
         'is_deletable',
         'redirect_url',
     ];
@@ -22,7 +23,14 @@ class Navigation extends Model
     public function translate(string $field): string
     {
         $locale = app()->getLocale();
-        $fieldName = $field . ($locale === 'en' ? '_en' : '');
+
+        if ($locale === 'en') {
+            $fieldName = $field . '_en';
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $fieldName = $field . '_cy';
+        } else {
+            $fieldName = $field;
+        }
 
         return $this->{$fieldName} ?? $this->{$field} ?? '';
     }

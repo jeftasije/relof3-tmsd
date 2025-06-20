@@ -34,6 +34,11 @@ class NewsController extends Controller
                 'title_en' => $validated['title'],
                 'summary_en' => $validated['summary'],
             ]);
+        } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $news->update([
+                'title_cy' => $validated['title'],
+                'summary_cy' => $validated['summary'],
+            ]);
         } else {
             $news->update([
                 'title' => $validated['title'],
@@ -55,8 +60,10 @@ class NewsController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'title_en' => 'nullable|string|max:255',
+            'title_cy' => 'nullable|string|max:255',
             'summary' => 'required|string|max:2000',
             'summary_en' => 'nullable|string|max:2000',
+            'summary_cy' => 'nullable|string|max:2000',
             'author' => 'required|string|max:255',
             'published_at' => 'nullable|date',
             'image' => 'nullable|image|max:2048',
@@ -66,7 +73,6 @@ class NewsController extends Controller
             $file = $request->file('image');
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
-
             $validated['image_path'] = 'images/' . $filename;
         }
 
@@ -76,8 +82,10 @@ class NewsController extends Controller
             'news_id' => $news->id,
             'content' => '',
             'content_en' => '',
+            'content_cy' => '',
             'tags' => [],
             'tags_en' => [],
+            'tags_cy' => [],
         ]);
 
         return redirect()->route('news.index')->with('success', 'Vest uspešno dodata!');
@@ -86,25 +94,27 @@ class NewsController extends Controller
     public function updateExtendedNews(Request $request, News $news)
     {
         $validated = $request->validate([
+            'locale' => 'required|string',
             'content' => 'nullable|string',
             'content_en' => 'nullable|string',
+            'content_cy' => 'nullable|string',
             'tags' => 'nullable|string',
             'tags_en' => 'nullable|string',
+            'tags_cy' => 'nullable|string',
         ]);
 
         $updateData = [];
 
-        if ($request->has('content')) {
-            $updateData['content'] = $validated['content'];
-        }
-        if ($request->has('content_en')) {
-            $updateData['content_en'] = $validated['content_en'];
-        }
-        if ($request->has('tags')) {
-            $updateData['tags'] = $validated['tags'] ? array_map('trim', explode(',', $validated['tags'])) : [];
-        }
-        if ($request->has('tags_en')) {
-            $updateData['tags_en'] = $validated['tags_en'] ? array_map('trim', explode(',', $validated['tags_en'])) : [];
+        // Odredi koja verzija se menja na osnovu locale
+        if ($validated['locale'] === 'en') {
+            $updateData['content_en'] = $validated['content_en'] ?? $validated['content'] ?? '';
+            $updateData['tags_en'] = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
+        } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $updateData['content_cy'] = $validated['content_cy'] ?? $validated['content'] ?? '';
+            $updateData['tags_cy'] = !empty($validated['tags_cy']) ? array_map('trim', explode(',', $validated['tags_cy'])) : [];
+        } else {
+            $updateData['content'] = $validated['content'] ?? '';
+            $updateData['tags'] = !empty($validated['tags']) ? array_map('trim', explode(',', $validated['tags'])) : [];
         }
 
         if (!$news->extended) {
@@ -132,5 +142,4 @@ class NewsController extends Controller
         }
         return response()->json(['error' => 'No image uploaded'], 400);
     }
-
 }

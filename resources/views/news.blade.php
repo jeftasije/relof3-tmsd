@@ -1,3 +1,4 @@
+saljem ti view da shavtis kako korsinik dodaje novi vest, samo da shavtis nista drugo
 <x-guest-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
@@ -34,7 +35,7 @@
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            {{ App::getLocale() === 'en' ? 'Add News' : 'Dodaj vest' }}
+                            {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
                         </button>
                     </div>
                     @endauth
@@ -62,49 +63,49 @@
                 @keydown.escape.window="open = false"
             >
                 <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {{ App::getLocale() === 'en' ? 'Add News' : 'Dodaj vest' }}
+                    {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
                 </h2>
                 <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title">
-                        {{ App::getLocale() === 'en' ? 'Title (Serbian)' : 'Naslov (Srpski)' }}
+                        {{ App::getLocale() === 'en' ? 'Title (Serbian)' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов (Српски)' : 'Naslov (Srpski)') }}
                     </label>
                     <input type="text" name="title" id="title" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title_en">
-                        {{ App::getLocale() === 'en' ? 'Title (English)' : 'Naslov (Engleski)' }}
+                        {{ App::getLocale() === 'en' ? 'Title (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов (Енглески)' : 'Naslov (Engleski)') }}
                     </label>
                     <input type="text" name="title_en" id="title_en"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary">
-                        {{ App::getLocale() === 'en' ? 'Summary (Serbian)' : 'Kratak opis (Srpski)' }}
+                        {{ App::getLocale() === 'en' ? 'Summary (Serbian)' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис (Српски)' : 'Kratak opis (Srpski)') }}
                     </label>
                     <textarea name="summary" id="summary" rows="2" required
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary_en">
-                        {{ App::getLocale() === 'en' ? 'Summary (English)' : 'Kratak opis (Engleski)' }}
+                        {{ App::getLocale() === 'en' ? 'Summary (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис (Енглески)' : 'Kratak opis (Engleski)') }}
                     </label>
                     <textarea name="summary_en" id="summary_en" rows="2"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
-                        {{ App::getLocale() === 'en' ? 'Upload Image' : 'Dodaj sliku' }}
+                        {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
                     </label>
                     <input type="file" name="image" id="image" accept="image/*"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="author">
-                        {{ App::getLocale() === 'en' ? 'Author' : 'Autor' }}
+                        {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
                     </label>
                     <input type="text" name="author" id="author"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="published_at">
-                        {{ App::getLocale() === 'en' ? 'Publish Date' : 'Datum objave' }}
+                        {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
                     </label>
                     <input type="date" name="published_at" id="published_at"
                         class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
@@ -112,11 +113,11 @@
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" @click="open = false"
                             class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
-                            {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Одустани' : 'Otkaži') }}
                         </button>
                         <button type="submit"
                             class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
-                            {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
                 </form>
