@@ -18,24 +18,25 @@ class FooterController extends Controller
         $this->translate->setTarget('en');
     }
 
-    public function show()
+    public function show()                              
     {
         $srPath = resource_path('lang/sr.json');
         $enPath = resource_path('lang/en.json');
 
-        $libraryData = file_exists($srPath)
-            ? json_decode(file_get_contents($srPath), true)['library'] ?? []
-            : [];
-        $libraryDataEn = file_exists($enPath)
-            ? json_decode(file_get_contents($enPath), true)['library'] ?? []
-            : [];
+        $srContent = file_exists($srPath) ? file_get_contents($srPath) : null;
+        $libraryDataSr = $srContent !== null && $srContent !== '' ? json_decode($srContent, true)['library'] ?? [] : [];
 
+        $enContent = file_exists($enPath) ? file_get_contents($enPath) : null;
+        $libraryDataEn = $enContent !== null && $enContent !== '' ? json_decode($enContent, true)['library'] ?? [] : [];
+ 
         return view('superAdmin.footer', [
-            'libraryData' => $libraryData,
+            'libraryDataSr' => $libraryDataSr,
             'libraryDataEn' => $libraryDataEn
         ]);
     }
 
+
+    
     public function editSr(Request $request)
     {
         $this->validateRequest($request);
@@ -45,22 +46,21 @@ class FooterController extends Controller
         $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
         $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
 
-        // Čuvanje u sr.json i prevođenje za en.json
-        $this->saveToLangFiles($libraryData);
+        $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);           
 
-        return redirect()->back()->with('success', 'Podnožje uspešno ažurirano.');
+        $translatedData = $this->translateLibraryData($libraryData);
+        $this->saveLangFile(resource_path('lang/en.json'), $translatedData);        
+
+        return redirect()->back()->with('success', 'Footer edited succesfully.');
     }
 
     public function editEn(Request $request)
     {
         $this->validateRequestEn($request);
-
         $libraryDataEn = $this->buildLibraryDataEn($request);
-
-        // Čuvanje samo u en.json
         $this->saveLangFile(resource_path('lang/en.json'), $libraryDataEn);
 
-        return redirect()->back()->with('success', 'Engleski podaci uspešno ažurirani.');
+        return redirect()->back()->with('success', 'Footer edited succesfully.');
     }
 
     private function validateRequest(Request $request)
@@ -184,7 +184,6 @@ class FooterController extends Controller
     {
         $work_hours_formatted = array_filter(array_map('trim', explode("\n", $request->input('work_hours_en'))));
 
-        // Učitavanje sr.json za neprevedena polja
         $srPath = resource_path('lang/sr.json');
         $srData = file_exists($srPath)
             ? json_decode(file_get_contents($srPath), true)['library'] ?? []
@@ -193,16 +192,16 @@ class FooterController extends Controller
         return [
             'name' => $request->input('name_en', $srData['name'] ?? ''),
             'address' => $request->input('address_en', $srData['address'] ?? ''),
-            'address_label' => $request->input('address_label_en', $srData['address_label'] ?? 'Address'),
+            'address_label' => $request->input('address_label_en', 'Address'),
             'pib' => $request->input('pib', $srData['pib'] ?? ''),
-            'pib_label' => $request->input('pib_label_en', $srData['pib_label'] ?? 'Tax ID (PIB)'),
+            'pib_label' => $request->input('pib_label_en', 'Tax ID (PIB)'),
             'phone' => $request->input('phone', $srData['phone'] ?? ''),
-            'phone_label' => $request->input('phone_label_en', $srData['phone_label'] ?? 'Contact'),
+            'phone_label' => $request->input('phone_label_en', 'Contact'),
             'email' => $request->input('email', $srData['email'] ?? ''),
             'facebook' => $request->input('facebook', $srData['facebook'] ?? ''),
             'twitter' => $request->input('twitter', $srData['twitter'] ?? ''),
             'work_hours_formatted' => $work_hours_formatted,
-            'work_hours_label' => $request->input('work_hours_label_en', $srData['work_hours_label'] ?? 'Working Hours'),
+            'work_hours_label' => $request->input('work_hours_label_en', 'Working Hours'),
             'map_embed' => $request->input('map_embed', $srData['map_embed'] ?? ''),
             'copyrights' => $request->input('copyrights_en', $srData['copyrights'] ?? ''),
             'logo_light' => $srData['logo_light'] ?? 'images/nbnp-logo.png',
@@ -222,7 +221,7 @@ class FooterController extends Controller
             try {
                 unlink($filePath);
             } catch (\Exception $e) {
-                Log::error("Neuspešno brisanje starog fajla $fileName: " . $e->getMessage());
+                Log::error("Err while deleting file $fileName: " . $e->getMessage());
             }
         }
 
@@ -230,31 +229,8 @@ class FooterController extends Controller
             $request->file($inputName)->move(public_path('images'), $fileName);
         } catch (\Exception $e) {
             Log::error("Neuspešno učitavanje loga $fileName: " . $e->getMessage());
-            redirect()->back()->with('error', "Greška pri učitavanju loga $fileName.")->send();
+            redirect()->back()->with('error', "Err while loading logo $fileName.")->send();
             exit;
-        }
-    }
-
-    private function saveToLangFiles(array $libraryData)
-    {
-        $srPath = resource_path('lang/sr.json');
-        $enPath = resource_path('lang/en.json');
-
-        $this->ensureLangDirExists();
-
-        // Čuvanje u sr.json
-        $this->saveLangFile($srPath, $libraryData);
-
-        // Prevođenje podataka za en.json
-        $translatedData = $this->translateLibraryData($libraryData);
-        $this->saveLangFile($enPath, $translatedData);
-    }
-
-    private function ensureLangDirExists()
-    {
-        $langDir = resource_path('lang');
-        if (!file_exists($langDir)) {
-            mkdir($langDir, 0755, true);
         }
     }
 
@@ -277,7 +253,7 @@ class FooterController extends Controller
                 try {
                     $translatedData[$field] = $this->translate->translate($libraryData[$field]);
                 } catch (\Exception $e) {
-                    Log::error("Greška pri prevođenju polja $field: " . $e->getMessage());
+                    Log::error("err in translating $field: " . $e->getMessage());
                     $translatedData[$field] = $libraryData[$field];
                 }
             }
@@ -290,7 +266,7 @@ class FooterController extends Controller
                     try {
                         $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
                     } catch (\Exception $e) {
-                        Log::error("Greška pri prevođenju radnog vremena: " . $e->getMessage());
+                        Log::error("err in translating workinng time: " . $e->getMessage());
                         $translatedData['work_hours_formatted'][] = $line;
                     }
                 }
@@ -315,8 +291,8 @@ class FooterController extends Controller
             );
         } catch (\Exception $e) {
             Log::error("Greška pri čuvanju fajla $filePath: " . $e->getMessage());
-            redirect()->back()->with('error', 'Greška pri čuvanju podataka.')->send();
+            redirect()->back()->with('error', 'err in loading data.')->send();
             exit;
         }
-    }
+    }       
 }

@@ -1,16 +1,30 @@
 <x-app-layout>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             {{ App::getLocale() === 'en' ? 'Edit Footer' : 'Uredi Podnožje' }}
         </h1>
         
+        <p class="mb-6 text-gray-700 dark:text-gray-300">
+            {{ App::getLocale() === 'en' ? 
+                'Fill in the details for changes in the Serbian form, then review the details in English in the form below. You can edit them if necessary.' : 
+                'Popunite podatke za promenu u formi za srpski jezik, a potom pregledajte podatke na engleskom jeziku u formi ispod. Možete ih ispraviti ukoliko ima potrebe.' }}
+            <br>
+            <a href="#footer-preview" class="text-indigo-600 hover:underline">
+                {{ App::getLocale() === 'en' ? 'To view the footer layout, check the bottom of the page.' : 'Za prikaz izgleda podnožja pogledajte dno stranice.' }}
+            </a>
+        </p>
+
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
-                {{ session('success') }}
+                {{ App::getLocale() === 'en' ? 'Footer successfully edited.' : 'Podnožje uspešno ažurirano.' }}
             </div>
         @endif
 
-        <!-- Srpska forma -->
         <div class="mb-12">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 {{ App::getLocale() === 'en' ? 'Serbian Data' : 'Srpski Podaci' }}
@@ -36,7 +50,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="name"
                                 data-lang="sr"
-                            >{{ old('name', $libraryData['name'] ?? '') }}</textarea>
+                            >{{ $libraryDataSr['name'] }}</textarea>
                             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -51,7 +65,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="address"
                                 data-lang="sr"
-                            >{{ old('address', $libraryData['address'] ?? '') }}</textarea>
+                            >{{ old('address', $libraryDataSr['address'] ?? '') }}</textarea>
                             @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -63,7 +77,7 @@
                                 type="text"
                                 id="pib"
                                 name="pib"
-                                value="{{ old('pib', $libraryData['pib'] ?? '') }}"
+                                value="{{ old('pib', $libraryDataSr['pib'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="pib"
                                 data-lang="sr"
@@ -73,7 +87,7 @@
 
                         <div class="mb-4">
                             <label for="logo_light" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Učitaj Logo (Svetla Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Otpremite Logo (Svetla tema)' }}
                             </label>
                             <input
                                 type="file"
@@ -89,7 +103,7 @@
 
                         <div class="mb-4">
                             <label for="logo_dark" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Učitaj Logo (Tamna Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Otpremite Logo (Tamna tema)' }}
                             </label>
                             <input
                                 type="file"
@@ -104,7 +118,6 @@
                         </div>
                     </div>
 
-                    <!-- Kontakt Informacije -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Contact Information' : 'Kontakt Informacije' }}
@@ -118,7 +131,7 @@
                                 type="text"
                                 id="phone"
                                 name="phone"
-                                value="{{ old('phone', $libraryData['phone'] ?? '') }}"
+                                value="{{ old('phone', $libraryDataSr['phone'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="phone"
                                 data-lang="sr"
@@ -134,7 +147,7 @@
                                 type="email"
                                 id="email"
                                 name="email"
-                                value="{{ old('email', $libraryData['email'] ?? '') }}"
+                                value="{{ old('email', $libraryDataSr['email'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="email"
                                 data-lang="sr"
@@ -150,7 +163,7 @@
                                 type="url"
                                 id="facebook"
                                 name="facebook"
-                                value="{{ old('facebook', $libraryData['facebook'] ?? '') }}"
+                                value="{{ old('facebook', $libraryDataSr['facebook'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="facebook"
                                 data-lang="sr"
@@ -166,7 +179,7 @@
                                 type="url"
                                 id="twitter"
                                 name="twitter"
-                                value="{{ old('twitter', $libraryData['twitter'] ?? '') }}"
+                                value="{{ old('twitter', $libraryDataSr['twitter'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="twitter"
                                 data-lang="sr"
@@ -175,7 +188,6 @@
                         </div>
                     </div>
 
-                    <!-- Radno Vreme -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}
@@ -192,12 +204,11 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="work_hours"
                                 data-lang="sr"
-                            >{{ old('work_hours', implode("\n", $libraryData['work_hours_formatted'] ?? [])) }}</textarea>
+                            >{{ old('work_hours', implode("\n", $libraryDataSr['work_hours_formatted'] ?? [])) }}</textarea>
                             @error('work_hours') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
-                    <!-- Mapa i Autorska Prava -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Map and Copyrights' : 'Mapa i Autorska Prava' }}
@@ -211,7 +222,7 @@
                                 type="url"
                                 id="map_embed"
                                 name="map_embed"
-                                value="{{ old('map_embed', $libraryData['map_embed'] ?? '') }}"
+                                value="{{ old('map_embed', $libraryDataSr['map_embed'] ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="map_embed"
                                 data-lang="sr"
@@ -230,7 +241,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="copyrights"
                                 data-lang="sr"
-                            >{{ old('copyrights', $libraryData['copyrights'] ?? '') }}</textarea>
+                            >{{ old('copyrights', $libraryDataSr['copyrights'] ?? '') }}</textarea>
                             @error('copyrights') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -241,13 +252,12 @@
                         type="submit"
                         class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {{ App::getLocale() === 'en' ? 'Save Serbian Data' : 'Sačuvaj Srpske Podatke' }}
+                        {{ App::getLocale() === 'en' ? 'Save Serbian Data' : 'Sačuvaj' }}
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Engleska forma -->
         <div class="mb-12">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 {{ App::getLocale() === 'en' ? 'English Data' : 'Engleski Podaci' }}
@@ -310,7 +320,7 @@
 
                         <div class="mb-4">
                             <label for="logo_light_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Učitaj Logo (Svetla Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Otpremite Logo (Svetla Tema)' }}
                             </label>
                             <input
                                 type="file"
@@ -326,7 +336,7 @@
 
                         <div class="mb-4">
                             <label for="logo_dark_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Učitaj Logo (Tamna Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Otpremite Logo (Tamna Tema)' }}
                             </label>
                             <input
                                 type="file"
@@ -341,7 +351,6 @@
                         </div>
                     </div>
 
-                    <!-- Kontakt Informacije -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Contact Information' : 'Kontakt Informacije' }}
@@ -412,7 +421,6 @@
                         </div>
                     </div>
 
-                    <!-- Radno Vreme -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}
@@ -434,7 +442,6 @@
                         </div>
                     </div>
 
-                    <!-- Mapa i Autorska Prava -->
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             {{ App::getLocale() === 'en' ? 'Map and Copyrights' : 'Mapa i Autorska Prava' }}
@@ -478,13 +485,12 @@
                         type="submit"
                         class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {{ App::getLocale() === 'en' ? 'Save English Data' : 'Sačuvaj Engleske Podatke' }}
+                        {{ App::getLocale() === 'en' ? 'Save English Data' : 'Sačuvaj' }}
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Pregled Podnožja -->
         <div class="mt-12">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 {{ App::getLocale() === 'en' ? 'Footer Preview' : 'Pregled Podnožja' }}
@@ -536,10 +542,7 @@
                                         <li><i class="fas fa-envelope me-2"></i> <span id="preview-email">{{ $libraryData['email'] ?? '' }}</span></li>
                                     </ul>
 
-<div>
-                                    <h2 id="preview-contact_label" class="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                                        {{ $libraryData->phone_label ?? (App::getLocale() === 'en' ? 'Contact' : 'Kontakt') }}
-                                    </h2>
+                                <div>
                                     <ul class="text-gray-500 dark:text-gray-400 font-medium space-y-2 mb-4">
                                         <li><i class="fas fa-phone me-2"></i> <span id="preview-phone">{{ $libraryData->phone ?? '' }}</span></li>
                                         <li><i class="fas fa-envelope me-2"></i> <span id="preview-email">{{ $libraryData->email ?? '' }}</span></li>
@@ -563,7 +566,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
                         </div>
 
                         <div class="mt-6 md:mt-0 md:basis-1/4 w-full md:w-auto">
@@ -594,13 +597,11 @@
             <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
-                let currentLang = 'sr'; // Podrazumevano srpski za pregled
+                let currentLang = 'sr'; 
 
-                // Inicijalizacija podataka za pregled
-                const srData = @json($libraryData);
+                const srData = @json($libraryDataSr);
                 const enData = @json($libraryDataEn);
 
-                // Funkcija za ažuriranje pregleda
                 function updatePreview(lang) {
                     const data = lang === 'sr' ? srData : enData;
                     document.getElementById('preview-name').textContent = data.name || '';
@@ -623,7 +624,6 @@
                     document.getElementById('preview-logo_dark').src = data.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
                 }
 
-                // Preklopnik jezika
                 document.querySelectorAll('input[name="preview-lang"]').forEach(radio => {
                     radio.addEventListener('change', (e) => {
                         currentLang = e.target.value;
@@ -631,7 +631,6 @@
                     });
                 });
 
-                // Ažuriranje pregleda prilikom unosa
                 inputs.forEach(input => {
                     input.addEventListener('input', () => {
                         if (input.dataset.lang === currentLang) {
@@ -655,8 +654,6 @@
                         }
                     });
                 });
-
-                // Inicijalno ažuriranje pregleda
                 updatePreview(currentLang);
             });
             </script>

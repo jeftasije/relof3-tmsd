@@ -39,13 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
 
-    //Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
-    //Route::patch('/podnozje', [FooterController::class, 'edit'])->name('footer.edit');
-    //Route::post('/footer/translate', [App\Http\Controllers\FooterController::class, 'translate'])->name('footer.translate');
-
-    Route::get('/footer', [App\Http\Controllers\FooterController::class, 'show'])->name('footer.show');
-    Route::patch('/footer/sr', [App\Http\Controllers\FooterController::class, 'editSr'])->name('footer.edit.sr');
-    Route::patch('/footer/en', [App\Http\Controllers\FooterController::class, 'editEn'])->name('footer.edit.en');
+    Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
+    Route::patch('/podnozje/sr', [FooterController::class, 'editSr'])->name('footer.edit.sr');
+    Route::patch('/podnozje/en', [FooterController::class, 'editEn'])->name('footer.edit.en');
 });
 
 Route::get('/usluge', function () {
