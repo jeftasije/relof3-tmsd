@@ -1,4 +1,3 @@
-saljem ti view da shavtis kako korsinik dodaje novi vest, samo da shavtis nista drugo
 <x-guest-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
