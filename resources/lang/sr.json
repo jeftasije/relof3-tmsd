@@ -9,7 +9,7 @@
     },
     "library": {
         "name": "Narodna biblioteka \"Dositej Obradović\"",
-        "address": "Stevana Nemanje 23, 36300 Novi Pazar",
+        "address": "Stevana Nemanja 23, 36300 Novi Pazar",
         "address_label": "Adresa",
         "pib": "101234567",
         "pib_label": "PIB",
@@ -19,9 +19,9 @@
         "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "twitter": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "work_hours_formatted": [
-            "Monday - Friday: 08:00 - 16:00",
-            "Saturday: 08:00 - 14:00",
-            "Sunday: closed"
+            "Ponedeljak - Petak: 08:00 - 16:00",
+            "Subota: 08:00 - 14:00",
+            "Nedelja: Closed"
         ],
         "work_hours_label": "Radno Vreme",
         "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",

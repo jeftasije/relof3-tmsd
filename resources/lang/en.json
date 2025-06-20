@@ -8,22 +8,22 @@
         "description": "Stay updated with the latest events and happenings at our Public Library."
     },
     "library": {
-        "name": "Narodna biblioteka \"Dositej Obradović\"",
-        "address": "Stevana Nemanje 23, 36300 Novi Pazar",
-        "address_label": "Adresa",
+        "name": "People's Library \"Dositej Obradović\"",
+        "address": "Stevana Nemanja 23, 36300 Novi Pazar",
+        "address_label": "Address",
         "pib": "101234567",
-        "pib_label": "PIB",
+        "pib_label": "Pib",
         "phone": "+381 (0)20 331 010",
-        "phone_label": "Kontakt",
+        "phone_label": "Contact",
         "email": "bibl@gmail.com",
         "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "twitter": "https://www.facebook.com/nbsrb/?locale=sr_RS",
         "work_hours_formatted": [
             "Monday - Friday: 08:00 - 16:00",
             "Saturday: 08:00 - 14:00",
-            "Sunday: closed"
+            "Sunday: Closed"
         ],
-        "work_hours_label": "Radno Vreme",
+        "work_hours_label": "Working hours",
         "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
         "logo_light": "images/nbnp-logo.png",

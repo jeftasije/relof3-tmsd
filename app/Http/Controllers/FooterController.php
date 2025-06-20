@@ -20,14 +20,23 @@ class FooterController extends Controller
 
     public function show()
     {
-        $libraryData = LibraryDataController::getLibraryData();
+        $srPath = resource_path('lang/sr.json');
+        $enPath = resource_path('lang/en.json');
+
+        $libraryData = file_exists($srPath)
+            ? json_decode(file_get_contents($srPath), true)['library'] ?? []
+            : [];
+        $libraryDataEn = file_exists($enPath)
+            ? json_decode(file_get_contents($enPath), true)['library'] ?? []
+            : [];
 
         return view('superAdmin.footer', [
-            'libraryData' => $libraryData
+            'libraryData' => $libraryData,
+            'libraryDataEn' => $libraryDataEn
         ]);
     }
 
-    public function edit(Request $request)
+    public function editSr(Request $request)
     {
         $this->validateRequest($request);
 
@@ -40,6 +49,18 @@ class FooterController extends Controller
         $this->saveToLangFiles($libraryData);
 
         return redirect()->back()->with('success', 'Podnožje uspešno ažurirano.');
+    }
+
+    public function editEn(Request $request)
+    {
+        $this->validateRequestEn($request);
+
+        $libraryDataEn = $this->buildLibraryDataEn($request);
+
+        // Čuvanje samo u en.json
+        $this->saveLangFile(resource_path('lang/en.json'), $libraryDataEn);
+
+        return redirect()->back()->with('success', 'Engleski podaci uspešno ažurirani.');
     }
 
     private function validateRequest(Request $request)
@@ -92,6 +113,49 @@ class FooterController extends Controller
         ], $messages);
     }
 
+    private function validateRequestEn(Request $request)
+    {
+        $messages = [
+            'name_en.string' => __('validation.name_string'),
+            'name_en.max' => __('validation.name_max'),
+            'address_en.string' => __('validation.address_string'),
+            'address_en.max' => __('validation.address_max'),
+            'work_hours_en.string' => __('validation.work_hours_string'),
+            'copyrights_en.string' => __('validation.copyrights_string'),
+            'copyrights_en.max' => __('validation.copyrights_max'),
+            'pib.string' => __('validation.pib_string'),
+            'phone.string' => __('validation.phone_string'),
+            'phone.max' => __('validation.phone_max'),
+            'email.email' => __('validation.email_email'),
+            'email.max' => __('validation.email_max'),
+            'facebook.url' => __('validation.facebook_url'),
+            'facebook.max' => __('validation.facebook_max'),
+            'twitter.url' => __('validation.twitter_url'),
+            'twitter.max' => __('validation.twitter_max'),
+            'map_embed.url' => __('validation.map_embed_url'),
+            'map_embed.max' => __('validation.map_embed_max'),
+            'logo_light.image' => __('validation.logo_light_image'),
+            'logo_light.max' => __('validation.logo_light_max'),
+            'logo_dark.image' => __('validation.logo_dark_image'),
+            'logo_dark.max' => __('validation.logo_dark_max'),
+        ];
+
+        $request->validate([
+            'name_en' => 'nullable|string|max:255',
+            'address_en' => 'nullable|string|max:255',
+            'work_hours_en' => 'nullable|string',
+            'copyrights_en' => 'nullable|string|max:255',
+            'pib' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'facebook' => 'nullable|url|max:255',
+            'twitter' => 'nullable|url|max:255',
+            'map_embed' => 'nullable|url|max:255',
+            'logo_light' => 'nullable|image|max:2048',
+            'logo_dark' => 'nullable|image|max:2048',
+        ], $messages);
+    }
+
     private function buildLibraryData(Request $request)
     {
         $work_hours_formatted = array_filter(array_map('trim', explode("\n", $request->input('work_hours'))));
@@ -113,6 +177,36 @@ class FooterController extends Controller
             'copyrights' => $request->input('copyrights'),
             'logo_light' => 'images/nbnp-logo.png',
             'logo_dark' => 'images/nbnp-logo-dark.png',
+        ];
+    }
+
+    private function buildLibraryDataEn(Request $request)
+    {
+        $work_hours_formatted = array_filter(array_map('trim', explode("\n", $request->input('work_hours_en'))));
+
+        // Učitavanje sr.json za neprevedena polja
+        $srPath = resource_path('lang/sr.json');
+        $srData = file_exists($srPath)
+            ? json_decode(file_get_contents($srPath), true)['library'] ?? []
+            : [];
+
+        return [
+            'name' => $request->input('name_en', $srData['name'] ?? ''),
+            'address' => $request->input('address_en', $srData['address'] ?? ''),
+            'address_label' => $request->input('address_label_en', $srData['address_label'] ?? 'Address'),
+            'pib' => $request->input('pib', $srData['pib'] ?? ''),
+            'pib_label' => $request->input('pib_label_en', $srData['pib_label'] ?? 'Tax ID (PIB)'),
+            'phone' => $request->input('phone', $srData['phone'] ?? ''),
+            'phone_label' => $request->input('phone_label_en', $srData['phone_label'] ?? 'Contact'),
+            'email' => $request->input('email', $srData['email'] ?? ''),
+            'facebook' => $request->input('facebook', $srData['facebook'] ?? ''),
+            'twitter' => $request->input('twitter', $srData['twitter'] ?? ''),
+            'work_hours_formatted' => $work_hours_formatted,
+            'work_hours_label' => $request->input('work_hours_label_en', $srData['work_hours_label'] ?? 'Working Hours'),
+            'map_embed' => $request->input('map_embed', $srData['map_embed'] ?? ''),
+            'copyrights' => $request->input('copyrights_en', $srData['copyrights'] ?? ''),
+            'logo_light' => $srData['logo_light'] ?? 'images/nbnp-logo.png',
+            'logo_dark' => $srData['logo_dark'] ?? 'images/nbnp-logo-dark.png',
         ];
     }
 
@@ -166,7 +260,6 @@ class FooterController extends Controller
 
     private function translateLibraryData(array $libraryData): array
     {
-        // Polja koja želimo da prevedemo
         $translatableFields = [
             'name',
             'address',
@@ -179,19 +272,17 @@ class FooterController extends Controller
 
         $translatedData = $libraryData;
 
-        // Prevod pojedinačnih polja
         foreach ($translatableFields as $field) {
             if (isset($libraryData[$field]) && !empty($libraryData[$field])) {
                 try {
                     $translatedData[$field] = $this->translate->translate($libraryData[$field]);
                 } catch (\Exception $e) {
                     Log::error("Greška pri prevođenju polja $field: " . $e->getMessage());
-                    $translatedData[$field] = $libraryData[$field]; // Zadrži original ako prevod ne uspe
+                    $translatedData[$field] = $libraryData[$field];
                 }
             }
         }
 
-        // Prevod niza work_hours_formatted
         if (isset($libraryData['work_hours_formatted']) && is_array($libraryData['work_hours_formatted'])) {
             $translatedData['work_hours_formatted'] = [];
             foreach ($libraryData['work_hours_formatted'] as $line) {
@@ -200,13 +291,12 @@ class FooterController extends Controller
                         $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
                     } catch (\Exception $e) {
                         Log::error("Greška pri prevođenju radnog vremena: " . $e->getMessage());
-                        $translatedData['work_hours_formatted'][] = $line; // Zadrži original ako prevod ne uspe
+                        $translatedData['work_hours_formatted'][] = $line;
                     }
                 }
             }
         }
 
-        // Ostala polja (email, facebook, twitter, map_embed, pib, phone, logo_light, logo_dark) ostaju neprevedena
         return $translatedData;
     }
 
