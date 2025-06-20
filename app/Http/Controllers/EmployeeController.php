@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
-// use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 class EmployeeController extends Controller
@@ -14,7 +13,6 @@ class EmployeeController extends Controller
     {
         $employees = Employee::all();
         $text = Lang::get('team');
-       
         return view('employee', compact('employees', 'text'));
     }
 
@@ -37,6 +35,15 @@ class EmployeeController extends Controller
                 'biography_en' => $validated['biography'],
                 'position_en' => $validated['position'],
             ]);
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $validated = $request->validate([
+                'biography' => 'nullable|string',
+                'position' => 'required|string|max:255',
+            ]);
+            $employee->update([
+                'biography_cy' => $validated['biography'],
+                'position_cy' => $validated['position'],
+            ]);
         } else {
             $validated = $request->validate([
                 'biography' => 'nullable|string',
@@ -58,8 +65,8 @@ class EmployeeController extends Controller
         ]);
 
         try {
-            if ($employee->image_path && \File::exists(public_path($employee->image_path))) {
-                \File::delete(public_path($employee->image_path));
+            if ($employee->image_path && File::exists(public_path($employee->image_path))) {
+                File::delete(public_path($employee->image_path));
             }
 
             $file = $request->file('image');
@@ -81,15 +88,9 @@ class EmployeeController extends Controller
         }
     }
 
-
     public function destroy(Employee $employee)
     {
-        // if ($employee->image_path && File::exists(public_path($employee->image_path))) {
-        //     File::delete(public_path($employee->image_path));
-        // }
-
         $employee->delete();
-
         return redirect()->route('employees.index')->with('success', 'Zaposleni je uspešno obrisan.');
     }
 
@@ -99,8 +100,10 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
             'position_en' => 'nullable|string|max:255',
+            'position_cy' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
             'biography_en' => 'nullable|string',
+            'biography_cy' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -108,8 +111,7 @@ class EmployeeController extends Controller
             $file = $request->file('image');
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
-
-            $validated['image_path'] = 'images/' . $filename; 
+            $validated['image_path'] = 'images/' . $filename;
         }
 
         Employee::create($validated);
@@ -124,9 +126,17 @@ class EmployeeController extends Controller
         if (!$employee->extendedBiography) {
             $employee->extendedBiography()->create([
                 'biography' => '',
+                'biography_en' => '',
+                'biography_cy' => '',
                 'university' => '',
+                'university_en' => '',
+                'university_cy' => '',
                 'experience' => '',
+                'experience_en' => '',
+                'experience_cy' => '',
                 'skills' => [],
+                'skills_en' => [],
+                'skills_cy' => [],
                 'biography_translated' => '',
                 'university_translated' => '',
                 'experience_translated' => '',
@@ -140,12 +150,33 @@ class EmployeeController extends Controller
                 'university_translated' => 'nullable|string|max:255',
                 'experience_translated' => 'nullable|string',
                 'skills_translated' => 'nullable|string',
+                'biography_en' => 'nullable|string',
+                'university_en' => 'nullable|string|max:255',
+                'experience_en' => 'nullable|string',
+                'skills_en' => 'nullable|string',
             ]);
             $updateData = [
                 'biography_translated' => $validated['biography_translated'] ?? null,
                 'university_translated' => $validated['university_translated'] ?? null,
                 'experience_translated' => $validated['experience_translated'] ?? null,
-                'skills_translated' => $validated['skills_translated'] ? array_map('trim', explode(',', $validated['skills_translated'])) : [],
+                'skills_translated' => !empty($validated['skills_translated']) ? array_map('trim', explode(',', $validated['skills_translated'])) : [],
+                'biography_en' => $validated['biography_en'] ?? null,
+                'university_en' => $validated['university_en'] ?? null,
+                'experience_en' => $validated['experience_en'] ?? null,
+                'skills_en' => !empty($validated['skills_en']) ? array_map('trim', explode(',', $validated['skills_en'])) : [],
+            ];
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $validated = $request->validate([
+                'biography_cy' => 'nullable|string',
+                'university_cy' => 'nullable|string|max:255',
+                'experience_cy' => 'nullable|string',
+                'skills_cy' => 'nullable|string',
+            ]);
+            $updateData = [
+                'biography_cy' => $validated['biography_cy'] ?? null,
+                'university_cy' => $validated['university_cy'] ?? null,
+                'experience_cy' => $validated['experience_cy'] ?? null,
+                'skills_cy' => !empty($validated['skills_cy']) ? array_map('trim', explode(',', $validated['skills_cy'])) : [],
             ];
         } else {
             $validated = $request->validate([
@@ -158,7 +189,7 @@ class EmployeeController extends Controller
                 'biography' => $validated['biography'] ?? null,
                 'university' => $validated['university'] ?? null,
                 'experience' => $validated['experience'] ?? null,
-                'skills' => $validated['skills'] ? array_map('trim', explode(',', $validated['skills'])) : [],
+                'skills' => !empty($validated['skills']) ? array_map('trim', explode(',', $validated['skills'])) : [],
             ];
         }
 
@@ -167,4 +198,5 @@ class EmployeeController extends Controller
         return redirect()->route('employees.show', $employee->id)
             ->with('success', 'Extended biography updated successfully.');
     }
+
 }

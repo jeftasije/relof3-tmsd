@@ -47,11 +47,22 @@
                             </h2>
                             @if ($employee->extendedBiography)
                                 @php
-                                    $bioKey = $locale === 'en' ? 'biography_translated' : 'biography';
-                                    $uniKey = $locale === 'en' ? 'university_translated' : 'university';
-                                    $expKey = $locale === 'en' ? 'experience_translated' : 'experience';
-                                    $skillsKey = $locale === 'en' ? 'skills_translated' : 'skills';
-
+                                    if ($locale === 'en') {
+                                        $bioKey = 'biography_translated';
+                                        $uniKey = 'university_translated';
+                                        $expKey = 'experience_translated';
+                                        $skillsKey = 'skills_translated';
+                                    } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+                                        $bioKey = 'biography_cy';
+                                        $uniKey = 'university_cy';
+                                        $expKey = 'experience_cy';
+                                        $skillsKey = 'skills_cy';
+                                    } else {
+                                        $bioKey = 'biography';
+                                        $uniKey = 'university';
+                                        $expKey = 'experience';
+                                        $skillsKey = 'skills';
+                                    }
                                     $skills = $employee->extendedBiography->$skillsKey;
                                     if (!is_array($skills)) {
                                         $skills = [];
@@ -119,11 +130,22 @@
                     @method('PUT')
 
                     @php
-                        $bioField = $locale === 'en' ? 'biography_translated' : 'biography';
-                        $uniField = $locale === 'en' ? 'university_translated' : 'university';
-                        $expField = $locale === 'en' ? 'experience_translated' : 'experience';
-                        $skillsField = $locale === 'en' ? 'skills_translated' : 'skills';
-
+                        if ($locale === 'en') {
+                            $bioField = 'biography_translated';
+                            $uniField = 'university_translated';
+                            $expField = 'experience_translated';
+                            $skillsField = 'skills_translated';
+                        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+                            $bioField = 'biography_cy';
+                            $uniField = 'university_cy';
+                            $expField = 'experience_cy';
+                            $skillsField = 'skills_cy';
+                        } else {
+                            $bioField = 'biography';
+                            $uniField = 'university';
+                            $expField = 'experience';
+                            $skillsField = 'skills';
+                        }
                         $bioValue = old($bioField, $employee->extendedBiography ? $employee->extendedBiography->$bioField : '');
                         $uniValue = old($uniField, $employee->extendedBiography ? $employee->extendedBiography->$uniField : '');
                         $expValue = old($expField, $employee->extendedBiography ? $employee->extendedBiography->$expField : '');

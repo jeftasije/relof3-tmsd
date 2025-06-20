@@ -123,6 +123,9 @@
                     @csrf
                     @method('PUT')
 
+                    {{-- DODATO: Hidden polje za locale --}}
+                    <input type="hidden" name="locale" value="{{ $locale }}">
+
                     <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $contentField }}">
                         {{ $locale === 'en'
                             ? 'Content (English)'
