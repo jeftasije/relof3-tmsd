@@ -156,3 +156,34 @@
   @endif
   @endforeach
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('#mega-menu-full [data-collapse-toggle]');
+    let activeCollapse = null;
+
+    buttons.forEach(button => {
+      const targetId = button.getAttribute('data-collapse-toggle');
+      const target = document.getElementById(targetId);
+      const arrow = button.querySelector('svg');
+
+      if (target && arrow) {
+        button.addEventListener('click', () => {
+          if (activeCollapse && activeCollapse !== target) {
+            activeCollapse.classList.add('hidden');
+            const prevButton = document.querySelector(`#mega-menu-full [data-collapse-toggle="${activeCollapse.id}"]`);
+            if (prevButton) {
+              prevButton.querySelector('svg').classList.remove('rotate-180');
+            }
+          }
+
+          const isOpen = !target.classList.contains('hidden');
+          target.classList.toggle('hidden');
+          arrow.classList.toggle('rotate-180');
+
+          activeCollapse = isOpen ? null : target;
+        });
+      }
+    });
+  });
+</script>

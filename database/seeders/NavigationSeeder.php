@@ -13,47 +13,54 @@ class NavigationSeeder extends Seeder
             'name' => 'O nama',
             'name_en' => 'About us',
             'name_cy' => 'О нама',
-            'is_deletable' => false
+            'is_deletable' => false, 
+            'order'=>1
         ]);
         Navigation::create([
             'name' => 'Vesti',
             'name_en' => 'News',
             'name_cy' => 'Вести',
             'is_deletable' => false,
-            'redirect_url' => '/news'
+            'redirect_url' => '/news',
+            'order'=>2
         ]);
         $dokumenta = Navigation::create([
             'name' => 'Dokumenta',
             'name_en' => 'Documents',
             'name_cy' => 'Документа',
-            'is_deletable' => false
+            'is_deletable' => false,
+            'order'=>3
         ]);
         Navigation::create([
             'name' => 'Usluge',
             'name_en' => 'Services',
             'name_cy' => 'Услуге',
             'is_deletable' => false,
-            'redirect_url' => '/usluge'
+            'redirect_url' => '/usluge',
+            'order'=>4
         ]);
         Navigation::create([
             'name' => 'Javne nabavke',
             'name_en' => 'Public procurement',
             'name_cy' => 'Јавне набавке',
             'is_deletable' => false,
-            'redirect_url' => '/nabavke'
+            'redirect_url' => '/nabavke',
+            'order'=>5
         ]);
         Navigation::create([
             'name' => 'Žalbe',
             'name_en' => 'Complaints',
             'name_cy' => 'Жалбе',
-            'is_deletable' => false
+            'is_deletable' => false,
+            'order'=>6
         ]);
         Navigation::create([
             'name' => 'Kontakt',
             'name_en' => 'Contact',
             'name_cy' => 'Контакт',
             'is_deletable' => false,
-            'redirect_url' => '/kontakt'
+            'redirect_url' => '/kontakt',
+            'order'=>7
         ]);
 
         $pravnaDokumentacija = Navigation::create([

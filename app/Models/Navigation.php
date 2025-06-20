@@ -8,6 +8,7 @@ class Navigation extends Model
 {
     protected $fillable = [
         'parent_id',
+        'order',
         'name',
         'name_en',
         'name_cy',

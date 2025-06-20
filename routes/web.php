@@ -7,6 +7,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
@@ -54,6 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
+
+    Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
+    Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
+    Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 });
 
 Route::get('/usluge', function () {
