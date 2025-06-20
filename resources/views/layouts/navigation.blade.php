@@ -35,6 +35,13 @@
                                             @default Osnovni podaci
                                         @endswitch
                                     </span>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Basic information @break
+                                            @case('sr-Cyrl') Основни подаци @break
+                                            @default Osnovni podaci
+                                        @endswitch
+                                    </span>
                                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                     </svg>
@@ -54,6 +61,13 @@
                                                     @default Zaglavlje
                                                 @endswitch
                                             </span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Header @break
+                                                    @case('sr-Cyrl') Заглавље @break
+                                                    @default Zaglavlje
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                     <li>
@@ -63,6 +77,13 @@
                                                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
                                                 <path d="M4 15l16 0" />
                                             </svg>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Footer @break
+                                                    @case('sr-Cyrl') Подножје @break
+                                                    @default Podnožje
+                                                @endswitch
+                                            </span>
                                             <span class="flex-1 ml-3 text-left whitespace-nowrap">
                                                 @switch(App::getLocale())
                                                     @case('en') Footer @break
@@ -88,6 +109,13 @@
                                             @default Navigacija
                                         @endswitch
                                     </span>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Navigation @break
+                                            @case('sr-Cyrl') Навигација @break
+                                            @default Navigacija
+                                        @endswitch
+                                    </span>
                                 </button>
                             </li>
                             <li>
@@ -98,6 +126,13 @@
                                         <path d="M17.58 10.21c2.54 .69 4.42 3.03 4.42 5.79c0 3.31 -2.69 6 -6 6a5.93 5.93 0 0 1 -4 -1.54" />
                                         <path d="M12 8m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" />
                                     </svg>
+                                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                        @switch(App::getLocale())
+                                            @case('en') Styles @break
+                                            @case('sr-Cyrl') Стилови @break
+                                            @default Stilovi
+                                        @endswitch
+                                    </span>
                                     <span class="flex-1 ml-3 text-left whitespace-nowrap">
                                         @switch(App::getLocale())
                                             @case('en') Styles @break
@@ -126,6 +161,13 @@
                                                     @default Tipografija
                                                 @endswitch
                                             </span>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Typography @break
+                                                    @case('sr-Cyrl') Типографија @break
+                                                    @default Tipografija
+                                                @endswitch
+                                            </span>
                                         </button>
                                     </li>
                                     <li>
@@ -137,6 +179,13 @@
                                                 <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                                 <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                             </svg>
+                                            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                                                @switch(App::getLocale())
+                                                    @case('en') Color @break
+                                                    @case('sr-Cyrl') Боје @break
+                                                    @default Boje
+                                                @endswitch
+                                            </span>
                                             <span class="flex-1 ml-3 text-left whitespace-nowrap">
                                                 @switch(App::getLocale())
                                                     @case('en') Color @break
@@ -165,6 +214,13 @@
                                             @default Stranice
                                         @endswitch
                                     </span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Pages @break
+                                            @case('sr-Cyrl') Странице @break
+                                            @default Stranice
+                                        @endswitch
+                                    </span>
                                 </button>
                             </li>
                             <li>
@@ -175,6 +231,13 @@
                                         <path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z" />
                                         <path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2" />
                                     </svg>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Documents @break
+                                            @case('sr-Cyrl') Документи @break
+                                            @default Dokumenti
+                                        @endswitch
+                                    </span>
                                     <span class="ml-3">
                                         @switch(App::getLocale())
                                             @case('en') Documents @break
@@ -204,6 +267,13 @@
                                             @default Urednici
                                         @endswitch
                                     </span>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Editors @break
+                                            @case('sr-Cyrl') Уредници @break
+                                            @default Urednici
+                                        @endswitch
+                                    </span>
                                 </a>
                             </li>
                             <li>
@@ -214,6 +284,13 @@
                                         <path d="M12 17l0 .01" />
                                         <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
                                     </svg>
+                                    <span class="ml-3">
+                                        @switch(App::getLocale())
+                                            @case('en') Help @break
+                                            @case('sr-Cyrl') Помоћ @break
+                                            @default Pomoć
+                                        @endswitch
+                                    </span>
                                     <span class="ml-3">
                                         @switch(App::getLocale())
                                             @case('en') Help @break
@@ -233,17 +310,26 @@
                                 'sr' => 'fi fi-rs',
                                 'sr-Cyrl' => 'fi fi-rs',
                                 'en' => 'fi fi-us',
+                                'sr' => 'fi fi-rs',
+                                'sr-Cyrl' => 'fi fi-rs',
+                                'en' => 'fi fi-us',
                             ];
                             $languages = [
                                 'sr' => __('language_sr'),
                                 'sr-Cyrl' => __('language_sr_cy'),
                                 'en' => __('language_en'),
+                                'sr' => __('language_sr'),
+                                'sr-Cyrl' => __('language_sr_cy'),
+                                'en' => __('language_en'),
                             ];
+                            $localeKey = $locale === 'sr-Cyrl' ? 'sr-Cyrl' : ($locale === 'sr' ? 'sr' : 'en');
                             $localeKey = $locale === 'sr-Cyrl' ? 'sr-Cyrl' : ($locale === 'sr' ? 'sr' : 'en');
                             @endphp
 
                             <button type="button" data-dropdown-toggle="language-dropdown-menu-admin"
                                 class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
+                                <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
+                                {{ $languages[$localeKey] ?? 'Srpski' }}
                                 <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
                                 {{ $languages[$localeKey] ?? 'Srpski' }}
                             </button>
@@ -267,6 +353,17 @@
                                             <div class="inline-flex items-center">
                                                 <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
                                                 {{ __('language_sr_cy') }}
+                                                {{ __('language_sr') }}
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('lang.switch', ['locale' => 'sr-Cyrl']) }}"
+                                            class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white md:px-4 md:py-2"
+                                            role="menuitem">
+                                            <div class="inline-flex items-center">
+                                                <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
+                                                {{ __('language_sr_cy') }}
                                             </div>
                                         </a>
                                     </li>
@@ -276,6 +373,7 @@
                                             role="menuitem">
                                             <div class="inline-flex items-center">
                                                 <span class="fi fi-us h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
+                                                {{ __('language_en') }}
                                                 {{ __('language_en') }}
                                             </div>
                                         </a>
@@ -556,10 +654,20 @@
                             @case('sr-Cyrl') Контролни панел @break
                             @default Kontrolni panel
                         @endswitch
+                        @switch(App::getLocale())
+                            @case('en') Dashboard @break
+                            @case('sr-Cyrl') Контролни панел @break
+                            @default Kontrolni panel
+                        @endswitch
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('welcome')" :active="!request()->routeIs('dashboard')">
+                        @switch(App::getLocale())
+                            @case('en') Edit content @break
+                            @case('sr-Cyrl') Уреди садржај @break
+                            @default Uredi sadržај
+                        @endswitch
                         @switch(App::getLocale())
                             @case('en') Edit content @break
                             @case('sr-Cyrl') Уреди садржај @break
