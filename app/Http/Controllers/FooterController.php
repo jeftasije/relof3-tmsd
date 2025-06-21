@@ -22,16 +22,21 @@ class FooterController extends Controller
     {
         $srPath = resource_path('lang/sr.json');
         $enPath = resource_path('lang/en.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
 
         $srContent = file_exists($srPath) ? file_get_contents($srPath) : null;
         $libraryDataSr = $srContent !== null && $srContent !== '' ? json_decode($srContent, true)['library'] ?? [] : [];
 
         $enContent = file_exists($enPath) ? file_get_contents($enPath) : null;
         $libraryDataEn = $enContent !== null && $enContent !== '' ? json_decode($enContent, true)['library'] ?? [] : [];
+
+        $srCyrContent = file_exists($srCyrPath) ? file_get_contents($srCyrPath) : null;
+        $libraryDataSrCyr = $enContent !== null && $enContent !== '' ? json_decode($srCyrContent, true)['library'] ?? [] : [];
  
         return view('superAdmin.footer', [
             'libraryDataSr' => $libraryDataSr,
-            'libraryDataEn' => $libraryDataEn
+            'libraryDataEn' => $libraryDataEn,
+            'libraryDataSrCyr' => $libraryDataSrCyr
         ]);
     }
 

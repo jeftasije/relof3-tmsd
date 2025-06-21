@@ -511,10 +511,13 @@
             <div class="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
                 <div class="mb-4">
                     <label class="mr-4 text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="preview-lang" value="sr" checked> {{ App::getLocale() === 'en' ? 'Serbian' : (App::getLocale() === 'sr-Cyrl' ? 'Српски' : 'Srpski') }}
+                        <input type="radio" name="preview-lang" value="sr" checked> {{ App::getLocale() === 'en' ? 'serbian (latin)' : (App::getLocale() === 'sr-Cyrl' ? 'српски (латиница)' : 'srpski (latinica)') }}
+                    </label>
+                    <label class="mr-4 text-gray-700 dark:text-gray-300">
+                        <input type="radio" name="preview-lang" value="sr-Cyrl"> {{ App::getLocale() === 'en' ? 'serbian (cyrillic)' : (App::getLocale() === 'sr-Cyrl' ? 'српски (ћирилица)' : 'srpski (ćirilica)') }}
                     </label>
                     <label class="text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="preview-lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'Енглески' : 'Engleski') }}
+                        <input type="radio" name="preview-lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'eнглески' : 'engleski') }}
                     </label>
                 </div>
                 <footer id="footer-preview" class="bg-white dark:bg-gray-900">
@@ -611,30 +614,31 @@
             </footer>
         </div>
 
-            <script>
+        <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
                 let currentLang = 'sr'; 
 
                 const srData = @json($libraryDataSr);
                 const enData = @json($libraryDataEn);
+                const srCyrData = @json($libraryDataSrCyr);
 
                 function updatePreview(lang) {
-                    const data = lang === 'sr' ? srData : enData;
+                    const data = lang === 'sr' ? srData : (lang === 'sr-Cyrl' ? srCyrData : enData);
                     document.getElementById('preview-name').textContent = data.name || '';
                     document.getElementById('preview-address').textContent = data.address || '';
-                    document.getElementById('preview-address_label').textContent = data.address_label || '{{ App::getLocale() === 'en' ? 'Address' : 'Adresa' }}';
+                    document.getElementById('preview-address_label').textContent = data.address_label || '{{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }}';
                     document.getElementById('preview-pib').textContent = data.pib || '';
-                    document.getElementById('preview-pib_label').textContent = data.pib_label || '{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB' }}';
+                    document.getElementById('preview-pib_label').textContent = data.pib_label || '{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}';
                     document.getElementById('preview-phone').textContent = data.phone || '';
-                    document.getElementById('preview-phone_label').textContent = data.phone_label || '{{ App::getLocale() === 'en' ? 'Contact' : 'Kontakt' }}';
+                    document.getElementById('preview-phone_label').textContent = data.phone_label || '{{ App::getLocale() === 'en' ? 'Contact' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт' : 'Kontakt') }}';
                     document.getElementById('preview-email').textContent = data.email || '';
                     document.getElementById('preview-email-link').href = `mailto:${data.email || 'dositejbib@gmail.com'}`;
                     document.getElementById('preview-facebook').href = data.facebook || '#';
                     document.getElementById('preview-twitter').href = data.twitter || '#';
-                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || '{{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}';
+                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || '{{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}';
                     document.getElementById('preview-work_hours').innerHTML = (data.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
-                    document.getElementById('preview-map_embed').src = data.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje%2,+Novi+2%Pazar&output=embed';
+                    document.getElementById('preview-map_embed').src = data.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                     document.getElementById('preview-copyrights').textContent = data.copyrights || '';
                     document.getElementById('preview-name_footer').textContent = data.name || '';
                     document.getElementById('preview-logo_light').src = data.logo_light || '{{ asset('images/nbnp-logo.png') }}';
@@ -673,6 +677,6 @@
                 });
                 updatePreview(currentLang);
             });
-            </script>
+            </script>   
         </div>
     </x-app-layout>
