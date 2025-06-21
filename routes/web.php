@@ -13,8 +13,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
+
+    Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
+    Route::patch('/podnozje/sr', [FooterController::class, 'editSr'])->name('footer.edit.sr');
+    Route::patch('/podnozje/en', [FooterController::class, 'editEn'])->name('footer.edit.en');
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
