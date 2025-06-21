@@ -23,7 +23,7 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::paginate(6);
         $text = Lang::get('team');
         return view('employee', compact('employees', 'text'));
     }

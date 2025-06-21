@@ -35,12 +35,17 @@
                             </button>
                         @endauth
                     </div>
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                         @foreach ($news as $newsItem)
                             <x-news-card :news="$newsItem" />
                         @endforeach
                     </div>
+
+                    @if ($news->hasPages())
+                        <div class="flex justify-center mt-8">
+                            {{ $news->links('pagination::tailwind') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
