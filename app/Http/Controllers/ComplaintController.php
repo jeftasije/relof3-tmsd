@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 
 class ComplaintController extends Controller
 {
-    public function index() {
+    /*public function index()
+    {
+        $comments = \App\Models\Comment::latest()->get();
+        return view('complaints', compact('comments'));
+    }*/
+
+    public function index()
+    {
         $comments = Comment::latest()->get();
+
         return view('complaints', compact('comments'));
     }
+
 
     public function store(Request $request) {
         $validated = $request->validate([

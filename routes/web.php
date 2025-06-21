@@ -7,11 +7,13 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\CommentController;
 
 
 Route::get('/', function () {
@@ -55,6 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
+
+    Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
+    Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
+    Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 });
 
 Route::get('/usluge', function () {
@@ -70,6 +76,8 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
+Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
+
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
@@ -78,7 +86,7 @@ Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procureme
 Route::get('/dokumenti', [DocumentController::class, 'index'])->name('documents.index');
 
 Route::get('/lang/{locale}', function ($locale) {
-    if (!in_array($locale, ['sr', 'en'])) {
+    if (!in_array($locale, ['sr', 'en', 'sr-Cyrl'])) {
         abort(400);
     }
     session(['locale' => $locale]);
@@ -92,5 +100,10 @@ Route::get('/search-results', [SearchController::class, 'search'])->name('search
 
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
+
+Route::get('/galerija', function () {
+    return view('gallery');
+})->name('gallery');
+
 
 require __DIR__.'/auth.php';

@@ -78,14 +78,14 @@
                   @click.prevent="editing = true; open = false" 
                   class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
-                    {{ App::getLocale() === 'en' ? 'Edit' : 'Izmeni' }}
+                    {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                 </button>
                 <form method="POST" action="{{ route('employees.destroy', $employee->id) }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
                             class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600">
-                        {{ App::getLocale() === 'en' ? 'Delete' : 'Obriši' }}
+                        {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
                     </button>
                 </form>
             </div>
@@ -103,7 +103,9 @@
         />
         <input type="file" x-ref="fileInput" class="hidden" @change="uploadImage" accept="image/*">
         <template x-if="editing">
-          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-white text-lg font-bold pointer-events-none">{{ App::getLocale() === 'en' ? 'Change image' : 'Promeni sliku' }}</div>
+          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-white text-lg font-bold pointer-events-none">
+            {{ App::getLocale() === 'en' ? 'Change image' : (App::getLocale() === 'sr-Cyrl' ? 'Промени слику' : 'Promeni sliku') }}
+          </div>
         </template>
     </div>
     <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset;">
@@ -141,21 +143,21 @@
                 :disabled="saving"
                 class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
               >
-                {{ App::getLocale() === 'en' ? 'Save' : 'Sačuvaj' }}
+                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
               </button>
               <button 
                 @click.prevent="cancel()" 
                 :disabled="saving"
                 class="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 disabled:opacity-50"
               >
-                {{ App::getLocale() === 'en' ? 'Cancel' : 'Otkaži' }}
+                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
               </button>
             </div>
           </template>
 
           <a href="{{ route('employees.show', $employee->id) }}"
              class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
-              {{ App::getLocale() === 'en' ? 'Show more' : 'Prikaži više' }}
+              {{ App::getLocale() === 'en' ? 'Show more' : (App::getLocale() === 'sr-Cyrl' ? 'Прикажи више' : 'Prikaži više') }}
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                    fill="none" viewBox="0 0 14 10">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
