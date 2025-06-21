@@ -1,3 +1,5 @@
+<script src="//unpkg.com/alpinejs" defer></script>
+
 @if (Request::is('kreiraj-stranicu'))
 <div class="flex flex-col items-center w-7/12 dark:text-white">
     <div x-data="{ editing: true, title: '' }" class="mb-6 flex justify-start">
@@ -9,6 +11,7 @@
                 placeholder="{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}"
                 class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <button
+                type="button"
                 @click="editing = false"
                 class="px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-check">
@@ -68,5 +71,3 @@
     </div>
 </x-guest-layout>
 @endif
-
-<script src="//unpkg.com/alpinejs" defer></script>

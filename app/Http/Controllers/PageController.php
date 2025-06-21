@@ -71,9 +71,8 @@ class PageController extends Controller
                 $newNavigation = new Navigation();
                 $newNavigation->parent_id = $subSectionId;
                 $newNavigation->name = $page->title;
-                $newNavigation->redirect_url = '/stranica' . $page->slug;
+                $newNavigation->redirect_url = '/stranica/' . $page->slug;
                 $newNavigation->save();
-
             } else {
                 $mainSectionId = $navigationIds[0];
                 $mainSection = Navigation::find($mainSectionId);
@@ -85,5 +84,29 @@ class PageController extends Controller
         }
 
         return redirect()->route('page.show', $page->slug);
+    }
+
+    public function destroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (!is_array($ids) || empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No IDs provided.'
+            ], 422);
+        }
+
+        $pages = Page::whereIn('id', $ids)->get();
+
+        foreach ($pages as $page) {
+            Navigation::where('redirect_url', '/stranica/' . $page->slug)
+                ->delete();
+        }
+
+        Page::whereIn('id', $ids)->delete();
+
+
+        return response()->json(['success' => true]);
     }
 }

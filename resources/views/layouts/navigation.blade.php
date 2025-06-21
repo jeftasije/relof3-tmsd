@@ -149,7 +149,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                <button data-drawer-target="page-sidebar" data-drawer-toggle="page-sidebar" aria-controls="page-sidebar" type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-template">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M4 4m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z" />
@@ -314,7 +314,7 @@
                                     {{ App::getLocale() === 'en' ? 'Reorder' : (App::getLocale() === 'sr-Cyrl' ? 'Промени редослед' : 'Promeni redosled') }}
                                 </button>
                             </div>
-                            <button id="delete-selected" class="px-2 py-2 bg-red-500 text-white rounded-3xl hover:bg-red-600 focus:outline-none">
+                            <button id="delete-selected-nav" class="px-2 py-2 bg-red-500 text-white rounded-3xl hover:bg-red-600 focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M4 7l16 0" />
@@ -552,6 +552,9 @@
                         </div>
                     </div>
                 </aside>
+
+                @include('layouts.pageSideNavigation')
+
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
@@ -908,7 +911,7 @@
             sectionNameInput.value = '';
         });
 
-        const deleteBtn = document.getElementById('delete-selected');
+        const deleteBtn = document.getElementById('delete-selected-nav');
         const deleteModal = document.getElementById('delete-modal');
         const deleteMsg = document.getElementById('delete-modal-message');
         const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
