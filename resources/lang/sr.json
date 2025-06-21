@@ -9,7 +9,7 @@
     },
     "library": {
         "name": "Narodna biblioteka \"Dositej Obradović\"",
-        "address": "Stevana Nemanja 23, 36300 Novi Pazar",
+        "address": "Stevana Nemanje 2, 36300 Novi Pazar",
         "address_label": "Adresa",
         "pib": "101234566",
         "pib_label": "PIB",
@@ -33,6 +33,7 @@
     "header.search_button": "Pretraži",
     "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
     "language_sr": "Srpski",
+    "language_sr_cy": "Српски",
     "language_en": "Engleski",
     "validation.name_required": "Naziv biblioteke je obavezan.",
     "validation.name_string": "Naziv biblioteke mora biti tekst.",

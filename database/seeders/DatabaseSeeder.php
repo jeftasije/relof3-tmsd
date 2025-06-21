@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
             ExtendedNewsSeeder::class,
             NavigationSeeder::class,
             ProcurementSeeder::class,
-            OrganisationalStructureSeeder::class,
+            OrganisationalStructureSeeder::class, 
         ]);
 
         if (!User::where('email', 'test@example.com')->exists()) {
@@ -47,5 +47,4 @@ class DatabaseSeeder extends Seeder
             ]);
         }
     }
-
 }
