@@ -11,6 +11,8 @@ class Employee extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
+        'name_cy',
         'position',
         'position_en',
         'position_cy',
@@ -25,6 +27,7 @@ class Employee extends Model
     ];
 
     protected $appends = [
+        'translated_name',
         'translated_position',
         'translated_biography',
     ];

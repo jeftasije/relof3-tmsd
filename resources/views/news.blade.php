@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-guest-layout> 
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
             <div></div>

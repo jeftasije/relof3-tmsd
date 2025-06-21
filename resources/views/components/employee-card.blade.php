@@ -3,8 +3,10 @@
   style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);"
   x-data="{
     editing: false,
+    name: @js($employee->translate('name')),
     biography: @js($employee->translated_biography),
     position: @js($employee->translated_position),
+    originalName: @js($employee->translate('name')),
     originalBiography: @js($employee->translated_biography),
     originalPosition: @js($employee->translated_position),
     imageSrc: '{{ asset($employee->image_path) }}',
@@ -21,11 +23,13 @@
             'Accept': 'application/json',
           },
           body: JSON.stringify({
+            name: this.name,
             biography: this.biography,
             position: this.position,
           }),
         });
         if (!response.ok) throw new Error('Save failed');
+        this.originalName = this.name;
         this.originalBiography = this.biography;
         this.originalPosition = this.position;
         this.editing = false;
@@ -36,6 +40,7 @@
       }
     },
     cancel() {
+      this.name = this.originalName;
       this.biography = this.originalBiography;
       this.position = this.originalPosition;
       this.editing = false;
@@ -98,7 +103,7 @@
         <img
             class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105 cursor-pointer"
             :src="imageSrc"
-            alt="{{ $employee->name }}"
+            alt="{{ $employee->translate('name') }}"
             @click.prevent="editing ? $refs.fileInput.click() : null"
         />
         <input type="file" x-ref="fileInput" class="hidden" @change="uploadImage" accept="image/*">
@@ -112,10 +117,17 @@
         <div>
             <a href="{{ route('employees.show', $employee->id) }}">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);">
-                    {{ $employee->name }}
+                    {{ $employee->translate('name') }}
                 </h5>
             </a>
 
+            <template x-if="editing">
+                <input
+                  type="text"
+                  x-model="name"
+                  class="mb-2 w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                />
+            </template>
             <template x-if="!editing">
                 <p class="mb-2 font-medium text-gray-700 dark:text-gray-300" style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);" x-text="position"></p>
             </template>
