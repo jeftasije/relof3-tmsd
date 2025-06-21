@@ -20,16 +20,19 @@ class GalleryController extends Controller
 
     public function upload(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:jpg,jpeg,png,mp4,mov,avi|max:51200',
-        ]);
-
         $file = $request->file('file');
-        $path = $file->store('public/gallery');
-        $type = str_starts_with($file->getMimeType(), 'video') ? 'video' : 'image';
+        $filePath = $file->store('gallery', 'public'); 
+        $mime = $file->getMimeType();
+        if(strstr($mime, "video/")){
+            $type = 'video';
+        }else if(strstr($mime, "image/")){
+            $type = 'image';
+
+        }
+        
 
         GalleryItem::create([
-            'path' => $path,
+            'path' => $filePath,
             'type' => $type,
         ]);
 
