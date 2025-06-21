@@ -1,7 +1,3 @@
-@php
-    $skills = is_array($extendedBiography->skills) ? $extendedBiography->skills : (array) $extendedBiography->skills;
-@endphp
-{{ implode(', ', $skills) }}
 <div 
   class="relative max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col"
   style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);"
@@ -14,10 +10,11 @@
     image: '{{ asset($news->image_path ?? '/images/default-news.jpg') }}',
     newImage: null,
     saving: false,
+    showDeleteModal: false,
+    confirmDeleteUrl: '',
     async save() {
       this.saving = true;
       try {
-        // Prvo sacuvaj tekstualne izmene
         const response = await fetch('{{ route('news.update', $news->id) }}', {
           method: 'PUT',
           headers: {
@@ -32,7 +29,6 @@
           }),
         });
         if (!response.ok) throw new Error('Save failed');
-        // Ako ima nova slika, uploaduj je posebno
         if(this.newImage) {
           const formData = new FormData();
           formData.append('image', this.newImage);
@@ -70,6 +66,17 @@
         this.newImage = file;
         this.image = URL.createObjectURL(file);
       }
+    },
+    openDeleteModal(url) {
+      this.confirmDeleteUrl = url;
+      this.showDeleteModal = true;
+    },
+    closeDeleteModal() {
+      this.confirmDeleteUrl = '';
+      this.showDeleteModal = false;
+    },
+    confirmDelete() {
+      this.$refs.deleteForm.submit();
     }
   }"
 >
@@ -89,16 +96,12 @@
           >
             {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
           </button>
-          <form method="POST" action="{{ route('news.destroy', $news->id) }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600"
-              onclick="return confirm('{{ __('Are you sure you want to delete this news?') }}');"
-            >
-              {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
-            </button>
-          </form>
+          <button 
+            @click.prevent="openDeleteModal('{{ route('news.destroy', $news->id) }}'); open = false"
+            class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600"
+          >
+            {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
+          </button>
         </div>
       </div>
     </template>
@@ -182,5 +185,28 @@
         </svg>
       </a>
     </div>
+  </div>
+
+  <div x-show="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6">
+          <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+              {{ App::getLocale() === 'en' ? 'Confirm Deletion' : (App::getLocale() === 'sr-Cyrl' ? 'Потврда брисања' : 'Potvrda brisanja') }}
+          </h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-6">
+              {{ App::getLocale() === 'en' ? 'Are you sure you want to delete this news?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете ову вест?' : 'Da li ste sigurni da želite da obrišete ovu vest?') }}
+          </p>
+          <div class="flex justify-end gap-2">
+              <button @click="closeDeleteModal()" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                  {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+              </button>
+              <form :action="confirmDeleteUrl" method="POST" x-ref="deleteForm">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white">
+                      {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
+                  </button>
+              </form>
+          </div>
+      </div>
   </div>
 </div>

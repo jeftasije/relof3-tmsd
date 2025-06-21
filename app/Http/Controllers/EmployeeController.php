@@ -113,7 +113,6 @@ class EmployeeController extends Controller
             'position' => 'required|string|max:255',
             'biography' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
-
             'biography_extended' => 'nullable|string',
             'university' => 'nullable|string|max:255',
             'experience' => 'nullable|string',
@@ -127,80 +126,85 @@ class EmployeeController extends Controller
             $validated['image_path'] = 'images/' . $filename;
         }
 
-        $name_src      = $validated['name'];
-        $position_src  = $validated['position'];
+        $name_src = $validated['name'];
+        $position_src = $validated['position'];
         $biography_src = $validated['biography'] ?? '';
+        $bio_ext_src = $validated['biography_extended'] ?? '';
+        $univ_src = $validated['university'] ?? '';
+        $exp_src = $validated['experience'] ?? '';
+        $skills_src = $validated['skills'] ?? '';
+        $skills_arr = array_filter(array_map('trim', preg_split('/[,;]+/', $skills_src)));
 
         $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $name_src);
 
         if ($is_cyrillic) {
-            $name_lat      = $this->languageMapper->cyrillic_to_latin($name_src);
-            $position_lat  = $this->languageMapper->cyrillic_to_latin($position_src);
+            $name_lat = $this->languageMapper->cyrillic_to_latin($name_src);
+            $position_lat = $this->languageMapper->cyrillic_to_latin($position_src);
             $biography_lat = $this->languageMapper->cyrillic_to_latin($biography_src);
+            $bio_ext_lat = $this->languageMapper->cyrillic_to_latin($bio_ext_src);
+            $univ_lat = $this->languageMapper->cyrillic_to_latin($univ_src);
+            $exp_lat = $this->languageMapper->cyrillic_to_latin($exp_src);
+            $skills_lat = array_map(function ($s) { return $this->languageMapper->cyrillic_to_latin($s); }, $skills_arr);
         } else {
-            $name_lat      = $name_src;
-            $position_lat  = $position_src;
+            $name_lat = $name_src;
+            $position_lat = $position_src;
             $biography_lat = $biography_src;
+            $bio_ext_lat = $bio_ext_src;
+            $univ_lat = $univ_src;
+            $exp_lat = $exp_src;
+            $skills_lat = $skills_arr;
         }
 
-        $name_cy      = $this->languageMapper->latin_to_cyrillic($name_lat);
-        $position_cy  = $this->languageMapper->latin_to_cyrillic($position_lat);
+        $name_en = $this->translate->setSource('sr')->setTarget('en')->translate($name_lat);
+        $position_en = $this->translate->setSource('sr')->setTarget('en')->translate($position_lat);
+        $biography_en = $this->translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+
+        $name_cy = $this->languageMapper->latin_to_cyrillic($name_lat);
+        $position_cy = $this->languageMapper->latin_to_cyrillic($position_lat);
         $biography_cy = $this->languageMapper->latin_to_cyrillic($biography_lat);
 
-        $name_translated      = $this->translate->setSource('sr')->setTarget('en')->translate($name_lat);
-        $position_translated  = $this->translate->setSource('sr')->setTarget('en')->translate($position_lat);
-        $biography_translated = $this->translate->setSource('sr')->setTarget('en')->translate($biography_lat);
-
         $employee = Employee::create([
-            'name'                 => $name_lat,
-            'name_translated'      => $name_translated,
-            'name_cy'              => $name_cy,
-            'position'             => $position_lat,
-            'position_translated'  => $position_translated,
-            'position_cy'          => $position_cy,
-            'biography'            => $biography_lat,
-            'biography_translated' => $biography_translated,
-            'biography_cy'         => $biography_cy,
-            'image_path'           => $validated['image_path'] ?? null,
+            'name'         => $name_lat,
+            'name_en'      => $name_en,
+            'name_cy'      => $name_cy,
+            'position'     => $position_lat,
+            'position_en'  => $position_en,
+            'position_cy'  => $position_cy,
+            'biography'    => $biography_lat,
+            'biography_en' => $biography_en,
+            'biography_cy' => $biography_cy,
+            'image_path'   => $validated['image_path'] ?? null,
         ]);
 
-        $bio_ext_lat = $validated['biography_extended'] ?? '';
-        $univ_lat    = $validated['university'] ?? '';
-        $exp_lat     = $validated['experience'] ?? '';
-        $skills_lat  = $validated['skills'] ?? '';
-
-        $skills_arr = array_filter(array_map('trim', preg_split('/[,;]+/', $skills_lat)));
+        $bio_ext_translated = $this->translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
+        $univ_translated    = $this->translate->setSource('sr')->setTarget('en')->translate($univ_lat);
+        $exp_translated     = $this->translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+        $skills_translated = [];
+        foreach ($skills_lat as $skill) {
+            $skills_translated[] = $this->translate->setSource('sr')->setTarget('en')->translate($skill);
+        }
 
         $bio_ext_cy = $this->languageMapper->latin_to_cyrillic($bio_ext_lat);
         $univ_cy    = $this->languageMapper->latin_to_cyrillic($univ_lat);
         $exp_cy     = $this->languageMapper->latin_to_cyrillic($exp_lat);
         $skills_cy  = array_map(
             fn($skill) => $this->languageMapper->latin_to_cyrillic($skill),
-            $skills_arr
+            $skills_lat
         );
 
-        $bio_ext_translated = $this->translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
-        $univ_translated    = $this->translate->setSource('sr')->setTarget('en')->translate($univ_lat);
-        $exp_translated     = $this->translate->setSource('sr')->setTarget('en')->translate($exp_lat);
-
-        $skills_translated = [];
-        foreach ($skills_arr as $skill) {
-            $skills_translated[] = $this->translate->setSource('sr')->setTarget('en')->translate($skill);
-        }
-
         $employee->extendedBiography()->create([
-            'biography'            => $bio_ext_lat,
-            'biography_translated' => $bio_ext_translated,
-            'biography_cy'         => $bio_ext_cy,
-            'university'           => $univ_lat,
-            'university_translated'=> $univ_translated,
-            'university_cy'        => $univ_cy,
-            'experience'           => $exp_lat,
-            'experience_translated'=> $exp_translated,
-            'experience_cy'        => $exp_cy,
-            'skills'               => $skills_arr,
-            'skills_translated'    => $skills_translated,
-            'skills_cy'            => $skills_cy,
+            'biography'             => $bio_ext_lat,
+            'biography_translated'  => $bio_ext_translated,
+            'biography_cy'          => $bio_ext_cy,
+            'university'            => $univ_lat,
+            'university_translated' => $univ_translated,
+            'university_cy'         => $univ_cy,
+            'experience'            => $exp_lat,
+            'experience_translated' => $exp_translated,
+            'experience_cy'         => $exp_cy,
+            'skills'                => $skills_lat,
+            'skills_translated'     => $skills_translated,
+            'skills_cy'             => $skills_cy,
         ]);
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
