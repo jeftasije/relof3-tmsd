@@ -1,3 +1,7 @@
+@php
+    $skills = is_array($extendedBiography->skills) ? $extendedBiography->skills : (array) $extendedBiography->skills;
+@endphp
+{{ implode(', ', $skills) }}
 <div 
   class="relative max-w-sm h-full bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 flex flex-col"
   style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);"
@@ -136,7 +140,7 @@
       </template>
 
       <p class="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-        {{ $news->author ?? (App::getLocale() === 'en' ? 'Unknown author' : (App::getLocale() === 'sr-Cyrl' ? 'Непознат аутор' : 'Nepoznat autor')) }} • {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}
+        {{ $news->translate('author') ?? (App::getLocale() === 'en' ? 'Unknown author' : (App::getLocale() === 'sr-Cyrl' ? 'Непознат аутор' : 'Nepoznat autor')) }} • {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}
       </p>
 
       <template x-if="!editing">

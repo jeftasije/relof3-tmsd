@@ -37,6 +37,17 @@ class Employee extends Model
         return $this->hasOne(ExtendedBiography::class);
     }
 
+    public function getTranslatedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'en') {
+            return $this->name_en ?? $this->name;
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            return $this->name_cy ?? $this->name;
+        }
+        return $this->name;
+    }
+
     public function getTranslatedPositionAttribute()
     {
         $locale = App::getLocale();
