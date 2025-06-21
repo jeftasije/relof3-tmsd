@@ -61,6 +61,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+    Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 });
 
 Route::get('/usluge', function () {
@@ -98,14 +101,7 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
-
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
-Route::post('/galerija/upload', [GalleryController::class, 'upload'])
-    ->name('gallery.upload')
-    ->middleware('auth');
 
-Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])
-    ->name('gallery.destroy')
-    ->middleware('auth');
 require __DIR__.'/auth.php';
 
