@@ -12,6 +12,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
 
@@ -101,6 +102,8 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
+Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
 Route::get('/galerija', function () {
     return view('gallery');
@@ -108,4 +111,3 @@ Route::get('/galerija', function () {
 
 
 require __DIR__.'/auth.php';
-
