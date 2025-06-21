@@ -6,28 +6,31 @@
     </style>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            {{ App::getLocale() === 'en' ? 'Edit Footer' : 'Uredi Podnožje' }}
+            {{ App::getLocale() === 'en' ? 'Edit Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди подножје' : 'Uredi Podnožje') }}
         </h1>
         
         <p class="mb-6 text-gray-700 dark:text-gray-300">
             {{ App::getLocale() === 'en' ? 
                 'Fill in the details for changes in the Serbian form, then review the details in English in the form below. You can edit them if necessary.' : 
-                'Popunite podatke za promenu u formi za srpski jezik, a potom pregledajte podatke na engleskom jeziku u formi ispod. Možete ih ispraviti ukoliko ima potrebe.' }}
+                (App::getLocale() === 'sr-Cyrl' ? 
+                    'Попуните податке за промену у форми за српски језик, а потом прегледајте податке на енглеском језику у форми испод. Можете их исправити уколико има потребе.' : 
+                    'Popunite podatke za promenu u formi za srpski jezik, a potom pregledajte podatke na engleskom jeziku u formi ispod. Možete ih ispraviti ukoliko ima potrebe.') 
+            }}
             <br>
             <a href="#footer-preview" class="text-indigo-600 hover:underline">
-                {{ App::getLocale() === 'en' ? 'To view the footer layout, check the bottom of the page.' : 'Za prikaz izgleda podnožja pogledajte dno stranice.' }}
+                {{ App::getLocale() === 'en' ? 'To view the footer layout, check the bottom of the page.' : (App::getLocale() === 'sr-Cyrl' ? 'За приказ изгледа подножја погледајте дно странице.' : 'Za prikaz izgleda podnožja pogledajte dno stranice.') }}
             </a>
         </p>
 
         @if (session('success'))
             <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
-                {{ App::getLocale() === 'en' ? 'Footer successfully edited.' : 'Podnožje uspešno ažurirano.' }}
+                {{ App::getLocale() === 'en' ? 'Footer successfully edited.' : (App::getLocale() === 'sr-Cyrl' ? 'Подножје успешно ажурирано.' : 'Podnožje uspešno ažurirano.') }}
             </div>
         @endif
 
         <div class="mb-12">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                {{ App::getLocale() === 'en' ? 'Serbian Data' : 'Srpski Podaci' }}
+                {{ App::getLocale() === 'en' ? 'Serbian Data' : (App::getLocale() === 'sr-Cyrl' ? 'Српски Подаци' : 'Srpski Podaci') }}
             </h2>
             <form action="{{ route('footer.edit.sr') }}" method="POST" enctype="multipart/form-data">
                 @if ($errors->any())
@@ -46,12 +49,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Library Information' : 'Podaci o Biblioteci' }}
+                            {{ App::getLocale() === 'en' ? 'Library Information' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци о Библиотеци' : 'Podaci o Biblioteci') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Library Name' : 'Naziv Biblioteke' }}
+                                {{ App::getLocale() === 'en' ? 'Library Name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив Библиотеке' : 'Naziv Biblioteke') }}
                             </label>
                             <textarea
                                 id="name"
@@ -66,7 +69,7 @@
 
                         <div class="mb-4">
                             <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Address' : 'Adresa' }}
+                                {{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }}
                             </label>
                             <textarea
                                 id="address"
@@ -81,7 +84,7 @@
 
                         <div class="mb-4">
                             <label for="pib" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB' }}
+                                {{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}
                             </label>
                             <input
                                 type="text"
@@ -97,7 +100,7 @@
 
                         <div class="mb-4">
                             <label for="logo_light" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Otpremite Logo (Svetla tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми Лого (Светла тема)' : 'Otpremite Logo (Svetla tema)') }}
                             </label>
                             <input
                                 type="file"
@@ -113,7 +116,7 @@
 
                         <div class="mb-4">
                             <label for="logo_dark" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Otpremite Logo (Tamna tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми Лого (Тамна тема)' : 'Otpremite Logo (Tamna tema)') }}
                             </label>
                             <input
                                 type="file"
@@ -130,12 +133,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Contact Information' : 'Kontakt Informacije' }}
+                            {{ App::getLocale() === 'en' ? 'Contact Information' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт Информације' : 'Kontakt Informacije') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Phone' : 'Telefon' }}
+                                {{ App::getLocale() === 'en' ? 'Phone' : (App::getLocale() === 'sr-Cyrl' ? 'Телефон' : 'Telefon') }}
                             </label>
                             <input
                                 type="text"
@@ -151,7 +154,7 @@
 
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Email' : 'Mejl adresa' }}
+                                {{ App::getLocale() === 'en' ? 'Email' : (App::getLocale() === 'sr-Cyrl' ? 'Мејл адреса' : 'Mejl adresa') }}
                             </label>
                             <input
                                 type="email"
@@ -167,7 +170,7 @@
 
                         <div class="mb-4">
                             <label for="facebook" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Facebook URL' : 'Facebook URL' }}
+                                {{ App::getLocale() === 'en' ? 'Facebook URL' : (App::getLocale() === 'sr-Cyrl' ? 'Facebook URL' : 'Facebook URL') }}
                             </label>
                             <input
                                 type="url"
@@ -183,7 +186,7 @@
 
                         <div class="mb-4">
                             <label for="twitter" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Twitter URL' : 'Twitter URL' }}
+                                {{ App::getLocale() === 'en' ? 'Twitter URL' : (App::getLocale() === 'sr-Cyrl' ? 'Twitter URL' : 'Twitter URL') }}
                             </label>
                             <input
                                 type="url"
@@ -200,12 +203,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}
+                            {{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="work_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Working Hours (one per line)' : 'Radno Vreme (jedan po redu)' }}
+                                {{ App::getLocale() === 'en' ? 'Working Hours (one per line)' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време (један по реду)' : 'Radno Vreme (jedan po redu)') }}
                             </label>
                             <textarea
                                 id="work_hours"
@@ -221,12 +224,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Map and Copyrights' : 'Mapa i Autorska Prava' }}
+                            {{ App::getLocale() === 'en' ? 'Map and Copyrights' : (App::getLocale() === 'sr-Cyrl' ? 'Мапа и Ауторска Права' : 'Mapa i Autorska Prava') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="map_embed" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Google Maps Embed URL' : 'Google Maps Embed URL' }}
+                                {{ App::getLocale() === 'en' ? 'Google Maps Embed URL' : (App::getLocale() === 'sr-Cyrl' ? '"Google Maps URL"' : '"Google Maps URL"') }}
                             </label>
                             <input
                                 type="url"
@@ -242,7 +245,7 @@
 
                         <div class="mb-4">
                             <label for="copyrights" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Copyright Text' : 'Tekst Autorskih Prava' }}
+                                {{ App::getLocale() === 'en' ? 'Copyright Text' : (App::getLocale() === 'sr-Cyrl' ? 'Текст Ауторских Права' : 'Tekst Autorskih Prava') }}
                             </label>
                             <textarea
                                 id="copyrights"
@@ -262,7 +265,7 @@
                         type="submit"
                         class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {{ App::getLocale() === 'en' ? 'Save Serbian Data' : 'Sačuvaj' }}
+                        {{ App::getLocale() === 'en' ? 'Save Serbian Data' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>
                 </div>
             </form>
@@ -270,7 +273,7 @@
 
         <div class="mb-12">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                {{ App::getLocale() === 'en' ? 'English Data' : 'Engleski Podaci' }}
+                {{ App::getLocale() === 'en' ? 'English Data' : (App::getLocale() === 'sr-Cyrl' ? 'Енглески Подаци' : 'Engleski Podaci') }}
             </h2>
             <form action="{{ route('footer.edit.en') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -279,12 +282,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Library Information' : 'Podaci o Biblioteci' }}
+                            {{ App::getLocale() === 'en' ? 'Library Information' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци о Библиотеци' : 'Podaci o Biblioteci') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="name_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Library Name' : 'Naziv Biblioteke' }}
+                                {{ App::getLocale() === 'en' ? 'Library Name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив Библиотеке' : 'Naziv Biblioteke') }}
                             </label>
                             <textarea
                                 id="name_en"
@@ -299,7 +302,7 @@
 
                         <div class="mb-4">
                             <label for="address_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Address' : 'Adresa' }}
+                                {{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }}
                             </label>
                             <textarea
                                 id="address_en"
@@ -314,7 +317,7 @@
 
                         <div class="mb-4">
                             <label for="pib_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB' }}
+                                {{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}
                             </label>
                             <input
                                 type="text"
@@ -330,7 +333,7 @@
 
                         <div class="mb-4">
                             <label for="logo_light_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : 'Otpremite Logo (Svetla Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Light Theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми Лого (Светла тема)' : 'Otpremite Logo (Svetla Tema)') }}
                             </label>
                             <input
                                 type="file"
@@ -346,7 +349,7 @@
 
                         <div class="mb-4">
                             <label for="logo_dark_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : 'Otpremite Logo (Tamna Tema)' }}
+                                {{ App::getLocale() === 'en' ? 'Upload Logo (Dark Theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми Лого (Тамна тема)' : 'Otpremite Logo (Tamna Tema)') }}
                             </label>
                             <input
                                 type="file"
@@ -363,12 +366,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Contact Information' : 'Kontakt Informacije' }}
+                            {{ App::getLocale() === 'en' ? 'Contact Information' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт Информације' : 'Kontakt Informacije') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="phone_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Phone' : 'Telefon' }}
+                                {{ App::getLocale() === 'en' ? 'Phone' : (App::getLocale() === 'sr-Cyrl' ? 'Телефон' : 'Telefon') }}
                             </label>
                             <input
                                 type="text"
@@ -384,7 +387,7 @@
 
                         <div class="mb-4">
                             <label for="email_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Email' : 'Mejl adresa' }}
+                                {{ App::getLocale() === 'en' ? 'Email' : (App::getLocale() === 'sr-Cyrl' ? 'Мејл адреса' : 'Mejl adresa') }}
                             </label>
                             <input
                                 type="email"
@@ -400,7 +403,7 @@
 
                         <div class="mb-4">
                             <label for="facebook_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Facebook URL' : 'Facebook URL' }}
+                                {{ App::getLocale() === 'en' ? 'Facebook URL' : (App::getLocale() === 'sr-Cyrl' ? 'Facebook URL' : 'Facebook URL') }}
                             </label>
                             <input
                                 type="url"
@@ -416,7 +419,7 @@
 
                         <div class="mb-4">
                             <label for="twitter_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Twitter URL' : 'Twitter URL' }}
+                                {{ App::getLocale() === 'en' ? 'Twitter URL' : (App::getLocale() === 'sr-Cyrl' ? 'Twitter URL' : 'Twitter URL') }}
                             </label>
                             <input
                                 type="url"
@@ -433,12 +436,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme' }}
+                            {{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="work_hours_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Working Hours (one per line)' : 'Radno Vreme (jedan po redu)' }}
+                                {{ App::getLocale() === 'en' ? 'Working Hours (one per line)' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време (један по реду)' : 'Radno Vreme (jedan po redu)') }}
                             </label>
                             <textarea
                                 id="work_hours_en"
@@ -454,12 +457,12 @@
 
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Map and Copyrights' : 'Mapa i Autorska Prava' }}
+                            {{ App::getLocale() === 'en' ? 'Map and Copyrights' : (App::getLocale() === 'sr-Cyrl' ? 'Мапа и Ауторска Права' : 'Mapa i Autorska Prava') }}
                         </h3>
                         
                         <div class="mb-4">
                             <label for="map_embed_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Google Maps Embed URL' : 'Google Maps Embed URL' }}
+                                {{ App::getLocale() === 'en' ? 'Google Maps Embed URL' : (App::getLocale() === 'sr-Cyrl' ? '"Google Maps URL"' : '"Google Maps URL"') }}
                             </label>
                             <input
                                 type="url"
@@ -475,7 +478,7 @@
 
                         <div class="mb-4">
                             <label for="copyrights_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {{ App::getLocale() === 'en' ? 'Copyright Text' : 'Tekst Autorskih Prava' }}
+                                {{ App::getLocale() === 'en' ? 'Copyright Text' : (App::getLocale() === 'sr-Cyrl' ? 'Текст Ауторских Права' : 'Tekst Autorskih Prava') }}
                             </label>
                             <textarea
                                 id="copyrights_en"
@@ -495,7 +498,7 @@
                         type="submit"
                         class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        {{ App::getLocale() === 'en' ? 'Save English Data' : 'Sačuvaj' }}
+                        {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>
                 </div>
             </form>
@@ -503,15 +506,15 @@
 
         <div class="mt-12">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                {{ App::getLocale() === 'en' ? 'Footer Preview' : 'Pregled Podnožja' }}
+                {{ App::getLocale() === 'en' ? 'Footer Preview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед Подножја' : 'Pregled Podnožja') }}
             </h2>
             <div class="border border-gray-300 dark:border-gray-600 rounded-lg p-4">
                 <div class="mb-4">
                     <label class="mr-4 text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="preview-lang" value="sr" checked> {{ App::getLocale() === 'en' ? 'Serbian' : 'Srpski' }}
+                        <input type="radio" name="preview-lang" value="sr" checked> {{ App::getLocale() === 'en' ? 'Serbian' : (App::getLocale() === 'sr-Cyrl' ? 'Српски' : 'Srpski') }}
                     </label>
                     <label class="text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="preview-lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : 'Engleski' }}
+                        <input type="radio" name="preview-lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'Енглески' : 'Engleski') }}
                     </label>
                 </div>
                 <footer id="footer-preview" class="bg-white dark:bg-gray-900">
@@ -525,8 +528,8 @@
                                         {{ $libraryData['name'] ?? '' }}
                                     </span>
                                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                        <p><span id="preview-address_label">{{ $libraryData['address_label'] ?? (App::getLocale() === 'en' ? 'Address' : 'Adresa') }}:</span> <span id="preview-address">{{ $libraryData['address'] ?? '' }}</span></p>
-                                        <p><span id="preview-pib_label">{{ $libraryData['pib_label'] ?? (App::getLocale() === 'en' ? 'Tax ID (PIB)' : 'PIB') }}:</span> <span id="preview-pib">{{ $libraryData['pib'] ?? '' }}</span></p>
+                                        <p><span id="preview-address_label">{{ $libraryData['address_label'] }}:</span> <span id="preview-address">{{ $libraryData['address'] ?? '' }}</span></p>
+                                        <p><span id="preview-pib_label">{{ $libraryData['pib_label'] }}:</span> <span id="preview-pib">{{ $libraryData['pib'] ?? '' }}</span></p>
                                     </div>
                                 </a>
                             </div>
@@ -534,7 +537,7 @@
                             <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2 md:basis-1/3 flex-grow">
                                 <div>
                                     <h2 id="preview-work_hours_label" class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                                        {{ $libraryData['work_hours_label'] ?? (App::getLocale() === 'en' ? 'Working Hours' : 'Radno Vreme') }}
+                                        {{ $libraryData['work_hours_label'] }}
                                     </h2>
                                     <ul id="preview-work_hours" class="text-gray-500 dark:text-gray-400 font-medium">
                                         @foreach ($libraryData['work_hours_formatted'] ?? [] as $line)
@@ -545,7 +548,7 @@
 
                                 <div>
                                     <h2 id="preview-phone_label" class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                                        {{ $libraryData['phone_label'] ?? (App::getLocale() === 'en' ? 'Contact' : 'Kontakt') }}
+                                        {{ $libraryData['phone_label'] }}
                                     </h2>
                                     <ul class="ul text-gray-400 dark:text-gray-300 font-medium space-y-2 mb-4">
                                         <li><i class="fas fa-phone me-2"></i> <span id="preview-phone">{{ $libraryData['phone'] ?? '' }}</span></li>
