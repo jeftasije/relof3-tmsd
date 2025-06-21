@@ -94,4 +94,11 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
+
+Route::get('/galerija', function () {
+    return view('gallery');
+})->name('gallery');
+
+
 require __DIR__.'/auth.php';
+
