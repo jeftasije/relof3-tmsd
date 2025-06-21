@@ -12,9 +12,13 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+<<<<<<< HEAD
 use App\Http\Controllers\GalleryController;
+=======
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FooterController;
+>>>>>>> 59397c017ddd865b88d7fd203a87bfaed20b7f2a
 use App\Http\Controllers\CommentController;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,6 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'destroy'])->name('organisationalStructures.delete');
     Route::patch('/organizaciona-struktura/{id}', [OrganisationalStructureController::class, 'edit'])->name('organisationalStructures.edit');
     Route::post('/organizaciona-struktura', [OrganisationalStructureController::class, 'store'])->name('organisationalStructures.store');
+
+    Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
+    Route::patch('/podnozje/sr', [FooterController::class, 'editSr'])->name('footer.edit.sr');
+    Route::patch('/podnozje/en', [FooterController::class, 'editEn'])->name('footer.edit.en');
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
@@ -101,7 +109,16 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
+<<<<<<< HEAD
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
+=======
+Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
+
+Route::get('/galerija', function () {
+    return view('gallery');
+})->name('gallery');
+
+>>>>>>> 59397c017ddd865b88d7fd203a87bfaed20b7f2a
 
 require __DIR__.'/auth.php';
-
