@@ -7,6 +7,8 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
+use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
@@ -59,7 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
+
+    Route::get('/kreiraj-stranicu', [PageController::class, 'builder'])->name('page.builder');
+    Route::post('/kreiraj-stranicu', [PageController::class, 'store'])->name('page.store');
 });
+
+Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
 
 Route::get('/usluge', function () {
     return view('user.services');
@@ -94,4 +103,4 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
