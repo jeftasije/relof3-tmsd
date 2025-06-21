@@ -6,16 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use App\Http\Controllers\LanguageMapperController;
 
 class FooterController extends Controller
 {
     protected $translate;
+    protected $languageMapper;
 
-    public function __construct()
+    public function __construct(LanguageMapperController $languageMapper)
     {
         $this->translate = new GoogleTranslate();
         $this->translate->setSource('sr');
         $this->translate->setTarget('en');
+
+        $this->languageMapper = $languageMapper;
     }
 
     public function show()                              
@@ -54,7 +58,39 @@ class FooterController extends Controller
         $translatedData = $this->translateLibraryData($libraryData);
         $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
 
+        $cyrillicData = $this->convertToCyrillic($libraryData);
+        $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $cyrillicData);
+
         return redirect()->back()->with('success', 'Footer edited successfully.');
+    }
+
+    private function convertToCyrillic(array $libraryData): array
+    {
+        $translatableFields = [
+            'name',
+            'address',
+            'address_label',
+            'pib_label',
+            'phone_label',
+            'work_hours_label',
+            'copyrights',
+        ];
+
+        $cyrillicData = $libraryData;
+
+        foreach ($translatableFields as $field) {
+            if (isset($libraryData[$field]) && !empty($libraryData[$field])) {
+                $cyrillicData[$field] = $this->languageMapper->latin_to_cyrillic($libraryData[$field]);
+            }
+        }
+
+        if (isset($libraryData['work_hours_formatted']) && is_array($libraryData['work_hours_formatted'])) {
+            $cyrillicData['work_hours_formatted'] = array_map(function ($line) {
+                return $this->languageMapper->latin_to_cyrillic($line);
+            }, $libraryData['work_hours_formatted']);
+        }
+
+        return $cyrillicData;
     }
 
     public function editEn(Request $request)

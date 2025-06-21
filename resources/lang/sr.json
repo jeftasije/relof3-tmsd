@@ -11,7 +11,6 @@
         "name": "Narodna biblioteka \"Dositej Obradović\"",
         "address": "Stevana Nemanje 2, 36300 Novi Pazar",
         "address_label": "Adresa",
-        "city": "Novi Pazar",
         "pib": "101234566",
         "pib_label": "PIB",
         "phone": "+381 (0)20 331 010",
@@ -22,7 +21,7 @@
         "work_hours_formatted": [
             "Ponedeljak - Petak: 08:00 - 16:00",
             "Subota: 08:00 - 14:00",
-            "Nedelja: Closed"
+            "Nedelja: Neradna"
         ],
         "work_hours_label": "Radno Vreme",
         "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
