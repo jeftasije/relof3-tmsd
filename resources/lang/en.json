@@ -8,10 +8,9 @@
         "description": "Stay updated with the latest events and happenings at our Public Library."
     },
     "library": {
-        "name": "National Library \"Dositej Obradović\"",
-        "address": "Stevana Nemanje 2, 36300 Novi Pazar",
+        "name": "People's Library \"Dositej Obradović\"",
+        "address": "Stevana Nemanja 2, 36300 Novi Pazar",
         "address_label": "Address",
-        "city": "Novi Pazar",
         "pib": "101234566",
         "pib_label": "Pib",
         "phone": "+381 (0)20 331 010",
@@ -22,7 +21,7 @@
         "work_hours_formatted": [
             "Monday - Friday: 08:00 - 16:00",
             "Saturday: 08:00 - 14:00",
-            "Sunday: Closed"
+            "Sunday: Non-working"
         ],
         "work_hours_label": "Working hours",
         "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
