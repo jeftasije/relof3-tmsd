@@ -57,11 +57,11 @@
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-bottombar">
+                                        <a href="{{ route('footer.show') }}" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-navbar">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                                                <path d="M4 15l16 0" />
+                                                <path d="M4 9l16 0" />
                                             </svg>
                                             <span class="flex-1 ml-3 text-left whitespace-nowrap">
                                                 @switch(App::getLocale())
@@ -70,7 +70,7 @@
                                                 @default Podnožje
                                                 @endswitch
                                             </span>
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             <li>
@@ -474,7 +474,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Help Modal -->
                     <div id="help-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
                         <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-3xl shadow-lg rounded-md bg-white dark:bg-gray-800">
@@ -661,8 +660,6 @@
         transition: background-color 0.4s ease;
     }
 </style>
-
-
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
