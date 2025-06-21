@@ -14,7 +14,14 @@ class ViewServiceProvider extends ServiceProvider
     public function register(): void
     {
         View::composer('layouts.header', function ($view) {
-            $mainSections = Navigation::whereNull('parent_id')->orderBy('id')->get();
+            $mainSections = Navigation::whereNull('parent_id')->orderBy('order')->get();
+            $subSections = Navigation::whereNotNull('parent_id')->with('children')->get()->groupBy('parent_id');
+            $view->with('mainSections', $mainSections);
+            $view->with('subSections', $subSections);
+        });
+
+        View::composer('layouts.navigation', function ($view) {
+            $mainSections = Navigation::whereNull('parent_id')->orderBy('order')->get();
             $subSections = Navigation::whereNotNull('parent_id')->with('children')->get()->groupBy('parent_id');
             $view->with('mainSections', $mainSections);
             $view->with('subSections', $subSections);

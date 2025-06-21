@@ -9,18 +9,23 @@ class ExtendedBiography extends Model
     protected $fillable = [
         'employee_id',
         'biography',
-        'biography_translated',
+        'biography_translated',   
+        'biography_cy',          
         'university',
-        'university_translated',
+        'university_translated',  
+        'university_cy',          
         'experience',
-        'experience_translated',
+        'experience_translated',  
+        'experience_cy',         
         'skills',
-        'skills_translated',
+        'skills_translated',      
+        'skills_cy',             
     ];
 
     protected $casts = [
         'skills' => 'array',
         'skills_translated' => 'array',
+        'skills_cy' => 'array',
     ];
 
     public function employee()
@@ -31,19 +36,19 @@ class ExtendedBiography extends Model
     public function translate(string $field)
     {
         $locale = app()->getLocale();
-        $translatedField = $field . '_translated';
 
-        if (is_array($this->{$translatedField})) {
-            return $this->{$translatedField}[$locale] ?? $this->{$field};
+        if ($locale === 'en') {
+            $translatedField = $field . '_translated';
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $translatedField = $field . '_cy';
+        } else {
+            $translatedField = $field;
         }
 
-        if (is_string($this->{$translatedField})) {
-            return $locale === 'en' && !empty($this->{$translatedField})
-                ? $this->{$translatedField}
-                : $this->{$field};
+        if (isset($this->{$translatedField}) && !empty($this->{$translatedField})) {
+            return $this->{$translatedField};
         }
 
         return $this->{$field};
     }
-
 }
