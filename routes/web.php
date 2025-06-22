@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
-    //Route::get('/kontakt', [ContactController::class, 'adminIndex'])->name('admin.contact.messages');
+    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
 
 });
 

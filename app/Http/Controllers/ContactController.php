@@ -29,4 +29,11 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'Poruka je uspešno poslata!');
     }
 
+    public function answer()
+    {
+        $messages = Contact::latest()->get();
+        return view('contactAnswer', compact('messages'));
+    }
+
+
 }
