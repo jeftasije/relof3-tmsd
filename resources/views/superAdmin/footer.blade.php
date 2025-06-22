@@ -586,7 +586,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="mt-6 md:mt-0 md:basis-1/4 w-full md:w-auto">
                             <iframe
                                 id="preview-map_embed"
@@ -609,24 +608,25 @@
                         <a href="#" class="hover:underline" id="preview-name_footer">{{ $libraryData['name'] ?? '' }}</a>.
                     </div>
                 </div>
-            </footer>
-            <div id="updateModal" tabindex="-1" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
-                <div class="bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md">
-                    <div class="p-6 text-center">
-                        <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">
-                            {{ App::getLocale() === 'en' ? 'Data changed successfully.' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци су успешно ажурирани.' : 'Podaci su uspešno ažurirani.') }}
-                        </h3>
-                        <button 
-                            data-modal-hide="updateModal"
-                            id="confirmCloseButton"
-                            type="button"
-                            class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                        >
-                            {{ App::getLocale() === 'en' ? 'Close' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}
-                        </button>
+                </footer>
+                <div id="updateModal" tabindex="-1" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
+                    <div class="bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md">
+                        <div class="p-6 text-center">
+                            <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">
+                                {{ App::getLocale() === 'en' ? 'Data changed successfully.' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци су успешно ажурирани.' : 'Podaci su uspešno ažurirani.') }}
+                            </h3>
+                            <button 
+                                type="button"
+                                id="confirmCloseButton"
+                                class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                            >
+                                {{ App::getLocale() === 'en' ? 'Close' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
@@ -692,35 +692,115 @@
             });
 
             document.addEventListener('DOMContentLoaded', () => {
-                    const updateModal = document.getElementById('updateModal');
-                    const serbianForm = document.getElementById('serbian-form');
-                    const englishForm = document.getElementById('english-form');
+                const updateModal = document.getElementById('updateModal');
+                const confirmCloseButton = document.getElementById('confirmCloseButton');
+                const serbianForm = document.getElementById('serbian-form');
+                const englishForm = document.getElementById('english-form');
 
-                    if (!updateModal || !serbianForm || !englishForm) {
-                        console.log('One or more elements not found:', { updateModal, serbianForm, englishForm });
-                        return;
-                    }
+                if (!updateModal || !serbianForm || !englishForm || !confirmCloseButton) {
+                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm, confirmCloseButton });
+                    return;
+                }
 
-                    function showModal(lang) {
-                        updateModal.classList.remove('hidden');
-                    }
+                function showModal() {
+                    updateModal.classList.remove('hidden');
+                }
 
-                    serbianForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        showModal('sr');
-                    });
+                function hideModal() {
+                    updateModal.classList.add('hidden');
+                }
 
-                    englishForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        showModal('en');
-                    });
+                // AJAX submission for Serbian form
+                serbianForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(serbianForm);
 
-                    document.querySelectorAll('[data-modal-hide="updateModal"]').forEach(button => {
-                        button.addEventListener('click', () => {
-                            updateModal.classList.add('hidden');
-                        });
-                    });
+                    fetch(serbianForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showModal();
+                            // Update preview with new data if returned
+                            if (data.data) {
+                                const srData = data.data;
+                                document.getElementById('preview-name').textContent = srData.name || '';
+                                document.getElementById('preview-address').textContent = srData.address || '';
+                                document.getElementById('preview-pib').textContent = srData.pib || '';
+                                document.getElementById('preview-phone').textContent = srData.phone || '';
+                                document.getElementById('preview-email').textContent = srData.email || '';
+                                document.getElementById('preview-facebook').href = srData.facebook || '#';
+                                document.getElementById('preview-twitter').href = srData.twitter || '#';
+                                document.getElementById('preview-work_hours').innerHTML = (srData.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
+                                document.getElementById('preview-map_embed').src = srData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
+                                document.getElementById('preview-copyrights').textContent = srData.copyrights || '';
+                                document.getElementById('preview-name_footer').textContent = srData.name || '';
+                                document.getElementById('preview-logo_light').src = srData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
+                                document.getElementById('preview-logo_dark').src = srData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                            }
+                        } else {
+                            console.error('Error:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
-            </script>   
-        </div>
-    </x-app-layout>
+
+                // AJAX submission for English form
+                englishForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(englishForm);
+
+                    fetch(englishForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showModal();
+                            // Update preview with new data if returned
+                            if (data.data) {
+                                const enData = data.data;
+                                document.getElementById('preview-name').textContent = enData.name || '';
+                                document.getElementById('preview-address').textContent = enData.address || '';
+                                document.getElementById('preview-pib').textContent = enData.pib || '';
+                                document.getElementById('preview-phone').textContent = enData.phone || '';
+                                document.getElementById('preview-email').textContent = enData.email || '';
+                                document.getElementById('preview-facebook').href = enData.facebook || '#';
+                                document.getElementById('preview-twitter').href = enData.twitter || '#';
+                                document.getElementById('preview-work_hours').innerHTML = (enData.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
+                                document.getElementById('preview-map_embed').src = enData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
+                                document.getElementById('preview-copyrights').textContent = enData.copyrights || '';
+                                document.getElementById('preview-name_footer').textContent = enData.name || '';
+                                document.getElementById('preview-logo_light').src = enData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
+                                document.getElementById('preview-logo_dark').src = enData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                            }
+                        } else {
+                            console.error('Error:', data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+
+                // Close modal manually
+                confirmCloseButton.addEventListener('click', hideModal);
+
+                // Close modal on overlay click
+                updateModal.addEventListener('click', (event) => {
+                    if (event.target === updateModal) {
+                        hideModal();
+                    }
+                });
+            });
+        </script>
+</x-app-layout>
