@@ -1,8 +1,10 @@
 <script src="//unpkg.com/alpinejs" defer></script>
 
-@if (Request::is('kreiraj-stranicu'))
+@if(Request::is('kreiraj-stranicu*') || Request::is('uredi-stranicu/*'))
 <div class="flex flex-col items-center w-7/12 dark:text-white">
-    <div x-data="{ editing: true, title: '' }" class="mb-6 flex justify-start">
+    <div
+        x-data="{ editing: {{ $isDraft ? 'false' : 'true' }}, title: '{{ addslashes(old('content.title', $content['title'] ?? '')) }}' }" class="mb-6"
+        class="mb-6 flex justify-start">
         <div x-show="editing" class="flex items-center gap-2">
             <input
                 x-model="title"
@@ -28,6 +30,7 @@
                 class="text-3xl font-bold text-gray-800 dark:text-white cursor-pointer hover:text-blue-600 hover:underline transition">
                 <span x-text="title || '{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}'"></span>
             </h1>
+            <input type="hidden" name="content[title]" :value="title">
             <svg xmlns="http://www.w3.org/2000/svg"
                 x-show="!editing"
                 class="absolute top-0 right-[-30px] w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition"
@@ -52,13 +55,15 @@
         </label>
     </div>
     <div class="my-6 w-9/12">
-        <textarea id="large-text-input" rows="4" name="content[text]" class="block w-full p-2.5 text-sm text-gray-900 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ App::getLocale() === 'en' ? 'Write an article here...' : (App::getLocale() === 'sr-Cyrl' ? 'Напишите чланак овде...' : 'Napišite članak ovde...') }}"></textarea>
+        <textarea id="large-text-input" rows="4" name="content[text]" class="block w-full p-2.5 text-sm text-gray-900 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ App::getLocale() === 'en' ? 'Write an article here...' : (App::getLocale() === 'sr-Cyrl' ? 'Напишите чланак овде...' : 'Napišite članak ovde...') }}">
+        {{ old('content.text', $content['text'] ?? '') }}
+        </textarea>
     </div>
 </div>
 @else
 <x-guest-layout>
     <div class="flex flex-col items-center dark:text-white">
-        <h1 class="text-3xl font-bold">{{ $content['title'] ?? '—' }}</h1>
+        <h1 class="text-3xl font-bold">{{ $content['title'] ?? '' }}</h1>
 
         @if (!empty($content['image']))
         <img src="{{ asset('storage/' . $content['image']) }}"

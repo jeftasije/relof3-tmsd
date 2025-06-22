@@ -64,8 +64,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
 
-    Route::get('/kreiraj-stranicu', [PageController::class, 'builder'])->name('page.builder');
+    Route::get('/kreiraj-stranicu', [PageController::class, 'create'])->name('page.create');
     Route::post('/kreiraj-stranicu', [PageController::class, 'store'])->name('page.store');
+    Route::get('/uredi-stranicu/{slug}', [PageController::class, 'edit'])->name('page.edit');
     Route::delete('/stranica', [PageController::class, 'destroy'])->name('page.destroy');
 
 });

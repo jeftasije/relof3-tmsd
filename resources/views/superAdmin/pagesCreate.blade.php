@@ -1,6 +1,6 @@
 <x-app-layout>
     <form
-        action="{{ route('page.store') }}"
+        action="{{ route('page.store') }}?sablon={{ $templateId }}{{ $isDraft ? '&slug='.$slug : '' }}"
         method="POST"
         enctype="multipart/form-data"
         class="flex">
@@ -20,8 +20,8 @@
                 <div class="flex flex-col h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 dark:text-white">
                     <div class="text-center font-semibold text-lg mb-10">
                         @switch(App::getLocale())
-                        @case('en') Page name @break
-                        @case('sr-Cyrl') Назив странице @break
+                        @case('en') Page settings @break
+                        @case('sr-Cyrl') Подешавања странице @break
                         @default Podešavanja stranice
                         @endswitch
                     </div>
@@ -39,7 +39,7 @@
                                     type="text"
                                     id="title"
                                     name="title"
-                                    value="{{ old('page_title') }}"
+                                    value="{{ old('title', $title) }}"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
                         </li>
@@ -56,7 +56,7 @@
                                     type="text"
                                     id="slug"
                                     name="slug"
-                                    value="{{ old('slug') }}"
+                                    value="{{ old('slug', $slug) }}"
                                     data-tooltip-target="tooltip-url"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <div id="tooltip-url" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
@@ -77,7 +77,11 @@
                         <li>
                             <div class="mb-6">
                                 <div
-                                    x-data="{ main: null, sub: null, subSections: {} }"
+                                    x-data="{ 
+                                    main: {{ optional($parentSection)->id ?? (optional($currentSection)->id ?? 'null') }},
+                                    sub: {{ optional($currentSection)->id ?? 'null' }},
+                                    currentId: {{ optional($currentSection)->id ?? 'null' }},
+                                    subSections: {} }"
                                     x-init="subSections = JSON.parse($refs.jsonSubSections.textContent);"
                                     class="flex flex-col gap-2">
 
@@ -89,7 +93,15 @@
                                     <select x-model="main" name="navigation[]" id="main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">Izaberi glavnu sekciju</option>
                                         @foreach ($mainSections as $section)
-                                        <option value="{{ $section->id }}" {{ $section->redirect_url ? 'disabled' : '' }}>{{ $section->name }}</option>
+                                        @php
+                                        $isSelectedMain = $section->id === optional($currentSection)->id || $section->id === optional($parentSection)->id;
+                                        @endphp
+                                        <option
+                                            value="{{ $section->id }}"
+                                            {{ $section->redirect_url ? 'disabled' : '' }}
+                                            {{ $isSelectedMain ? 'selected' : '' }}>
+                                            {{ $section->name }}
+                                        </option>
                                         @endforeach
                                     </select>
 
@@ -97,7 +109,7 @@
                                     <select x-model="sub" name="navigation[]" id="sub" x-show="main" :disabled="!main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">Podkategorija navigacije</option>
                                         <template x-for="item in subSections[main] || []" :key="item.id">
-                                            <option :value="item.id" x-text="item.name"></option>
+                                            <option :value="item.id" x-text="item.name" :selected="item.id === currentId"></option>
                                         </template>
                                     </select>
                                 </div>

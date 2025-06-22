@@ -24,10 +24,12 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('layouts.navigation', function ($view) {
             $mainSections = Navigation::whereNull('parent_id')->orderBy('order')->get();
             $subSections = Navigation::whereNotNull('parent_id')->with('children')->get()->groupBy('parent_id');
-            $pages = Page::all();
+            $unfinishedPages = Page::where('is_active', false)->get();
+            $finishedPages = Page::where('is_active', true)->get();
             $view->with('mainSections', $mainSections);
             $view->with('subSections', $subSections);
-            $view->with('pages', $pages);
+            $view->with('unfinishedPages', $unfinishedPages);
+            $view->with('finishedPages', $finishedPages);
         });
     }
 

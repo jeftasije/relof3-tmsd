@@ -31,9 +31,21 @@
             </button>
         </div>
         <div class="flex flex-col gap-5">
-            @if(count($pages) > 0)
-            <ul id="pagesList" class="space-y-2 mt-4 dark:text-white">
-                @foreach($pages as $page)
+            <label for="pagesList" class="dark:text-white font-semibold ml-6">
+                @switch(App::getLocale())
+                @case('en')
+                Finished pages
+                @break
+                @case('sr-Cyrl')
+                Завршене странице
+                @break
+                @default
+                Zavšene stranice
+                @endswitch
+            </label>
+            @if(count($finishedPages) > 0)
+            <ul id="finishedPagesList" class="space-y-2 dark:text-white">
+                @foreach($finishedPages as $page)
                 <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
                     <input id="checkbox-{{ $page->id }}" data-tooltip-target="tooltip-pages-{{ $page->id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     <div id="tooltip-pages-{{ $page->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
@@ -49,8 +61,8 @@
                         @endswitch
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
-                    <button type="button" class="flex items-center justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
-                        {{ $page->title }}
+                    <button type="button" class="flex items-center overflow-hidden justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
+                        <span class="truncate">{{ $page->title }}</span>
                     </button>
                 </li>
                 @endforeach
@@ -69,7 +81,56 @@
                 @endswitch
             </p>
             @endif
-            <a href="/sabloni" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ml-5 px-2.5 py-2.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            @if (count($unfinishedPages) > 0)
+            <label for="unfinishedPagesList" class="dark:text-white font-semibold ml-6 pt-5 border-t border-gray-200 dark:border-gray-700">
+                @switch(App::getLocale())
+                @case('en')
+                Unfinished pages
+                @break
+                @case('sr-Cyrl')
+                Незавршене странице
+                @break
+                @default
+                Nezavšene stranice
+                @endswitch
+            </label>
+            <ul id="unfinishedPagesList" class="space-y-2 dark:text-white">
+                @foreach($unfinishedPages as $page)
+                <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
+                    <input id="checkbox-{{ $page->id }}" data-tooltip-target="tooltip-pages-{{ $page->id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <div id="tooltip-pages-{{ $page->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                        @switch(App::getLocale())
+                        @case('en')
+                        Check to delete
+                        @break
+                        @case('sr-Cyrl')
+                        Означите како бисте обрисали
+                        @break
+                        @default
+                        Označite kako biste obrisali
+                        @endswitch
+                        <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                    <button type="button" class="flex items-center justify-between overflow-hidden w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
+                        <span class="truncate">{{ $page->title }}</span>
+                        <a href="{{ route('page.edit', $page->slug) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-1.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            @switch(App::getLocale())
+                            @case('en')
+                            Continue editing
+                            @break
+                            @case('sr-Cyrl')
+                            Настави уређивање
+                            @break
+                            @default
+                            Nastavi uređivanje
+                            @endswitch
+                        </a>
+                    </button>
+                </li>
+                @endforeach
+            </ul>
+            @endif
+            <a href="/sabloni" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ml-5 mt-5 px-2.5 py-2.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 @switch(App::getLocale())
                 @case('en')
                 Create a page.
@@ -110,7 +171,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         const locale = '{{ App::getLocale() }}';
 
-        const pagesList = document.getElementById('pagesList');
+        const unfinishedList = document.getElementById('unfinishedPagesList');
+        const finishedList = document.getElementById('finishedPagesList');
         const deletePagesBtn = document.getElementById('delete-selected-pages');
         const deletePagesModal = document.getElementById('delete-modal-page');
         const deletePagesMsg = document.getElementById('delete-modal-page-message');
@@ -119,9 +181,14 @@
         let pendingPagesDeleteIds = [];
 
         deletePagesBtn.addEventListener('click', () => {
-            const checked = Array.from(
-                pagesList.querySelectorAll('input[type="checkbox"]:checked')
-            );
+            const checkedUnfinished = unfinishedList ?
+                Array.from(unfinishedList.querySelectorAll('input[type="checkbox"]:checked')) :
+                [];
+            const checkedFinished = finishedList ?
+                Array.from(finishedList.querySelectorAll('input[type="checkbox"]:checked')) :
+                [];
+            const checked = [...checkedUnfinished, ...checkedFinished];
+
             if (checked.length === 0) {
                 return alert((() => {
                     switch (locale) {
@@ -133,7 +200,6 @@
                             return 'Označite bar jednu stranicu za brisanje.';
                     }
                 })());
-
             }
 
             pendingPagesDeleteIds = checked.map(cb => cb.id.split('-')[1]);
@@ -181,7 +247,6 @@
                                     return 'Uspešno obrisano!';
                             }
                         })());
-
                         window.location.reload();
                     } else {
                         alert((() => {
@@ -194,7 +259,6 @@
                                     return 'Greška pri brisanju.';
                             }
                         })());
-
                     }
                 })
                 .catch(err => {
@@ -209,7 +273,6 @@
                                 return 'Došlo je do greške.';
                         }
                     })());
-
                 });
         });
     });
