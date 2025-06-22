@@ -12,6 +12,8 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
 
@@ -64,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    //Route::get('/kontakt', [ContactController::class, 'adminIndex'])->name('admin.contact.messages');
+
 });
 
 Route::get('/usluge', function () {
@@ -101,10 +106,7 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
-
-Route::get('/galerija', function () {
-    return view('gallery');
-})->name('gallery');
+Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 
 require __DIR__.'/auth.php';
