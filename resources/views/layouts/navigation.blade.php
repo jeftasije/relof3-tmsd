@@ -111,7 +111,13 @@
                                 </button>
                                 <ul id="dropdown-pages" class="hidden py-2 ml-5 space-y-2">
                                     <li>
-                                        <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                        <button
+                                            type="button"
+                                            class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                            data-drawer-target="typography-sidebar"
+                                            data-drawer-toggle="typography-sidebar"
+                                            aria-controls="typography-sidebar"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-letter-case">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M17.5 15.5m-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0" />
@@ -129,7 +135,13 @@
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                        <button
+                                            type="button"
+                                            class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                                            data-drawer-target="color-sidebar"
+                                            data-drawer-toggle="color-sidebar"
+                                            aria-controls="color-sidebar"
+                                        >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" />
@@ -282,6 +294,63 @@
                                     </li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </aside>
+                
+<!-- Tipografija sidebar -->
+                <aside id="typography-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-typography">
+                    <div class="flex justify-start">
+                        <button data-drawer-target="typography-sidebar" data-drawer-toggle="typography-sidebar" aria-controls="typography-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                            <span class="sr-only">Close sidebar</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l14 0" />
+                                <path d="M5 12l6 6" />
+                                <path d="M5 12l6 -6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
+                        <p class="text-lg text-center font-semibold dark:text-white">
+                            @switch(App::getLocale())
+                            @case('en') Typography @break
+                            @case('sr-Cyrl') Типографија @break
+                            @default Tipografija
+                            @endswitch
+                        </p>
+                        <!-- Ovde dodaj sav sadržaj koji želiš da prikažeš za tipografiju -->
+                        <div class="mt-4 text-gray-700 dark:text-white">
+                            <!-- Primer sadržaja -->
+                            <p>Ovde ide podešavanje, pregled i uređivanje tipografije...</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Boje sidebar -->
+                <aside id="color-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-color">
+                    <div class="flex justify-start">
+                        <button data-drawer-target="color-sidebar" data-drawer-toggle="color-sidebar" aria-controls="color-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                            <span class="sr-only">Close sidebar</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l14 0" />
+                                <path d="M5 12l6 6" />
+                                <path d="M5 12l6 -6" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
+                        <p class="text-lg text-center font-semibold dark:text-white">
+                            @switch(App::getLocale())
+                            @case('en') Colors @break
+                            @case('sr-Cyrl') Боје @break
+                            @default Boje
+                            @endswitch
+                        </p>
+<!-- Ovde dodaj sadržaj za boje -->
+                        <div class="mt-4 text-gray-700 dark:text-white">
+                            <p>Ovde ide pregled, izbor i uređivanje boja...</p>
                         </div>
                     </div>
                 </aside>
