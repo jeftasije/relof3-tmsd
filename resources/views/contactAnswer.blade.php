@@ -44,8 +44,20 @@
                             @endswitch
                         </strong> {{ $message->first_name }} {{ $message->last_name }}</p>
                         <p><strong>Email:</strong> {{ $message->email ?? 'Nije unet' }}</p>
-                        <p><strong>Telefon:</strong> {{ $message->phone ?? 'Nije unet' }}</p>
-                        <p><strong>Poruka:</strong> {{ $message->message }}</p>
+                        <p><strong>
+                            @switch(App::getLocale())
+                            @case('en') Phone: @break
+                            @case('sr-Cyrl') Телефон: @break
+                            @default Telefon:
+                            @endswitch
+                        </strong> {{ $message->phone ?? 'Nije unet' }}</p>
+                        <p><strong>
+                            @switch(App::getLocale())
+                            @case('en') Message: @break
+                            @case('sr-Cyrl') Порука: @break
+                            @default Poruka:
+                            @endswitch
+                        </strong> {{ $message->message }}</p>
 
                         <div class="mt-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
