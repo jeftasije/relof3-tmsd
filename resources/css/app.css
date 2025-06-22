@@ -6,3 +6,56 @@
 .rotate-180 {
   transform: rotate(180deg);
 }
+
+:root {
+  --primary-bg: #fff;
+  --primary-text: #1f2937;
+  --secondary-text: #64748b;
+  --accent: #22c55e;
+}
+
+body {
+  background: var(--primary-bg);
+  color: var(--primary-text);
+}
+
+.accent {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* --- Palette cards --- */
+.palette-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--primary-bg, #fff);
+  border-radius: 1rem;
+  padding: 1rem 1.3rem;
+  margin-bottom: 1.1rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border .2s, box-shadow .2s;
+  box-shadow: 0 1px 4px 0 rgb(30 41 59 / 5%);
+  gap: 1rem;
+}
+.palette-card.selected {
+  border: 2px solid #22c55e;
+  box-shadow: 0 2px 12px 0 rgb(34 197 94 / 18%);
+}
+.palette-circles {
+  display: flex;
+  gap: 0.5rem;
+}
+.palette-circle {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid #f3f4f6;
+  box-shadow: 0 0 0 1px #ccc;
+}
+.palette-label {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-left: 0.7rem;
+}

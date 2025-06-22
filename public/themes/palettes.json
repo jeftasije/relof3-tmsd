@@ -1,0 +1,79 @@
+{
+  "palettes": {
+    "default": {
+      "label": "Standardna",
+      "light": {
+        "primaryBg": "#ffffff",
+        "primaryText": "#1f2937",
+        "secondaryText": "#64748b",
+        "accent": "#22c55e"
+      },
+      "dark": {
+        "primaryBg": "#111827",
+        "primaryText": "#f8fafc",
+        "secondaryText": "#94a3b8",
+        "accent": "#22c55e"
+      }
+    },
+    "blue": {
+      "label": "Plava",
+      "light": {
+        "primaryBg": "#e0f2fe",
+        "primaryText": "#0c4a6e",
+        "secondaryText": "#2563eb",
+        "accent": "#2563eb"
+      },
+      "dark": {
+        "primaryBg": "#0c4a6e",
+        "primaryText": "#e0f2fe",
+        "secondaryText": "#38bdf8",
+        "accent": "#3b82f6"
+      }
+    },
+    "red": {
+      "label": "Crvena",
+      "light": {
+        "primaryBg": "#fff1f2",
+        "primaryText": "#991b1b",
+        "secondaryText": "#ef4444",
+        "accent": "#ef4444"
+      },
+      "dark": {
+        "primaryBg": "#7f1d1d",
+        "primaryText": "#fff1f2",
+        "secondaryText": "#fca5a5",
+        "accent": "#ef4444"
+      }
+    },
+    "orange": {
+      "label": "Narandžasta",
+      "light": {
+        "primaryBg": "#fff7ed",
+        "primaryText": "#78350f",
+        "secondaryText": "#f97316",
+        "accent": "#f59e42"
+      },
+      "dark": {
+        "primaryBg": "#7c2d12",
+        "primaryText": "#fff7ed",
+        "secondaryText": "#fdba74",
+        "accent": "#ea580c"
+      }
+    },
+    "purple": {
+      "label": "Ljubičasta",
+      "light": {
+        "primaryBg": "#f3e8ff",
+        "primaryText": "#581c87",
+        "secondaryText": "#a21caf",
+        "accent": "#a78bfa"
+      },
+      "dark": {
+        "primaryBg": "#581c87",
+        "primaryText": "#f3e8ff",
+        "secondaryText": "#c4b5fd",
+        "accent": "#a21caf"
+      }
+    }
+  }
+}

@@ -13,10 +13,11 @@
         </div>
     </x-slot>
 
-    <div x-data="{ open: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
-        <div class="w-full max-w-screen-xl mx-auto">
-            <div class="bg-white dark:bg-gray-900">
-                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
+   <div x-data="{ open: false }" class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" style="background: var(--primary-bg); color: var(--primary-text);">
+    <div class="w-full max-w-screen-xl mx-auto">
+        <div style="background: var(--primary-bg); color: var(--primary-text);">
+            <div class="p-2 sm:p-4 lg:p-6" style="color: var(--primary-text);">
+
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center dark:text-white">
                         {{ $text['title'] }}
                     </h1>
@@ -53,14 +54,15 @@
         <div
             x-show="open"
             x-transition
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            style="display: none;"
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background:rgba(0,0,0,0.5);"
             @click.self="open = false"
         >
             <div
                 x-show="open"
                 x-transition
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-4xl w-full p-8 relative"
+                class="rounded-lg shadow-lg max-w-4xl w-full p-8 relative"
+                style="background: var(--primary-bg); color: var(--primary-text);"
                 @keydown.escape.window="open = false"
             >
                 <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">

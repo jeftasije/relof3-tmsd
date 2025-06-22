@@ -348,10 +348,10 @@
                             @default Boje
                             @endswitch
                         </p>
-<!-- Ovde dodaj sadržaj za boje -->
-                        <div class="mt-4 text-gray-700 dark:text-white">
-                            <p>Ovde ide pregled, izbor i uređivanje boja...</p>
-                        </div>
+                    <!-- Ovde dodaj sadržaj za boje -->
+                    <div class="mt-4 text-gray-700 dark:text-white" id="palette-list"></div>
+                    <div class="flex justify-end mt-4">
+                    </div>
                     </div>
                 </aside>
 
