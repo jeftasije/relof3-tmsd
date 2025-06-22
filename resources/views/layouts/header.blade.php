@@ -3,7 +3,7 @@
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <x-application-logo />
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-        {{ __('header.library_name_line1') }}<br /> Novi Pazar
+        {{ $libraryData['name'] ?? '' }}<br /> {{ $libraryData['city'] ?? '' }}
       </span>
     </a>
     <div class="flex flex-col md:flex-row items-center justify-end flex-grow space-y-2 md:space-y-0 md:space-x-4">
@@ -15,7 +15,6 @@
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
           </div>
-
           <input
             type="search"
             id="default-search"
@@ -34,19 +33,22 @@
         @php
         $locale = app()->getLocale();
         $flags = [
-        'sr' => 'fi fi-rs',
-        'en' => 'fi fi-us',
+          'sr' => 'fi fi-rs',
+          'sr-Cyrl' => 'fi fi-rs',
+          'en' => 'fi fi-us',
         ];
         $languages = [
-        'sr' => __('language_sr'),
-        'en' => __('language_en'),
+          'sr' => __('language_sr'),
+          'sr-Cyrl' => __('language_sr_cy'),
+          'en' => __('language_en'),
         ];
+        $localeKey = $locale === 'sr-Cyrl' ? 'sr-Cyrl' : ($locale === 'sr' ? 'sr' : 'en');
         @endphp
 
         <button type="button" data-dropdown-toggle="language-dropdown-menu"
           class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm text-gray-900 dark:text-white rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white md:px-4 md:py-2">
-          <span class="{{ $flags[$locale] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
-          {{ $languages[$locale] ?? 'Srpski' }}
+          <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
+          {{ $languages[$localeKey] ?? 'Srpski' }}
         </button>
 
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700" id="language-dropdown-menu">
@@ -57,7 +59,17 @@
                 role="menuitem">
                 <div class="inline-flex items-center">
                   <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                  Srpski
+                  {{ __('language_sr') }}
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('lang.switch', ['locale' => 'sr-Cyrl']) }}"
+                class="block px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white md:px-4 md:py-2"
+                role="menuitem">
+                <div class="inline-flex items-center">
+                  <span class="fi fi-rs h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
+                  {{ __('language_sr_cy') }}
                 </div>
               </a>
             </li>
@@ -67,7 +79,7 @@
                 role="menuitem">
                 <div class="inline-flex items-center">
                   <span class="fi fi-us h-3 w-3 md:h-3.5 md:w-3.5 rounded-full me-1 md:me-2"></span>
-                  English
+                  {{ __('language_en') }}
                 </div>
               </a>
             </li>
@@ -101,13 +113,15 @@
         <li>
           @if ($subSections->has($section->id))
           <button id="mega-menu-full-dropdown-button-{{ $section->id }}" data-collapse-toggle="mega-menu-full-dropdown-{{ $section->id }}" class="flex items-center justify-between w-full py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm md:w-auto hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
-            {{ $section->name }}
+            {{ $section->translate('name') }}
             <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
             </svg>
           </button>
           @else
-          <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">{{ $section->name }}</a>
+          <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+            {{ $section->translate('name') }}
+          </a>
           @endif
         </li>
         @endif
@@ -121,7 +135,7 @@
     <div class="grid max-w-screen-xl px-2 py-3 mx-auto text-gray-900 dark:text-white sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:px-4 md:py-4">
       @foreach ($subSections[$section->id] as $subSection)
       <div>
-        <div class="font-semibold text-lg md:text-xl">{{ $subSection->name }}</div>
+        <div class="font-semibold text-lg md:text-xl">{{ $subSection->translate('name') }}</div>
         <hr class="border-t-2 border-white mb-2 w-10/12">
         <ul class="space-y-1">
           @foreach ($subSection->children as $child)
@@ -130,7 +144,7 @@
             $isPdf = substr($child->redirect_url, -4) === '.pdf';
             @endphp
             <a href="{{ $child->redirect_url }}" {{ $isPdf ? 'target="_blank"' : '' }} class="block p-1 md:p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-sm md:text-base">
-              <div class="font-semibold">{{ $child->name }}</div>
+              <div class="font-semibold">{{ $child->translate('name') }}</div>
             </a>
           </li>
           @endforeach
@@ -142,3 +156,34 @@
   @endif
   @endforeach
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('#mega-menu-full [data-collapse-toggle]');
+    let activeCollapse = null;
+
+    buttons.forEach(button => {
+      const targetId = button.getAttribute('data-collapse-toggle');
+      const target = document.getElementById(targetId);
+      const arrow = button.querySelector('svg');
+
+      if (target && arrow) {
+        button.addEventListener('click', () => {
+          if (activeCollapse && activeCollapse !== target) {
+            activeCollapse.classList.add('hidden');
+            const prevButton = document.querySelector(`#mega-menu-full [data-collapse-toggle="${activeCollapse.id}"]`);
+            if (prevButton) {
+              prevButton.querySelector('svg').classList.remove('rotate-180');
+            }
+          }
+
+          const isOpen = !target.classList.contains('hidden');
+          target.classList.toggle('hidden');
+          arrow.classList.toggle('rotate-180');
+
+          activeCollapse = isOpen ? null : target;
+        });
+      }
+    });
+  });
+</script>

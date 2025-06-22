@@ -12,10 +12,14 @@ class News extends Model
     protected $fillable = [
         'title',
         'title_en',
+        'title_cy',
         'summary',
         'summary_en',
+        'summary_cy',
         'image_path',
         'author',
+        'author_en',   
+        'author_cy',  
         'published_at',
     ];
 
@@ -31,7 +35,14 @@ class News extends Model
     public function translate(string $field): string
     {
         $locale = app()->getLocale();
-        $fieldName = $field . ($locale === 'en' ? '_en' : '');
+
+        if ($locale === 'en') {
+            $fieldName = $field . '_en';
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $fieldName = $field . '_cy';
+        } else {
+            $fieldName = $field;
+        }
 
         return $this->{$fieldName} ?? $this->{$field} ?? '';
     }

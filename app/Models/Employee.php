@@ -11,10 +11,14 @@ class Employee extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
+        'name_cy',
         'position',
         'position_en',
+        'position_cy',
         'biography',
         'biography_en',
+        'biography_cy',
         'image_path',
     ];
 
@@ -23,6 +27,7 @@ class Employee extends Model
     ];
 
     protected $appends = [
+        'translated_name',
         'translated_position',
         'translated_biography',
     ];
@@ -32,16 +37,37 @@ class Employee extends Model
         return $this->hasOne(ExtendedBiography::class);
     }
 
+    public function getTranslatedNameAttribute()
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'en') {
+            return $this->name_en ?? $this->name;
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            return $this->name_cy ?? $this->name;
+        }
+        return $this->name;
+    }
+
     public function getTranslatedPositionAttribute()
     {
         $locale = App::getLocale();
-        return $locale === 'en' ? ($this->position_en ?? $this->position) : $this->position;
+        if ($locale === 'en') {
+            return $this->position_en ?? $this->position;
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            return $this->position_cy ?? $this->position;
+        }
+        return $this->position;
     }
 
     public function getTranslatedBiographyAttribute()
     {
         $locale = App::getLocale();
-        return $locale === 'en' ? ($this->biography_en ?? $this->biography) : $this->biography;
+        if ($locale === 'en') {
+            return $this->biography_en ?? $this->biography;
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            return $this->biography_cy ?? $this->biography;
+        }
+        return $this->biography;
     }
 
     public function translate(string $field): string
@@ -50,10 +76,11 @@ class Employee extends Model
 
         if ($locale === 'en') {
             $translatedField = $field . '_en';
-
+            return $this->{$translatedField} ?? $this->{$field};
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $translatedField = $field . '_cy';
             return $this->{$translatedField} ?? $this->{$field};
         }
-
         return $this->{$field};
     }
 }

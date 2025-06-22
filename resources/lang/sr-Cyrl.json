@@ -1,0 +1,38 @@
+{
+    "team": {
+        "title": "Наш тим!",
+        "description": "Ми смо динамична група појединаца који су страствени према ономе што радимо и посвећени пружању најбољих резултата за наше клијенте."
+    },
+    "news": {
+        "title": "Најновије вести",
+        "description": "Останите у току са најновијим дешавањима и догађајима у нашој Народној библиотеци."
+    },
+    "library": {
+        "name": "Народна библиотека \"Доситеј Обрадовић\"",
+        "address": "Стевана Немање 2, 36300 Нови Пазар",
+        "address_label": "Адреса",
+        "pib": "101234566",
+        "pib_label": "ПИБ",
+        "phone": "+381 (0)20 331 010",
+        "phone_label": "Контакт",
+        "email": "bibl@gmail.com",
+        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "work_hours_formatted": [
+            "Понедељак - Петак: 08:00 - 16:00",
+            "Субота: 08:00 - 14:00",
+            "Недеља: Нерадна"
+        ],
+        "work_hours_label": "Радно Време",
+        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "copyrights": "© 2023",
+        "logo_light": "images/nbnp-logo.png",
+        "logo_dark": "images/nbnp-logo-dark.png"
+    },
+    "header.search_placeholder": "Претражите сајт...",
+    "header.search_button": "Претражи",
+    "header.library_name_line1": "Народна библиотека \"Доситеј Обрадовић\"",
+    "language_sr": "Srpski",
+    "language_sr_cy": "Српски",
+    "language_en": "Енглески"
+}

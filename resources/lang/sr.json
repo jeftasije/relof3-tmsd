@@ -1,36 +1,67 @@
 {
-  "team": {
-    "title": "Naš tim!",
-    "description": "Mi smo dinamična grupa pojedinaca koji su strastveni prema onome što radimo i posvećeni pružanju najboljih rezultata za naše klijente."
-  },
-  "news": {
-    "title": "Najnovije vesti",
-    "description": "Ostanite u toku sa najnovijim dešavanjima i događajima u našoj Narodnoj biblioteci."
-  },
-  "library": {
-    "name": "Narodna biblioteka \"Dositej Obradović\" Novi Pazar",
-    "address_label": "Adresa",
-    "address": "Stevana Nemanje 2, 36300 Novi Pazar",
-    "city": "Novi Pazar",
-    "pib_label": "PIB",
-    "pib": "101234567",
-    "phone_label": "Kontakt",
-    "phone": "+381 (0)20 331 010",
-    "email": "dositejbib@gmail.com",
-    "work_hours_label": "Radno vreme",
-    "work_hours_formatted": [
-      "Ponedeljak - Petak: 08:00 - 16:00",
-      "Subota: 08:00 - 14:00",
-      "Nedelja: neradna"
-    ],
-    "facebook": "#",
-    "twitter": "#",
-    "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
-    "copyrights": "© 2023"
-  },
-  "header.search_placeholder": "Pretražite sajt...",
-  "header.search_button": "Pretraži",
-  "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
-  "language_sr": "Srpski",
-  "language_en": "Engleski"
+    "team": {
+        "title": "Naš tim!",
+        "description": "Mi smo dinamična grupa pojedinaca koji su strastveni prema onome što radimo i posvećeni pružanju najboljih rezultata za naše klijente."
+    },
+    "news": {
+        "title": "Najnovije vesti",
+        "description": "Ostanite u toku sa najnovijim dešavanjima i događajima u našoj Narodnoj biblioteci."
+    },
+    "library": {
+        "name": "Narodna biblioteka \"Dositej Obradović\"",
+        "address": "Stevana Nemanje 2, 36300 Novi Pazar",
+        "address_label": "Adresa",
+        "pib": "101234566",
+        "pib_label": "PIB",
+        "phone": "+381 (0)20 331 010",
+        "phone_label": "Kontakt",
+        "email": "bibl@gmail.com",
+        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "work_hours_formatted": [
+            "Ponedeljak - Petak: 08:00 - 16:00",
+            "Subota: 08:00 - 14:00",
+            "Nedelja: Neradna"
+        ],
+        "work_hours_label": "Radno Vreme",
+        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "copyrights": "© 2023",
+        "logo_light": "images/nbnp-logo.png",
+        "logo_dark": "images/nbnp-logo-dark.png"
+    },
+    "header.search_placeholder": "Pretražite sajt...",
+    "header.search_button": "Pretraži",
+    "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
+    "language_sr": "Srpski",
+    "language_sr_cy": "Српски",
+    "language_en": "Engleski",
+    "validation.name_required": "Naziv biblioteke je obavezan.",
+    "validation.name_string": "Naziv biblioteke mora biti tekst.",
+    "validation.name_max": "Naziv biblioteke ne sme biti duži od 255 karaktera.",
+    "validation.address_required": "Adresa je obavezna.",
+    "validation.address_string": "Adresa mora biti tekst.",
+    "validation.address_max": "Adresa ne sme biti duža od 255 karaktera.",
+    "validation.pib_required": "PIB je obavezan.",
+    "validation.pib_regex": "PIB mora sadržati tačno 8 ili 9 cifara.",
+    "validation.phone_required": "Telefon je obavezan.",
+    "validation.phone_regex": "Telefon može sadržati samo cifre, razmake, plus, crtice i zagrade.",
+    "validation.phone_max": "Telefon ne sme biti duži od 50 karaktera.",
+    "validation.email_required": "Email je obavezan.",
+    "validation.email_email": "Unesite važeću email adresu.",
+    "validation.email_max": "Email ne sme biti duži od 255 karaktera.",
+    "validation.facebook_url": "Unesite važeći Facebook URL.",
+    "validation.facebook_max": "Facebook URL ne sme biti duži od 255 karaktera.",
+    "validation.twitter_url": "Unesite važeći Twitter URL.",
+    "validation.twitter_max": "Twitter URL ne sme biti duži od 255 karaktera.",
+    "validation.work_hours_required": "Radno vreme je obavezno.",
+    "validation.work_hours_string": "Radno vreme mora biti tekst.",
+    "validation.map_embed_url": "Unesite važeći Google Maps URL.",
+    "validation.map_embed_max": "Google Maps URL ne sme biti duži od 255 karaktera.",
+    "validation.copyrights_required": "Copyright tekst je obavezan.",
+    "validation.copyrights_string": "Copyright tekst mora biti tekst.",
+    "validation.copyrights_max": "Copyright tekst ne sme biti duži od 255 karaktera.",
+    "validation.logo_light_image": "Light logo mora biti slika.",
+    "validation.logo_light_max": "Light logo ne sme biti veći od 2MB.",
+    "validation.logo_dark_image": "Dark logo mora biti slika.",
+    "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB."
 }
