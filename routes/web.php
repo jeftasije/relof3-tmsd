@@ -108,6 +108,7 @@ Route::get('/search-results', [SearchController::class, 'search'])->name('search
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
+Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
 require __DIR__.'/auth.php';
-

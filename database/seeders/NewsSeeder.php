@@ -19,6 +19,8 @@ class NewsSeeder extends Seeder
                 'summary_cy' => 'Нова савремена читаоница је отворена у просторијама библиотеке.',
                 'image_path' => 'images/news1.jpeg',
                 'author' => 'Jelena Petrović',
+                'author_en' => 'Jelena Petrovic',
+                'author_cy' => 'Јелена Петровић',
                 'published_at' => '2025-05-15',
             ],
             [
@@ -30,6 +32,8 @@ class NewsSeeder extends Seeder
                 'summary_cy' => 'Организовано предавање са стручним предавачем из области књижевности.',
                 'image_path' => 'images/news2.jpeg',
                 'author' => 'Marko Jovanović',
+                'author_en' => 'Marko Jovanovic',
+                'author_cy' => 'Марко Јовановић',
                 'published_at' => '2025-04-20',
             ],
             [
@@ -41,6 +45,8 @@ class NewsSeeder extends Seeder
                 'summary_cy' => 'Библиотека организује радионицу за унапређење дигиталних вештина.',
                 'image_path' => 'images/news3.jpeg',
                 'author' => 'Ivana Nikolić',
+                'author_en' => 'Ivana Nikolic',
+                'author_cy' => 'Ивана Николић',
                 'published_at' => '2025-03-10',
             ],
             [
@@ -52,6 +58,8 @@ class NewsSeeder extends Seeder
                 'summary_cy' => 'Погледајте изложбу највреднијих књига из библиотечког фонда.',
                 'image_path' => 'images/news4.jpeg',
                 'author' => 'Petar Stanojević',
+                'author_en' => 'Petar Stanojevic',
+                'author_cy' => 'Петар Станојевић',
                 'published_at' => '2025-02-25',
             ],
             [
@@ -63,6 +71,8 @@ class NewsSeeder extends Seeder
                 'summary_cy' => 'Додато је преко 200 нових наслова у електронском формату.',
                 'image_path' => 'images/news5.jpeg',
                 'author' => 'Ana Marković',
+                'author_en' => 'Ana Markovic',
+                'author_cy' => 'Ана Марковић',
                 'published_at' => '2025-01-30',
             ],
         ];
