@@ -5,9 +5,26 @@
         }
     </style>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            {{ App::getLocale() === 'en' ? 'Edit Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди подножје' : 'Uredi podnožje') }}
-        </h1>
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {{ App::getLocale() === 'en' ? 'Edit Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди подножје' : 'Uredi podnožje') }}
+            </h1>
+
+            <button 
+            id="help-btn" 
+            data-modal-target="helpModal" 
+            data-modal-toggle="helpModal"
+            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path d="M12 17l0 .01" />
+                <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+            </svg>
+            <span class="ml-3">{{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}</span>
+            </button>
+        </div>
         
         <p class="mb-6 text-gray-700 dark:text-gray-300">
             {{ App::getLocale() === 'en' ? 
@@ -578,7 +595,7 @@
                                             </a>
                                         @endif
                                         <a id="preview-email-link" href="mailto:{{ $libraryData['email'] ?? 'dositejbib@gmail.com' }}" class="text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-label="Email">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a3 3 0 0 0 3.22 0L21 8m-18 0v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8M3 8V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2"/>
                                             </svg>
                                         </a>
@@ -627,7 +644,94 @@
                     </div>
                 </div>
             </div>
+            <div 
+            id="helpModal" 
+            data-modal 
+            tabindex="-1" 
+            class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50"
+            >
+                <div class="bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md">
+                    <div class="p-6 text-left">
+                        <h3 class="mb-4 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'How to Change Footer Data' : (App::getLocale() === 'sr-Cyrl' ? 'Како променити податке у подножју' : 'Kako promeniti podatke u podnožju') }}
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
+                            <li>
+                                {{ App::getLocale() === 'en' 
+                                    ? 'To change the footer data, please fill out the form below with the data you want to update. Fields you do not change will remain the same.' 
+                                    : (App::getLocale() === 'sr-Cyrl' 
+                                        ? 'Да бисте променили податке у подножју, потребно је да попуните форму испод подацима које желите да промените. Поља која не промените остаће иста.' 
+                                        : 'Da biste promenili podatke u podnožju, potrebno je da popunite formu ispod podacima koje želite promeniti. Polja koja ne promenite će ostati ista.') }}
+                            </li>
+                            <li>
+                                {{ App::getLocale() === 'en' 
+                                    ? 'The data will be saved by clicking the Save button.' 
+                                    : (App::getLocale() === 'sr-Cyrl' 
+                                        ? 'Подaци ће се сачувати кликом на дугме сачувај.' 
+                                        : 'Podaci će se sačuvati klikom na dugme sačuvaj.') }}
+                            </li>
+                            <li>
+                                {{ App::getLocale() === 'en' 
+                                    ? 'In the second form (the one below the one you previously filled out), you will be able to review the data that has been automatically translated into English based on the data you previously entered. Review the data and edit it if necessary.' 
+                                    : (App::getLocale() === 'sr-Cyrl' 
+                                        ? 'У другој форми (форма испод оне коју сте претходно попунили), моћи ћете да прегледате податке који су аутоматски преведени на енглески језик, на основу оних које сте претходно унели. Податке прегледајте и, по потреби, измените.' 
+                                        : 'U drugoj formi (forma ispod one koju ste prethodno popunili), moći ćete da pregledate podatke koji su automatski prevedeni na engleski jezik, na osnovu onih koje ste prethodno uneli. Podatke pregledajte i, po potrebi, izmenite.') }}
+                            </li>
+                            <li>
+                                {{ App::getLocale() === 'en' 
+                                    ? 'If you change the data in English, save it by clicking the Save button.' 
+                                    : (App::getLocale() === 'sr-Cyrl' 
+                                        ? 'Уколико промените податке на енглеском језику, сачувајте их кликом на дугме сачувај.' 
+                                        : 'Ukoliko promenite podatke na engleskom jeziku, sačuvajte ih klikom na dugme sačuvaj.') }}
+                            </li>
+                            <li>
+                                {{ App::getLocale() === 'en' 
+                                    ? 'To see how the footer will look with the new data, you can check at the bottom of the page.' 
+                                    : (App::getLocale() === 'sr-Cyrl' 
+                                        ? 'Како би подножје изгледало са новим подацима, можете погледати на дну странице.' 
+                                        : 'Kako bi podnožje izgledalo sa novim podacima možete pogledati na dnu stranice.') }}
+                            </li>
+                        </ol>
+                        <div class="mt-6 text-center">
+                            <button 
+                                data-modal-hide="helpModal"
+                                id="confirmCloseButton"
+                                type="button"
+                                class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                            >
+                                {{ App::getLocale() === 'en' ? 'Close' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const helpBtn = document.getElementById('help-btn');
+                const helpModal = document.getElementById('helpModal');
+                const confirmCloseButton = document.getElementById('confirmCloseButton');
+
+                function showModal() {
+                    helpModal.classList.remove('hidden');
+                }
+
+                function hideModal() {
+                    helpModal.classList.add('hidden');
+                }
+
+                helpBtn.addEventListener('click', showModal);
+
+                confirmCloseButton.addEventListener('click', hideModal);
+
+                helpModal.addEventListener('click', function(event) {
+                    if (event.target === helpModal) {
+                    hideModal();
+                    }
+                });
+                });
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
                 let currentLang = 'sr'; 
@@ -692,35 +796,35 @@
             });
 
             document.addEventListener('DOMContentLoaded', () => {
-                    const updateModal = document.getElementById('updateModal');
-                    const serbianForm = document.getElementById('serbian-form');
-                    const englishForm = document.getElementById('english-form');
+                const updateModal = document.getElementById('updateModal');
+                const serbianForm = document.getElementById('serbian-form');
+                const englishForm = document.getElementById('english-form');
 
-                    if (!updateModal || !serbianForm || !englishForm) {
-                        console.log('One or more elements not found:', { updateModal, serbianForm, englishForm });
-                        return;
-                    }
+                if (!updateModal || !serbianForm || !englishForm) {
+                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm });
+                    return;
+                }
 
-                    function showModal(lang) {
-                        updateModal.classList.remove('hidden');
-                    }
+                function showModal(lang) {
+                    updateModal.classList.remove('hidden');
+                }
 
-                    serbianForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        showModal('sr');
-                    });
+                serbianForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showModal('sr');
+                });
 
-                    englishForm.addEventListener('submit', (e) => {
-                        e.preventDefault();
-                        showModal('en');
-                    });
+                englishForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showModal('en');
+                });
 
-                    document.querySelectorAll('[data-modal-hide="updateModal"]').forEach(button => {
-                        button.addEventListener('click', () => {
-                            updateModal.classList.add('hidden');
-                        });
+                document.querySelectorAll('[data-modal-hide="updateModal"]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        updateModal.classList.add('hidden');
                     });
                 });
-            </script>   
-        </div>
-    </x-app-layout>
+            });
+        </script>   
+    </div>
+</x-app-layout>
