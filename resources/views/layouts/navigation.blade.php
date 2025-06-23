@@ -331,18 +331,18 @@
                 <!-- puni JS -->
             </div>
         </div>
-        <!-- PREVIEW KOMPONENTA -->
-        <div id="font-preview" class="w-full max-w-xs rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 transition-all duration-300 mb-4 bg-white dark:bg-gray-800 p-4 mx-auto">
-            <div id="preview-title" class="text-2xl font-bold mb-2">Ovo je naslov teme</div>
-            <div id="preview-desc" class="text-base">Ovo je prikaz tekstualnog opisa (description). Promeni font pa klikni Sačuvaj!</div>
+        <div class="my-4">
+            <h2 class="text-base font-semibold mb-2">Preview</h2>
+            <div id="font-preview" class="w-full max-w-xs rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 transition-all duration-300 mb-4 bg-white dark:bg-gray-800 p-4 mx-auto">
+                <div id="preview-title" class="text-2xl font-bold mb-2">Ovo je naslov teme</div>
+                <div id="preview-desc" class="text-base">Ovo je prikaz tekstualnog opisa (description). Promeni font pa klikni Sačuvaj!</div>
+            </div>
+            <button id="font-save-btn"
+                class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
+                disabled>Sačuvaj</button>
         </div>
-        <button id="font-save-btn"
-            class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
-            disabled>Sačuvaj</button>
     </div>
 </aside>
-
-
 
 
 

@@ -203,32 +203,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---------- tipography ----------
 
+window.selectedTitleFont = localStorage.getItem('font-title') || 'Inter';
+window.selectedDescFont = localStorage.getItem('font-desc') || 'Inter';
+let tempTitleFont = window.selectedTitleFont;
+let tempDescFont = window.selectedDescFont;
+
+function renderTitleFontsList(fonts) {
+    const list = document.getElementById('title-fonts-list');
+    if (!list) return;
+    list.innerHTML = '';
+    fonts.forEach(font => {
+        const card = document.createElement('div');
+        card.className =
+            'flex items-center p-2 rounded-lg border mb-2 cursor-pointer transition-all text-lg font-bold ' +
+            (tempTitleFont === font.family
+                ? 'border-green-500 bg-gray-100 dark:bg-gray-700'
+                : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800');
+        card.style.fontFamily = font.family;
+        card.textContent = font.label;
+        card.onclick = () => {
+            tempTitleFont = font.family;
+            renderTitleFontsList(fonts);
+            renderFontPreview();
+            document.getElementById('font-save-btn').disabled =
+                tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+        };
+        list.appendChild(card);
+    });
+    document.getElementById('font-save-btn').disabled =
+        tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+}
+
+function renderDescFontsList(fonts) {
+    const list = document.getElementById('desc-fonts-list');
+    if (!list) return;
+    list.innerHTML = '';
+    fonts.forEach(font => {
+        const card = document.createElement('div');
+        card.className =
+            'flex items-center p-2 rounded-lg border mb-2 cursor-pointer transition-all text-base ' +
+            (tempDescFont === font.family
+                ? 'border-green-500 bg-gray-100 dark:bg-gray-700'
+                : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800');
+        card.style.fontFamily = font.family;
+        card.textContent = font.label;
+        card.onclick = () => {
+            tempDescFont = font.family;
+            renderDescFontsList(fonts);
+            renderFontPreview();
+            document.getElementById('font-save-btn').disabled =
+                tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+        };
+        list.appendChild(card);
+    });
+    document.getElementById('font-save-btn').disabled =
+        tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+}
+
+// PREVIEW prikaz
+window.renderFontPreview = function () {
+    const previewTitle = document.getElementById('preview-title');
+    const previewDesc = document.getElementById('preview-desc');
+    if (previewTitle) previewTitle.style.fontFamily = tempTitleFont;
+    if (previewDesc) previewDesc.style.fontFamily = tempDescFont;
+};
+
+// Inicijalizacija (fetch + render + save)
 document.addEventListener('DOMContentLoaded', async () => {
     const [titleFonts, descFonts] = await Promise.all([
         fetch('/tipography/title.json').then(res => res.json()),
         fetch('/tipography/description.json').then(res => res.json())
     ]);
-    const titleList = document.getElementById('title-fonts-list');
-    if (titleList && titleFonts.fonts) {
-        titleList.innerHTML = '';
-        titleFonts.fonts.forEach(font => {
-            const card = document.createElement('div');
-            card.className = 'flex items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-lg font-bold';
-            card.style.fontFamily = font.family;
-            card.textContent = font.label;
-            titleList.appendChild(card);
-        });
-    }
+    window.titleFonts = titleFonts.fonts;
+    window.descFonts = descFonts.fonts;
+    renderTitleFontsList(window.titleFonts);
+    renderDescFontsList(window.descFonts);
+    renderFontPreview();
 
-    const descList = document.getElementById('desc-fonts-list');
-    if (descList && descFonts.fonts) {
-        descList.innerHTML = '';
-        descFonts.fonts.forEach(font => {
-            const card = document.createElement('div');
-            card.className = 'flex items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-base';
-            card.style.fontFamily = font.family;
-            card.textContent = font.label;
-            descList.appendChild(card);
-        });
+    // SAVE BUTTON
+    let saveBtn = document.getElementById('font-save-btn');
+    if (saveBtn) {
+        saveBtn.onclick = function () {
+            if (tempTitleFont !== window.selectedTitleFont || tempDescFont !== window.selectedDescFont) {
+                window.selectedTitleFont = tempTitleFont;
+                window.selectedDescFont = tempDescFont;
+                localStorage.setItem('font-title', window.selectedTitleFont);
+                localStorage.setItem('font-desc', window.selectedDescFont);
+                document.documentElement.style.setProperty('--font-title', `'${window.selectedTitleFont}', sans-serif`);
+                document.documentElement.style.setProperty('--font-body', `'${window.selectedDescFont}', sans-serif`);
+                saveBtn.disabled = true;
+            }
+        };
     }
 });
