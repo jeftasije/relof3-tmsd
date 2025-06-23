@@ -16,7 +16,9 @@ class GalleryDescriptionsSeeder extends Seeder
     {
         GalleryDescription::updateOrCreate(
             ['key' => 'gallery_text'],
-            ['value' => 'A glimpse into our world through photos and videos. Discover stories that inspire and moments worth remembering.']
+            ['value' => 'Kroz fotografije i video zapise zaviri u naš svet. Otkrij priče koje inspirišu i trenutke vredne pamćenja.'],
+            ['value_en' => 'A glimpse into our world through photos and videos. Discover stories that inspire and moments worth remembering.'],
+            ['value_cy' => 'Кроз фотографије и видео записе завири у наш свет. Откриј приче које инспиришу и тренутке вредне памћења.']
         );
     }
 }
