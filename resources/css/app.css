@@ -24,7 +24,6 @@ body {
   color: #fff;
 }
 
-/* --- Palette cards --- */
 .palette-card {
   display: flex;
   align-items: center;
@@ -58,4 +57,14 @@ body {
   font-weight: 600;
   font-size: 1rem;
   margin-left: 0.7rem;
+}
+:root {
+  --font-title: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+}
+body, p, span, li, input, textarea, button {
+  font-family: var(--font-body);
 }

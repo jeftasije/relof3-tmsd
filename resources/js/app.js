@@ -11,10 +11,15 @@ window.Alpine = Alpine;
 Alpine.start();
 
 window.palettes = {};
+window.fontPalettes = {};
 window.activePalette = localStorage.getItem('palette') || 'default';
 window.activeMode = localStorage.getItem('color-theme') || 'light';
+window.activeFontPalette = localStorage.getItem('font-palette') || 'default';
 let selectedPalette = window.activePalette;
 let selectedMode = window.activeMode;
+let selectedFontPalette = window.activeFontPalette;
+
+// ---------- pallets ----------
 
 document.addEventListener('DOMContentLoaded', () => {
     const darkIcons = document.querySelectorAll('#theme-toggle-dark-icon, #theme-toggle-dark-icon-mobile');
@@ -43,10 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             window.palettes = data.palettes;
-            applyPalette(); 
+            applyPalette();
             renderPaletteList();
             renderPalettePreview();
             setupSidebarPreviewTheme();
+        });
+
+    fetch('/themes/fonts.json')
+        .then(res => res.json())
+        .then(data => {
+            window.fontPalettes = data.fonts;
+            applyFontPalette();
+            renderFontPaletteList();
+            renderFontPreview();
         });
 });
 
@@ -95,7 +109,7 @@ window.renderPaletteList = function() {
             selectedPalette = key;
             renderPaletteList();
             renderPalettePreview();
-            document.getElementById('palette-save-btn').disabled = (selectedPalette === activePalette);
+            document.getElementById('palette-save-btn').disabled = (selectedPalette === activePalette && selectedMode === activeMode);
         };
         const name = document.createElement('span');
         name.className = 'font-semibold text-lg';
@@ -116,9 +130,8 @@ window.renderPaletteList = function() {
         card.appendChild(colorsWrap);
         list.appendChild(card);
     });
-    document.getElementById('palette-save-btn').disabled = (selectedPalette === activePalette);
+    document.getElementById('palette-save-btn').disabled = (selectedPalette === activePalette && selectedMode === activeMode);
 }
-
 
 window.renderPalettePreview = function() {
     const preview = document.getElementById('palette-preview');
@@ -132,8 +145,8 @@ window.renderPalettePreview = function() {
         border-radius: 1.5rem 1.5rem 0 0;
         padding: 28px 24px 12px 24px;
         ">
-        <div class="font-bold text-xl mb-1" style="color:${theme.primaryText}">Naslov teme</div>
-        <div class="mb-3 text-base" style="color:${theme.secondaryText}">
+        <div class="font-bold text-xl mb-1" style="color:${theme.primaryText};font-family:var(--font-title);">Naslov teme</div>
+        <div class="mb-3 text-base" style="color:${theme.secondaryText};font-family:var(--font-body);">
             Ovo je prikaz vaše teme. Ovde će biti prikazani naslovi, tekstovi i akcione boje.
         </div>
         <button class="rounded-xl px-4 py-2 font-semibold" style="background:${theme.accent};color:#fff;">
@@ -184,6 +197,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (backBtn) {
         backBtn.addEventListener('click', () => {
             document.getElementById('color-sidebar').classList.add('-translate-x-full');
+        });
+    }
+});
+
+// ---------- tipography ----------
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const [titleFonts, descFonts] = await Promise.all([
+        fetch('/tipography/title.json').then(res => res.json()),
+        fetch('/tipography/description.json').then(res => res.json())
+    ]);
+    const titleList = document.getElementById('title-fonts-list');
+    if (titleList && titleFonts.fonts) {
+        titleList.innerHTML = '';
+        titleFonts.fonts.forEach(font => {
+            const card = document.createElement('div');
+            card.className = 'flex items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-lg font-bold';
+            card.style.fontFamily = font.family;
+            card.textContent = font.label;
+            titleList.appendChild(card);
+        });
+    }
+
+    const descList = document.getElementById('desc-fonts-list');
+    if (descList && descFonts.fonts) {
+        descList.innerHTML = '';
+        descFonts.fonts.forEach(font => {
+            const card = document.createElement('div');
+            card.className = 'flex items-center p-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-base';
+            card.style.fontFamily = font.family;
+            card.textContent = font.label;
+            descList.appendChild(card);
         });
     }
 });
