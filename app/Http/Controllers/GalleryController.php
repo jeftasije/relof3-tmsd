@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GalleryItem;
 use Illuminate\Support\Facades\Storage;
+use App\Models\GalleryDescription;
+
 
 
 
@@ -14,8 +16,10 @@ class GalleryController extends Controller
     {
         $images = GalleryItem::where('type', 'image')->get();
         $videos = GalleryItem::where('type', 'video')->get();
+        
+        $galleryDescription = GalleryDescription::where('key', 'gallery_text')->first();
 
-        return view('gallery', compact('images', 'videos'));
+        return view('gallery', compact('images', 'videos', 'galleryDescription'));
     }
 
     public function upload(Request $request)
@@ -45,6 +49,20 @@ class GalleryController extends Controller
         $item->delete();
 
         return back()->with('success', 'Fajl obrisan.');
+    }
+
+    public function updateDescription(Request $request)
+    {
+        $request->validate([
+            'value' => 'required|string'
+        ]);
+
+        GalleryDescription::updateOrCreate(
+            ['key' => 'gallery_text'],
+            ['value' => $request->input('value')]
+        );
+
+        return back()->with('success', 'Tekst uspešno ažuriran.');
     }
 
 }

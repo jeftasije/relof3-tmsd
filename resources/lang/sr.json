@@ -63,5 +63,12 @@
     "validation.logo_light_image": "Light logo mora biti slika.",
     "validation.logo_light_max": "Light logo ne sme biti veći od 2MB.",
     "validation.logo_dark_image": "Dark logo mora biti slika.",
-    "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB."
+    "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB.",
+    "history.title": "Istorijat",
+    "history.edit.success": "Tekst istorijata je uspešno izmenjen.",
+    "history.edit.save_changes": "Sačuvaj promene",
+    "history.edit.save": "Sačuvaj",
+    "history.edit.cancel": "Otkaži",
+    "history.edit.confirm_message": "Da li ste sigurni da želite da sačuvate izmene?",
+    "history.updated": "Tekst istorijata je uspešno izmenjen."
 }

@@ -63,5 +63,15 @@
     "validation.logo_light_image": "Light logo must be an image.",
     "validation.logo_light_max": "Light logo may not be larger than 2MB.",
     "validation.logo_dark_image": "Dark logo must be an image.",
-    "validation.logo_dark_max": "Dark logo may not be larger than 2MB."
+    "validation.logo_dark_max": "Dark logo may not be larger than 2MB.",
+    "history.title": "History",
+    "history.edit.success": "History text has been successfully updated.",
+    "history.edit.save_changes": "Save changes",
+    "history.edit.save": "Save",
+    "history.edit.cancel": "Cancel",
+    "history.edit.confirm_message": "Are you sure you want to save the changes?",
+    "history.updated": "History text has been successfully updated."
+
+
+
 }

@@ -12,12 +12,9 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
-<<<<<<< HEAD
 use App\Http\Controllers\GalleryController;
-=======
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
->>>>>>> 59397c017ddd865b88d7fd203a87bfaed20b7f2a
 use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
@@ -72,6 +69,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    Route::post('/galerija/update', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
+
 });
 
 Route::get('/usluge', function () {
@@ -109,16 +108,6 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
-<<<<<<< HEAD
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
-=======
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
-Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
-
-Route::get('/galerija', function () {
-    return view('gallery');
-})->name('gallery');
-
->>>>>>> 59397c017ddd865b88d7fd203a87bfaed20b7f2a
-
 require __DIR__.'/auth.php';
