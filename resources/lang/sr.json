@@ -33,5 +33,20 @@
   "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
   "language_sr": "Srpski",
   "language_sr_cy": "Српски",
-  "language_en": "Engleski"
+  "language_en": "Engleski",
+  "page_settings": "Podešavanja stranice",
+  "url_label": "URL stranice",
+  "name_label": "Naziv stranice",
+  "url_tooltip": "Ovo je deo URL-a koji identifikuje stranicu, npr. 'moja-nova-stranica'. Koristite mala slova i crtice.",
+  "main_section_label": "Glavna navigaciona sekcija",
+  "sub_section_label": "Podsekcija navigacije",
+  
+  "subsection_required": "Podsekcija je obavezna jer je glavna sekcija opadajuća",
+  "title_required": "Molimo unesite naziv stranice",
+  "page_slug_required": "Polje za URL je obavezno.",
+  "page_slug_unique": "Ovaj URL je već u upotrebi.",
+  "page_slug_alpha_dash": "URL može sadržati samo slova, brojeve, crtice i donje crte.",
+  "page_navigation_main_required": "Molimo izaberite glavnu sekciju.",
+  "page_navigation_main_exists": "Izabrana glavna sekcija nije ispravna.",
+  "page_navigation_sub_exists": "Izabrana podsekcija nije ispravna."
 }

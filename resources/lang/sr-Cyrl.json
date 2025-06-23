@@ -33,5 +33,19 @@
   "header.library_name_line1": "Народна библиотека \"Доситеј Обрадовић\"",
   "language_sr": "Srpski",
   "language_sr_cy": "Српски",
-  "language_en": "Енглески"
+  "language_en": "Енглески",
+  "page_settings": "Подешавања странице",
+  "url_label": "\"URL\" странице",
+  "name_label": "Назив странице",
+  "url_tooltip": "Ово је део \"URL\"-а који идентификује страницу, нпр. 'moja-nova-stranica'. Користите латинично писмо, мала слова и цртице.",
+  "main_section_label": "Главна навигациона секција",
+  "sub_section_label": "Подсекција навигације",
+  "subsection_required": "Подсекција је обавезна јер је главна секција опадајућа",
+  "title_required": "Молимо унесите назив странице",
+  "page_slug_required": "Поље за \"URL\" је обавезно.",
+  "page_slug_unique": "Овај \"URL\" је већ у употреби.",
+  "page_slug_alpha_dash": "\"URL\" може садржати само слова, бројеве, цртице и доње црте.",
+  "page_navigation_main_required": "Молимо изаберите главну секцију.",
+  "page_navigation_main_exists": "Изабрана главна секција није исправна.",
+  "page_navigation_sub_exists": "Изабрана подсекција није исправна."
 }

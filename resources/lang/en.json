@@ -33,5 +33,19 @@
   "header.library_name_line1": "Public Library \"Dositej Obradović\"",
   "language_sr": "Serbian (Latin)",
   "language_sr_cy": "Serbian (Cyrillic)",
-  "language_en": "English"
+  "language_en": "English",
+  "page_settings": "Page settings",
+  "url_label": "Page URL",
+  "name_label": "Page Name",
+  "url_tooltip": "This is the part of the URL that identifies the page, e.g., 'my-new-page'. Use lowercase letters and hyphens.",
+  "main_section_label": "Main Navigation Section",
+  "sub_section_label": "Navigation Subsection",
+  "subsection_required": "Subsection is required because the main section is a dropdown",
+  "title_required": "Please enter the page title",
+  "page_slug_required": "The URL field is required.",
+  "page_slug_unique": "This URL is already in use.",
+  "page_slug_alpha_dash": "The URL can only contain letters, numbers, hyphens, and underscores.",
+  "page_navigation_main_required": "Please select the main section.",
+  "page_navigation_main_exists": "The selected main section is invalid.",
+  "page_navigation_sub_exists": "The selected subsection is invalid."
 }

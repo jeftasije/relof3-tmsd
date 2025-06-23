@@ -19,38 +19,31 @@
             <aside id="sidebar-multi-level-sidebar" class="fixed top-0 right-0 z-40 w-64 h-screen transition-transform translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div class="flex flex-col h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 dark:text-white">
                     <div class="text-center font-semibold text-lg mb-10">
-                        @switch(App::getLocale())
-                        @case('en') Page settings @break
-                        @case('sr-Cyrl') Подешавања странице @break
-                        @default Podešavanja stranice
-                        @endswitch
+                        {{__('page_settings')}}
                     </div>
                     <ul class="space-y-2 font-medium gap-5">
                         <li>
                             <div class="mb-6">
                                 <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    @switch(App::getLocale())
-                                    @case('en') Page name @break
-                                    @case('sr-Cyrl') Назив странице @break
-                                    @default Naziv stranice
-                                    @endswitch
+                                    {{__('name_label')}}
                                 </label>
                                 <input
                                     type="text"
                                     id="title"
                                     name="title"
                                     value="{{ old('title', $title) }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('title') border-red-500 dark:border-red-400 @enderror">
+                                @error('title')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                    {{ $message }}
+                                </p>
+                                @enderror
                             </div>
                         </li>
                         <li>
                             <div class="mb-6">
                                 <label for="slug" data-tooltip-target="tooltip-url" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    @switch(App::getLocale())
-                                    @case('en') URL of the page @break
-                                    @case('sr-Cyrl') "URL" странице @break
-                                    @default URL stranice
-                                    @endswitch
+                                    {{__('url_label')}}
                                 </label>
                                 <input
                                     type="text"
@@ -58,18 +51,15 @@
                                     name="slug"
                                     value="{{ old('slug', $slug) }}"
                                     data-tooltip-target="tooltip-url"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('slug') border-red-500 dark:border-red-400 @enderror">
+                                @error('slug')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                    {{ $message }}
+                                </p>
+                                @enderror
+
                                 <div id="tooltip-url" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                                    @switch(App::getLocale())
-                                    @case('en')
-                                    This is the part of the URL that identifies the page, e.g., 'my-new-page'. Use lowercase letters and hyphens.
-                                    @break
-                                    @case('sr-Cyrl')
-                                    Ово је део URL-а који идентификује страницу, нпр. 'moja-nova-stranica'. Користите мала слова и цртице.
-                                    @break
-                                    @default
-                                    Ovo je deo URL-a koji identifikuje stranicu, npr. 'moja-nova-stranica'. Koristite mala slova i crtice.
-                                    @endswitch
+                                    {{__('url_tooltip')}}
                                     <div class="tooltip-arrow" data-popper-arrow></div>
                                 </div>
                             </div>
@@ -89,8 +79,8 @@
                                         @json($subSections)
                                     </span>
 
-                                    <label for="main">Glavna navigaciona sekcija</label>
-                                    <select x-model="main" name="navigation[]" id="main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <label for="main">{{__('main_section_label')}}</label>
+                                    <select x-model="main" name="navigation[]" id="main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('navigation.0') border-red-500 dark:border-red-400 @enderror">
                                         <option value="">Izaberi glavnu sekciju</option>
                                         @foreach ($mainSections as $section)
                                         @php
@@ -105,14 +95,22 @@
                                         </option>
                                         @endforeach
                                     </select>
+                                    @error('navigation.0')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                        {{ $message }}
+                                    </p>
+                                    @enderror
 
-                                    <label for="sub" x-show="main" class="mt-6">Podsekcija navigacije</label>
+                                    <label for="sub" x-show="main" class="mt-6">{{__('sub_section_label')}}</label>
                                     <select x-model="sub" name="navigation[]" id="sub" x-show="main" :disabled="!main" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">Podkategorija navigacije</option>
                                         <template x-for="item in subSections[main] || []" :key="item.id">
                                             <option :value="item.id" x-text="item.name" :selected="item.id === currentId"></option>
                                         </template>
                                     </select>
+                                    @error('navigation.1')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         </li>

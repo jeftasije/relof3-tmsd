@@ -8,8 +8,6 @@ use App\Models\Page;
 use App\Models\Navigation;
 use Illuminate\Support\Str;
 
-use Illuminate\Support\Facades\Log;
-
 
 class PageController extends Controller
 {
@@ -60,13 +58,33 @@ class PageController extends Controller
             'template_id' => 'required|exists:templates,id',
             'title'       => 'required|string|max:255',
             'slug'        => $slugRule,
-            'navigation'  => 'array',
+            'navigation.0' => 'required|exists:navigations,id', // main
+            'navigation.1' => 'nullable|exists:navigations,id', // sub
             'content'     => 'required|array',
+        ], [
+            'title.required' => __('title_required'),
+            'slug.required' => __('page_slug_required'),
+            'slug.unique' => __('page_slug_unique'),
+            'slug.alpha_dash' => __('page_slug_alpha_dash'),
+            'navigation.0.required' => __('page_navigation_main_required'),
+            'navigation.0.exists' => __('page_navigation_main_exists'),
+            'navigation.1.exists' => __('page_navigation_sub_exists'),
         ]);
 
         $data = $request->input('content');
         foreach ($request->file('content', []) as $k => $f) {
             $data[$k] = $f->store('uploads', 'public');
+        }
+
+        if ($request->has('navigation')) {
+            $navigationIds = $request->navigation;
+            $mainSectionId = $navigationIds[0];
+            $mainSection = Navigation::find($mainSectionId);
+            if ($mainSection->children()->count() !== 0 &&  $navigationIds[1] === null) {
+                return back()
+                    ->withErrors(['navigation.1' => __('subsection_required')])
+                    ->withInput();
+            }
         }
 
         if ($request->query('slug')) {
@@ -118,11 +136,10 @@ class PageController extends Controller
                     $mainSection->update([
                         $mainSection->redirect_url = '/stranica/' . $page->slug,
                         $mainSection->is_active = $request->action === 'publish',
-                    ]);   
+                    ]);
                 }
             }
         }
-
 
         if ($request->action === 'draft') {
             return redirect()
