@@ -637,11 +637,20 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('welcome')" :active="!request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         @switch(App::getLocale())
                         @case('en') Edit content @break
                         @case('sr-Cyrl') Уреди садржај @break
                         @default Uredi sadržај
+                        @endswitch
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('relofIndex')" :active="request()->routeIs('relofIndex')">
+                        @switch(App::getLocale())
+                        @case('en') Relof index @break
+                        @case('sr-Cyrl') Релоф индекс @break
+                        @default Relof index
                         @endswitch
                     </x-nav-link>
                 </div>

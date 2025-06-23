@@ -78,7 +78,7 @@
                             <div class="absolute inset-0 flex items-center justify-center text-3xl font-extrabold text-success">
                                 82%
                             </div>
-                            <a href="#" class="text-blue-400 text-primary text-sm font-medium hover:underline mt-4 inline-block">{{ App::getLocale() === 'en' ? 'Learn more' : 'Saznaj više' }}</a>
+                            <a href="{{route('relofIndex')}}" class="text-blue-400 text-primary text-sm font-medium hover:underline mt-4 inline-block">{{ App::getLocale() === 'en' ? 'Learn more' : 'Saznaj više' }}</a>
                         </div>
                     </div>
 

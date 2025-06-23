@@ -26,37 +26,54 @@ class FooterController extends Controller
     {
         $srPath = resource_path('lang/sr.json');
         $enPath = resource_path('lang/en.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
 
         $srContent = file_exists($srPath) ? file_get_contents($srPath) : null;
         $libraryDataSr = $srContent !== null && $srContent !== '' ? json_decode($srContent, true)['library'] ?? [] : [];
 
         $enContent = file_exists($enPath) ? file_get_contents($enPath) : null;
         $libraryDataEn = $enContent !== null && $enContent !== '' ? json_decode($enContent, true)['library'] ?? [] : [];
+
+        $srCyrContent = file_exists($srCyrPath) ? file_get_contents($srCyrPath) : null;
+        $libraryDataSrCyr = $enContent !== null && $enContent !== '' ? json_decode($srCyrContent, true)['library'] ?? [] : [];
  
         return view('superAdmin.footer', [
             'libraryDataSr' => $libraryDataSr,
-            'libraryDataEn' => $libraryDataEn
+            'libraryDataEn' => $libraryDataEn,
+            'libraryDataSrCyr' => $libraryDataSrCyr
         ]);
     }
 
     public function editSr(Request $request)
     {
-        $this->validateRequest($request);
+        try {
+            $this->validateRequest($request);
 
-        $libraryData = $this->buildLibraryData($request);
+            $libraryData = $this->buildLibraryData($request);
 
-        $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
-        $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
+            $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
+            $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
 
-        $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);
+            $isCyrillic = $this->isCyrillic($libraryData['name'] ?? '') || $this->isCyrillic($libraryData['address'] ?? '');
 
-        $translatedData = $this->translateLibraryData($libraryData);
-        $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
+            if ($isCyrillic) {
+                $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $libraryData);
+                $latinData = $this->languageMapper->cyrillic_to_latin_array($libraryData);
+                $this->saveLangFile(resource_path('lang/sr.json'), $latinData);
+            } else {
+                $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);
+                $cyrillicData = $this->convertToCyrillic($libraryData);
+                $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $cyrillicData);
+            }
 
-        $cyrillicData = $this->convertToCyrillic($libraryData);
-        $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $cyrillicData);
+            $translatedData = $this->translateLibraryData($libraryData);
+            $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
 
-        return redirect()->back()->with('success', 'Footer edited successfully.');
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     private function convertToCyrillic(array $libraryData): array
@@ -64,9 +81,6 @@ class FooterController extends Controller
         $translatableFields = [
             'name',
             'address',
-            'address_label',
-            'pib_label',
-            'phone_label',
             'work_hours_label',
             'copyrights',
         ];
@@ -94,7 +108,7 @@ class FooterController extends Controller
         $libraryDataEn = $this->buildLibraryDataEn($request);
         $this->saveLangFile(resource_path('lang/en.json'), $libraryDataEn);
 
-        return redirect()->back()->with('success', 'Footer edited succesfully.');
+        return redirect()->back()->with('success', 'Footer edited successfully.');
     }
 
     private function validateRequest(Request $request)
@@ -263,8 +277,7 @@ class FooterController extends Controller
             $request->file($inputName)->move(public_path('images'), $fileName);
         } catch (\Exception $e) {
             Log::error("Neuspešno učitavanje loga $fileName: " . $e->getMessage());
-            redirect()->back()->with('error', "Err while loading logo $fileName.")->send();
-            exit;
+            throw new \Exception("Error while uploading logo $fileName.");
         }
     }
 
@@ -274,9 +287,6 @@ class FooterController extends Controller
             'name',
             'address',
             'address_label',
-            'pib_label',
-            'phone_label',
-            'work_hours_label',
             'copyrights',
         ];
 
@@ -300,7 +310,7 @@ class FooterController extends Controller
                     try {
                         $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
                     } catch (\Exception $e) {
-                        Log::error("err in translating workinng time: " . $e->getMessage());
+                        Log::error("err in translating working time: " . $e->getMessage());
                         $translatedData['work_hours_formatted'][] = $line;
                     }
                 }
@@ -324,9 +334,12 @@ class FooterController extends Controller
                 json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
             );
         } catch (\Exception $e) {
-            Log::error("Greška pri čuvanju fajla $filePath: " . $e->getMessage());
-            redirect()->back()->with('error', 'err in loading data.')->send();
-            exit;
+            throw new \Exception("Error saving file $filePath.");
         }
-    }       
+    } 
+    
+    private function isCyrillic(string $text): bool
+    {
+        return preg_match('/[\p{Cyrillic}]/u', $text) === 1;
+    }
 }
