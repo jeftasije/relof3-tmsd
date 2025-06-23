@@ -67,8 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
     Route::post('/istorijat', [HistoryController::class, 'update'])->name('history.update');
-
-
+  
+    Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 });
 
 Route::get('/usluge', function () {
