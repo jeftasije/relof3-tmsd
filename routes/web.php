@@ -12,6 +12,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
@@ -66,7 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
+    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
+
 });
 
 Route::get('/usluge', function () {
@@ -104,12 +108,9 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
+Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
+
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
-
-Route::get('/galerija', function () {
-    return view('gallery');
-})->name('gallery');
-
 
 require __DIR__.'/auth.php';
