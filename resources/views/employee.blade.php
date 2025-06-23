@@ -13,44 +13,53 @@
         </div>
     </x-slot>
 
-    <div x-data="{ open: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <!-- Pozadina preko celog ekrana -->
+    <div x-data="{ open: false }" style="background: var(--primary-bg) !important; min-height: 90vh;" class="w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8">
+        <!-- Centrirani sadržaj -->
         <div class="w-full max-w-screen-xl mx-auto">
-            <div class="bg-white dark:bg-gray-900">
-                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center dark:text-white">
+            <div>
+                <div class="p-2 sm:p-4 lg:p-6" style="color: var(--primary-text) !important;">
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center" style="color: var(--primary-text) !important;">
                         {{ $text['title'] }}
                     </h1>
-                    <p class="text-gray-700 mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto dark:text-gray-300">
+                    <p class="mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto" style="color: var(--secondary-text) !important;">
                         {{ $text['description'] }}
                     </p>
 
                     <div class="flex justify-end mb-6">
                         @auth
-                            <button @click="open = true" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                {{ App::getLocale() === 'en' ? 'Add' : (App::getLocale() === 'sr-Cyrl' ? 'Додај' : 'Dodaj') }}
-                            </button>
+                        <button 
+                            @click="open = true"
+                            class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow"
+                            style="background: var(--accent); color: #fff;"
+                            onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--accent-hover')"
+                            onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--accent')"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            {{ App::getLocale() === 'en' ? 'Add' : (App::getLocale() === 'sr-Cyrl' ? 'Додај' : 'Dodaj') }}
+                        </button>
                         @endauth
                     </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
-                    @foreach ($employees as $employee)
-                        <x-employee-card :employee="$employee" />
-                    @endforeach
-                </div>
-                @if ($employees->hasPages())
-                    <div class="flex justify-center mt-8">
-                        {{ $employees->links('pagination::tailwind') }}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
+                        @foreach ($employees as $employee)
+                            <x-employee-card :employee="$employee" />
+                        @endforeach
                     </div>
-                @endif
+                    @if ($employees->hasPages())
+                        <div class="flex justify-center mt-8">
+                            {{ $employees->links('pagination::tailwind') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
 
+        <!-- Modal -->
         <div
             x-show="open"
             x-transition
@@ -70,71 +79,78 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                         <div>
                             <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
-                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
                                     {{ App::getLocale() === 'en' ? 'Add Employee' : (App::getLocale() === 'sr-Cyrl' ? 'Додај запосленог' : 'Dodaj zaposlenog') }}
                                 </h2>
                             </div>
-
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="name">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="name">
                                 {{ App::getLocale() === 'en' ? 'Name' : (App::getLocale() === 'sr-Cyrl' ? 'Име' : 'Ime') }}
                             </label>
                             <input type="text" name="name" id="name" required
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="position">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="position">
                                 {{ App::getLocale() === 'en' ? 'Position' : (App::getLocale() === 'sr-Cyrl' ? 'Позиција' : 'Pozicija') }}
                             </label>
                             <input type="text" name="position" id="position" required
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="biography">
                                 {{ App::getLocale() === 'en' ? 'Short Biography' : (App::getLocale() === 'sr-Cyrl' ? 'Кратка биографија' : 'Kratka biografija') }}
                             </label>
                             <textarea name="biography" id="biography" rows="4"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="image">
                                 {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
                             </label>
                             <input type="file" name="image" id="image" accept="image/*"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
                         </div>
 
                         <div>
                             <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
-                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
                                     {{ App::getLocale() === 'en' ? 'Extended Biography' : (App::getLocale() === 'sr-Cyrl' ? 'Проширена биографија' : 'Proširena biografija') }}
                                 </h2>
                             </div>
-
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="biography_extended">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="biography_extended">
                                 {{ App::getLocale() === 'en' ? 'Full Biography' : (App::getLocale() === 'sr-Cyrl' ? 'Цела биографија' : 'Cela biografija') }}
                             </label>
                             <textarea name="biography_extended" id="biography_extended" rows="4"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="university">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="university">
                                 {{ App::getLocale() === 'en' ? 'University' : (App::getLocale() === 'sr-Cyrl' ? 'Универзитет' : 'Univerzitet') }}
                             </label>
                             <input type="text" name="university" id="university"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="experience">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="experience">
                                 {{ App::getLocale() === 'en' ? 'Experience' : (App::getLocale() === 'sr-Cyrl' ? 'Искуство' : 'Iskustvo') }}
                             </label>
                             <textarea name="experience" id="experience" rows="3"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
 
-                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="skills">
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="skills">
                                 {{ App::getLocale() === 'en' ? 'Skills' : (App::getLocale() === 'sr-Cyrl' ? 'Вештине' : 'Veštine') }}
                             </label>
                             <textarea name="skills" id="skills" rows="3"
-                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
                         </div>
                     </div>
 
                     <div class="flex justify-end gap-2 mt-8">
-                        <button type="button" @click="open = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                        <button type="button" @click="open = false" class="px-4 py-2 rounded"
+                                style="background: #cbd5e1; color: var(--primary-text);">
                             {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                         <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">

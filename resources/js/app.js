@@ -10,13 +10,9 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 Alpine.start();
 
-// Helper funkcija za validnu font-family vrednost
 function fontStack(font) {
-    // Ako već ima sans-serif ili serif, koristi kako jeste (ali makni navodnike)
     if (font.includes('serif')) return font.replace(/["']/g, '');
-    // Ako ima razmak, okruži sa navodnicima i dodaj sans-serif fallback
     if (font.includes(' ')) return `'${font}', sans-serif`;
-    // Ako nema razmaka, samo dodaj sans-serif
     return `${font}, sans-serif`;
 }
 
