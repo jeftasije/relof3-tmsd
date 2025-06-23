@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             NavigationSeeder::class,
             ProcurementSeeder::class,
             OrganisationalStructureSeeder::class, 
+            HistorySeeder::class,
         ]);
 
         if (!User::where('email', 'test@example.com')->exists()) {

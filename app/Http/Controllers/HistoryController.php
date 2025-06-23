@@ -20,9 +20,15 @@ class HistoryController extends Controller
         ]);
 
         $history = History::first();
-        $history->update([
-            'content' => $request->content
-        ]);
+        if ($history) {
+            $history->update([
+                'content' => $request->input('content'),
+            ]);
+        } else {
+            History::create([
+                'content' => $request->input('content'),
+            ]);
+        }
 
         return redirect()->route('history.show')->with('success', 'Tekst istorijata je uspešno izmenjen.');
     }

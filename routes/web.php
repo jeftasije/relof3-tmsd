@@ -65,6 +65,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    Route::post('/istorijat', [HistoryController::class, 'update'])->name('history.update');
+
+
 });
 
 Route::get('/usluge', function () {
@@ -103,7 +107,6 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
-Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
 Route::get('/galerija', function () {
     return view('gallery');
