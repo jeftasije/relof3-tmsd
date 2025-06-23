@@ -87,15 +87,15 @@ class PageController extends Controller
             }
         }
 
+        $oldSlug = null;
         if ($request->query('slug')) {
-            $page = Page::where('slug', $request->query('slug'))
-                ->where('is_active', false)
-                ->firstOrFail();
+            $page = Page::where('slug', $request->query('slug'))->firstOrFail();
+            $oldSlug = $page->slug;
             $page->update([
                 'title'     => $request->title,
                 'slug'      => Str::slug($request->slug),
                 'content'   => json_encode($data),
-                'is_active' => $request->action === 'publish',
+                'is_active' => $page->is_active ? true : ($request->action === 'publish'),
             ]);
         } else {
             $page = Page::create([
@@ -112,13 +112,14 @@ class PageController extends Controller
             if ($navigationIds[1] !== null) {
                 $subSectionId = $navigationIds[1];
 
-                $existingNav = Navigation::where('redirect_url', '/stranica/' . $page->slug)->first();
+                $existingNav = Navigation::where('redirect_url', '/stranica/' . ($oldSlug ?? $page->slug))->first();
 
                 if ($existingNav) {
                     $existingNav->update([
                         'parent_id' => $subSectionId,
                         'name' => $page->title,
-                        'is_active' => $request->action === 'publish',
+                        'is_active' => $page->is_active ? true : ($request->action === 'publish'),
+                        'redirect_url' => '/stranica/' . $page->slug
                     ]);
                 } else {
                     $newNavigation = new Navigation();
@@ -177,9 +178,7 @@ class PageController extends Controller
 
     public function edit(string $slug)
     {
-        $page = Page::where('slug', $slug)
-            ->where('is_active', false)
-            ->firstOrFail();
+        $page = Page::where('slug', $slug)->firstOrFail();
 
         $mainSections = Navigation::whereNull('parent_id')->orderBy('order')->get();
         $subSections  = Navigation::whereNotNull('parent_id')

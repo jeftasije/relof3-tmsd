@@ -63,6 +63,18 @@
                     </div>
                     <button type="button" class="flex items-center overflow-hidden justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
                         <span class="truncate">{{ $page->title }}</span>
+                        <a href="{{ route('page.edit', $page->slug) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-1.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            @switch(App::getLocale())
+                            @case('en')
+                            Edit
+                            @break
+                            @case('sr-Cyrl')
+                            уреди
+                            @break
+                            @default
+                            Izmeni
+                            @endswitch
+                        </a>
                     </button>
                 </li>
                 @endforeach
