@@ -2,10 +2,9 @@
     <div class="max-w-4xl mx-auto py-12 px-4 text-center">
         <style>
             .glass {
-                /* Ne diraj background jer ga imaš u Tailwind klasama */
                 backdrop-filter: blur(12px);
                 border: 1px solid rgba(255, 255, 255, 0.3);
-                border-radius: 0.5rem; /* kao rounded-lg */
+                border-radius: 0.5rem; 
                 box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
                 color: inherit;
@@ -18,14 +17,10 @@
                 box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             }
         </style>
-
-
-        <!-- Gornja linija: naslov centriran, help desno -->
         <div class="relative flex items-center justify-center mb-8">
             <h1 class="text-4xl font-bold text-gray-900 dark:text-white">
                 {{ App::getLocale() === 'en' ? 'RELOF INDEX' : (App::getLocale() === 'sr-Cyrl' ? 'РЕЛОФ ИНДЕКС' : 'RELOF INDEKS') }}
             </h1>
-
             <div class="absolute right-0">
                 <button 
                     id="help-btn" 
@@ -44,15 +39,11 @@
                 </button>
             </div>
         </div>
-
-        <!-- Grafik -->
         <div class="mb-8 flex justify-center">
             <div class="w-[100px] h-[100px]">
                 <canvas id="relofChart" class="w-full h-full"></canvas>
             </div>
         </div>
-
-        <!-- Kako poboljšati -->
         <div class="shadow glass mb-8 bg-red-100 dark:bg-red-700/40 dark:backdrop-blur-sm p-6 rounded-lg shadow">
             <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
                 {{ App::getLocale() === 'en' ? 'How to improve Relof index' : (App::getLocale() === 'sr-Cyrl' ? 'Како побољшати Релоф индекс' : 'Kako poboljšati Relof indeks') }}
@@ -72,8 +63,6 @@
                 </a></li>
             </ul>
         </div>
-
-        <!-- Statistika -->
         <div class="grid mb-8 grid-cols-1 sm:grid-cols-2 gap-4 bg-blue-100 dark:bg-blue-700/40 p-6 rounded-lg shadow glass">
             <div class="p-4">
                 <p class="text-lg text-gray-900 dark:text-white">
@@ -88,8 +77,6 @@
                 <p class="text-3xl font-bold text-red-700 dark:text-red-300">3</p>
             </div>
         </div>
-
-        <!-- Ažurnost -->
         <div class="mb-8 bg-blue-100 dark:bg-blue-700/40 p-6 rounded-lg shadow glass">
             <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
                 {{ App::getLocale() === 'en' ? 'Data Timeliness' : (App::getLocale() === 'sr-Cyrl' ? 'Ажурност података' : 'Ažurnost podataka') }}
@@ -108,8 +95,6 @@
                 </li>
             </ul>
         </div>
-
-        <!-- Modal -->
         <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
                 <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
@@ -135,11 +120,9 @@
                             <br>Takođe, u sekciji <strong>"Ažurnost podataka"</strong>, možete pogledati šta je po kalendaru naredna stavka koju treba objaviti na sajtu, kao i datum kada je planirana objava.')
                     !!}
                 </p>
-
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const centerTextPlugin = {
@@ -159,7 +142,6 @@
                 ctx.save();
             }
         };
-
         const ctx = document.getElementById('relofChart').getContext('2d');
         new Chart(ctx, {
             type: 'doughnut',
