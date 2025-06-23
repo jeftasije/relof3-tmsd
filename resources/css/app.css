@@ -12,16 +12,24 @@
   --primary-text: #1f2937;
   --secondary-text: #64748b;
   --accent: #22c55e;
+  --font-title: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title) !important;
+}
+body, p, span, li, input, textarea, button {
+  font-family: var(--font-body) !important;
 }
 
 body {
-  background: var(--primary-bg);
-  color: var(--primary-text);
+  background: var(--primary-bg) !important;
+  color: var(--primary-text) !important;
 }
 
 .accent {
-  background: var(--accent);
-  color: #fff;
+  background: var(--accent) !important;
+  color: #fff !important;
 }
 
 .palette-card {
@@ -57,14 +65,4 @@ body {
   font-weight: 600;
   font-size: 1rem;
   margin-left: 0.7rem;
-}
-:root {
-  --font-title: 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
-}
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-title);
-}
-body, p, span, li, input, textarea, button {
-  font-family: var(--font-body);
 }

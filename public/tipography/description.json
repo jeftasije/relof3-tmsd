@@ -1,54 +1,15 @@
 {
   "fonts": [
-    {
-      "key": "inter",
-      "label": "Inter",
-      "family": "Inter, sans-serif"
-    },
-    {
-      "key": "roboto",
-      "label": "Roboto",
-      "family": "Roboto, sans-serif"
-    },
-    {
-      "key": "open-sans",
-      "label": "Open Sans",
-      "family": "'Open Sans', sans-serif"
-    },
-    {
-      "key": "nunito",
-      "label": "Nunito",
-      "family": "Nunito, sans-serif"
-    },
-    {
-      "key": "lato",
-      "label": "Lato",
-      "family": "Lato, sans-serif"
-    },
-    {
-      "key": "merriweather",
-      "label": "Merriweather",
-      "family": "Merriweather, serif"
-    },
-    {
-      "key": "source-sans",
-      "label": "Source Sans Pro",
-      "family": "'Source Sans Pro', sans-serif"
-    },
-    {
-      "key": "ubuntu",
-      "label": "Ubuntu",
-      "family": "Ubuntu, sans-serif"
-    },
-    {
-      "key": "mulish",
-      "label": "Mulish",
-      "family": "Mulish, sans-serif"
-    },
-    {
-      "key": "pt-serif",
-      "label": "PT Serif",
-      "family": "'PT Serif', serif"
-    }
+    { "key": "inter", "label": "Inter", "family": "Inter" },
+    { "key": "roboto", "label": "Roboto", "family": "Roboto" },
+    { "key": "open-sans", "label": "Open Sans", "family": "Open Sans" },
+    { "key": "nunito", "label": "Nunito", "family": "Nunito" },
+    { "key": "lato", "label": "Lato", "family": "Lato" },
+    { "key": "merriweather", "label": "Merriweather", "family": "Merriweather" },
+    { "key": "source-sans", "label": "Source Sans Pro", "family": "Source Sans Pro" },
+    { "key": "ubuntu", "label": "Ubuntu", "family": "Ubuntu" },
+    { "key": "mulish", "label": "Mulish", "family": "Mulish" },
+    { "key": "pt-serif", "label": "PT Serif", "family": "PT Serif" },
+    { "key": "bebasneue", "label": "Bebas Neue", "family": "Bebas Neue" }
   ]
 }

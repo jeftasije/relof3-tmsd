@@ -1,54 +1,14 @@
 {
   "fonts": [
-    {
-      "key": "inter",
-      "label": "Inter",
-      "family": "Inter, sans-serif"
-    },
-    {
-      "key": "roboto",
-      "label": "Roboto",
-      "family": "Roboto, sans-serif"
-    },
-    {
-      "key": "oswald",
-      "label": "Oswald",
-      "family": "Oswald, sans-serif"
-    },
-    {
-      "key": "montserrat",
-      "label": "Montserrat",
-      "family": "Montserrat, sans-serif"
-    },
-    {
-      "key": "bebasneue",
-      "label": "Bebas Neue",
-      "family": "'Bebas Neue', cursive"
-    },
-    {
-      "key": "lora",
-      "label": "Lora",
-      "family": "Lora, serif"
-    },
-    {
-      "key": "raleway",
-      "label": "Raleway",
-      "family": "Raleway, sans-serif"
-    },
-    {
-      "key": "playfair",
-      "label": "Playfair Display",
-      "family": "'Playfair Display', serif"
-    },
-    {
-      "key": "poppins",
-      "label": "Poppins",
-      "family": "Poppins, sans-serif"
-    },
-    {
-      "key": "merriweather",
-      "label": "Merriweather",
-      "family": "Merriweather, serif"
-    }
+    { "key": "inter", "label": "Inter", "family": "Inter" },
+    { "key": "roboto", "label": "Roboto", "family": "Roboto" },
+    { "key": "oswald", "label": "Oswald", "family": "Oswald" },
+    { "key": "montserrat", "label": "Montserrat", "family": "Montserrat" },
+    { "key": "bebasneue", "label": "Bebas Neue", "family": "Bebas Neue" },
+    { "key": "lora", "label": "Lora", "family": "Lora" },
+    { "key": "raleway", "label": "Raleway", "family": "Raleway" },
+    { "key": "playfair", "label": "Playfair Display", "family": "Playfair Display" },
+    { "key": "poppins", "label": "Poppins", "family": "Poppins" },
+    { "key": "merriweather", "label": "Merriweather", "family": "Merriweather" }
   ]
 }

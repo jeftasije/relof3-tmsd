@@ -10,6 +10,16 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 Alpine.start();
 
+// Helper funkcija za validnu font-family vrednost
+function fontStack(font) {
+    // Ako već ima sans-serif ili serif, koristi kako jeste (ali makni navodnike)
+    if (font.includes('serif')) return font.replace(/["']/g, '');
+    // Ako ima razmak, okruži sa navodnicima i dodaj sans-serif fallback
+    if (font.includes(' ')) return `'${font}', sans-serif`;
+    // Ako nema razmaka, samo dodaj sans-serif
+    return `${font}, sans-serif`;
+}
+
 window.palettes = {};
 window.fontPalettes = {};
 window.activePalette = localStorage.getItem('palette') || 'default';
@@ -54,13 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
             setupSidebarPreviewTheme();
         });
 
-    fetch('/themes/fonts.json')
-        .then(res => res.json())
-        .then(data => {
-            window.fontPalettes = data.fonts;
-            applyFontPalette();
-            renderFontPaletteList();
-            renderFontPreview();
+    const titleFontsPromise = fetch('/tipography/title.json').then(res => res.json());
+    const descFontsPromise = fetch('/tipography/description.json').then(res => res.json());
+
+    Promise.all([titleFontsPromise, descFontsPromise])
+        .then(([titleFonts, descFonts]) => {
+            window.fontPalettes = {
+                title: titleFonts.fonts,
+                desc: descFonts.fonts
+            };
+            renderFontPreview?.();
         });
 });
 
@@ -202,11 +215,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---------- tipography ----------
-
 window.selectedTitleFont = localStorage.getItem('font-title') || 'Inter';
 window.selectedDescFont = localStorage.getItem('font-desc') || 'Inter';
 let tempTitleFont = window.selectedTitleFont;
 let tempDescFont = window.selectedDescFont;
+
+let saveBtn = null;
+
+function updateFontSaveBtnState() {
+    if (!saveBtn) saveBtn = document.getElementById('font-save-btn');
+    if (!saveBtn) return;
+    if (tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont) {
+        saveBtn.disabled = true;
+        saveBtn.classList.add('opacity-60', 'cursor-not-allowed');
+    } else {
+        saveBtn.disabled = false;
+        saveBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+    }
+}
 
 function renderTitleFontsList(fonts) {
     const list = document.getElementById('title-fonts-list');
@@ -225,13 +251,11 @@ function renderTitleFontsList(fonts) {
             tempTitleFont = font.family;
             renderTitleFontsList(fonts);
             renderFontPreview();
-            document.getElementById('font-save-btn').disabled =
-                tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+            updateFontSaveBtnState();
         };
         list.appendChild(card);
     });
-    document.getElementById('font-save-btn').disabled =
-        tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+    updateFontSaveBtnState();
 }
 
 function renderDescFontsList(fonts) {
@@ -251,16 +275,13 @@ function renderDescFontsList(fonts) {
             tempDescFont = font.family;
             renderDescFontsList(fonts);
             renderFontPreview();
-            document.getElementById('font-save-btn').disabled =
-                tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+            updateFontSaveBtnState();
         };
         list.appendChild(card);
     });
-    document.getElementById('font-save-btn').disabled =
-        tempTitleFont === window.selectedTitleFont && tempDescFont === window.selectedDescFont;
+    updateFontSaveBtnState();
 }
 
-// PREVIEW prikaz
 window.renderFontPreview = function () {
     const previewTitle = document.getElementById('preview-title');
     const previewDesc = document.getElementById('preview-desc');
@@ -268,7 +289,6 @@ window.renderFontPreview = function () {
     if (previewDesc) previewDesc.style.fontFamily = tempDescFont;
 };
 
-// Inicijalizacija (fetch + render + save)
 document.addEventListener('DOMContentLoaded', async () => {
     const [titleFonts, descFonts] = await Promise.all([
         fetch('/tipography/title.json').then(res => res.json()),
@@ -280,8 +300,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderDescFontsList(window.descFonts);
     renderFontPreview();
 
-    // SAVE BUTTON
-    let saveBtn = document.getElementById('font-save-btn');
+    saveBtn = document.getElementById('font-save-btn');
+    updateFontSaveBtnState();
+
     if (saveBtn) {
         saveBtn.onclick = function () {
             if (tempTitleFont !== window.selectedTitleFont || tempDescFont !== window.selectedDescFont) {
@@ -289,10 +310,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.selectedDescFont = tempDescFont;
                 localStorage.setItem('font-title', window.selectedTitleFont);
                 localStorage.setItem('font-desc', window.selectedDescFont);
-                document.documentElement.style.setProperty('--font-title', `'${window.selectedTitleFont}', sans-serif`);
-                document.documentElement.style.setProperty('--font-body', `'${window.selectedDescFont}', sans-serif`);
-                saveBtn.disabled = true;
+                document.documentElement.style.setProperty('--font-title', fontStack(window.selectedTitleFont));
+                document.documentElement.style.setProperty('--font-body', fontStack(window.selectedDescFont));
+                updateFontSaveBtnState();
             }
         };
     }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const titleFont = localStorage.getItem('font-title') || 'Inter';
+    const descFont = localStorage.getItem('font-desc') || 'Inter';
+    document.documentElement.style.setProperty('--font-title', fontStack(titleFont));
+    document.documentElement.style.setProperty('--font-body', fontStack(descFont));
 });

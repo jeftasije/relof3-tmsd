@@ -18,10 +18,12 @@
         <div style="background: var(--primary-bg); color: var(--primary-text);">
             <div class="p-2 sm:p-4 lg:p-6" style="color: var(--primary-text);">
 
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center" style="color: var(--primary-text);">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center"
+                    style="color: var(--primary-text); font-family: var(--font-title);">
                     {{ $text['title'] }}
                 </h1>
-                <p class="mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto" style="color: var(--secondary-text);">
+                <p class="mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto"
+                    style="color: var(--secondary-text); font-family: var(--font-body);">
                     {{ $text['description'] }}
                 </p>
                 <div class="flex justify-end mb-6">

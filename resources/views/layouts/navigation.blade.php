@@ -298,7 +298,7 @@
                     </div>
                 </aside>
                 
-<!-- ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !  ! ! ! ! ! ! ! ! ! !-->
+<!-- ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !  ! ! ! ! ! ! ! ! ! ! -->
 <aside id="typography-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-typography">
     <div class="flex justify-start">
         <button data-drawer-target="typography-sidebar" data-drawer-toggle="typography-sidebar" aria-controls="typography-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -313,38 +313,49 @@
     </div>
     <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
         <p class="text-lg text-center font-semibold dark:text-white mb-2">
-            @switch(App::getLocale())
-            @case('en') Typography @break
-            @case('sr-Cyrl') Типографија @break
-            @default Tipografija
-            @endswitch
+            {{ App::getLocale() === 'en' ? 'Typography' : (App::getLocale() === 'sr-Cyrl' ? 'Типографија' : 'Tipografija') }}
         </p>
         <div class="my-4">
-            <h2 class="text-base font-semibold mb-2">Title fonts</h2>
+            <h2 class="text-base font-semibold mb-2">
+                {{ App::getLocale() === 'en' ? 'Title fonts' : (App::getLocale() === 'sr-Cyrl' ? 'Фонтови за наслов' : 'Fontovi za naslov') }}
+            </h2>
             <div id="title-fonts-list" class="flex flex-col gap-2 overflow-y-auto" style="max-height: 200px;">
                 <!-- puni JS -->
             </div>
         </div>
         <div class="my-4">
-            <h2 class="text-base font-semibold mb-2">Description fonts</h2>
+            <h2 class="text-base font-semibold mb-2">
+                {{ App::getLocale() === 'en' ? 'Description fonts' : (App::getLocale() === 'sr-Cyrl' ? 'Фонтови за опис' : 'Fontovi za opis') }}
+            </h2>
             <div id="desc-fonts-list" class="flex flex-col gap-2 overflow-y-auto" style="max-height: 200px;">
                 <!-- puni JS -->
             </div>
         </div>
         <div class="my-4">
-            <h2 class="text-base font-semibold mb-2">Preview</h2>
+            <h2 class="text-base font-semibold mb-2">
+                {{ App::getLocale() === 'en' ? 'Preview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед' : 'Pregled') }}
+            </h2>
             <div id="font-preview" class="w-full max-w-xs rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 transition-all duration-300 mb-4 bg-white dark:bg-gray-800 p-4 mx-auto">
-                <div id="preview-title" class="text-2xl font-bold mb-2">Ovo je naslov teme</div>
-                <div id="preview-desc" class="text-base">Ovo je prikaz tekstualnog opisa (description). Promeni font pa klikni Sačuvaj!</div>
+                <div id="preview-title" class="text-2xl font-bold mb-2">
+                    {{ App::getLocale() === 'en' ? 'This is a title preview' : (App::getLocale() === 'sr-Cyrl' ? 'Ово је наслов теме' : 'Ovo je naslov teme') }}
+                </div>
+                <div id="preview-desc" class="text-base">
+                    {{ App::getLocale() === 'en'
+                        ? 'This is a description preview. Change the font and click Save!'
+                        : (App::getLocale() === 'sr-Cyrl'
+                            ? 'Ово је приказ текстуалног описа (description). Промени фонт па кликни Сачувај!'
+                            : 'Ovo je prikaz tekstualnog opisa (description). Promeni font pa klikni Sačuvaj!')
+                    }}
+                </div>
             </div>
             <button id="font-save-btn"
                 class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
-                disabled>Sačuvaj</button>
+                disabled>
+                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+            </button>
         </div>
     </div>
 </aside>
-
-
 
                 <aside id="color-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-color">
                     <div class="flex justify-start items-center p-2">
