@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 });
 
 Route::get('/usluge', function () {
