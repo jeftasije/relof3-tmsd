@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
     Route::post('/galerija/update', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
 
+    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
+    Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
+    
 });
 
 Route::get('/usluge', function () {
@@ -109,5 +113,8 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
+
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
+
 require __DIR__.'/auth.php';

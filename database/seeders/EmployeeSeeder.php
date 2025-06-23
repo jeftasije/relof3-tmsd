@@ -11,6 +11,8 @@ class EmployeeSeeder extends Seeder
     {
         Employee::create([
             'name' => 'Dragica Nikolić',
+            'name_en' => 'Dragica Nikolic',
+            'name_cy' => 'Драгица Николић',
             'position' => 'Diplomirani bibliotekar',
             'position_en' => 'Graduate Librarian',
             'position_cy' => 'Дипломирани библиотекар',
@@ -22,6 +24,8 @@ class EmployeeSeeder extends Seeder
 
         Employee::create([
             'name' => 'Marko Petrović',
+            'name_en' => 'Marko Petrovic',
+            'name_cy' => 'Марко Петровић',
             'position' => 'Administrator biblioteke',
             'position_en' => 'Library Administrator',
             'position_cy' => 'Администратор библиотеке',
@@ -33,6 +37,8 @@ class EmployeeSeeder extends Seeder
 
         Employee::create([
             'name' => 'Jelena Simić',
+            'name_en' => 'Jelena Simic',
+            'name_cy' => 'Јелена Симић',
             'position' => 'Pomoćnik bibliotekara',
             'position_en' => 'Library Assistant',
             'position_cy' => 'Помоћник библиотекара',
@@ -44,6 +50,8 @@ class EmployeeSeeder extends Seeder
 
         Employee::create([
             'name' => 'Nemanja Ristić',
+            'name_en' => 'Nemanja Ristic',
+            'name_cy' => 'Немања Ристић',
             'position' => 'Specijalista za arhivu',
             'position_en' => 'Archive Specialist',
             'position_cy' => 'Специјалиста за архиву',

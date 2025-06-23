@@ -7,10 +7,12 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {   
-     public function index()
+    public function index()
     {
-        return view('contact');
+        $messages = auth()->check() ? Contact::latest()->get() : null;
+        return view('contact', compact('messages'));
     }
+
 
     public function store(Request $request)
     {
@@ -26,4 +28,12 @@ class ContactController extends Controller
 
         return redirect()->back()->with('success', 'Poruka je uspešno poslata!');
     }
+
+    public function answer()
+    {
+        $messages = Contact::latest()->get();
+        return view('contactAnswer', compact('messages'));
+    }
+
+
 }
