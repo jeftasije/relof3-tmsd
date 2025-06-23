@@ -55,9 +55,7 @@
         </label>
     </div>
     <div class="my-6 w-9/12">
-        <textarea id="large-text-input" rows="4" name="content[text]" class="block w-full p-2.5 text-sm text-gray-900 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ App::getLocale() === 'en' ? 'Write an article here...' : (App::getLocale() === 'sr-Cyrl' ? 'Напишите чланак овде...' : 'Napišite članak ovde...') }}">
-        {{ old('content.text', $content['text'] ?? '') }}
-        </textarea>
+        <textarea id="large-text-input" rows="4" name="content[text]" class="block w-full p-2.5 text-sm text-gray-900 bg-gray-100 dark:bg-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500  dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ App::getLocale() === 'en' ? 'Write an article here...' : (App::getLocale() === 'sr-Cyrl' ? 'Напишите чланак овде...' : 'Napišite članak ovde...') }}">{{ old('content.text', $content['text'] ?? '') }}</textarea>
     </div>
 </div>
 @else

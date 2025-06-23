@@ -95,10 +95,11 @@
                                         @foreach ($mainSections as $section)
                                         @php
                                         $isSelectedMain = $section->id === optional($currentSection)->id || $section->id === optional($parentSection)->id;
+                                        $isActive = ($section->redirect_url && $section->is_active) ? true : false;
                                         @endphp
                                         <option
                                             value="{{ $section->id }}"
-                                            {{ $section->redirect_url ? 'disabled' : '' }}
+                                            {{ $isActive ? 'disabled' : '' }}
                                             {{ $isSelectedMain ? 'selected' : '' }}>
                                             {{ $section->name }}
                                         </option>

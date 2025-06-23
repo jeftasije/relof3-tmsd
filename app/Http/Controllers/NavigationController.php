@@ -35,6 +35,7 @@ class NavigationController extends Controller
         $navigation = new Navigation();
         $navigation->name = $request->name;
         $navigation->parent_id = $request->parent_id;
+        $navigation->is_active = false;
         $navigation->save();
 
         return response()->json(['success' => true]);

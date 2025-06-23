@@ -8,6 +8,9 @@ use App\Models\Page;
 use App\Models\Navigation;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Log;
+
+
 class PageController extends Controller
 {
     public function show($slug)
@@ -88,8 +91,7 @@ class PageController extends Controller
 
         if ($request->has('navigation')) {
             $navigationIds = $request->navigation;
-
-            if (count($navigationIds) > 1) {
+            if ($navigationIds[1] !== null) {
                 $subSectionId = $navigationIds[1];
 
                 $existingNav = Navigation::where('redirect_url', '/stranica/' . $page->slug)->first();
@@ -98,21 +100,25 @@ class PageController extends Controller
                     $existingNav->update([
                         'parent_id' => $subSectionId,
                         'name' => $page->title,
+                        'is_active' => $request->action === 'publish',
                     ]);
                 } else {
                     $newNavigation = new Navigation();
                     $newNavigation->parent_id = $subSectionId;
                     $newNavigation->name = $page->title;
                     $newNavigation->redirect_url = '/stranica/' . $page->slug;
+                    $newNavigation->is_active = $request->action === 'publish';
                     $newNavigation->save();
                 }
             } else {
                 $mainSectionId = $navigationIds[0];
                 $mainSection = Navigation::find($mainSectionId);
 
-                if ($mainSection && !$mainSection->redirect_url) {
-                    $mainSection->redirect_url = '/' . $page->slug;
-                    $mainSection->save();
+                if ($mainSection) {
+                    $mainSection->update([
+                        $mainSection->redirect_url = '/stranica/' . $page->slug,
+                        $mainSection->is_active = $request->action === 'publish',
+                    ]);   
                 }
             }
         }
@@ -122,7 +128,7 @@ class PageController extends Controller
             return redirect()
                 ->route('page.edit', ['slug' => $page->slug, 'sablon' => $page->template_id])
                 ->withInput()
-                ->with('status', 'Draft sačuvan.');
+                ->with('status', 'Draft saved.');
         }
 
         return redirect()->route('page.show', $page->slug);
