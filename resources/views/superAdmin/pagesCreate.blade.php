@@ -130,8 +130,14 @@
                 </div>
             </aside>
         </div>
+        @if($page->is_deletable)
         <div class="min-h-screen w-full flex items-center justify-center">
             @include('templates.template' . $templateId)
         </div>
+        @else
+        <div class="flex-1 pr-64">
+            {!! $basePageContent !!}
+        </div>
+        @endif
     </form>
 </x-app-layout>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Models\Page;
 use App\Models\Navigation;
 use Illuminate\Support\Str;
@@ -11,6 +12,15 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
+    protected array $controllerMap = [
+        'news' => [NewsController::class, 'index'],
+        'zalbe' => [ComplaintController::class, 'index'],
+        'dokumenti' => [DocumentController::class, 'index'],
+        'employees' => [EmployeeController::class, 'index'],
+        'organizaciona-struktura' => [OrganisationalStructureController::class, 'index'],
+        'nabavke' => [ProcurementController::class, 'index'],
+    ];
+
     public function show($slug)
     {
         $page = Page::where('slug', $slug)->where('is_active', true)->firstOrFail();
@@ -199,6 +209,26 @@ class PageController extends Controller
                     ? Navigation::find($currentSection->parent_id)
                     : null;
             }
+        }
+
+        if (!$page->is_deletable) {
+            [$controllerClass, $method] = $this->controllerMap[$page->slug] ?? [null, null];
+            $controllerInstance = app($controllerClass);
+            $response = app()->call([$controllerInstance, $method]);
+            $basePageContent = $response->render();
+
+            return view('superAdmin.pagesCreate', [
+                'templateId'     => $page->template_id,
+                'mainSections'   => $mainSections,
+                'subSections'    => $subSections,
+                'currentSection' => $currentSection,
+                'parentSection'  => $parentSection,
+                'page'           => $page,
+                'basePageContent' => $basePageContent,
+                'title'          => $page->title,
+                'slug'           => $page->slug,
+                'isDraft'        => true,
+            ]);
         }
 
         return view('superAdmin.pagesCreate', [
