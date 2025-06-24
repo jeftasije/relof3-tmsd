@@ -23,27 +23,29 @@
                     <p class="text-gray-700 mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto dark:text-gray-300">
                         {{ $text['description'] }}
                     </p>
-
-                    @auth
-                    <div class="flex justify-end mb-4">
-                        <button
-                            @click="open = true"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
-                        >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
-                        </button>
+                    <div class="flex justify-end mb-6">
+                        @auth
+                            <button @click="open = true" class="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
+                            </button>
+                        @endauth
                     </div>
-                    @endauth
-
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                         @foreach ($news as $newsItem)
                             <x-news-card :news="$newsItem" />
                         @endforeach
                     </div>
+
+                    @if ($news->hasPages())
+                        <div class="flex justify-center mt-8">
+                            {{ $news->links('pagination::tailwind') }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -58,64 +60,77 @@
             <div
                 x-show="open"
                 x-transition
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-4xl w-full p-8 relative"
                 @keydown.escape.window="open = false"
             >
-                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                    {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
-                </h2>
                 <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                     @csrf
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title">
-                        {{ App::getLocale() === 'en' ? 'Title (Serbian)' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов (Српски)' : 'Naslov (Srpski)') }}
-                    </label>
-                    <input type="text" name="title" id="title" required
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                    {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
+                                </h2>
+                            </div>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title_en">
-                        {{ App::getLocale() === 'en' ? 'Title (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов (Енглески)' : 'Naslov (Engleski)') }}
-                    </label>
-                    <input type="text" name="title_en" id="title_en"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="title">
+                                {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
+                            </label>
+                            <input type="text" name="title" id="title" required
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary">
-                        {{ App::getLocale() === 'en' ? 'Summary (Serbian)' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис (Српски)' : 'Kratak opis (Srpski)') }}
-                    </label>
-                    <textarea name="summary" id="summary" rows="2" required
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary">
+                                {{ App::getLocale() === 'en' ? 'Summary' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис' : 'Kratak opis') }}
+                            </label>
+                            <textarea name="summary" id="summary" rows="2"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="summary_en">
-                        {{ App::getLocale() === 'en' ? 'Summary (English)' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис (Енглески)' : 'Kratak opis (Engleski)') }}
-                    </label>
-                    <textarea name="summary_en" id="summary_en" rows="2"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
+                                {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
+                            </label>
+                            <input type="file" name="image" id="image" accept="image/*"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="image">
-                        {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
-                    </label>
-                    <input type="file" name="image" id="image" accept="image/*"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="author">
+                                {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
+                            </label>
+                            <input type="text" name="author" id="author"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="author">
-                        {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
-                    </label>
-                    <input type="text" name="author" id="author"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="published_at">
+                                {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
+                            </label>
+                            <input type="date" name="published_at" id="published_at"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                        </div>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="published_at">
-                        {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
-                    </label>
-                    <input type="date" name="published_at" id="published_at"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                        <div>
+                            <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                    {{ App::getLocale() === 'en' ? 'Extended News Content' : (App::getLocale() === 'sr-Cyrl' ? 'Проширена вест' : 'Proširena vest') }}
+                                </h2>
+                            </div>
 
-                    <div class="flex justify-end gap-2 mt-4">
-                        <button type="button" @click="open = false"
-                            class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
-                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Одустани' : 'Otkaži') }}
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="content">
+                                {{ App::getLocale() === 'en' ? 'Full Content' : (App::getLocale() === 'sr-Cyrl' ? 'Цео садржај' : 'Ceo sadržaj') }}
+                            </label>
+                            <textarea name="content" id="content" rows="6"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white"></textarea>
+
+                            <label class="block mb-2 text-gray-700 dark:text-gray-300" for="tags">
+                                {{ App::getLocale() === 'en' ? 'Tags (comma separated)' : (App::getLocale() === 'sr-Cyrl' ? 'Тагови (раздвојени зарезом)' : 'Tagovi (zarez)') }}
+                            </label>
+                            <input type="text" name="tags" id="tags"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-2 mt-8">
+                        <button type="button" @click="open = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
-                        <button type="submit"
-                            class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                        <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
                             {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
