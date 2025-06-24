@@ -15,6 +15,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReminderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
+
+    Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
+    Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
 });
 
 Route::get('/usluge', function () {
