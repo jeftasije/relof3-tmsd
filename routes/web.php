@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
-    Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+    Route::delete('/navigacija/{id}', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
     Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
 

@@ -328,27 +328,12 @@
                         <ul id="nav-list" class="space-y-2 mt-4 dark:text-white">
                             @foreach($mainSections as $mainSection)
                             <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
-                                <input {{ $mainSection->is_deletable ? '' : 'disabled' }} id="checkbox-{{ $mainSection->id }}" data-tooltip-target="tooltip-default-{{$mainSection->id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <div id="tooltip-default-{{ $mainSection->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                                    @switch(App::getLocale())
-                                    @case('en')
-                                    {{ $mainSection->is_deletable ? 'Check to delete' : 'This section is required' }}
-                                    @break
-                                    @case('sr-Cyrl')
-                                    {{ $mainSection->is_deletable ? 'Означите како бисте обрисали' : 'Ова секција је обавезна' }}
-                                    @break
-                                    @default
-                                    {{ $mainSection->is_deletable ? 'Označite kako biste obrisali' : 'Ova sekcija je obavezna' }}
-                                    @endswitch
-                                    <div class="tooltip-arrow" data-popper-arrow></div>
-                                </div>
                                 <button type="button" class="flex items-center justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
                                     <span>{{ $mainSection->name }}</span>
                                     <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </button>
-
                                 <span id="sort-icon-{{ $mainSection->id }}" class="hidden">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -367,26 +352,42 @@
                                     @foreach ($subSections[$mainSection->id] as $subSection)
                                     <div>
                                         <div class="flex flex-row items-center gap-1">
-                                            <input {{ $subSection->is_deletable ? '' : 'disabled' }} id="checkbox-{{ $subSection->id }}" data-tooltip-target="tooltip-default-{{$subSection->id}}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <div id="tooltip-default-{{ $subSection->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                                                @switch(App::getLocale())
-                                                @case('en')
-                                                {{ $subSection->is_deletable ? 'Check to delete' : 'This section is required' }}
-                                                @break
-                                                @case('sr-Cyrl')
-                                                {{ $subSection->is_deletable ? 'Означите како бисте обрисали' : 'Ова секција је обавезна' }}
-                                                @break
-                                                @default
-                                                {{ $subSection->is_deletable ? 'Označite kako biste obrisali' : 'Ova sekcija je obavezna' }}
-                                                @endswitch
-                                                <div class="tooltip-arrow" data-popper-arrow></div>
-                                            </div>
                                             <button class="flex items-center justify-between p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-subSection-{{ $subSection->id }}">
                                                 <span>{{ $subSection->name }}</span>
                                                 <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                                 </svg>
                                             </button>
+                                            <button id="dropdownMenuIconButton-{{ $subSection->id }}" data-dropdown-toggle="dropdownDots-{{ $subSection->id }}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                                    <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                                </svg>
+                                            </button>
+                                            <div id="dropdownDots-{{ $subSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
+                                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
+                                                    <li>
+                                                        <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $subSection->id }}" data-doc-title="{{ $subSection->title }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            {{ App::getLocale() === 'en'
+                                                        ? 'Rename'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Преименуј'
+                                                            : 'Preimenuj') }}
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button {{ $subSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->title }}" 
+                                                            class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
+                                                            disabled:opacity-50 disabled:cursor-not-allowed 
+                                                            disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                                            {{ App::getLocale() === 'en'
+                                                        ? 'Delete'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Обриши'
+                                                            : 'Obriši') }}
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div id="dropdown-subSection-{{ $subSection->id }}" class="hidden">
                                             <ul class="">
@@ -451,24 +452,31 @@
                     </div>
 
                     <!-- Delete Confirmation Modal -->
-                    <div id="delete-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-                        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
-                            <div class="mt-3 text-center">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">
-                                    {{ App::getLocale() === 'en' ? 'Confirm Deletion' : (App::getLocale() === 'sr-Cyrl' ? 'Потврда брисања' : 'Potvrda brisanja') }}
-                                </h3>
-                                <div class="mt-2 px-7 py-3">
-                                    <p id="delete-modal-message" class="text-sm text-gray-600 dark:text-gray-300">
-                                    </p>
-                                </div>
-                                <div class="items-center px-4 py-3 flex justify-center space-x-4">
-                                    <button id="delete-confirm-btn"
-                                        class="px-4 py-2 bg-red-500 text-white font-medium rounded-md w-24 hover:bg-red-600">
-                                        {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
+                    <div id="deleteNavigationModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-md max-h-full">
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <div class="p-6 text-center">
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                        {{ App::getLocale() === 'en'
+                                ? 'Are you sure you want to delete?'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Да ли сте сигурни да желите да обришете'
+                                    : 'Da li ste sigurni da želite da obrišete') }}
+                                        "<span id="deleteNavigationModalTitle"></span>"?
+                                    </h3>
+                                    <button data-modal-hide="deleteNavigationModal" id="confirmDeleteButton" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                        {{ App::getLocale() === 'en'
+                                ? 'Confirm'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Потврди'
+                                    : 'Potvrdi') }}
                                     </button>
-                                    <button id="delete-cancel-btn"
-                                        class="px-4 py-2 bg-gray-500 text-white font-medium rounded-md w-24 hover:bg-gray-600">
-                                        {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                                    <button data-modal-hide="deleteNavigationModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        {{ App::getLocale() === 'en'
+                                ? 'Cancel'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Откажи'
+                                    : 'Otkaži') }}
                                     </button>
                                 </div>
                             </div>
@@ -911,62 +919,23 @@
             sectionNameInput.value = '';
         });
 
-        const deleteBtn = document.getElementById('delete-selected-nav');
-        const deleteModal = document.getElementById('delete-modal');
-        const deleteMsg = document.getElementById('delete-modal-message');
-        const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
-        const deleteCancelBtn = document.getElementById('delete-cancel-btn');
-        let pendingDeleteIds = [];
+        const deleteNavigationModal = document.getElementById('deleteNavigationModal');
+        const deleteNavigationModalTitle = document.getElementById('deleteNavigationModalTitle');
 
-        deleteBtn.addEventListener('click', () => {
-            const checked = Array.from(
-                navList.querySelectorAll('input[type="checkbox"]:checked')
-            );
-            if (checked.length === 0) {
-                return alert((() => {
-                    switch (locale) {
-                        case 'en':
-                            return 'Please select at least one section to delete.';
-                        case 'sr-Cyrl':
-                            return 'Означите бар једну секцију за брисање.';
-                        default:
-                            return 'Označite bar jednu sekciju za brisanje.';
-                    }
-                })());
-
-            }
-
-            pendingDeleteIds = checked.map(cb => cb.id.split('-')[1]);
-
-            deleteMsg.textContent = (() => {
-                switch (locale) {
-                    case 'en':
-                        return `You are about to delete ${pendingDeleteIds.length} section(s).`;
-                    case 'sr-Cyrl':
-                        return `Управо ћете обрисати ${pendingDeleteIds.length} секцију(е).`;
-                    default:
-                        return `Upravo ćete obrisati ${pendingDeleteIds.length} sekciju(e).`;
-                }
-            })();
-
-            deleteModal.classList.remove('hidden');
+        document.querySelectorAll('[data-modal-toggle="deleteNavigationModal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                currentNavId = button.dataset.navId;
+                deleteNavigationModalTitle.textContent = button.dataset.navTitle;
+            });
         });
 
-        deleteCancelBtn.addEventListener('click', () => {
-            deleteModal.classList.add('hidden');
-            pendingDeleteIds = [];
-        });
-
-        deleteConfirmBtn.addEventListener('click', () => {
-            fetch(`{{ route('navigation.destroy') }}`, {
+        confirmDeleteButton.addEventListener('click', () => {
+            fetch(`/navigacija/${currentNavId}`, {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
                     },
-                    body: JSON.stringify({
-                        ids: pendingDeleteIds
-                    })
                 })
                 .then(res => res.json())
                 .then(data => {

@@ -75,7 +75,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Management',
             'name_cy' => 'Пословодство',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'is_active' => 1
         ]);
         $planoviIIzveštaji = Navigation::create([
@@ -83,7 +83,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Reports',
             'name_cy' => 'О раду',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'is_active' => 1
         ]);
         $informacijeORaduIProcedurama = Navigation::create([
@@ -91,7 +91,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Work info and procedures',
             'name_cy' => 'Информације о раду и процедурама',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'is_active' => 1
         ]);
 
@@ -175,7 +175,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Organization',
             'name_cy' => 'Организација',
             'parent_id' => $oNama->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'is_active' => 1
         ]);
         Navigation::create([
