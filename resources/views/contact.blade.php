@@ -44,7 +44,7 @@
                 <p class="mb-8 lg:mb-16 font-light text-center text-gray-600 dark:text-gray-300 sm:text-xl">
                     @switch(App::getLocale())
                     @case('en') Our team is here to answer all your questions and provide you with the best possible service! @break
-                    @case('sr-Cyrl') Наш тим је ту да одговори на сва ваша питања и обезбеди вам најбољу могућу услугу! @break
+                    @case('sr-Cyrl') Нашgit  тим је ту да одговори на сва ваша питања и обезбеди вам најбољу могућу услугу! @break
                     @default Naš tim je tu da odgovori na sva vaša pitanja i obezbedi vam najbolju moguću uslugu!
                     @endswitch
                 </p>

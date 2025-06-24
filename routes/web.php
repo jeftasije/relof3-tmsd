@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 
 
-    Route::post('/istorijat', [HistoryController::class, 'update'])->name('history.update');
+    Route::post('/istorijat/updata', [HistoryController::class, 'update'])->name('history.update');
 
 
 });
