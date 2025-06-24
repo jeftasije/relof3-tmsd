@@ -15,7 +15,7 @@
             <form action="{{ route('history.update') }}" method="POST" class="space-y-4">
                 @csrf
                 <textarea name="content" rows="15"
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white">{{ old('content', $history->content) }}</textarea>
+                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white">{{old('content', $history ? $history->content : '')}}</textarea>
 
                 <div class="flex justify-end gap-4">
                     <button type="submit"
