@@ -27,11 +27,32 @@ class ReminderController extends Controller
         return $this->translate->detect($text);
     }
 
+    public function index(Request $request) {
+        $search = $request->input('search');
+        $sort = $request->input('sort', 'asc'); 
 
-    public function index() {
-        $reminders = Reminder::orderBy('time', 'asc')->get();
-        return view('reminders', compact('reminders'));
+        $query = Reminder::query();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('title_en', 'like', "%$search%")
+                ->orWhere('title_lat', 'like', "%$search%")
+                ->orWhere('title_cyr', 'like', "%$search%");
+            });
+        }
+
+        if ($sort === 'asc') 
+            $query->orderBy('time', 'desc');
+        elseif ($sort === 'desc') 
+            $query->orderBy('time', 'asc');
+         else 
+            $query->orderBy('time', 'asc'); 
+        
+        $reminders = $query->get();
+
+        return view('reminders', compact('reminders', 'search', 'sort'));
     }
+
 
     public function store(Request $request)
     {
@@ -44,29 +65,25 @@ class ReminderController extends Controller
         $originalTitle = $request->title_en;
 
         $detectedScript = $this->languageMapper->detectScript($originalTitle);
-        if($detectedScript === 'cyrillic') {
+        if($detectedScript === 'cyrillic') {                                                            //input in serbian cyrillic
             $titleCyr = $originalTitle;
             $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
             $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
             $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
-            return redirect()->back()->with('success', 'Podsetnik je sačuvan.');
+            return redirect()->back()->with('success', 'Reminder created successfully.');
         }
 
         $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
         $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
 
-        //dd($originalTitle);     //sada mora da radi
-        //dd($toSr);          //"Сада мора да ради"
-        //dd($toSrLatin);       //"Sada mora da radi" 
-        if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {  // unio je na latinici srpski
+        if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {                              //input in serbian latin
             $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
             $titleLat = $originalTitle;
             $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            //db($toSr);
 
             $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
-            return redirect()->back()->with('success', 'Podsetnik je sačuvan.');
+            return redirect()->back()->with('success', 'Reminder created successfully.');
         }
 
         $titleEn = $originalTitle;
@@ -74,7 +91,7 @@ class ReminderController extends Controller
         $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
 
         $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
-        return redirect()->back()->with('success', 'Podsetnik je sačuvan.');
+        return redirect()->back()->with('success', 'Reminder created successfully.');
     }
 
     protected function create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime)
