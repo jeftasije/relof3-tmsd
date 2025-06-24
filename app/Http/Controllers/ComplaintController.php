@@ -41,4 +41,11 @@ class ComplaintController extends Controller
         
         return redirect()->back()->with('success', 'Žalba je uspešno poslata.');
     }
+
+    public function answerPage()
+    {
+        $complaints = Complaint::latest()->get();
+        return view('complaintAnswer', compact('complaints'));
+    }
+
 }

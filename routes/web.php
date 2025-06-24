@@ -67,6 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
+    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
+    Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
+  
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
     Route::post('/galerija/update', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
