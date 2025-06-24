@@ -1,8 +1,9 @@
 <x-guest-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center w-full p-4" id="header">
+        <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>
-            <button id="theme-toggle" class="p-2 rounded-full text-gray-900 hover:bg-gray-200 focus:outline-none dark:text-white dark:hover:bg-gray-700">
+            <button id="theme-toggle" class="p-2 rounded-full"
+                style="color: var(--primary-text); background: var(--primary-bg);">
                 <svg id="moon-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
@@ -34,16 +35,22 @@
         $tagsValue = old($tagsField, implode(',', $rawTags));
     @endphp
 
-    <div x-data="{ editOpen: false }" class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12 dark:bg-gray-900">
+    <div x-data="{ editOpen: false }" class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12"
+        style="background: var(--primary-bg); color: var(--primary-text);">
         <div class="w-full max-w-screen-xl mx-auto">
-            <div class="bg-white dark:bg-gray-900">
-                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
+            <div style="background: var(--primary-bg); color: var(--primary-text);">
+                <div class="p-2 sm:p-4 lg:p-6"
+                    style="color: var(--primary-text);">
 
                     @if($news->image_path)
                         <div class="relative w-full">
-                            <img class="w-full max-w-[200vw] h-[18rem] object-cover" src="{{ asset($news->image_path) }}" alt="{{ $news->title }}" onerror="this.src='{{ asset('/images/default-news.jpg') }}';">
+                            <img class="w-full max-w-[200vw] h-[18rem] object-cover"
+                                src="{{ asset($news->image_path) }}" alt="{{ $news->title }}"
+                                onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
+                                style="background: var(--primary-bg);">
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <h1 class="text-3xl sm:text-4xl font-bold text-white dark:text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
+                                <h1 class="text-3xl sm:text-4xl font-bold"
+                                    style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                                     {{ $locale === 'en' 
                                         ? ($news->title_en ?? $news->title) 
                                         : ($locale === 'sr-Cyrl' 
@@ -54,13 +61,14 @@
                                 @auth
                                     <button
                                         @click.stop="editOpen = true"
-                                        class="absolute top-4 right-6 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded z-20"
-                                    >
+                                        class="absolute top-4 right-6 font-semibold px-4 py-2 rounded z-20"
+                                        style="background: var(--accent); color: #fff;">
                                         {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                                     </button>
                                 @endauth
                             </div>
-                            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
+                            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center"
+                                style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
                                 <span>👤 {{ $news->author ?? ($locale === 'en' ? 'Unknown' : ($locale === 'sr-Cyrl' ? 'Непознат' : 'Nepoznat')) }}</span> | 
                                 <span>📅 {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}</span>
                             </div>
@@ -68,7 +76,8 @@
                     @endif
 
                     <div class="px-4 py-4 sm:px-6 sm:py-6 mt-2">
-                        <p class="text-gray-700 text-base sm:text-lg dark:text-gray-300 whitespace-pre-line text-center font-semibold text-2xl">
+                        <p class="text-base sm:text-lg whitespace-pre-line text-center font-semibold text-2xl"
+                           style="color: var(--secondary-text);">
                             {{
                                 $locale === 'en'
                                     ? ($news->extended->content_en ?? $news->extended->content ?? 'No additional content.')
@@ -83,7 +92,8 @@
                             <div class="flex flex-wrap justify-center gap-2 px-4 pt-2 pb-2 mt-2">
                                 @foreach($rawTags as $tag)
                                     @if($tag)
-                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-base font-semibold text-gray-700 mb-2 dark:bg-gray-700 dark:text-gray-300 border border-gray-400">{{ $tag }}</span>
+                                        <span class="inline-block rounded-full px-3 py-1 text-base font-semibold mb-2 border"
+                                              style="background: var(--secondary-text); color: #fff; border-color: var(--primary-bg);">{{ $tag }}</span>
                                     @endif
                                 @endforeach
                             </div>
@@ -92,7 +102,8 @@
 
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
                         <a href="{{ route('news.index') }}"
-                           class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                           class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium rounded-lg"
+                           style="background: var(--accent); color: #fff;">
                             {{ $locale === 'en' ? 'Back to news' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
                             <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4"/>
@@ -106,27 +117,29 @@
         <div
             x-show="editOpen"
             x-transition
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            style="display: none;"
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background:rgba(0,0,0,0.5);"
             @click.self="editOpen = false"
         >
             <div
                 x-show="editOpen"
                 x-transition
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                class="rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                style="background: var(--primary-bg); color: var(--primary-text);"
                 @keydown.escape.window="editOpen = false"
             >
-                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white text-center">
+                <h2 class="text-xl font-semibold mb-4 text-center"
+                    style="color: var(--primary-text);">
                     {{ $locale === 'en' ? 'Edit Extended News' : ($locale === 'sr-Cyrl' ? 'Измени проширену вест' : 'Izmeni proširenu vest') }}
                 </h2>
                 <form method="POST" action="{{ route('news.updateExtendedNews', $news->id) }}">
                     @csrf
                     @method('PUT')
 
-                    {{-- DODATO: Hidden polje za locale --}}
                     <input type="hidden" name="locale" value="{{ $locale }}">
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $contentField }}">
+                    <label class="block mb-2" for="{{ $contentField }}"
+                        style="color: var(--secondary-text);">
                         {{ $locale === 'en'
                             ? 'Content (English)'
                             : ($locale === 'sr-Cyrl'
@@ -135,9 +148,11 @@
                         }}
                     </label>
                     <textarea name="{{ $contentField }}" id="{{ $contentField }}" rows="5" required
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $contentValue }}</textarea>
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">{{ $contentValue }}</textarea>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $tagsField }}">
+                    <label class="block mb-2" for="{{ $tagsField }}"
+                        style="color: var(--secondary-text);">
                         {{ $locale === 'en'
                             ? 'Tags (comma separated)'
                             : ($locale === 'sr-Cyrl'
@@ -147,8 +162,10 @@
                     </label>
                     <input type="text" name="{{ $tagsField }}" id="{{ $tagsField }}"
                         value="{{ $tagsValue }}"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
-                    <p class="text-xs text-gray-500 mb-4">
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);" />
+                    <p class="text-xs mb-4"
+                        style="color: var(--secondary-text);">
                         {{ $locale === 'en'
                             ? 'Separate tags with commas'
                             : ($locale === 'sr-Cyrl'
@@ -158,10 +175,12 @@
                     </p>
 
                     <div class="flex justify-end gap-2 mt-4">
-                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded"
+                            style="background: var(--secondary-text); color: #fff;">
                             {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
-                        <button type="submit" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600 text-white">
+                        <button type="submit" class="px-4 py-2 rounded"
+                            style="background: var(--accent); color: #fff;">
                             {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>

@@ -1,9 +1,10 @@
 @php $locale = App::getLocale(); @endphp
 <x-guest-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center w-full p-4" id="header">
+        <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>
-            <button id="theme-toggle" class="p-2 rounded-full text-gray-900 hover:bg-gray-200 focus:outline-none dark:text-white dark:hover:bg-gray-700">
+            <button id="theme-toggle" class="p-2 rounded-full"
+                style="color: var(--primary-text); background: var(--primary-bg);">
                 <svg id="moon-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
@@ -14,35 +15,42 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12 dark:bg-gray-900" x-data="{ editOpen: false }">
+    <div class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12"
+         style="background: var(--primary-bg); color: var(--primary-text);"
+         x-data="{ editOpen: false }">
         <div class="w-full max-w-screen-xl mx-auto">
-            <div class="bg-white dark:bg-gray-900">
-                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
+            <div style="background: var(--primary-bg); color: var(--primary-text);">
+                <div class="p-2 sm:p-4 lg:p-6"
+                     style="color: var(--primary-text);">
 
                     <div class="flex items-center justify-between mb-6">
-                        <h1 class="text-3xl sm:text-4xl font-bold dark:text-white">
+                        <h1 class="text-3xl sm:text-4xl font-bold"
+                            style="color: var(--primary-text);">
                             {{ $employee->translate('position') }}
                         </h1>
                         @auth
                         <button 
                             @click="editOpen = true"
-                            class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded"
-                        >
+                            class="font-semibold px-4 py-2 rounded"
+                            style="background: var(--accent); color: #fff;">
                             {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                         </button>
                         @endauth
                     </div>
 
-                    <div class="flex flex-col lg:flex-row items-start gap-8 bg-white dark:bg-gray-900 p-6 sm:p-10 lg:p-12 mb-10">
+                    <div class="flex flex-col lg:flex-row items-start gap-8 p-6 sm:p-10 lg:p-12 mb-10"
+                        style="background: var(--primary-bg); color: var(--primary-text);">
 
                         <img
                             class="object-cover w-full lg:w-[28rem] h-[36rem] rounded-lg"
                             src="{{ asset($employee->image_path) }}"
                             alt="{{ $employee->name }}"
                             onerror="this.src='{{ asset('/images/default.jpg') }}';"
+                            style="background: var(--primary-bg);"
                         />
                         <div class="flex-1">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            <h2 class="text-2xl sm:text-3xl font-bold mb-4"
+                                style="color: var(--primary-text);">
                                 {{ $employee->name }}
                             </h2>
                             @if ($employee->extendedBiography)
@@ -68,27 +76,28 @@
                                         $skills = [];
                                     }
                                 @endphp
-                                <p class="mb-4 text-gray-700 dark:text-gray-300">
+                                <p class="mb-4"
+                                   style="color: var(--secondary-text);">
                                     {{ $employee->extendedBiography->$bioKey }}
                                 </p>
-                                <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>
+                                <p class="mb-2" style="color: var(--secondary-text);">
+                                    <strong style="color: var(--primary-text);">
                                         {{ $locale === 'en' ? 'University' : ($locale === 'sr-Cyrl' ? 'Универзитет' : 'Univerzitet') }}:
                                     </strong> {{ $employee->extendedBiography->$uniKey }}
                                 </p>
-                                <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>
+                                <p class="mb-2" style="color: var(--secondary-text);">
+                                    <strong style="color: var(--primary-text);">
                                         {{ $locale === 'en' ? 'Experience' : ($locale === 'sr-Cyrl' ? 'Искуство' : 'Iskustvo') }}:
                                     </strong> {{ $employee->extendedBiography->$expKey }}
                                 </p>
-                                <p class="mb-2 text-gray-700 dark:text-gray-300">
-                                    <strong>
+                                <p class="mb-2" style="color: var(--secondary-text);">
+                                    <strong style="color: var(--primary-text);">
                                         {{ $locale === 'en' ? 'Skills' : ($locale === 'sr-Cyrl' ? 'Вештине' : 'Veštine') }}:
                                     </strong>
                                     {{ implode(', ', $skills) }}
                                 </p>
                             @else
-                                <p class="mb-3 text-gray-700 dark:text-gray-300">
+                                <p class="mb-3" style="color: var(--secondary-text);">
                                     {{ $locale === 'en' ? 'Detailed biography not available.' : ($locale === 'sr-Cyrl' ? 'Детаљна биографија није доступна.' : 'Detaljna biografija nije dostupna.') }}
                                 </p>
                             @endif
@@ -96,7 +105,8 @@
                     </div>
 
                     <a href="{{ route('employees.index') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                       class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg"
+                       style="background: var(--accent); color: #fff;">
                         {{ $locale === 'en' ? 'Back to Employees' : ($locale === 'sr-Cyrl' ? 'Назад на запослене' : 'Nazad na zaposlene') }}
                         <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 14 10">
@@ -111,17 +121,19 @@
         <div
             x-show="editOpen"
             x-transition
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            style="display: none;"
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background:rgba(0,0,0,0.5);"
             @click.self="editOpen = false"
         >
             <div
                 x-show="editOpen"
                 x-transition
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                class="rounded-lg shadow-lg max-w-lg w-full p-6 relative"
+                style="background: var(--primary-bg); color: var(--primary-text);"
                 @keydown.escape.window="editOpen = false"
             >
-                <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+                <h2 class="text-xl font-semibold mb-4"
+                    style="color: var(--primary-text);">
                     {{ $locale === 'en' ? 'Edit Employee Details' : ($locale === 'sr-Cyrl' ? 'Измени детаље запосленог' : 'Izmeni detalje zaposlenog') }}
                 </h2>
 
@@ -152,40 +164,51 @@
                         $skillsValue = old($skillsField, $employee->extendedBiography ? implode(',', $employee->extendedBiography->$skillsField ?? []) : '');
                     @endphp
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $bioField }}">
+                    <label class="block mb-2"
+                        style="color: var(--secondary-text);" for="{{ $bioField }}">
                         {{ $locale === 'en' ? 'Biography' : ($locale === 'sr-Cyrl' ? 'Биографија' : 'Biografija') }}
                     </label>
                     <textarea name="{{ $bioField }}" id="{{ $bioField }}" rows="3" required
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $bioValue }}</textarea>
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">{{ $bioValue }}</textarea>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $uniField }}">
+                    <label class="block mb-2"
+                        style="color: var(--secondary-text);" for="{{ $uniField }}">
                         {{ $locale === 'en' ? 'University' : ($locale === 'sr-Cyrl' ? 'Универзитет' : 'Univerzitet') }}
                     </label>
                     <input type="text" name="{{ $uniField }}" id="{{ $uniField }}" required
                         value="{{ $uniValue }}"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);" />
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $expField }}">
+                    <label class="block mb-2"
+                        style="color: var(--secondary-text);" for="{{ $expField }}">
                         {{ $locale === 'en' ? 'Experience' : ($locale === 'sr-Cyrl' ? 'Искуство' : 'Iskustvo') }}
                     </label>
                     <textarea name="{{ $expField }}" id="{{ $expField }}" rows="3" required
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white">{{ $expValue }}</textarea>
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">{{ $expValue }}</textarea>
 
-                    <label class="block mb-2 text-gray-700 dark:text-gray-300" for="{{ $skillsField }}">
+                    <label class="block mb-2"
+                        style="color: var(--secondary-text);" for="{{ $skillsField }}">
                         {{ $locale === 'en' ? 'Skills' : ($locale === 'sr-Cyrl' ? 'Вештине' : 'Veštine') }}
                     </label>
                     <input type="text" name="{{ $skillsField }}" id="{{ $skillsField }}"
                         value="{{ $skillsValue }}"
-                        class="w-full p-2 mb-4 border border-gray-300 rounded dark:bg-gray-700 dark:text-white" />
-                    <p class="text-xs text-gray-500 mb-4">
+                        class="w-full p-2 mb-4 border rounded"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);" />
+                    <p class="text-xs mb-4"
+                        style="color: var(--secondary-text);">
                         {{ $locale === 'en' ? 'Separate skills with commas' : ($locale === 'sr-Cyrl' ? 'Одвојите вештине запетама' : 'Odvojite veštine zapetama') }}
                     </p>
 
                     <div class="flex justify-end gap-2 mt-4">
-                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700">
+                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded"
+                            style="background: var(--secondary-text); color: #fff;">
                             {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
-                        <button type="submit" class="px-4 py-2 rounded bg-yellow-500 hover:bg-yellow-600 text-white">
+                        <button type="submit" class="px-4 py-2 rounded"
+                            style="background: var(--accent); color: #fff;">
                             {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
