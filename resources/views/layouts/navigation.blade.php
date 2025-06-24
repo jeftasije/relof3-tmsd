@@ -318,7 +318,7 @@
                         <ul id="nav-list" class="space-y-2 mt-4 dark:text-white">
                             @foreach($mainSections as $mainSection)
                             <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
-                                <button type="button" class="flex items-center justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
+                                <button type="button" class="flex items-center justify-between w-10/12 p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
                                     <span>{{ $mainSection->name }}</span>
                                     <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
@@ -335,6 +335,41 @@
                                         <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                                     </svg>
                                 </span>
+                                @if($mainSection->is_deletable)
+                                <button id="dropdownMenuIconButton-{{ $mainSection->id }}" data-dropdown-toggle="dropdownMenuDots-{{ $mainSection->id }}" class="ml-auto inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                                        <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                    </svg>
+                                </button>
+                                <div id="dropdownMenuDots-{{ $mainSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton-{{ $mainSection->id }}">
+                                        <li>
+                                            <button {{ $mainSection->is_deletable ? '' : 'disabled' }} data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $mainSection->id }}" data-nav-title="{{ $mainSection->name }}"
+                                                class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
+                                                disabled:opacity-50 disabled:cursor-not-allowed 
+                                                disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                                {{ App::getLocale() === 'en'
+                                                        ? 'Rename'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Преименуј'
+                                                            : 'Preimenuj') }}
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button {{ $mainSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $mainSection->id }}" data-nav-title="{{ $mainSection->name }}"
+                                                class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
+                                                            disabled:opacity-50 disabled:cursor-not-allowed 
+                                                            disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                                {{ App::getLocale() === 'en'
+                                                        ? 'Delete'
+                                                        : (App::getLocale() === 'sr-Cyrl'
+                                                            ? 'Обриши'
+                                                            : 'Obriši') }}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @endif
                             </li>
                             <div id="dropdown-section-{{ $mainSection->id }}" class="hidden mx-4">
                                 <div class="flex flex-col items-start mx-4 gap-2">
@@ -348,15 +383,15 @@
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                                 </svg>
                                             </button>
-                                            <button id="dropdownMenuIconButton-{{ $subSection->id }}" data-dropdown-toggle="dropdownDots-{{ $subSection->id }}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                                            <button id="dropdownMenuIconButton-{{ $subSection->id }}" data-dropdown-toggle="dropdownMenuDots-{{ $subSection->id }}" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                                                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
                                                     <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                                                 </svg>
                                             </button>
-                                            <div id="dropdownDots-{{ $subSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
+                                            <div id="dropdownMenuDots-{{ $subSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                                                     <li>
-                                                        <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $subSection->id }}" data-doc-title="{{ $subSection->title }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                        <button data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             {{ App::getLocale() === 'en'
                                                         ? 'Rename'
                                                         : (App::getLocale() === 'sr-Cyrl'
@@ -365,7 +400,7 @@
                                                         </button>
                                                     </li>
                                                     <li>
-                                                        <button {{ $subSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->title }}" 
+                                                        <button {{ $subSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}"
                                                             class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
                                                             disabled:opacity-50 disabled:cursor-not-allowed 
                                                             disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
@@ -468,6 +503,39 @@
                                     ? 'Откажи'
                                     : 'Otkaži') }}
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="renameNavigationModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-md max-h-full">
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <div class="p-6">
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                        {{ App::getLocale() === 'en'
+                                ? 'Rename navigation'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Преименуј навигацију'
+                                    : 'Preimenuj navigaciju') }}
+                                    </h3>
+                                    <input type="text" id="renameNavigationInput" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}">
+                                    <div class="mt-4 text-center">
+                                        <button data-modal-hide="renameNavigationModal" id="confirmRenameNavigationButton" type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                            {{ App::getLocale() === 'en'
+                                    ? 'Save'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Сачувај'
+                                        : 'Sačuvaj') }}
+                                        </button>
+                                        <button data-modal-hide="renameNavigationModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
+                                            {{ App::getLocale() === 'en'
+                                    ? 'Cancel'
+                                    : (App::getLocale() === 'sr-Cyrl'
+                                        ? 'Откажи'
+                                        : 'Otkaži') }}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -673,6 +741,7 @@
         const locale = '{{ App::getLocale() }}';
         let sortable = null;
         let isSortableActive = false;
+        let currentNavId = null;
 
         toggleButton.addEventListener('click', () => {
             isSortableActive = !isSortableActive;
@@ -694,6 +763,11 @@
                         iconSpan.classList.remove('hidden');
                         item.classList.add('cursor-move');
                     }
+                });
+
+                document.querySelectorAll('button[id^="dropdownMenuIconButton-"]').forEach(button => {
+                    button.classList.remove('inline-flex');
+                    button.classList.add('hidden');
                 });
 
                 sortable = new Sortable(navList, {
@@ -730,6 +804,11 @@
                         iconSpan.classList.add('hidden');
                         item.classList.remove('cursor-move');
                     }
+                });
+
+                document.querySelectorAll('button[id^="dropdownMenuIconButton-"]').forEach(button => {
+                    button.classList.remove('hidden');
+                    button.classList.add('inline-flex');
                 });
 
                 if (sortable) {
@@ -988,6 +1067,89 @@
             if (e.target === helpModal) {
                 helpModal.classList.add('hidden');
             }
+        });
+
+        const renameNavigationModal = document.getElementById('renameNavigationModal');
+        const renameNavigationInput = document.getElementById('renameNavigationInput');
+        const confirmRenameNavigationButton = document.getElementById('confirmRenameNavigationButton');
+
+        document.querySelectorAll('[data-modal-toggle="renameNavigationModal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                currentNavId = button.dataset.navId;
+                renameNavigationInput.value = button.dataset.navTitle;
+            });
+        });
+
+        confirmRenameNavigationButton.addEventListener('click', () => {
+            const newName = renameNavigationInput.value.trim();
+            if (!newName) {
+                alert((() => {
+                    switch (locale) {
+                        case 'en':
+                            return 'Please enter a new name.';
+                        case 'sr-Cyrl':
+                            return 'Молимо унесите назив.';
+                        default:
+                            return 'Molimo unesite naziv.';
+                    }
+                })());
+                return;
+            }
+
+            fetch(`/navigacija/${currentNavId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: newName
+                    }),
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert((() => {
+                            switch (locale) {
+                                case 'en':
+                                    return 'Renamed successfully!';
+                                case 'sr-Cyrl':
+                                    return 'Успешно преименовано!';
+                                default:
+                                    return 'Uspešno preimenovano!';
+                            }
+                        })());
+
+                        window.location.reload();
+                    } else {
+                        alert((() => {
+                            switch (locale) {
+                                case 'en':
+                                    return 'Error renaming.';
+                                case 'sr-Cyrl':
+                                    return 'Грешка при преименовању.';
+                                default:
+                                    return 'Greška pri preimenovanju.';
+                            }
+                        })());
+
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert((() => {
+                        switch (locale) {
+                            case 'en':
+                                return 'An error occurred.';
+                            case 'sr-Cyrl':
+                                return 'Дошло је до грешке.';
+                            default:
+                                return 'Došlo je do greške.';
+                        }
+                    })());
+
+                });
         });
     });
 </script>

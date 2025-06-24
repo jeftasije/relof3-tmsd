@@ -75,9 +75,8 @@ class NavigationController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-
         if (!$id) {
             return response()->json([
                 'success' => false,
@@ -127,6 +126,24 @@ class NavigationController extends Controller
                 'success' => false,
                 'message' => 'Navigation is not deletable.'
             ], 403);
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (!$id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No ID provided.'
+            ], 422);
+        }
+
+        $navigation = Navigation::find($id);
+
+        if($navigation){
+            $navigation->name = $request->name;
+            $navigation->save();
+            return response()->json(['success' => true]);
         }
     }
 }
