@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Datum</label>
-                    <input type="datetime-local" name="date" id="date" required
+                    <input type="text" id="datetime" name="date" required
                            class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
@@ -50,13 +50,24 @@
                                 {{ $reminder->title_lat }}
                             </div>
                             <div class="text-sm text-gray-500 dark:text-gray-400">
-                                Vreme: {{ $reminder->time }}
+                                Vreme: {{ \Carbon\Carbon::parse($reminder->time)->format('d.m.Y H:i') }}
                             </div>
                         </li>
                     @endforeach
                 </ul>
             @endif
         </div>
-
     </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/sr.js"></script>
+
+<script>
+    flatpickr("#datetime", {
+        enableTime: true,
+        dateFormat: "d.m.Y H:i",
+        locale: "en"
+    });
+</script>
+
 </x-app-layout>

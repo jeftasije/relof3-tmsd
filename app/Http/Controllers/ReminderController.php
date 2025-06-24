@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reminder;
+use Carbon\Carbon;
 
 class ReminderController extends Controller
 {
@@ -19,16 +20,20 @@ class ReminderController extends Controller
     {
         $request->validate([
             'title_en' => 'required|string|max:255',
-            'date' => 'required|date',
+            'date' => 'required|string', // jer je u formatu koji nije "date"
         ]);
+
+        // Konverzija iz "d.m.Y H:i" u pravi datetime objekat
+        $parsedTime = Carbon::createFromFormat('d.m.Y H:i', $request->date);
 
         Reminder::create([
             'title_en' => $request->title_en,
-            'title_lat' => $request->title_en, // privremeno isto
-            'title_cyr' => $request->title_en, // privremeno isto
-            'time' => $request->date,
+            'title_lat' => $request->title_en,
+            'title_cyr' => $request->title_en,
+            'time' => $parsedTime, // ✅ sad je u pravilnom formatu
         ]);
 
         return redirect()->back()->with('success', 'Podsetnik je sačuvan.');
     }
+
 }
