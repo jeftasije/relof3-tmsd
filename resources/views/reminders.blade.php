@@ -47,7 +47,11 @@
                     @foreach ($reminders as $reminder)
                         <li class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
                             <div class="text-lg font-medium text-gray-900 dark:text-white">
-                                {{ $reminder->title_lat }}
+                                @switch(App::getLocale())
+                                @case('en') {{ $reminder->title_en }} @break
+                                @case('sr-Cyrl') {{ $reminder->title_cyr }} @break
+                                @default {{ $reminder->title_lat }}
+                                @endswitch
                             </div>
                             <div class="text-sm text-gray-500 dark:text-gray-400">
                                 {{ App::getLocale() === 'en' ? 'Time:' : (App::getLocale() === 'sr-Cyrl' ? 'Време:' : 'Vreme:') }} {{ \Carbon\Carbon::parse($reminder->time)->format('d.m.Y H:i') }}
