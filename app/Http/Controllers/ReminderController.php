@@ -104,5 +104,59 @@ class ReminderController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id)
+    {
+        $reminder = Reminder::findOrFail($id);
+
+        $request->validate([
+            'title_en' => 'required|string|max:255',
+            'date' => 'nullable|string',
+        ]);
+
+        $originalTitle = $request->title_en;
+
+        $parsedTime = $reminder->time;
+        if ($request->filled('date')) {
+            $parsedTime = Carbon::createFromFormat('d.m.Y H:i', $request->date);
+        }
+
+        $detectedScript = $this->languageMapper->detectScript($originalTitle);
+        if ($detectedScript === 'cyrillic') {
+            $titleCyr = $originalTitle;
+            $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
+            $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
+                $titleLat = $originalTitle;
+                $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+                $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+            } else {
+                $titleEn = $originalTitle;
+                $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
+            }
+        }
+
+        $reminder->update([
+            'title_en' => $titleEn,
+            'title_lat' => $titleLat,
+            'title_cyr' => $titleCyr,
+            'time' => $parsedTime,
+        ]);
+
+        return response()->json(['message' => 'Reminder updated']);
+    }
+
+
+    public function destroy($id)
+    {
+        $reminder = Reminder::findOrFail($id);
+        $reminder->delete();
+
+        return response()->json(['message' => 'Reminder deleted']);
+    }
 }
 
