@@ -14,6 +14,8 @@
     uploading: false,
     showDeleteModal: false,
     confirmDeleteUrl: '',
+    showSuccess: false,
+    successMessage: '',
     async save() {
       this.saving = true;
       try {
@@ -33,6 +35,17 @@
         this.originalBiography = this.biography;
         this.originalPosition = this.position;
         this.editing = false;
+        // Prikaz toast poruke
+        const locale = '{{ App::getLocale() }}';
+        if (locale === 'en') {
+          this.successMessage = 'Successfully saved changes!';
+        } else if (locale === 'sr-Cyrl') {
+          this.successMessage = 'Успешно сте сачували измене!';
+        } else {
+          this.successMessage = 'Uspešno ste sačuvali izmene!';
+        }
+        this.showSuccess = true;
+        setTimeout(() => this.showSuccess = false, 1800);
       } catch (e) {
         alert('Failed to save data');
       } finally {
@@ -79,6 +92,28 @@
     }
   }"
 >
+    <!-- TOAST PORUKA - centar gore -->
+    <div
+      x-show="showSuccess"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+      x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+      x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+      class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+      style="
+        top: 18%; 
+        transform: translateX(-50%);
+        background: #22c55e; 
+        color: #fff; 
+        font-weight: 600; 
+        letter-spacing: 0.03em;
+        min-width: 240px;
+        text-align: center;"
+      x-text="successMessage"
+    >
+    </div>
     @auth
     <div class="absolute bottom-2 right-2 z-10">
         <template x-if="!editing">
@@ -116,12 +151,13 @@
             class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105 cursor-pointer"
             :src="imageSrc"
             alt="{{ $employee->translate('name') }}"
+            :class="editing ? 'filter blur-sm brightness-90' : ''"
             @click.prevent="editing ? $refs.fileInput.click() : null"
         />
         <input type="file" x-ref="fileInput" class="hidden" @change="uploadImage" accept="image/*">
         <template x-if="editing">
           <div class="absolute inset-0 flex items-center justify-center"
-                style="background: rgba(0,0,0,0.4); color: #fff; font-size: 1.125rem; font-weight: bold; pointer-events: none;">
+                style="background: rgba(30,70,170,0.18); color: #fff; font-size: 1.125rem; font-weight: bold; pointer-events: none; backdrop-filter: blur(6px);">
             {{ App::getLocale() === 'en' ? 'Change image' : (App::getLocale() === 'sr-Cyrl' ? 'Промени слику' : 'Promeni sliku') }}
           </div>
         </template>

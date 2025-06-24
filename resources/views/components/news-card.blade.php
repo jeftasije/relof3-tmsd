@@ -1,6 +1,6 @@
 <div 
   class="relative max-w-sm h-full rounded-lg shadow-lg flex flex-col"
-  style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); background: var(--primary-bg) !important; border: 1px solid var(--secondary-text) !important;"
+  style="box-shadow: 5px 5px 15px rgba(0,0,0,0.25); background: var(--primary-bg) !important; border: 1px solid var(--secondary-text) !important;"
   x-data="{
     editing: false,
     title: @js($news->translate('title')),
@@ -12,6 +12,13 @@
     saving: false,
     showDeleteModal: false,
     confirmDeleteUrl: '',
+    showSuccess: false,
+    successMessage: '',
+    showToast(msg) {
+      this.successMessage = msg;
+      this.showSuccess = true;
+      setTimeout(() => { this.showSuccess = false }, 2000);
+    },
     async save() {
       this.saving = true;
       try {
@@ -40,13 +47,21 @@
           if(!imgResp.ok) throw new Error('Image upload failed');
           const imgData = await imgResp.json();
           if (imgData.image_path) {
-            this.image = imgData.image_path;
+            this.image = imgData.image_path + '?' + (new Date()).getTime();
           }
         }
         this.originalTitle = this.title;
         this.originalSummary = this.summary;
         this.editing = false;
         this.newImage = null;
+        // Toast poruka na sva tri jezika
+        let locale = '{{ App::getLocale() }}';
+        let msg = locale === 'en'
+            ? 'Changes saved successfully!'
+            : (locale === 'sr-Cyrl'
+                ? 'Успешно сте сачували измене!'
+                : 'Uspešno ste sačuvali izmene!');
+        this.showToast(msg);
       } catch (e) {
         alert('Greška pri čuvanju podataka');
       } finally {
@@ -112,15 +127,16 @@
   </div>
   @endauth
 
-  <div class="overflow-hidden rounded-t-lg group relative cursor-pointer" style="box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);">
+  <div class="overflow-hidden rounded-t-lg group relative cursor-pointer" style="box-shadow: 3px 3px 10px rgba(0,0,0,0.2);">
     <img
       class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105"
       :src="image"
       alt="{{ $news->title }}"
       onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
       @click="editing ? $refs.imgInput.click() : null"
-      :class="editing ? 'ring-2 ring-blue-400 cursor-pointer' : ''"
+      :class="editing ? 'blur-[4px] brightness-90 cursor-pointer' : ''"
       title="{{ App::getLocale() === 'en' ? 'Change image' : (App::getLocale() === 'sr-Cyrl' ? 'Промени слику' : 'Promeni sliku') }}"
+      style="transition: filter 0.3s, transform 0.3s;"
     />
     <input 
       x-ref="imgInput"
@@ -131,17 +147,18 @@
       :disabled="!editing"
     />
     <template x-if="editing">
-      <span class="absolute bottom-3 right-3 bg-blue-600 text-white px-3 py-1 rounded shadow text-xs">
-        {{ App::getLocale() === 'en' ? 'Click to change image' : (App::getLocale() === 'sr-Cyrl' ? 'Кликни за измену слике' : 'Klikni za izmenu slike') }}
-      </span>
+      <div class="absolute inset-0 flex items-center justify-center"
+        style="backdrop-filter: blur(6px); background: rgba(50, 120, 255, 0.18); color: #fff; font-size: 1.125rem; font-weight: bold; pointer-events: none; transition: background 0.2s;">
+        {{ App::getLocale() === 'en' ? 'Change image' : (App::getLocale() === 'sr-Cyrl' ? 'Промени слику' : 'Promeni sliku') }}
+      </div>
     </template>
   </div>
 
-  <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset; background: var(--primary-bg) !important;">
+  <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0,0,0,0.10) inset; background: var(--primary-bg) !important;">
     <div>
       <template x-if="!editing">
         <h5 class="mb-2 text-2xl font-bold tracking-tight" x-text="title"
-            style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"></h5>
+            style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0,0,0,0.1);"></h5>
       </template>
       <template x-if="editing">
         <input x-model="title" type="text" class="mb-2 w-full p-2 border rounded" 
@@ -154,7 +171,7 @@
 
       <template x-if="!editing">
         <p class="mb-4 font-normal" x-text="summary"
-           style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"></p>
+           style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0,0,0,0.1);"></p>
       </template>
       <template x-if="editing">
         <textarea x-model="summary" rows="3" class="w-full p-2 border rounded"
@@ -186,7 +203,7 @@
 
       <a href="{{ route('news.show', $news->id) }}"
          class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg focus:ring-4 focus:outline-none"
-         style="background: #2563eb !important; color: #fff !important; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
+         style="background: #2563eb !important; color: #fff !important; box-shadow: 2px 2px 6px rgba(0,0,0,0.2);">
         {{ App::getLocale() === 'en' ? 'Show more' : (App::getLocale() === 'sr-Cyrl' ? 'Прикажи више' : 'Prikaži više') }}
         <svg class="rtl:rotate-180 w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
              fill="none" viewBox="0 0 14 10">
@@ -222,4 +239,27 @@
           </div>
       </div>
   </div>
+
+  <div
+    x-show="showSuccess"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+    x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+    class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+    style="
+      top: 18%; 
+      transform: translateX(-50%);
+      background: #22c55e; 
+      color: #fff; 
+      font-weight: 600; 
+      letter-spacing: 0.03em;
+      min-width: 240px;
+      text-align: center;"
+    x-text="successMessage"
+  >
+  </div>
+
 </div>
