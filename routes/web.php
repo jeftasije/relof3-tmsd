@@ -17,6 +17,8 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
 
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -74,6 +76,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 
+    Route::get('/kontakt/edit', [ContactController::class, 'edit'])->name('contact.edit');
+    Route::post('/kontakt/update', [ContactController::class, 'update'])->name('contact.update');
 });
 
 Route::get('/usluge', function () {

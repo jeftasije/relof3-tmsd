@@ -16,14 +16,12 @@
                 rounded-lg shadow-lg transition-colors duration-300
                 bg-white/80 dark:bg-gray-900/80">
 
-                
                 @if(session('success'))
                     <div class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                
                 @if($errors->any())
                     <div class="mb-6 text-red-800 bg-red-100 border border-red-300 p-4 rounded">
                         <ul class="list-disc pl-5 space-y-1">
@@ -41,25 +39,101 @@
                     @default Kontaktirajte nas
                     @endswitch
                 </h2>
-                <p class="mb-8 lg:mb-16 font-light text-center text-gray-600 dark:text-gray-300 sm:text-xl">
-                    @switch(App::getLocale())
-                    @case('en') Our team is here to answer all your questions and provide you with the best possible service! @break
-                    @case('sr-Cyrl') Наш тим је ту да одговори на сва ваша питања и обезбеди вам најбољу могућу услугу! @break
-                    @default Naš tim je tu da odgovori na sva vaša pitanja i obezbedi vam najbolju moguću uslugu!
-                    @endswitch
-                </p>
-            
-
-                <!--<form action="{{ route('contact.store') }}" method="POST" class="space-y-6"> -->
                 @php
+                    $content = \App\Models\ContactContent::first();
                     $isEditor = auth()->check() && auth()->user()->isEditor();
                 @endphp
+
+                {{-- Editabilni deo sa <p> i dugmetom --}}
+                @if(session('successContent'))
+                    <div class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded">
+                        {{ session('successContent') }}
+                    </div>
+                @endif
+
+                @if($errors->has('text_sr'))
+                    <div class="mb-6 text-red-800 bg-red-100 border border-red-300 p-4 rounded">
+                        {{ $errors->first('text_sr') }}
+                    </div>
+                @endif
+
+                @if($isEditor)
+                    <form action="{{ route('contact.update') }}" method="POST" class="space-y-6 mb-10">
+                        @csrf
+                        <label for="text_sr" class="block mb-2 font-semibold text-gray-900 dark:text-white">
+                            @switch(App::getLocale())
+                            @case('en') Enter the content for the contact page @break
+                            @case('sr-Cyrl') Унеси садржај за контакт страницу  @break
+                            @default Unesi sadržaj za kontakt stranicu
+                            @endswitch
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="text_sr" name="text_sr" rows="5" required class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white" style="text-align: center;">{{trim(old('text_sr', $content->text_sr ?? ''))}}</textarea>
+
+
+                        <div class="flex justify-end gap-4">
+                            <button type="button" data-modal-toggle="submitModal"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Sačuvaj izmene</button>
+                        </div>
+
+                        <!-- Confirm Submission Modal -->
+                        <div id="submitModal" tabindex="-1"
+                            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
+                            <div class="relative w-full max-w-md max-h-full mx-auto">
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <div class="p-6 text-center">
+                                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                            Da li ste sigurni da želite da sačuvate izmene?
+                                        </h3>
+                                        <button id="confirmSubmitBtn" type="button"
+                                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                            Sačuvaj
+                                        </button>
+                                        <button data-modal-hide="submitModal" type="button"
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            Otkaži
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const openModalBtn = document.querySelector('button[data-modal-toggle="submitModal"]');
+                        const confirmBtn = document.getElementById('confirmSubmitBtn');
+                        const modal = document.getElementById('submitModal');
+                        const form = document.querySelector('form[action="{{ route('contact.update') }}"]');
+
+                        openModalBtn.addEventListener('click', () => {
+                            modal.classList.remove('hidden');
+                        });
+
+                        confirmBtn.addEventListener('click', () => {
+                            modal.classList.add('hidden');
+                            form.submit();
+                        });
+
+                        document.querySelectorAll('[data-modal-hide="submitModal"]').forEach((el) => {
+                            el.addEventListener('click', () => {
+                                modal.classList.add('hidden');
+                            });
+                        });
+                    });
+                    </script>
+                @else
+                    {{-- Prikaz običnog teksta za korisnike --}}
+                    <p class="mb-10 whitespace-pre-wrap text-gray-800 dark:text-gray-200">
+                        {{ $content->text_sr ?? 'Nema sadržaja za prikaz.' }}
+                    </p>
+                @endif
 
                 <form action="{{ route('contact.store') }}" method="POST"
                     class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
                     {{ $isEditor ? 'onsubmit=return false;' : '' }}>
-
                     @csrf
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> 
@@ -133,29 +207,20 @@
                             class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700
                                 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 
                                 focus:border-grey-200 block w-full p-2.5"
-                            placeholder=" ">{{ old('message') }}</textarea>
+                            placeholder="Vaša poruka...">{{ old('message') }}</textarea>
                     </div>
 
-                    <div class="flex justify-center">
-                        <button type="submit" 
-                            class="py-3 px-5 font-semibold text-center text-white rounded-lg 
-                                   bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none 
-                                   focus:ring-blue-300">
-                            @switch(App::getLocale())
-                            @case('en') Send message @break
-                            @case('sr-Cyrl') Пошаљи поруку @break
-                            @default Pošalji poruku
-                            @endswitch
-                        </button>
-                    </div>
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded w-full sm:w-auto">
+                        @switch(App::getLocale())
+                        @case('en') Send message @break
+                        @case('sr-Cyrl') Пошаљи поруку @break
+                        @default Pošalji poruku
+                        @endswitch
+                    </button>
                 </form>
+
             </div>
         </section>
     </div>
 </x-guest-layout>
-
-<script>
-function clearAnswer() {
-    document.getElementById('answer-textarea').value = '';
-}
-</script>

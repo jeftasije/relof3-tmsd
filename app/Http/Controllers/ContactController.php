@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
+use App\Models\ContactContent;  
 
 class ContactController extends Controller
 {   
@@ -33,6 +34,31 @@ class ContactController extends Controller
     {
         $messages = Contact::latest()->get();
         return view('contactAnswer', compact('messages'));
+    }
+
+    public function edit()
+    {
+        $content = ContactContent::first();
+        return view('contact', compact('content'));
+    }
+
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'text_sr' => 'required|string',
+            'text_en' => 'nullable|string',
+            'text_cy' => 'nullable|string',
+        ]);
+
+        $content = ContactContent::first();
+
+        if ($content) {
+            $content->update($validated);
+        } else {
+            ContactContent::create($validated);
+        }
+
+        return redirect()->route('contact.edit')->with('success', 'Sadržaj uspešno sačuvan!');
     }
 
 
