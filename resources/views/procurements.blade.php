@@ -31,8 +31,16 @@
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="{{ App::getLocale() === 'en' ? 'Search document...' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи документ...' : 'Pretraži dokument...') }}"
-                            class="flex-grow px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                            class="flex-grow px-4 py-2 mr-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
                         >
+                        <select name="sort" class="border rounded p-2  text-gray-900 dark:text-white dark:bg-gray-700 dark:border-gray-600">
+                            <option value="asc"  text-gray-900 dark:text-white {{ (request('sort', $sort ?? '') === 'asc') ? 'selected' : '' }}>
+                                {{ App::getLocale() === 'en' ? 'Oldest first' : (App::getLocale() === 'sr-Cyrl' ? 'Први старији' : 'Prvi stariji') }}
+                            </option>
+                            <option value="desc"  text-gray-900 dark:text-white {{ (request('sort', $sort ?? '') === 'desc') ? 'selected' : '' }}>
+                                {{ App::getLocale() === 'en' ? 'Newest first' : (App::getLocale() === 'sr-Cyrl' ? 'Први новији' : 'Prvi noviji') }}
+                            </option>
+                        </select>
                         <button type="submit" class="px-6 py-2 ml-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                             {{ App::getLocale() === 'en' ? 'Search' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи' : 'Pretraži') }}
                         </button>
