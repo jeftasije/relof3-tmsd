@@ -16,6 +16,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReminderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -76,6 +77,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 
+    Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
+    Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
+    Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
+    Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+    Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
+    Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 });
 
 Route::get('/usluge', function () {
