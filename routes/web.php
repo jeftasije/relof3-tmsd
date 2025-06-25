@@ -74,9 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
     Route::post('/galerija/update', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
-
-    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
-
+    
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
     
 });

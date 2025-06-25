@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GalleryDescription extends Model
 {
-    protected $fillable = ['key', 'value', 'value_en', 'value_cy',];
+    protected $fillable = ['value', 'value_en', 'value_cy',];
 
     public function translate(string $field, string $locale = null)
     {
