@@ -44,7 +44,7 @@
                 <canvas id="relofChart" class="w-full h-full"></canvas>
             </div>
         </div>
-        <div class="shadow glass mb-8 bg-red-100 dark:bg-red-700/40 dark:backdrop-blur-sm p-6 rounded-lg shadow">
+        <div class="shadow glass mb-8 bg-red-100 dark:bg-red-700/40 p-6 rounded-lg shadow">
             <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
                 {{ App::getLocale() === 'en' ? 'How to improve Relof index' : (App::getLocale() === 'sr-Cyrl' ? 'Како побољшати Релоф индекс' : 'Kako poboljšati Relof indeks') }}
             </h2>
@@ -125,6 +125,16 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        const helpModal = document.getElementById('helpModal');
+
+        if (helpModal) {
+            helpModal.addEventListener('click', (event) => {
+                if (event.target === helpModal) {
+                    toggleHelpModal();
+                }
+            });
+        }
+
         const centerTextPlugin = {
             id: 'centerText',
             beforeDraw(chart) {

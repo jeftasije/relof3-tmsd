@@ -53,4 +53,13 @@ class LanguageMapperController extends Controller
         }
         return $data;
     }
+
+    public function detectScript($text): string
+    {
+        if (preg_match('/\p{Cyrillic}/u', $text)) {
+            return 'cyrillic';
+        }
+        return 'latin';
+    }
+
 }
