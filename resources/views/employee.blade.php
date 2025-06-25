@@ -204,7 +204,7 @@
 
         <div class="flex flex-col items-center justify-start" style="height: 48%;">
             <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
-                {{ App::getLocale() === 'en' ? 'How to use Employee Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како да управљате ѕапосленима' : 'Kako da upravljate zaposlenima') }}
+                {{ App::getLocale() === 'en' ? 'How to use News Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити управљање вестима' : 'Kako koristiti upravljanje vestima') }}
             </h3>
             <div class="flex items-center justify-center w-full" style="min-height: 170px;">
                 <button type="button" @click="slide = slide === 1 ? total : slide - 1"
@@ -243,7 +243,6 @@
             </div>
         </div>
 
-        <!-- Enlarged image modal -->
         <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
             style="backdrop-filter: blur(2px);" @click="enlarged = false">
             <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
@@ -269,15 +268,15 @@
                         <p>
                             @switch(App::getLocale())
                             @case('en')
-                                After clicking ... , you can update fields such as name, position, biography, and upload a new photo. Click Save when finished.<br>
+                                After clicking Edit, you can update fields such as name, position, biography, and upload a new photo. Click Save when finished.<br>
                                 If you wish to discard changes at any moment, click Cancel. A confirmation message will appear after successful editing.
                             @break
                             @case('sr-Cyrl')
-                                Након што кликнете на ... , можете ажурирати поља као што су име, позиција, биографија, као и поставити нову фотографију. По завршетку измена кликните на дугме Сачувај.<br>
+                                Након што кликнете на Измени, можете ажурирати поља као што су име, позиција, биографија, као и поставити нову фотографију. По завршетку измена кликните на дугме Сачувај.<br>
                                 Ако желите да одустанете од промена у било ком тренутку, кликните на дугме Откажи. Након успешне измене добићете потврду.
                             @break
                             @default
-                                Nakon što kliknete na ... , možete ažurirati polja kao što su ime, pozicija, biografija i postaviti novu fotografiju. Kada završite, kliknite na Sačuvaj.<br>
+                                Nakon što kliknete na Izmeni, možete ažurirati polja kao što su ime, pozicija, biografija i postaviti novu fotografiju. Kada završite, kliknite na Sačuvaj.<br>
                                 Ako želite da otkažete izmene, kliknite na dugme Otkaži. Nakon uspešne izmene dobićete potvrdu.
                             @endswitch
                         </p>

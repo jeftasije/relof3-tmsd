@@ -15,9 +15,17 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12"
-         style="background: var(--primary-bg); color: var(--primary-text);"
-         x-data="{ editOpen: false }">
+    <div 
+        class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12"
+        style="background: var(--primary-bg); color: var(--primary-text);"
+        x-data="{
+            editOpen: false, 
+            helpOpen: false, 
+            slide: 1, 
+            total: 2, 
+            enlarged: false 
+        }"
+    >
         <div class="w-full max-w-screen-xl mx-auto">
             <div style="background: var(--primary-bg); color: var(--primary-text);">
                 <div class="p-2 sm:p-4 lg:p-6"
@@ -118,6 +126,7 @@
             </div>
         </div>
 
+        <!-- EDIT MODAL -->
         <div
             x-show="editOpen"
             x-transition
@@ -215,5 +224,162 @@
                 </form>
             </div>
         </div>
+
+        <!-- HELP MODAL -->
+        @auth
+        <div
+            x-show="helpOpen"
+            x-transition
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background:rgba(0,0,0,0.5);"
+            @click.self="helpOpen = false"
+        >
+            <div
+                x-show="helpOpen"
+                x-transition
+                class="relative rounded-xl border-2 border-[var(--secondary-text)] shadow-2xl bg-white dark:bg-gray-900 flex flex-col items-stretch"
+                style="width:500px; height:520px; background: var(--primary-bg); color: var(--primary-text);"
+                @keydown.escape.window="helpOpen = false"
+            >
+                <button
+                    @click="helpOpen = false"
+                    class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                    style="color: var(--secondary-text);"
+                    aria-label="Close"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
+                    <!-- Naslov i slike -->
+                    <div class="flex flex-col items-center justify-start" style="height: 48%;">
+                        <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
+                            {{ App::getLocale() === 'en'
+                                ? 'How to edit employee details'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Како измењивати детаље запосленог'
+                                    : 'Kako izmenjivati detalje zaposlenog') }}
+                        </h3>
+                        <div class="flex items-center justify-center w-full" style="min-height: 140px;">
+                            <button type="button" @click="slide = slide === 1 ? total : slide - 1"
+                                class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
+                                style="min-width:32px;">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                                </svg>
+                            </button>
+                            <div class="flex-1 flex justify-center items-center min-h-[120px] cursor-zoom-in">
+                                <template x-if="slide === 1">
+                                    <img @click="enlarged = '/images/extendedEmployee-help1.png'" src="/images/extendedEmployee-help1.png" alt="Edit Button" class="rounded-xl max-h-36 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                                <template x-if="slide === 2">
+                                    <img @click="enlarged = '/images/extendedEmployee-help2.png'" src="/images/extendedEmployee-help2.png" alt="Edit Modal" class="rounded-xl max-h-36 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                            </div>
+                            <button type="button" @click="slide = slide === total ? 1 : slide + 1"
+                                class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
+                                style="min-width:32px;">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex justify-center mt-2 space-x-1">
+                            <template x-for="i in total">
+                                <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
+                                    class="w-2 h-2 rounded-full transition-all duration-200"></div>
+                            </template>
+                        </div>
+                    </div>
+                    <!-- Enlarged image modal -->
+                    <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+                        style="backdrop-filter: blur(2px);" @click="enlarged = false">
+                        <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
+                        <button @click="enlarged = false" class="absolute top-5 right-8 bg-white/80 hover:bg-white p-2 rounded-full shadow" aria-label="Close" style="color: var(--primary-text);">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Tekstovi -->
+                    <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
+                        style="color: var(--secondary-text); min-height: 120px; max-height: 48%;">
+                        <!-- Slide 1 -->
+                        <template x-if="slide === 1">
+                            <div>
+                                <h4 class="font-semibold mb-2">
+                                    {{ App::getLocale() === 'en'
+                                        ? 'Opening the edit dialog'
+                                        : (App::getLocale() === 'sr-Cyrl'
+                                            ? 'Отварање прозора за измену'
+                                            : 'Otvaranje prozora za izmenu') }}
+                                </h4>
+                                <p>
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                        To edit employee details, click the "Edit" button located at the top right of the page (see image 1).
+                                    @break
+                                    @case('sr-Cyrl')
+                                        Да бисте измењивали податке, кликните на дугме „Измени“ у горњем десном углу странице (слика 1).
+                                    @break
+                                    @default
+                                        Da biste izmenili podatke, kliknite na dugme „Izmeni“ u gornjem desnom uglu stranice (slika 1).
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                        <!-- Slide 2 -->
+                        <template x-if="slide === 2">
+                            <div>
+                                <h4 class="font-semibold mb-2">
+                                    {{ App::getLocale() === 'en'
+                                        ? 'Editing and saving'
+                                        : (App::getLocale() === 'sr-Cyrl'
+                                            ? 'Измена и чување података'
+                                            : 'Izmena i čuvanje podataka') }}
+                                </h4>
+                                <p>
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                        After clicking "Edit", a dialog will open with all fields for the employee's biography, university, experience, and skills. After making changes, click "Save" to apply them (see image 2).
+                                    @break
+                                    @case('sr-Cyrl')
+                                        Након клика на „Измени“, отвориће се прозор са свим пољима биографије, универзитета, искуства и вештина. По завршетку измена, кликните на „Сачувај“ (слика 2).
+                                    @break
+                                    @default
+                                        Nakon klika na „Izmeni“, otvoriće se prozor sa svim poljima biografije, univerziteta, iskustva i veština. Po završetku izmena kliknite na „Sačuvaj“ (slika 2).
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Help floating dugme -->
+        <button
+            @click="helpOpen = true"
+            class="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-full shadow-lg bg-[var(--accent)] text-white hover:bg-green-700 transition"
+            style="background: var(--accent);"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M12 17l0 .01" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+            </svg>
+            <span>
+                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+            </span>
+        </button>
+        @endauth
+
     </div>
 </x-guest-layout>
