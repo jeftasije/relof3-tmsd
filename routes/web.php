@@ -78,8 +78,8 @@ Route::get('/usluge', function () {
     return view('user.services');
 });
 
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
-Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+Route::get('/zaposleni', [EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/zaposleni/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
 Route::get('/kontakt', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.store');
@@ -87,8 +87,8 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
+Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 

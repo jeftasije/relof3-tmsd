@@ -13,10 +13,10 @@ use Illuminate\Support\Str;
 class PageController extends Controller
 {
     protected array $controllerMap = [
-        'news' => [NewsController::class, 'index'],
+        'vesti' => [NewsController::class, 'index'],
         'zalbe' => [ComplaintController::class, 'index'],
         'dokumenti' => [DocumentController::class, 'index'],
-        'employees' => [EmployeeController::class, 'index'],
+        'zaposleni' => [EmployeeController::class, 'index'],
         'organizaciona-struktura' => [OrganisationalStructureController::class, 'index'],
         'nabavke' => [ProcurementController::class, 'index'],
     ];
@@ -65,12 +65,12 @@ class PageController extends Controller
         }
 
         $request->validate([
-            'template_id' => 'required|exists:templates,id',
+            'template_id' => 'nullable|exists:templates,id',
             'title'       => 'required|string|max:255',
             'slug'        => $slugRule,
             'navigation.0' => 'required|exists:navigations,id', // main
             'navigation.1' => 'nullable|exists:navigations,id', // sub
-            'content'     => 'required|array',
+            'content'     => 'nullable|array',
         ], [
             'title.required' => __('title_required'),
             'slug.required' => __('page_slug_required'),
@@ -81,11 +81,6 @@ class PageController extends Controller
             'navigation.1.exists' => __('page_navigation_sub_exists'),
         ]);
 
-        $data = $request->input('content');
-        foreach ($request->file('content', []) as $k => $f) {
-            $data[$k] = $f->store('uploads', 'public');
-        }
-
         if ($request->has('navigation')) {
             $navigationIds = $request->navigation;
             $mainSectionId = $navigationIds[0];
@@ -95,6 +90,24 @@ class PageController extends Controller
                     ->withErrors(['navigation.1' => __('subsection_required')])
                     ->withInput();
             }
+        }
+        if ($request->query('slug')) {
+            $page = Page::where('slug', $request->query('slug'))->firstOrFail();
+            if ($page && !$page->is_deletable && $navigationIds[1] !== null) {
+                $subNavigationId = $navigationIds[1];
+                $subNavigation = Navigation::find($subNavigationId);
+                $existingNav = Navigation::where('redirect_url', '/' .  $page->slug)->first();
+                if ($existingNav->parent_id !== $subNavigation->id) {
+                    $existingNav->parent_id = $subNavigation->id;
+                    $existingNav->save();
+                }
+                return redirect()->back()->with('success', 'Page saved');
+            }
+        }
+
+        $data = $request->input('content');
+        foreach ($request->file('content', []) as $k => $f) {
+            $data[$k] = $f->store('uploads', 'public');
         }
 
         $oldSlug = null;
@@ -197,7 +210,9 @@ class PageController extends Controller
             ->groupBy('parent_id');
 
 
-        $link = Navigation::where('redirect_url', '/stranica/' . $page->slug)->first();
+        $link = Navigation::where('redirect_url', '/stranica/' . $page->slug)
+            ->orWhere('redirect_url', '/' . $page->slug)
+            ->first();
         $currentSection = null;
         $parentSection  = null;
 
@@ -208,9 +223,10 @@ class PageController extends Controller
                 $parentSection = $currentSection->parent_id
                     ? Navigation::find($currentSection->parent_id)
                     : null;
+            } else {
+                $currentSection = $link;
             }
         }
-
         if (!$page->is_deletable) {
             [$controllerClass, $method] = $this->controllerMap[$page->slug] ?? [null, null];
             $controllerInstance = app($controllerClass);

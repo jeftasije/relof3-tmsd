@@ -22,7 +22,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'News',
             'name_cy' => 'Вести',
             'is_deletable' => false,
-            'redirect_url' => '/news',
+            'redirect_url' => '/vesti',
             'order'=>2,
             'is_active' => 1
         ]);
@@ -31,6 +31,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Documents',
             'name_cy' => 'Документа',
             'is_deletable' => false,
+            'redirect_url' => '/dokumenti',
             'order'=>3,
             'is_active' => 1
         ]);
@@ -57,6 +58,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Complaints',
             'name_cy' => 'Жалбе',
             'is_deletable' => false,
+            'redirect_url' => '/zalbe',
             'order'=>6,
             'is_active' => 1
         ]);
@@ -100,7 +102,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Statute',
             'name_cy' => 'Статут',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Statut',
             'is_active' => 1
         ]);
@@ -109,7 +111,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Founding acts',
             'name_cy' => 'Оснивачки акти',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Osnivački akti',
             'is_active' => 1
         ]);
@@ -118,7 +120,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Other acts regulating ethics and integrity',
             'name_cy' => 'Друга акта која регулишу области етике и интегритета',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Druga akta koja regulišu oblasti etike i integriteta',
             'is_active' => 1
         ]);
@@ -128,7 +130,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Annual plans',
             'name_cy' => 'Годишњи планови',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Godišnji planovi',
             'is_active' => 1
         ]);
@@ -137,7 +139,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Activity reports',
             'name_cy' => 'Извештаји о раду',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Izveštaji o radu',
             'is_active' => 1
         ]);
@@ -146,7 +148,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Management body reports',
             'name_cy' => 'Извештаји о раду органа управљања',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Izveštaji o radu organa upravljanja',
             'is_active' => 1
         ]);
@@ -156,7 +158,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Information book',
             'name_cy' => 'Информатор о раду',
             'parent_id' => $informacijeORaduIProcedurama->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => 'https://informator.poverenik.rs/informator?org=evvj4rSTdRPuDbbdT',
             'is_active' => 1
         ]);
@@ -165,7 +167,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Director election procedure',
             'name_cy' => 'Процедура о избору директора',
             'parent_id' => $informacijeORaduIProcedurama->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/dokumenti?category=Procedura o izboru direktora',
             'is_active' => 1
         ]);
@@ -183,7 +185,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Organizational structure',
             'name_cy' => 'Организациона структура',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/organizaciona-struktura',
             'is_active' => 1
         ]);
@@ -192,8 +194,8 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Employees',
             'name_cy' => 'Запослени',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/employees',
+            'is_deletable' => false,
+            'redirect_url' => '/zaposleni',
             'is_active' => 1
         ]);
         Navigation::create([
@@ -201,7 +203,7 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Job classification',
             'name_cy' => 'Систематизација радних места',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
+            'is_deletable' => false,
             'redirect_url' => '/storage/documents/Sistematizacija-2025.pdf',
             'is_active' => 1
         ]);
