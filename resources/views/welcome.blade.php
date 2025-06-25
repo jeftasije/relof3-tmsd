@@ -26,7 +26,7 @@
                         <div id="newsSliderWrapper" class="overflow-hidden flex-grow mx-4">
                             <div id="newsSlider" class="flex gap-6 transition-transform duration-300 ease-in-out">
                                 @foreach ($news as $item)
-                                    <div class="flex-shrink-0 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                                    <div class="flex-shrink-0 bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-news-id="{{ $item->id }}">
                                         <div class="p-4 text-white">
                                             <h3 class="text-lg font-semibold mb-2">{{ $item->title }}</h3>
                                             <p class="text-gray-300 text-sm">{{ Str::limit($item->summary, 100) }}</p>
@@ -117,51 +117,70 @@
     <script>
         const slider = document.getElementById('newsSlider');
         const wrapper = document.getElementById('newsSliderWrapper');
-        const cards = slider.children;
+        const originalCards = Array.from(slider.children); // Čuvamo originalne kartice
         const leftBtn = document.getElementById('scrollLeft');
         const rightBtn = document.getElementById('scrollRight');
 
         const visibleCards = 3;
-        const totalCards = cards.length;
-        let currentIndex = 0;
+        let currentIndex = visibleCards; // Počinjemo od originalnih kartica
         const gap = 24;
         let autoScrollInterval;
-        const scrollInterval = 5000; 
+        const scrollInterval = 5000;
+        let isTransitioning = false;
 
+        // Kloniraj kartice za beskonačno klizanje
         function setupInfiniteScroll() {
+            // Kloni prvih nekoliko kartica i dodaj na kraj
             for (let i = 0; i < visibleCards; i++) {
-                const clone = cards[i].cloneNode(true);
+                const clone = originalCards[i].cloneNode(true);
                 slider.appendChild(clone);
             }
             
-            for (let i = totalCards - 1; i >= totalCards - visibleCards; i--) {
-                const clone = cards[i].cloneNode(true);
+            // Kloni poslednjih nekoliko kartica i dodaj na početak
+            for (let i = originalCards.length - 1; i >= originalCards.length - visibleCards; i--) {
+                const clone = originalCards[i].cloneNode(true);
                 slider.insertBefore(clone, slider.firstChild);
             }
             
-            currentIndex = visibleCards;
+            // Postavi širinu kartica
+            setupCards();
+            
+            // Postavi početnu poziciju
             slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
         }
 
+        // Postavljamo širinu kartica
         function setupCards() {
             const wrapperWidth = wrapper.offsetWidth;
             const cardWidth = (wrapperWidth - (gap * (visibleCards - 1))) / visibleCards;
             
-            Array.from(cards).forEach(card => {
+            Array.from(slider.children).forEach(card => {
                 card.style.width = `${cardWidth}px`;
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('button') || isTransitioning) return;
+                    
+                    const newsId = card.getAttribute('data-news-id');
+                    if (newsId) {
+                        window.location.href = `/news/${newsId}`;
+                    }
+                });
+                card.style.cursor = 'pointer';
             });
         }
 
         function getCardWidth() {
-            return cards[0].offsetWidth;
+            return slider.children[0].offsetWidth;
         }
 
+        // Funkcija za ažuriranje stanja dugmadi
         function updateButtons() {
             leftBtn.disabled = false;
             rightBtn.disabled = false;
         }
 
+        // Funkcija za pomeranje slajdera
         function updateSlider() {
+            isTransitioning = true;
             const cardWidth = getCardWidth();
             const translateX = currentIndex * (cardWidth + gap);
             
@@ -170,76 +189,80 @@
             updateButtons();
         }
 
+        // Funkcija za automatsko klizanje
         function startAutoScroll() {
             autoScrollInterval = setInterval(() => {
-                currentIndex++;
-                updateSlider();
-                
-                if (currentIndex >= slider.children.length - visibleCards) {
-                    setTimeout(() => {
-                        slider.style.transition = 'none';
-                        currentIndex = visibleCards;
-                        slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
-                        
-                        void slider.offsetWidth;
-                        
-                        slider.style.transition = 'transform 0.5s ease-in-out';
-                    }, 500);
+                if (!isTransitioning) {
+                    currentIndex++;
+                    updateSlider();
                 }
             }, scrollInterval);
         }
 
-        leftBtn.addEventListener('click', () => {
+        // Resetujemo poziciju kada se završi animacija
+        slider.addEventListener('transitionend', () => {
+            isTransitioning = false;
+            
+            const totalClones = visibleCards * 2;
+            const totalSlides = slider.children.length;
+            
+            // Ako smo došli do kloniranih kartica na kraju, vratimo se neprimetno
+            if (currentIndex >= totalSlides - visibleCards) {
+                slider.style.transition = 'none';
+                currentIndex = visibleCards;
+                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+                void slider.offsetWidth; // Forsiraj repaint
+            }
+            // Ako smo došli do kloniranih kartica na početku, vratimo se neprimetno
+            else if (currentIndex <= 0) {
+                slider.style.transition = 'none';
+                currentIndex = totalSlides - totalClones;
+                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+                void slider.offsetWidth; // Forsiraj repaint
+            }
+        });
+
+        // Pomeranje ulevo
+        leftBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isTransitioning) return;
+            
             clearInterval(autoScrollInterval);
             currentIndex--;
             updateSlider();
             startAutoScroll();
         });
 
-        rightBtn.addEventListener('click', () => {
+        // Pomeranje udesno
+        rightBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isTransitioning) return;
+            
             clearInterval(autoScrollInterval);
             currentIndex++;
             updateSlider();
             startAutoScroll();
         });
 
-        slider.addEventListener('transitionend', () => {
-            if (currentIndex <= 0) {
-                slider.style.transition = 'none';
-                currentIndex = slider.children.length - 2 * visibleCards;
-                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
-                
-                void slider.offsetWidth;
-                
-                slider.style.transition = 'transform 0.5s ease-in-out';
-            }
-            else if (currentIndex >= slider.children.length - visibleCards) {
-                slider.style.transition = 'none';
-                currentIndex = visibleCards;
-                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
-                
-                void slider.offsetWidth;
-                
-                slider.style.transition = 'transform 0.5s ease-in-out';
-            }
-        });
-
+        // Ažuriranje na resize prozora
         window.addEventListener('resize', () => {
             setupCards();
             updateSlider();
         });
 
-        slider.addEventListener('mouseenter', () => {
+        // Pauziraj auto scroll kada je miš iznad slidera
+        wrapper.addEventListener('mouseenter', () => {
             clearInterval(autoScrollInterval);
         });
 
-        slider.addEventListener('mouseleave', () => {
+        // Nastavi auto scroll kada miš napusti slider
+        wrapper.addEventListener('mouseleave', () => {
             startAutoScroll();
         });
 
+        // Inicijalno postavljanje
         setupInfiniteScroll();
-        setupCards();
-        updateSlider();
+        updateButtons();
         startAutoScroll();
     </script>
 
