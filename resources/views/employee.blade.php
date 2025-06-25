@@ -46,6 +46,7 @@
                 {{ $text['description'] }}
             </p>
 
+            <!-- DODAJ ZAPOSLENOG DUGME -->
             <div class="flex justify-end mb-6">
                 @auth
                 <button 
@@ -184,9 +185,9 @@
         x-show="helpOpen"
         x-transition
         class="relative rounded-xl border-2 border-[var(--secondary-text)] shadow-2xl bg-white dark:bg-gray-900 flex flex-col items-stretch"
-        style="width:500px; height:600px; background: var(--primary-bg); color: var(--primary-text);"
+        style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text);"
         @keydown.escape.window="helpOpen = false"
-        x-data="{ slide: 1, total: 3 }"
+        x-data="{ slide: 1, total: 3, enlarged: false }"
     >
         <button
             @click="helpOpen = false"
@@ -200,54 +201,61 @@
             </svg>
         </button>
         <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
-            <div class="flex items-center justify-center mb-1 flex-shrink-0" style="min-height:40px;">
-                <h3 class="text-lg font-bold text-center" style="color:var(--primary-text)">
-                    {{ App::getLocale() === 'en'
-                        ? 'How to use Employee Management'
-                        : (App::getLocale() === 'sr-Cyrl'
-                            ? 'Како користити управљање запосленима'
-                            : 'Kako koristiti upravljanje zaposlenima') }}
-                </h3>
-            </div>
-            <div class="flex items-center justify-center mb-2 flex-shrink-0" style="min-height:160px;">
+
+        <div class="flex flex-col items-center justify-start" style="height: 48%;">
+            <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
+                {{ App::getLocale() === 'en' ? 'How to use Employee Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како да управљате ѕапосленима' : 'Kako da upravljate zaposlenima') }}
+            </h3>
+            <div class="flex items-center justify-center w-full" style="min-height: 170px;">
                 <button type="button" @click="slide = slide === 1 ? total : slide - 1"
                     class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
-                    style="min-width:32px;"
-                >
+                    style="min-width:32px;">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <div class="flex-1 flex justify-center items-center min-h-[120px]">
+                <div class="flex-1 flex justify-center items-center min-h-[150px] cursor-zoom-in">
                     <template x-if="slide === 1">
-                        <img src="/images/employee-help1.png" alt="Edit or Delete Employee" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/employee-help1.png'" src="/images/employee-help1.png" alt="Edit or Delete News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                     <template x-if="slide === 2">
-                        <img src="/images/employee-help2.png" alt="Edit Form" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/employee-help2.png'" src="/images/employee-help2.png" alt="Edit Form" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                     <template x-if="slide === 3">
-                        <img src="/images/employee-help3.png" alt="Add Employee" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/employee-help3.png'" src="/images/employee-help3.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                 </div>
                 <button type="button" @click="slide = slide === total ? 1 : slide + 1"
                     class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
-                    style="min-width:32px;"
-                >
+                    style="min-width:32px;">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
             </div>
-            <div class="flex justify-center mb-2 space-x-1">
+            <div class="flex justify-center mt-2 space-x-1">
                 <template x-for="i in total">
                     <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
                         class="w-2 h-2 rounded-full transition-all duration-200"></div>
                 </template>
             </div>
-            <div class="flex-1 overflow-y-auto px-1 py-1 mt-1 mb-2"
-                style="color: var(--secondary-text); min-height:120px; max-height:220px;">
+        </div>
+
+        <!-- Enlarged image modal -->
+        <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+            style="backdrop-filter: blur(2px);" @click="enlarged = false">
+            <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
+            <button @click="enlarged = false" class="absolute top-5 right-8 bg-white/80 hover:bg-white p-2 rounded-full shadow" aria-label="Close" style="color: var(--primary-text);">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+            <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
+                style="color: var(--secondary-text); min-height: 160px; max-height: 48%;">
                 <!-- Slide 1 -->
                 <template x-if="slide === 1">
                     <div>
@@ -261,13 +269,16 @@
                         <p>
                             @switch(App::getLocale())
                             @case('en')
-                                To edit or delete an employee, click the three dots in the bottom left corner of the employee card. A menu will appear with options for editing and deleting.
+                                After clicking ... , you can update fields such as name, position, biography, and upload a new photo. Click Save when finished.<br>
+                                If you wish to discard changes at any moment, click Cancel. A confirmation message will appear after successful editing.
                             @break
                             @case('sr-Cyrl')
-                                Да бисте изменили или обрисали запосленог, кликните на три тачке у доњем левом углу компоненте запосленог. Појавиће се мени са опцијама за измену и брисање.
+                                Након што кликнете на ... , можете ажурирати поља као што су име, позиција, биографија, као и поставити нову фотографију. По завршетку измена кликните на дугме Сачувај.<br>
+                                Ако желите да одустанете од промена у било ком тренутку, кликните на дугме Откажи. Након успешне измене добићете потврду.
                             @break
                             @default
-                                Da biste izmenili ili obrisali zaposlenog, kliknite na tri tačke u donjem levom uglu komponente zaposlenog. Pojaviće se meni sa opcijama za izmenu i brisanje.
+                                Nakon što kliknete na ... , možete ažurirati polja kao što su ime, pozicija, biografija i postaviti novu fotografiju. Kada završite, kliknite na Sačuvaj.<br>
+                                Ako želite da otkažete izmene, kliknite na dugme Otkaži. Nakon uspešne izmene dobićete potvrdu.
                             @endswitch
                         </p>
                     </div>
@@ -334,6 +345,6 @@
     </div>
 </div>
 @endauth
-        </div>
     </div>
+</div>
 </x-guest-layout>

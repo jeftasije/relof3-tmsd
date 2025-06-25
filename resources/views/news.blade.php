@@ -189,9 +189,9 @@
         x-show="helpOpen"
         x-transition
         class="relative rounded-xl border-2 border-[var(--secondary-text)] shadow-2xl bg-white dark:bg-gray-900 flex flex-col items-stretch"
-        style="width:440px; height:540px; background: var(--primary-bg); color: var(--primary-text);"
+        style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text);"
         @keydown.escape.window="helpOpen = false"
-        x-data="{ slide: 1, total: 3 }"
+        x-data="{ slide: 1, total: 3, enlarged: false }"
     >
         <button
             @click="helpOpen = false"
@@ -205,50 +205,61 @@
             </svg>
         </button>
         <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
-            <div class="flex-shrink-0 mb-2">
-                <h3 class="text-lg font-bold text-center" style="color:var(--primary-text)">
-                    {{ App::getLocale() === 'en' ? 'How to use News Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити управљање вестима' : 'Kako koristiti upravljanje vestima') }}
-                </h3>
-            </div>
-            <div class="flex items-center justify-center mb-2 flex-shrink-0" style="min-height:160px;">
+
+        <div class="flex flex-col items-center justify-start" style="height: 48%;">
+            <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
+                {{ App::getLocale() === 'en' ? 'How to use News Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити управљање вестима' : 'Kako koristiti upravljanje vestima') }}
+            </h3>
+            <div class="flex items-center justify-center w-full" style="min-height: 170px;">
                 <button type="button" @click="slide = slide === 1 ? total : slide - 1"
                     class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
-                    style="min-width:32px;"
-                >
+                    style="min-width:32px;">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <div class="flex-1 flex justify-center items-center min-h-[120px]">
+                <div class="flex-1 flex justify-center items-center min-h-[150px] cursor-zoom-in">
                     <template x-if="slide === 1">
-                        <img src="/images/news-help1.png" alt="Edit or Delete News" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/news-help1.png'" src="/images/news-help1.png" alt="Edit or Delete News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                     <template x-if="slide === 2">
-                        <img src="/images/news-help2.png" alt="Edit Form" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/news-help2.png'" src="/images/news-help2.png" alt="Edit Form" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                     <template x-if="slide === 3">
-                        <img src="/images/news-help3.png" alt="Add News" class="rounded-xl max-h-36 object-contain bg-transparent" />
+                        <img @click="enlarged = '/images/news-help3.png'" src="/images/news-help3.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                     </template>
                 </div>
                 <button type="button" @click="slide = slide === total ? 1 : slide + 1"
                     class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
-                    style="min-width:32px;"
-                >
+                    style="min-width:32px;">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
             </div>
-            <div class="flex justify-center mb-2 space-x-1">
+            <div class="flex justify-center mt-2 space-x-1">
                 <template x-for="i in total">
                     <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
                         class="w-2 h-2 rounded-full transition-all duration-200"></div>
                 </template>
             </div>
-            <div class="flex-1 overflow-y-auto px-1 py-1 mt-1 mb-2"
-                style="color: var(--secondary-text); min-height:120px; max-height:185px;">
+        </div>
+
+        <!-- Enlarged image modal -->
+        <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+            style="backdrop-filter: blur(2px);" @click="enlarged = false">
+            <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
+            <button @click="enlarged = false" class="absolute top-5 right-8 bg-white/80 hover:bg-white p-2 rounded-full shadow" aria-label="Close" style="color: var(--primary-text);">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+            <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
+                style="color: var(--secondary-text); min-height: 160px; max-height: 48%;">
                 <!-- Slide 1 -->
                 <template x-if="slide === 1">
                     <div>
@@ -323,4 +334,5 @@
     </div>
 </div>
 @endauth
+
 </x-guest-layout>
