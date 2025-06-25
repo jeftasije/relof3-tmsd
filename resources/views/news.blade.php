@@ -18,7 +18,6 @@
             <div style="background: var(--primary-bg); color: var(--primary-text);">
                 <div class="p-2 sm:p-4 lg:p-6" style="color: var(--primary-text);">
 
-                    <!-- Naslov i help dugme (u liniji, razmaknuti) -->
                     <div class="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
                         <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full"
                             style="color: var(--primary-text); font-family: var(--font-title);">
@@ -51,7 +50,6 @@
                         {{ $text['description'] }}
                     </p>
                     
-                    <!-- Dodaj dugme -->
                     <div class="flex justify-end mb-6">
                         @auth
                             <button @click="open = true" class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow"
@@ -179,7 +177,6 @@
             </div>
         </div>
 
-<!-- HELP MODAL  -->
 @auth
 <div
     x-show="helpOpen"

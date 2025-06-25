@@ -221,7 +221,7 @@
 
           <a href="{{ route('employees.show', $employee->id) }}"
              class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg focus:ring-4 focus:outline-none"
-             style="background: #2563eb !important; color: #fff !important; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
+             style="background: var(--accent); color: #fff; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
               {{ App::getLocale() === 'en' ? 'Show more' : (App::getLocale() === 'sr-Cyrl' ? 'Прикажи више' : 'Prikaži više') }}
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                    fill="none" viewBox="0 0 14 10">

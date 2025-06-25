@@ -46,7 +46,6 @@
                 {{ $text['description'] }}
             </p>
 
-            <!-- DODAJ ZAPOSLENOG DUGME -->
             <div class="flex justify-end mb-6">
                 @auth
                 <button 
@@ -64,7 +63,6 @@
                 @endauth
             </div>
 
-            <!-- LISTA ZAPOSLENIH -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                 @foreach ($employees as $employee)
                     <x-employee-card :employee="$employee" />
@@ -76,7 +74,6 @@
                 </div>
             @endif
 
-            <!-- MODAL ZA DODAVANJE ZAPOSLENOG -->
             <div
                 x-show="open"
                 x-transition
@@ -175,7 +172,6 @@
                 </div>
             </div>
 
-            <!-- MODAL ZA POMOĆ (HELP) -->
 @auth
 <div
     x-show="helpOpen"
@@ -338,8 +334,6 @@
     </div>
 </div>
 @endauth
-
-
         </div>
     </div>
 </x-guest-layout>
