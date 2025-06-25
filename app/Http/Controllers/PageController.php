@@ -106,6 +106,16 @@ class PageController extends Controller
         }
 
         $data = $request->input('content');
+        
+        if (
+            !isset($request->file('content')['image']) &&
+            isset($data['image_existing']) &&
+            !isset($data['image'])
+        ) {
+            $data['image'] = $data['image_existing'];
+        }
+        unset($data['image_existing']);
+
         foreach ($request->file('content', []) as $k => $f) {
             $data[$k] = $f->store('uploads', 'public');
         }
@@ -192,7 +202,7 @@ class PageController extends Controller
                 'message' => 'Page not found.'
             ], 404);
         }
-        if($page->is_deletable){
+        if ($page->is_deletable) {
             Navigation::where('redirect_url', '/stranica/' . $page->slug)->delete();
             $page->delete();
             return response()->json(['success' => true]);
