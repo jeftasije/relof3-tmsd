@@ -47,17 +47,22 @@
                     </form>
                 </div>
             </div>
-            <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-4">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-6">
                 @forelse ($procurements as $procurement)
-                    <div class="border-b pb-4 flex justify-between items-center" data-proc-id="{{ $procurement->id }}">
-                        <a
-                            href="{{ asset('storage/' . $procurement->file_path) }}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-lg font-semibold text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                            {{ $procurement->title }}
-                        </a>
+                    <div class="border-b pb-4 flex justify-between items-start" data-proc-id="{{ $procurement->id }}">
+                        <div>
+                            <a
+                                href="{{ asset('storage/' . $procurement->file_path) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-lg font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                            >
+                                {{ $procurement->title }}
+                            </a>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                {{ App::getLocale() === 'en' ? 'Updated at: ' : (App::getLocale() === 'sr-Cyrl' ? 'Ажурирано: ' : 'Ažurirano: ') }}{{ $procurement->updated_at->format('d.m.Y. H:i') }}
+                            </p>
+                        </div>
                         @auth
                         <div class="relative">
                             <button

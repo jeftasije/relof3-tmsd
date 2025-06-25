@@ -34,7 +34,14 @@ class ProcurementController extends Controller
             $query->where('title', 'like', '%' . $search . '%');
         }
 
-        $query->orderBy('updated_at', $sort);
+        if ($sort === 'asc') 
+            $query->orderBy('updated_at', 'desc');
+        elseif ($sort === 'desc') 
+            $query->orderBy('updated_at', 'asc');
+         else 
+            $query->orderBy('updated_at', 'asc'); 
+        
+        $reminders = $query->get();
 
         $procurements = $query->get();
 
