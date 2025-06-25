@@ -11,6 +11,7 @@
         "name": "Public Library \"Dositej Obradović\"",
         "address": "Stevana Nemanje 2, 36300 Novi Pazar",
         "address_label": "Address",
+        "city": "Novi Pazar",
         "pib": "101234566",
         "pib_label": "Tax id",
         "phone": "+381 (0)20 331 010",
