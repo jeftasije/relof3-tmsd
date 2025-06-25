@@ -179,7 +179,7 @@
             </div>
         </div>
 
-<!-- HELP MODAL (prošireno, bez zaposlenih, samo za vesti) -->
+<!-- HELP MODAL  -->
 @auth
 <div
     x-show="helpOpen"
@@ -196,7 +196,6 @@
         @keydown.escape.window="helpOpen = false"
         x-data="{ slide: 1, total: 3 }"
     >
-        <!-- X dugme gore desno -->
         <button
             @click="helpOpen = false"
             class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -214,7 +213,6 @@
                     {{ App::getLocale() === 'en' ? 'How to use News Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити управљање вестима' : 'Kako koristiti upravljanje vestima') }}
                 </h3>
             </div>
-            <!-- Carousel slike i strelice -->
             <div class="flex items-center justify-center mb-2 flex-shrink-0" style="min-height:160px;">
                 <button type="button" @click="slide = slide === 1 ? total : slide - 1"
                     class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
@@ -246,14 +244,12 @@
                     </svg>
                 </button>
             </div>
-            <!-- Dots indikator -->
             <div class="flex justify-center mb-2 space-x-1">
                 <template x-for="i in total">
                     <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
                         class="w-2 h-2 rounded-full transition-all duration-200"></div>
                 </template>
             </div>
-            <!-- Carousel tekst direktno na modalu -->
             <div class="flex-1 overflow-y-auto px-1 py-1 mt-1 mb-2"
                 style="color: var(--secondary-text); min-height:120px; max-height:185px;">
                 <!-- Slide 1 -->
@@ -329,7 +325,5 @@
         </div>
     </div>
 </div>
-
-
 @endauth
 </x-guest-layout>
