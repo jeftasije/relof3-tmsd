@@ -671,7 +671,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('welcome')" :active="!request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         @switch(App::getLocale())
                         @case('en') Edit content @break
                         @case('sr-Cyrl') Уреди садржај @break
@@ -679,9 +679,41 @@
                         @endswitch
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('relofIndex')" :active="request()->routeIs('relofIndex')">
+                        @switch(App::getLocale())
+                        @case('en') Relof index @break
+                        @case('sr-Cyrl') Релоф индекс @break
+                        @default Relof index
+                        @endswitch
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('reminders.index')" :active="request()->routeIs('reminders.index')">
+                        @switch(App::getLocale())
+                        @case('en') Reminders @break
+                        @case('sr-Cyrl') Подсетници @break
+                        @default Podsetnici
+                        @endswitch
+                    </x-nav-link>
+                </div>
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                @auth
+                    <div class="relative">
+                        <button id="notificationButton" class="relative focus:outline-none" onclick="toggleNotifications()">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.292-.538 1.292H5.538C5 18 5 17.301 5 16.708c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365ZM8.733 18c.094.852.306 1.54.944 2.112a3.48 3.48 0 0 0 4.646 0c.638-.572 1.236-1.26 1.33-2.112h-6.92Z"/>
+                            </svg>
+                            <span id="notificationBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full hidden">0</span>
+                        </button>
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                            <ul id="notificationList" class="max-h-60 overflow-y-auto p-2">
+                            </ul>
+                        </div>
+                    </div>
+                @endauth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -765,6 +797,156 @@
 </style>
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 <script>
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    async function fetchRemindersCount() {
+        try {
+            const response = await fetch(`/podsetnici/aktivni/broj`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('err in loading reminders: ' + response.status);
+            }
+
+            const data = await response.json();
+            const badge = document.getElementById('notificationBadge');
+            if (data.count > 0) {
+                badge.textContent = data.count;
+                badge.classList.remove('hidden');
+            } else if(data.count === 0) {
+                badge.textContent = data.count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('err in counting reminders:', error);
+        }
+    }
+
+    function toggleNotifications() {
+        const dropdown = document.getElementById('notificationDropdown');
+        dropdown.classList.toggle('hidden');
+
+        if (!dropdown.classList.contains('hidden')) {
+            fetchReminders();
+        }
+    }
+
+    async function fetchReminders() {
+        try {
+            const response = await fetch('/podsetnici/aktivni', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('err in loading reminders: ' + response.status);
+            }
+
+            const reminders = await response.json();
+            renderNotifications(reminders);
+        } catch (error) {
+            console.error('err in loading reminders:', error);
+        }
+    }
+
+    function renderNotifications(reminders) {
+        const badge = document.getElementById('notificationBadge');
+        const list = document.getElementById('notificationList');
+
+        if (reminders.length > 0) {
+            badge.textContent = reminders.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+
+        list.innerHTML = '';
+
+        let noNotificationsMessage;
+        const locale = '{{ App::getLocale() }}';
+        switch (locale) {
+            case 'en':
+                noNotificationsMessage = 'You currently have no new notifications';
+                break;
+            case 'sr-Cyrl':
+                noNotificationsMessage = 'Тренутно немате нове нотификације';
+                break;
+            default:
+                noNotificationsMessage = 'Trenutno nemate nove notifikacije';
+        }
+
+        if (reminders.length === 0) {
+            const li = document.createElement('li');
+            li.className = 'p-2 text-sm text-gray-700 dark:text-white text-center';
+            li.textContent = noNotificationsMessage;
+            list.appendChild(li);
+        } else {
+            reminders.forEach((reminder) => {
+                const li = document.createElement('li');
+                const locale = '{{ App::getLocale() }}';
+                li.className = 'flex justify-between items-center p-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded';
+                const title = locale === 'en'
+                    ? reminder.title_en
+                    : locale === 'sr-Cyrl'
+                        ? reminder.title_cyr
+                        : reminder.title_lat;
+                li.innerHTML = `
+                    <span>${title} (${new Date(reminder.time).toLocaleString('sr-RS')})</span>
+                    <button onclick="removeNotification(${reminder.id})" class="text-red-500 hover:text-red-700 text-sm font-bold">x</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+    }
+
+    async function removeNotification(id) {
+        try {
+            const response = await fetch(`/podsetnici/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Greška pri brisanju remindera: ' + response.status);
+            }
+
+            fetchReminders(); 
+            fetchRemindersCount(); 
+        } catch (error) {
+            console.error('Greška pri brisanju remindera:', error);
+        }
+    }
+
+    document.addEventListener('click', (event) => {
+        const dropdown = document.getElementById('notificationDropdown');
+        const button = document.getElementById('notificationButton');
+
+
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        @auth
+            fetchRemindersCount(); 
+            setInterval(fetchRemindersCount, 30000); 
+        @endauth
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('toggle-sortable');
         const saveButton = document.getElementById('save-order');

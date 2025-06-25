@@ -12,9 +12,11 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReminderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -65,6 +67,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+
+    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
+    Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
+  
+    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+    Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+    Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
+
+    Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
+    Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
+    Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
+    Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+    Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
+    Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 });
 
 Route::get('/usluge', function () {
@@ -102,12 +120,11 @@ Route::get('/organizaciona-struktura', [OrganisationalStructureController::class
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
 
+Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
+
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
-Route::get('/galerija', function () {
-    return view('gallery');
-})->name('gallery');
-
+Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 require __DIR__.'/auth.php';

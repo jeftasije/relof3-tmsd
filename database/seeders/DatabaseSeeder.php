@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         DB::table('navigations')->truncate();
         DB::table('procurements')->truncate();
         DB::table('organisational_structures')->truncate();
+        DB::table('reminders')->truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
             NavigationSeeder::class,
             ProcurementSeeder::class,
             OrganisationalStructureSeeder::class, 
+            ReminderSeeder::class, 
         ]);
 
         if (!User::where('email', 'test@example.com')->exists()) {
