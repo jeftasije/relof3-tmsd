@@ -46,7 +46,7 @@
                         @endauth
                     </div>
 
-                    <div class="flex flex-col lg:flex-row items-start gap-8 p-6 sm:p-10 lg:p-12 mb-10"
+                    <div class="flex flex-col lg:flex-row items-start gap-8 mb-10"
                         style="background: var(--primary-bg); color: var(--primary-text);">
 
                         <img
