@@ -106,7 +106,7 @@ class PageController extends Controller
         }
 
         $data = $request->input('content');
-        
+
         if (
             !isset($request->file('content')['image']) &&
             isset($data['image_existing']) &&
@@ -210,6 +210,7 @@ class PageController extends Controller
         return response()->json(['success' => false]);
     }
 
+    //This is edit for super admin
     public function edit(string $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
@@ -270,5 +271,32 @@ class PageController extends Controller
             'slug'           => $page->slug,
             'isDraft'        => true,
         ]);
+    }
+
+    //this is edit for editor
+    public function update(Request $request, string $slug)
+    {
+        $page = Page::where('slug', $slug)->firstOrFail();
+
+        $request->validate([
+            'content'     => 'nullable|array',
+        ]);
+
+        $existing = json_decode($page->content, true) ?: [];
+        $new = $request->input('content', []);
+
+        foreach ($new as $key => $value) {
+            if ($request->hasFile("content.$key")) {
+                $file       = $request->file("content.$key");
+                $existing[$key] = $file->store('uploads', 'public');
+            } else {
+                $existing[$key] = $value;
+            }
+        }
+
+        $page->content = json_encode($existing, JSON_UNESCAPED_UNICODE);
+        $page->save();
+
+        return redirect()->back()->with('success', 'Page saved');
     }
 }

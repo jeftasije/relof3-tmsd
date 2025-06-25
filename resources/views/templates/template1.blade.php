@@ -141,11 +141,60 @@
             class="rounded shadow w-full h-auto object-contain mb-6" alt="">
         @endif
 
-        <div class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
-            <p class="text-gray-800 dark:text-gray-200 whitespace-pre-line text-base leading-relaxed">
-                {!! $content['text'] !!}
-            </p>
-        </div>
+        <form id="edit-page" method="POST" action="{{ route('page.update', $page->slug) }}" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            <div class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
+                <div x-data="{ editingText: false }" class="my-6 w-auto self-start">
+                    <div
+                        x-data="{
+                editingText: false,
+                previewContent: @js(old('content.text', $content['text'] ?? ''))}"
+                        class="my-6 w-11/12">
+                        <button x-show="!editingText" type="button" @click="editingText = true" class="ml-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                            @switch(App::getLocale())
+                            @case('en') Edit @break
+                            @case('sr-Cyrl') Уреди @break
+                            @default Uredi
+                            @endswitch
+                        </button>
+                        <div
+                            x-show="!editingText"
+                            class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg relative group">
+                            <div x-ref="preview" x-html="previewContent"
+                                class="text-gray-800 dark:text-gray-200 whitespace-pre-line text-base leading-relaxed">
+                            </div>
+                        </div>
+
+                        <div x-show="editingText" class="my-4 w-full">
+                            <button type="submit"
+                                class="text-white bg-blue-600 hover:bg-blue-700 font-semibold py-2 px-4 rounded-lg shadow"
+                                @click="
+                                    previewContent = $refs.trixEditor.innerHTML;
+                                    editingText = false;">
+                                @switch(App::getLocale())
+                                @case('en') Save @break
+                                @case('sr-Cyrl') Сачувај @break
+                                @default Sačuvaj
+                                @endswitch
+                            </button>
+                            <input id="large-text-input" type="hidden" name="content[text]" form="edit-page"
+                                value="{{ old('content.text', $content['text'] ?? '') }}">
+                            <div class="my-6 w-auto">
+                                <div class="bg-white">
+                                    <trix-toolbar id="trix-toolbar"></trix-toolbar>
+                                </div>
+                                <trix-editor input="large-text-input"
+                                    toolbar="trix-toolbar"
+                                    x-ref="trixEditor"
+                                    class="trix-content mt-3 bg-white dark:bg-gray-800 dark:text-white rounded-lg border-gray-300 dark:border-gray-600 min-h-[300px]">
+                                </trix-editor>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </x-guest-layout>
 @endif
@@ -198,7 +247,6 @@
             reader.readAsDataURL(file);
         }
 
-        // Drop handler
         dropzone.addEventListener('drop', (e) => {
             if (e.dataTransfer.files.length > 0) {
                 const file = e.dataTransfer.files[0];
