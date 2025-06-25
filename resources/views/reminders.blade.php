@@ -1,6 +1,25 @@
 <x-app-layout>
     <div class="max-w-3xl mx-auto py-12 px-4">
-        <h1 class="text-4xl font-bold text-center text-gray-900 dark:text-white mb-10">{{ App::getLocale() === 'en' ? 'Reminders' : (App::getLocale() === 'sr-Cyrl' ? 'Подсетници' : 'Podsetnici') }}</h1>
+        <div class="relative flex items-center justify-center mb-8">
+            <h1 class="text-4xl font-bold text-center text-gray-900 dark:text-white">{{ App::getLocale() === 'en' ? 'Reminders' : (App::getLocale() === 'sr-Cyrl' ? 'Подсетници' : 'Podsetnici') }}</h1>
+            <div class="absolute right-0">
+                <button 
+                    id="help-btn" 
+                    onclick="toggleHelpModal()"
+                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                    <span class="ml-3">
+                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                    </span>
+                </button>
+            </div>
+        </div>
         <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg rounded-xl p-6 mb-10">
             <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">{{ App::getLocale() === 'en' ? 'Make your reminder' : (App::getLocale() === 'sr-Cyrl' ? 'Направи свој подсетник' : 'Napravi novi podsetnik') }}</h2>
             @if(session('success'))
@@ -181,6 +200,24 @@
                 </div>
             </div>
         </div>
+        <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
+                <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+                    &times;
+                </button>
+                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                </h2>
+                <p class="text-gray-700 dark:text-gray-300 space-y-2">
+                    {!! App::getLocale() === 'en'
+                        ? '<strong>Reminders</strong> are used to remind you to upoad something on your page.</br></br>If you want to create a <strong>new reminder</strong>, you need to enter a title in the form on the page (something that will remind you what needs to be posted) and select the time and date when you want the notification to appear (<strong>the bell</strong> in the top right corner).</br></br>By clicking the save button, you will save the created reminder.</br>Each reminder can be <strong>edited</strong> (both the title and the time) or <strong>deleted</strong> if it is no longer needed.</br></br>Below the form for creating a new reminder, you can see all your reminders.'
+                        : (App::getLocale() === 'sr-Cyrl'
+                            ? '<strong>Подсетници</strong> служе да Вас подсете да објавите на Вашој страници.</br></br>Уколико желите да направите <strong>нови подсетник</strong>, треба да у форми на страници унесете назив (нешто што ће Вас подсетити шта треба да објавите) и да изаберете време и датум када желите да Вам се прикаже нотификација (<strong>звоно</strong> у горњем десном углу).</br></br>Притиском на дугме сачувај, сачуваћете направљени подсетник.</br>Сваки подсетник можете <strong>изменити</strong> (и назив и време) и <strong>обрисати</strong> уколико Вам ипак није потребан.</br></br>Испод форме за креирање новог подсетника можете видети све Ваше подсетнике.'
+                            : '<strong>Podsetnici</strong> služe da Vas podsete da objavite podatke na Vašoj stranici.</br></br>Ukoliko želite da napravite <strong>novi podsetnik</strong>, treba da u formi na stranici unesete naziv (nešto što će Vas podsetiti šta treba da objavite) i da izaberete vreme i datum kada želite da Vam se prikaže notifikacija (<strong>zvono</strong> u gornjem desnom uglu).</br></br>Pritiskom na dugme sačuvaj, sačuvaćete napravljeni podsetnik.</br>Svaki podsetnik možete <strong>izmeniti</strong> (i naziv i vreme) i <strong>obrisati</strong> ukoliko Vam ipak nije potreban.</br></br>Ispod forme za kreiranje novog podsetnika možete videti sve Vaše podsetnike.')
+                    !!}
+                </p>
+            </div>
+        </div>
     </div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -196,6 +233,24 @@
             dateFormat: "d.m.Y H:i",
             locale: "en"
         });
+
+        const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw(chart) {
+                const { width, height } = chart;
+                const ctx = chart.ctx;
+                ctx.restore();
+                const fontSize = (height / 5).toFixed(2);
+                ctx.font = `${fontSize}px Arial`;
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "#10B981";
+                const text = "72%";
+                const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                const textY = height / 2;
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+            }
+        };
 
         const updateErrorMessage = @json(
             App::getLocale() === 'en' ? 'An error occurred while updating.' :
@@ -278,5 +333,10 @@
                 }
             }
         });
+
+        function toggleHelpModal() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.toggle('hidden');
+        }
     </script>
 </x-app-layout>
