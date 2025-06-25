@@ -15,7 +15,8 @@ class HistoryController extends Controller
     public function __construct(LanguageMapperController $languageMapper)
     {
         $this->translate = new GoogleTranslate();
-        $this->translate->setSource('sr')->setTarget('en');
+        $this->translate->setSource('sr');
+        $this->translate->setTarget('en');
         $this->languageMapper = $languageMapper;
     }
 

@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
-    Route::post('/istorijat', [HistoryController::class, 'update'])->name('history.update');
+    Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
   
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
     Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
@@ -76,11 +76,6 @@ Route::middleware('auth')->group(function () {
   
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-
-    Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
-
-
-    Route::post('/istorijat/updata', [HistoryController::class, 'update'])->name('history.update');
 
 
 });

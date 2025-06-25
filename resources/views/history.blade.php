@@ -61,7 +61,7 @@
         @auth
             <form action="{{ route('history.update') }}" method="POST" id="historyForm" class="space-y-4">
                 @csrf
-
+                @method('PATCH')
                 <div id="contentDisplay" class="prose dark:prose-invert max-w-none">
                     {!! nl2br(e($history->translate('content'))) !!}
                 </div>
