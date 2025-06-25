@@ -120,9 +120,17 @@ window.renderPaletteList = function() {
             renderPalettePreview();
             document.getElementById('palette-save-btn').disabled = (selectedPalette === activePalette && selectedMode === activeMode);
         };
-        const name = document.createElement('span');
-        name.className = 'font-semibold text-lg';
-        name.textContent = palette.label || key;
+
+        const currentLocale = window.locale || 'sr';
+        let label = palette.label;
+        if (typeof label === 'object') {
+            label = label[currentLocale] || label['sr'] || Object.values(label)[0];
+        }
+
+        const labelEl = document.createElement('span');
+        labelEl.className = 'font-semibold text-lg';
+        labelEl.textContent = label || key;
+
         const colorsWrap = document.createElement('span');
         colorsWrap.className = 'flex flex-row gap-2 ml-3';
         colors.forEach(c => {
@@ -135,7 +143,7 @@ window.renderPaletteList = function() {
             circle.style.border = "1.5px solid #cbd5e1";
             colorsWrap.appendChild(circle);
         });
-        card.appendChild(name);
+        card.appendChild(labelEl);
         card.appendChild(colorsWrap);
         list.appendChild(card);
     });
@@ -146,6 +154,27 @@ window.renderPalettePreview = function() {
     const preview = document.getElementById('palette-preview');
     if (!preview) return;
     const theme = palettes[selectedPalette]?.[selectedMode];
+
+    const previewTexts = {
+        'en': {
+            title: "Theme Title",
+            desc: "This is a preview of your theme. Here you'll see headings, text, and action colors.",
+            action: "Action"
+        },
+        'sr-Cyrl': {
+            title: "Наслов теме",
+            desc: "Ово је приказ ваше теме. Овде ће бити приказани наслови, текстови и боје акција.",
+            action: "Акција"
+        },
+        'sr': {
+            title: "Naslov teme",
+            desc: "Ovo je prikaz vaše teme. Ovde će biti prikazani naslovi, tekstovi i akcione boje.",
+            action: "Akcija"
+        }
+    };
+
+    const t = previewTexts[window.locale] || previewTexts['sr'];
+
     preview.innerHTML = `
       <div style="
         background: ${theme.primaryBg}; 
@@ -154,12 +183,12 @@ window.renderPalettePreview = function() {
         border-radius: 1.5rem 1.5rem 0 0;
         padding: 28px 24px 12px 24px;
         ">
-        <div class="font-bold text-xl mb-1" style="color:${theme.primaryText};font-family:var(--font-title);">Naslov teme</div>
+        <div class="font-bold text-xl mb-1" style="color:${theme.primaryText};font-family:var(--font-title);">${t.title}</div>
         <div class="mb-3 text-base" style="color:${theme.secondaryText};font-family:var(--font-body);">
-            Ovo je prikaz vaše teme. Ovde će biti prikazani naslovi, tekstovi i akcione boje.
+            ${t.desc}
         </div>
         <button class="rounded-xl px-4 py-2 font-semibold" style="background:${theme.accent};color:#fff;">
-            Akcija
+            ${t.action}
         </button>
       </div>
       <div class="w-full" style="height:32px; background:${theme.secondaryText};"></div>

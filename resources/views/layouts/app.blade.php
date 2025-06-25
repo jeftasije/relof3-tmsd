@@ -29,7 +29,10 @@
         <link href="https://fonts.googleapis.com/css?family=Mulish:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
-
+        
+        <script>
+            window.locale = "{{ App::getLocale() }}";
+        </script>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
