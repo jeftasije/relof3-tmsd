@@ -73,7 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
     Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
     Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
-
+    Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
+    Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 });
 
 Route::get('/usluge', function () {

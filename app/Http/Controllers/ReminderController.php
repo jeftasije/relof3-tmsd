@@ -158,5 +158,21 @@ class ReminderController extends Controller
 
         return response()->json(['message' => 'Reminder deleted']);
     }
+
+    public function getActiveReminders()
+    {
+        $today = Carbon::today();
+        $reminders = Reminder::where('time', '<=', $today)
+            ->select('id', 'title_en', 'title_cyr', 'title_lat', 'time')
+            ->get();
+
+        return response()->json($reminders);
+    }
+
+    public function getActiveRemindersCount()
+    {
+        $count = Reminder::where('time', '<=', now())->count();
+        return response()->json(['count' => $count]);
+    }
 }
 

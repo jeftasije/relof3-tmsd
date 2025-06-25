@@ -223,6 +223,14 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/sr.js"></script>
     <script>
+        @if (session('success'))
+            if (typeof fetchReminders === 'function') {
+                fetchReminders();
+            }
+            if (typeof fetchRemindersCount === 'function') {
+                fetchRemindersCount();
+            }
+        @endif
         flatpickr("#datetime", {
             enableTime: true,
             dateFormat: "d.m.Y H:i",
@@ -294,6 +302,11 @@
                 if (response.ok) {
                     alert(deleteConfirmationMessage);
                     document.querySelector(`[data-reminder-id="${selectedReminderId}"]`).remove();
+                    if (typeof fetchReminders === 'function') 
+                        fetchReminders();
+                    
+                    if (typeof fetchRemindersCount === 'function') 
+                        fetchRemindersCount();           
                 }
                 else
                     alert(deleteErrorMessage);
@@ -328,6 +341,11 @@
                 if (response.ok) {
                     location.reload();
                     alert(updateConfirmationMessage);
+                    if (typeof fetchReminders === 'function') 
+                        fetchReminders();
+
+                    if (typeof fetchRemindersCount === 'function') 
+                        fetchRemindersCount();
                 } else {
                     alert(updateErrorMessage);
                 }
