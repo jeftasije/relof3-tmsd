@@ -18,19 +18,7 @@
             @default Stranice
             @endswitch
         </p>
-        <div class="flex flex-row justify-end items-center mt-4">
-            <button id="delete-selected-pages" class="px-2 py-2 bg-red-500 text-white rounded-3xl hover:bg-red-600 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M4 7l16 0" />
-                    <path d="M10 11l0 6" />
-                    <path d="M14 11l0 6" />
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                </svg>
-            </button>
-        </div>
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-5 mt-5">
             <label for="pagesList" class="dark:text-white font-semibold ml-6">
                 @switch(App::getLocale())
                 @case('en')
@@ -43,56 +31,53 @@
                 Zavšene stranice
                 @endswitch
             </label>
-            @if(count($finishedPages) > 0)
             <ul id="finishedPagesList" class="space-y-2 dark:text-white">
                 @foreach($finishedPages as $page)
                 <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
-                    <input id="checkbox-{{ $page->id }}" data-tooltip-target="tooltip-pages-{{ $page->id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <div id="tooltip-pages-{{ $page->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                        @switch(App::getLocale())
-                        @case('en')
-                        Check to delete
-                        @break
-                        @case('sr-Cyrl')
-                        Означите како бисте обрисали
-                        @break
-                        @default
-                        Označite kako biste obrisali
-                        @endswitch
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
                     <button type="button" class="flex items-center overflow-hidden justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
                         <span class="truncate">{{ $page->title }}</span>
-                        <a href="{{ route('page.edit', $page->slug) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-1.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                            @switch(App::getLocale())
-                            @case('en')
-                            Edit
-                            @break
-                            @case('sr-Cyrl')
-                            уреди
-                            @break
-                            @default
-                            Izmeni
-                            @endswitch
-                        </a>
                     </button>
+                    <button id="dropdownPageIconButton-{{ $page->id }}" data-dropdown-toggle="dropdownPageDots-{{ $page->id }}" class="ml-auto inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                        </svg>
+                    </button>
+                    <div id="dropdownPageDots-{{ $page->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownPageIconButton-{{ $page->id }}">
+                            <li>
+                                <a href="{{ route('page.edit', $page->slug) }}"
+                                    class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
+                                            disabled:opacity-50 disabled:cursor-not-allowed 
+                                          disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    Edit
+                                    @break
+                                    @case('sr-Cyrl')
+                                    уреди
+                                    @break
+                                    @default
+                                    Uredi
+                                    @endswitch
+                                </a>
+                            </li>
+                            <li>
+                                <button {{ $page->is_deletable ? '' : 'disabled' }} data-modal-target="deletePageModal" data-modal-toggle="deletePageModal" data-page-id="{{ $page->id }}" data-page-title="{{ $page->title }}"
+                                    class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
+                                                                disabled:opacity-50 disabled:cursor-not-allowed 
+                                                                disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                    {{ App::getLocale() === 'en'
+                                                            ? 'Delete'
+                                                            : (App::getLocale() === 'sr-Cyrl'
+                                                                ? 'Обриши'
+                                                                : 'Obriši') }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 @endforeach
             </ul>
-            @else
-            <p class="text-center dark:text-white mt-16">
-                @switch(App::getLocale())
-                @case('en')
-                You have not created any pages yet.
-                @break
-                @case('sr-Cyrl')
-                Нисте још направили ниједну страницу.
-                @break
-                @default
-                Još uvek niste napravili nijednu stranicu.
-                @endswitch
-            </p>
-            @endif
             @if (count($unfinishedPages) > 0)
             <label for="unfinishedPagesList" class="dark:text-white font-semibold ml-6 pt-5 border-t border-gray-200 dark:border-gray-700">
                 @switch(App::getLocale())
@@ -109,35 +94,47 @@
             <ul id="unfinishedPagesList" class="space-y-2 dark:text-white">
                 @foreach($unfinishedPages as $page)
                 <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
-                    <input id="checkbox-{{ $page->id }}" data-tooltip-target="tooltip-pages-{{ $page->id }}" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    <div id="tooltip-pages-{{ $page->id }}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                        @switch(App::getLocale())
-                        @case('en')
-                        Check to delete
-                        @break
-                        @case('sr-Cyrl')
-                        Означите како бисте обрисали
-                        @break
-                        @default
-                        Označite kako biste obrisali
-                        @endswitch
-                        <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
                     <button type="button" class="flex items-center justify-between overflow-hidden w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
                         <span class="truncate">{{ $page->title }}</span>
-                        <a href="{{ route('page.edit', $page->slug) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-1.5 py-1.5 w-fit dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                            @switch(App::getLocale())
-                            @case('en')
-                            Continue editing
-                            @break
-                            @case('sr-Cyrl')
-                            Настави уређивање
-                            @break
-                            @default
-                            Nastavi uređivanje
-                            @endswitch
-                        </a>
                     </button>
+                    <button id="dropdownPageIconButton-{{ $page->id }}" data-dropdown-toggle="dropdownPageDots-{{ $page->id }}" class="ml-auto inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                        </svg>
+                    </button>
+                    <div id="dropdownPageDots-{{ $page->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownPageIconButton-{{ $page->id }}">
+                            <li>
+                                <a href="{{ route('page.edit', $page->slug) }}"
+                                    class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
+                                            disabled:opacity-50 disabled:cursor-not-allowed 
+                                          disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    Edit
+                                    @break
+                                    @case('sr-Cyrl')
+                                    уреди
+                                    @break
+                                    @default
+                                    Uredi
+                                    @endswitch
+                                </a>
+                            </li>
+                            <li>
+                                <button {{ $page->is_deletable ? '' : 'disabled' }} data-modal-target="deletePageModal" data-modal-toggle="deletePageModal" data-page-id="{{ $page->id }}" data-page-title="{{ $page->title }}"
+                                    class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
+                                                                disabled:opacity-50 disabled:cursor-not-allowed 
+                                                                disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
+                                    {{ App::getLocale() === 'en'
+                                                            ? 'Delete'
+                                                            : (App::getLocale() === 'sr-Cyrl'
+                                                                ? 'Обриши'
+                                                                : 'Obriši') }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 @endforeach
             </ul>
@@ -157,21 +154,31 @@
         </div>
     </div>
 
-    <div id="delete-modal-page" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 hidden">
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
-            <div class="text-center">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">
-                    {{ App::getLocale() === 'en' ? 'Confirm Deletion' : (App::getLocale() === 'sr-Cyrl' ? 'Потврда брисања' : 'Potvrda brisanja') }}
-                </h3>
-                <div class="mt-2 px-7 py-3">
-                    <p id="delete-modal-page-message" class="text-sm text-gray-600 dark:text-gray-300"></p>
-                </div>
-                <div class="items-center px-4 py-3 flex justify-center space-x-4">
-                    <button id="delete-page-confirm-btn" class="px-4 py-2 bg-red-500 text-white font-medium rounded-md w-24 hover:bg-red-600">
-                        {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
+    <div id="deletePageModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <div class="p-6 text-center">
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                        {{ App::getLocale() === 'en'
+                                ? 'Are you sure you want to delete?'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Да ли сте сигурни да желите да обришете'
+                                    : 'Da li ste sigurni da želite da obrišete') }}
+                        "<span id="deletePageModalTitle"></span>"?
+                    </h3>
+                    <button data-modal-hide="deletePageModal" id="confirmDeletePageButton" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                        {{ App::getLocale() === 'en'
+                                ? 'Confirm'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Потврди'
+                                    : 'Potvrdi') }}
                     </button>
-                    <button id="delete-page-cancel-btn" class="px-4 py-2 bg-gray-500 text-white font-medium rounded-md w-24 hover:bg-gray-600">
-                        {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                    <button data-modal-hide="deletePageModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                        {{ App::getLocale() === 'en'
+                                ? 'Cancel'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Откажи'
+                                    : 'Otkaži') }}
                     </button>
                 </div>
             </div>
@@ -183,68 +190,24 @@
     document.addEventListener('DOMContentLoaded', () => {
         const locale = '{{ App::getLocale() }}';
 
-        const unfinishedList = document.getElementById('unfinishedPagesList');
-        const finishedList = document.getElementById('finishedPagesList');
-        const deletePagesBtn = document.getElementById('delete-selected-pages');
-        const deletePagesModal = document.getElementById('delete-modal-page');
-        const deletePagesMsg = document.getElementById('delete-modal-page-message');
-        const deletePagesConfirmBtn = document.getElementById('delete-page-confirm-btn');
-        const deletePagesCancelBtn = document.getElementById('delete-page-cancel-btn');
-        let pendingPagesDeleteIds = [];
+        let currentPageId = null;
+        const deletePageModal = document.getElementById('deletePageModal');
+        const deletePageModalTitle = document.getElementById('deletePageModalTitle');
 
-        deletePagesBtn.addEventListener('click', () => {
-            const checkedUnfinished = unfinishedList ?
-                Array.from(unfinishedList.querySelectorAll('input[type="checkbox"]:checked')) :
-                [];
-            const checkedFinished = finishedList ?
-                Array.from(finishedList.querySelectorAll('input[type="checkbox"]:checked')) :
-                [];
-            const checked = [...checkedUnfinished, ...checkedFinished];
-
-            if (checked.length === 0) {
-                return alert((() => {
-                    switch (locale) {
-                        case 'en':
-                            return 'Please select at least one page to delete.';
-                        case 'sr-Cyrl':
-                            return 'Означите бар једну страницу за брисање.';
-                        default:
-                            return 'Označite bar jednu stranicu za brisanje.';
-                    }
-                })());
-            }
-
-            pendingPagesDeleteIds = checked.map(cb => cb.id.split('-')[1]);
-
-            deletePagesMsg.textContent = (() => {
-                switch (locale) {
-                    case 'en':
-                        return `You are about to delete ${pendingPagesDeleteIds.length} page(s).`;
-                    case 'sr-Cyrl':
-                        return `Управо ћете обрисати ${pendingPagesDeleteIds.length} страницу(е).`;
-                    default:
-                        return `Upravo ćete obrisati ${pendingPagesDeleteIds.length} stranicu(e).`;
-                }
-            })();
-
-            deletePagesModal.classList.remove('hidden');
+        document.querySelectorAll('[data-modal-toggle="deletePageModal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                currentPageId = button.dataset.pageId;
+                deletePageModalTitle.textContent = button.dataset.pageTitle;
+            });
         });
 
-        deletePagesCancelBtn.addEventListener('click', () => {
-            deletePagesModal.classList.add('hidden');
-            pendingPagesDeleteIds = [];
-        });
-
-        deletePagesConfirmBtn.addEventListener('click', () => {
-            fetch(`{{ route('page.destroy') }}`, {
+        confirmDeletePageButton.addEventListener('click', () => {
+            fetch(`/stranica/${currentPageId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
-                    body: JSON.stringify({
-                        ids: pendingPagesDeleteIds
-                    })
                 })
                 .then(res => res.json())
                 .then(data => {

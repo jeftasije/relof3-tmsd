@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/kreiraj-stranicu', [PageController::class, 'create'])->name('page.create');
     Route::post('/kreiraj-stranicu', [PageController::class, 'store'])->name('page.store');
     Route::get('/uredi-stranicu/{slug}', [PageController::class, 'edit'])->name('page.edit');
-    Route::delete('/stranica', [PageController::class, 'destroy'])->name('page.destroy');
+    Route::delete('/stranica/{id}', [PageController::class, 'destroy'])->name('page.destroy');
 
 });
 

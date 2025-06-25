@@ -175,28 +175,29 @@ class PageController extends Controller
         return redirect()->route('page.show', $page->slug);
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $ids = $request->input('ids', []);
-
-        if (!is_array($ids) || empty($ids)) {
+        if (!$id) {
             return response()->json([
                 'success' => false,
-                'message' => 'No IDs provided.'
+                'message' => 'No ID provided.'
             ], 422);
         }
 
-        $pages = Page::whereIn('id', $ids)->get();
+        $page = Page::find($id);
 
-        foreach ($pages as $page) {
-            Navigation::where('redirect_url', '/stranica/' . $page->slug)
-                ->delete();
+        if (!$page) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Page not found.'
+            ], 404);
         }
-
-        Page::whereIn('id', $ids)->delete();
-
-
-        return response()->json(['success' => true]);
+        if($page->is_deletable){
+            Navigation::where('redirect_url', '/stranica/' . $page->slug)->delete();
+            $page->delete();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false]);
     }
 
     public function edit(string $slug)
