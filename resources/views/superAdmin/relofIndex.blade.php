@@ -125,6 +125,16 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        const helpModal = document.getElementById('helpModal');
+
+        if (helpModal) {
+            helpModal.addEventListener('click', (event) => {
+                if (event.target === helpModal) {
+                    toggleHelpModal();
+                }
+            });
+        }
+
         const centerTextPlugin = {
             id: 'centerText',
             beforeDraw(chart) {
