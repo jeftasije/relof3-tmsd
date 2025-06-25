@@ -17,9 +17,11 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReminderController;
+use App\Models\News;
 
 Route::get('/', function () {
-    return view('welcome');
+    $news = News::latest()->take(5)->get(); 
+    return view('welcome', compact('news'));
 })->name('welcome');
 
 Route::get('/kontrolni-panel', function () {

@@ -14,7 +14,36 @@
                     </p>
                 </div>
             </section>
-
+            <section class="bg-gray-900 py-12">
+                <div class="max-w-screen-xl mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-white mb-6">{{ App::getLocale() === 'en' ? 'Latest News' : (App::getLocale() === 'sr-Cyrl' ? 'Најновије вести' : 'Najnovije vesti') }}</h2>
+                    <div class="relative flex items-center">
+                        <button id="scrollLeft" class="z-10 p-2 rounded-full bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                        </button>
+                        <div id="newsSliderWrapper" class="overflow-hidden flex-grow mx-4">
+                            <div id="newsSlider" class="flex gap-6 transition-transform duration-300 ease-in-out">
+                                @foreach ($news as $item)
+                                    <div class="flex-shrink-0 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                                        <div class="p-4 text-white">
+                                            <h3 class="text-lg font-semibold mb-2">{{ $item->title }}</h3>
+                                            <p class="text-gray-300 text-sm">{{ Str::limit($item->summary, 100) }}</p>
+                                            <p class="mt-2 text-sm text-gray-400">{{ \Carbon\Carbon::parse($item->published_at)->format('d.m.Y') }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <button id="scrollRight" class="z-10 p-2 rounded-full bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
             <section class="bg-white dark:bg-gray-900">
                 <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                     <div class="mr-auto place-self-center lg:col-span-7">
@@ -85,4 +114,134 @@
     @if (Route::has('login'))
     <div class="h-14.5 hidden lg:block"></div>
     @endif
+    <script>
+        const slider = document.getElementById('newsSlider');
+        const wrapper = document.getElementById('newsSliderWrapper');
+        const cards = slider.children;
+        const leftBtn = document.getElementById('scrollLeft');
+        const rightBtn = document.getElementById('scrollRight');
+
+        const visibleCards = 3;
+        const totalCards = cards.length;
+        let currentIndex = 0;
+        const gap = 24;
+        let autoScrollInterval;
+        const scrollInterval = 5000; 
+
+        function setupInfiniteScroll() {
+            for (let i = 0; i < visibleCards; i++) {
+                const clone = cards[i].cloneNode(true);
+                slider.appendChild(clone);
+            }
+            
+            for (let i = totalCards - 1; i >= totalCards - visibleCards; i--) {
+                const clone = cards[i].cloneNode(true);
+                slider.insertBefore(clone, slider.firstChild);
+            }
+            
+            currentIndex = visibleCards;
+            slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+        }
+
+        function setupCards() {
+            const wrapperWidth = wrapper.offsetWidth;
+            const cardWidth = (wrapperWidth - (gap * (visibleCards - 1))) / visibleCards;
+            
+            Array.from(cards).forEach(card => {
+                card.style.width = `${cardWidth}px`;
+            });
+        }
+
+        function getCardWidth() {
+            return cards[0].offsetWidth;
+        }
+
+        function updateButtons() {
+            leftBtn.disabled = false;
+            rightBtn.disabled = false;
+        }
+
+        function updateSlider() {
+            const cardWidth = getCardWidth();
+            const translateX = currentIndex * (cardWidth + gap);
+            
+            slider.style.transition = 'transform 0.5s ease-in-out';
+            slider.style.transform = `translateX(-${translateX}px)`;
+            updateButtons();
+        }
+
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(() => {
+                currentIndex++;
+                updateSlider();
+                
+                if (currentIndex >= slider.children.length - visibleCards) {
+                    setTimeout(() => {
+                        slider.style.transition = 'none';
+                        currentIndex = visibleCards;
+                        slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+                        
+                        void slider.offsetWidth;
+                        
+                        slider.style.transition = 'transform 0.5s ease-in-out';
+                    }, 500);
+                }
+            }, scrollInterval);
+        }
+
+        leftBtn.addEventListener('click', () => {
+            clearInterval(autoScrollInterval);
+            currentIndex--;
+            updateSlider();
+            startAutoScroll();
+        });
+
+        rightBtn.addEventListener('click', () => {
+            clearInterval(autoScrollInterval);
+            currentIndex++;
+            updateSlider();
+            startAutoScroll();
+        });
+
+        slider.addEventListener('transitionend', () => {
+            if (currentIndex <= 0) {
+                slider.style.transition = 'none';
+                currentIndex = slider.children.length - 2 * visibleCards;
+                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+                
+                void slider.offsetWidth;
+                
+                slider.style.transition = 'transform 0.5s ease-in-out';
+            }
+            else if (currentIndex >= slider.children.length - visibleCards) {
+                slider.style.transition = 'none';
+                currentIndex = visibleCards;
+                slider.style.transform = `translateX(-${currentIndex * (getCardWidth() + gap)}px)`;
+                
+                void slider.offsetWidth;
+                
+                slider.style.transition = 'transform 0.5s ease-in-out';
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            setupCards();
+            updateSlider();
+        });
+
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoScrollInterval);
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            startAutoScroll();
+        });
+
+        setupInfiniteScroll();
+        setupCards();
+        updateSlider();
+        startAutoScroll();
+    </script>
+
+
 </x-guest-layout>
