@@ -59,7 +59,7 @@
         @endif
         
         @auth
-            <form action="{{ route('gallery.updateDescription') }}" method="POST" id="galleryForm" class="space-y-4 ">
+            <form action="{{ route('gallery.updateDescription') }}" method="PATCH" id="galleryForm" class="space-y-4 ">
                 @csrf
                 <div class="max-w-lg mx-auto">
                     <div id="valueDisplay" class="prose dark:prose-invert max-w-none text-center">

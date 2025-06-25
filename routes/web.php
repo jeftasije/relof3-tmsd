@@ -71,9 +71,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
   
-    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+    Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-    Route::post('/galerija/update', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
+    Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
     
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
     
