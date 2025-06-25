@@ -26,17 +26,22 @@
                 </div>
             </div>
         
-            <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-4">
+            <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 space-y-4 max-w-3xl mx-auto">
                 @if ($structure)
-                    <div class="border-b pb-4 flex justify-between items-center w-full" data-struct-id="{{ $structure->id }}">
-                        <a 
-                            href="{{ asset('storage/' . $structure->file_path) }}" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="text-lg font-semibold text-blue-600 hover:underline dark:text-blue-400"
-                        >
-                            {{ $structure->title }}
-                        </a>
+                    <div class="border-b pb-4 flex justify-between items-start" data-struct-id="{{ $structure->id }}">
+                        <div>
+                            <a 
+                                href="{{ asset('storage/' . $structure->file_path) }}" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="text-lg font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                            >
+                                {{ $structure->title }}
+                            </a>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                {{ App::getLocale() === 'en' ? 'Updated at: ' : (App::getLocale() === 'sr-Cyrl' ? 'Ажурирано: ' : 'Ažurirano: ') }}{{ $structure->updated_at->format('d.m.Y. H:i') }}
+                            </p>
+                        </div>
                         @auth
                         <div class="relative">
                             <button 
