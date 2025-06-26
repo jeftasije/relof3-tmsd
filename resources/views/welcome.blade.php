@@ -101,27 +101,28 @@
                                 : 'Unesite naziv knjige, autora ili ISBN broj i bićete preusmereni na COBISS') }}
                     </p>
                     <form
-                        action="https://plus.cobiss.net/cobiss/sr/sr/bib/search"
-                        method="get"
-                        target="_blank"
-                        class="max-w-2xl mx-auto flex flex-col sm:flex-row items-center gap-4"
-                    >
-                        <input
-                            type="text"
-                            name="q"
-                            required
-                            placeholder="{{ App::getLocale() === 'en' ? 'For example: Ivo Andrić, The Bridge on the Drina...' : (App::getLocale() === 'sr-Cyrl' ? 'На пример: Иво Андрић, На Дрини ћуприја...' : 'Na primer: Ivo Andrić, Na Drini ćuprija...') }}"
-                            class="w-full p-3 rounded-lg border text-gray-900 focus:ring-2 focus:ring-blue-500"
-                        />
-                        <input type="hidden" name="db" value="nbnp-1">
-                        <input type="hidden" name="mat" value="allmaterials">
-                        <button
-                            type="submit"
-                            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-                        >
-                            {{ App::getLocale() === 'en' ? 'Search' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи' : 'Pretraži') }}
-                        </button>
-                    </form>
+    action="https://plus.cobiss.net/cobiss/sr/sr/bib/search"
+    method="get"
+    target="_blank"
+    class="mx-auto w-full max-w-3xl flex flex-col sm:flex-row justify-center items-center gap-4"
+>
+    <input
+        type="text"
+        name="q"
+        required
+        placeholder="{{ App::getLocale() === 'en' ? 'For example: Ivo Andrić, The Bridge on the Drina...' : (App::getLocale() === 'sr-Cyrl' ? 'На пример: Иво Андрић, На Дрини ћуприја...' : 'Na primer: Ivo Andrić, Na Drini ćuprija...') }}"
+        class="flex-grow w-full p-4 text-lg rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+/>
+    <input type="hidden" name="db" value="nbnp-1">
+    <input type="hidden" name="mat" value="allmaterials">
+    <button
+        type="submit"
+        class="px-6 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+    >
+        {{ App::getLocale() === 'en' ? 'Search' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи' : 'Pretraži') }}
+    </button>
+</form>
+
                 </div>
             </section>
         </main>
@@ -133,7 +134,7 @@
     <script>
         const slider = document.getElementById('newsSlider');
         const wrapper = document.getElementById('newsSliderWrapper');
-        const originalCards = Array.from(slider.children); // Čuvamo originalne kartice
+        const originalCards = Array.from(slider.children); 
         const leftBtn = document.getElementById('scrollLeft');
         const rightBtn = document.getElementById('scrollRight');
 
