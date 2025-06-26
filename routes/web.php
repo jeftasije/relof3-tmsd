@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
+    Route::post('/usluge/izmeni-sliku/{sectionIndex}', [ServicesController::class, 'uploadSectionImage'])->name('services.uploadImage');
 });
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');

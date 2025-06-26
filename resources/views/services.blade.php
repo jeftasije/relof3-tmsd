@@ -5,12 +5,12 @@
         x-data="servicesEditor({
             initial: @js($text),
             updateUrl: '{{ route('services.update') }}',
+            uploadImageUrl: '{{ url('/services/upload-image') }}',
             locale: '{{ App::getLocale() }}',
             csrf: '{{ csrf_token() }}'
         })"
     >
         <div class="max-w-7xl mx-auto px-4 py-12">
-            {{-- HEADER: centriran naslov, dugmad fiksno desno --}}
             <div class="relative mb-12 flex flex-col items-center">
                 <div class="w-full absolute right-0 top-0 flex justify-end items-center" style="height: 70px; min-width:220px; max-width: 240px;">
                     <div class="flex items-center">
@@ -55,27 +55,37 @@
 
             <template x-for="(section, i) in form.sections">
                 <section class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20 items-stretch" :key="i">
-                    <!-- Slike -->
-                    <template x-if="i === 0">
-                        <div class="hidden md:flex md:col-span-1 justify-center items-stretch">
-                            <div class="group overflow-hidden rounded-2xl shadow-xl w-full h-full"
-                                 style="min-width: 320px; max-width: 440px; min-height: 440px; background: var(--primary-bg);">
-                                <img src="{{ asset('images/fotokopirnica.png') }}" alt="Fotokopirnica"
-                                     class="object-cover object-center w-full h-full transition-transform duration-300 transform group-hover:scale-105"
-                                     style="cursor:pointer;" />
-                            </div>
+                    <!-- Slika sa uploadom -->
+                    <div class="hidden md:flex md:col-span-1 justify-center items-stretch">
+                        <div class="group overflow-hidden rounded-2xl shadow-xl w-full h-full relative"
+                             style="min-width: 320px; max-width: 440px; min-height: 440px; background: var(--primary-bg);">
+                            <img
+                                :src="section.image ?? (i === 0 ? '{{ asset('images/fotokopirnica.png') }}' : (i === 1 ? '{{ asset('images/knjigoveznica.jpg') }}' : ''))"
+                                :alt="section.title"
+                                class="object-cover object-center w-full h-full transition-transform duration-300 transform group-hover:scale-105"
+                                :class="editing ? 'blur-[4px] brightness-90 cursor-pointer' : ''"
+                                @click="editing ? $refs['imgInput'+i][0].click() : null"
+                                style="cursor:pointer;"
+                            />
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                class="hidden"
+                                :ref="'imgInput'+i"
+                                @change="previewImage($event, i)"
+                                :disabled="!editing"
+                            />
+                            <template x-if="editing">
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <span 
+                                        class="bg-black/60 text-white px-3 py-2 rounded" 
+                                        style="pointer-events: auto;"
+                                        x-text="locale === 'sr' ? 'Klikni za promenu slike' : (locale === 'sr-Cyrl' ? 'Кликни за промену слике' : 'Click to change image')"
+                                    ></span>
+                                </div>
+                            </template>
                         </div>
-                    </template>
-                    <template x-if="i === 1">
-                        <div class="hidden md:flex md:col-span-1 justify-center items-stretch">
-                            <div class="group overflow-hidden rounded-2xl shadow-xl w-full h-full"
-                                 style="min-width: 320px; max-width: 440px; min-height: 440px; background: var(--primary-bg);">
-                                <img src="{{ asset('images/knjigoveznica.jpg') }}" alt="Knjigoveznica"
-                                     class="object-cover object-center w-full h-full transition-transform duration-300 transform group-hover:scale-105"
-                                     style="cursor:pointer;" />
-                            </div>
-                        </div>
-                    </template>
+                    </div>
 
                     <div class="md:col-span-2 flex flex-col justify-center">
                         <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4"
@@ -88,7 +98,7 @@
                         </h2>
                         <p class="mb-6 text-base md:text-lg" style="color: var(--secondary-text); font-family: var(--font-body);">
                             <template x-if="editing">
-                                <textarea x-model="form.sections[i].description" class="w-full border px-2 rounded" style="background: var(--primary-bg); color: var(--secondary-text);"></textarea>
+                                <textarea x-model="form.sections[i].description" class="w-full border px-2 rounded bg-white text-black"></textarea>
                             </template>
                             <span x-show="!editing" x-text="form.sections[i].description"></span>
                         </p>
@@ -124,16 +134,16 @@
                                         <template x-if="editing">
                                             <div class="flex gap-2 items-center mb-2 w-full">
                                                 <template x-if="price.from !== undefined">
-                                                    <input type="text" x-model="form.sections[i].prices[pidx].from" class="w-24 border px-2 rounded" />
+                                                    <input type="text" x-model="form.sections[i].prices[pidx].from" class="w-24 border px-2 rounded bg-white text-black" />
                                                 </template>
                                                 <template x-if="price.to !== undefined">
-                                                    <input type="text" x-model="form.sections[i].prices[pidx].to" class="w-24 border px-2 rounded" />
+                                                    <input type="text" x-model="form.sections[i].prices[pidx].to" class="w-24 border px-2 rounded bg-white text-black" />
                                                 </template>
                                                 <template x-if="price.price !== undefined">
-                                                    <input type="text" x-model="form.sections[i].prices[pidx].price" class="w-24 border px-2 rounded" />
+                                                    <input type="text" x-model="form.sections[i].prices[pidx].price" class="w-24 border px-2 rounded bg-white text-black" />
                                                 </template>
-                                                <input type="text" x-model="form.sections[i].prices[pidx].unit" class="w-32 border px-2 rounded" />
-                                                <input type="text" x-model="form.sections[i].prices[pidx].description" class="flex-1 border px-2 rounded" />
+                                                <input type="text" x-model="form.sections[i].prices[pidx].unit" class="w-32 border px-2 rounded bg-white text-black" />
+                                                <textarea x-model="form.sections[i].prices[pidx].description" class="flex-1 border px-2 rounded bg-white text-black" style="min-height:38px"></textarea>
                                             </div>
                                         </template>
                                         <template x-if="!editing">
@@ -180,28 +190,6 @@
                             </ul>
                         </template>
                     </div>
-
-                    <!-- Mobile slike -->
-                    <template x-if="i === 0">
-                        <div class="md:hidden flex justify-center mb-6">
-                            <div class="group overflow-hidden rounded-2xl shadow-xl w-full max-w-xs"
-                                 style="background: var(--primary-bg);">
-                                <img src="{{ asset('images/fotokopirnica.png') }}" alt="Fotokopirnica"
-                                     class="object-cover object-center w-full h-full transition-transform duration-300 transform group-hover:scale-105"
-                                     style="cursor:pointer;" />
-                            </div>
-                        </div>
-                    </template>
-                    <template x-if="i === 1">
-                        <div class="md:hidden flex justify-center mb-6">
-                            <div class="group overflow-hidden rounded-2xl shadow-xl w-full max-w-xs"
-                                 style="background: var(--primary-bg);">
-                                <img src="{{ asset('images/knjigoveznica.jpg') }}" alt="Knjigoveznica"
-                                     class="object-cover object-center w-full h-full transition-transform duration-300 transform group-hover:scale-105"
-                                     style="cursor:pointer;" />
-                            </div>
-                        </div>
-                    </template>
                 </section>
             </template>
         </div>
@@ -218,7 +206,7 @@
 
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
-    function servicesEditor({ initial, updateUrl, locale, csrf }) {
+    function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
             form: JSON.parse(JSON.stringify(initial)),
             original: JSON.parse(JSON.stringify(initial)),
@@ -229,6 +217,30 @@
             cancelEdit() {
                 this.form = JSON.parse(JSON.stringify(this.original));
                 this.editing = false;
+            },
+            async previewImage(event, sectionIdx) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Prikazi odmah preview
+                    this.form.sections[sectionIdx].image = URL.createObjectURL(file);
+                    // Odmah salji serveru
+                    let formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('_token', csrf);
+                    const resp = await fetch(`${uploadImageUrl}/${sectionIdx}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if(resp.ok) {
+                        const data = await resp.json();
+                        if (data.image_path) {
+                            // Zamenjuje preview src sa novim url iz backenda
+                            this.form.sections[sectionIdx].image = data.image_path + '?' + (new Date()).getTime();
+                        }
+                    } else {
+                        alert('Greška pri uploadu slike!');
+                    }
+                }
             },
             saveEdit() {
                 fetch(updateUrl, {
@@ -242,7 +254,11 @@
                         locale: locale,
                         hero_title: this.form.hero_title,
                         hero_subtitle: this.form.hero_subtitle,
-                        sections: this.form.sections
+                        header: this.form.header ?? '',
+                        sections: this.form.sections,
+                        from_label: this.form.from_label ?? 'od',
+                        to_label: this.form.to_label ?? 'do',
+                        price_unit_label: this.form.price_unit_label ?? 'po komadu'
                     })
                 }).then(res => res.json())
                 .then(data => {
