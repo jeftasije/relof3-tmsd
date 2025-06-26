@@ -26,11 +26,19 @@
                         <div id="newsSliderWrapper" class="overflow-hidden flex-grow mx-4">
                             <div id="newsSlider" class="flex gap-6 transition-transform duration-300 ease-in-out">
                                 @foreach ($news as $item)
-                                    <div class="flex-shrink-0 bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-news-id="{{ $item->id }}">
-                                        <div class="p-4 text-white">
-                                            <h3 class="text-lg font-semibold mb-2">{{ $item->title }}</h3>
-                                            <p class="text-gray-300 text-sm">{{ Str::limit($item->summary, 100) }}</p>
-                                            <p class="mt-2 text-sm text-gray-400">{{ \Carbon\Carbon::parse($item->published_at)->format('d.m.Y') }}</p>
+                                    <div class="flex-shrink-0 bg-gray-800 rounded-lg shadow-lg overflow-hidden w-80 h-[22rem] flex flex-col" data-news-id="{{ $item->id }}">
+                                        <img
+                                            class="w-full h-40 object-cover"
+                                            src="{{ asset($item->image_path ?? '/images/default-news.jpg') }}"
+                                            alt="{{ $item->title }}"
+                                            onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
+                                        />
+                                        <div class="p-4 text-white flex flex-col flex-grow justify-between">
+                                            <div>
+                                                <h3 class="text-lg font-semibold mb-2">{{ $item->title }}</h3>
+                                                <p class="text-gray-300 text-sm">{{ Str::limit($item->summary, 100) }}</p>
+                                            </div>
+                                            <p class="mt-4 text-sm text-gray-400">{{ \Carbon\Carbon::parse($item->published_at)->format('d.m.Y') }}</p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -50,7 +58,7 @@
                         <h2 class="mb-4 text-5xl font-extrabold md:text-6xl dark:text-white">
                             {{ App::getLocale() === 'en' ? 'Let’s stay in touch!' : (App::getLocale() === 'sr-Cyrl' ? 'Будимо у контакту!' : 'Budimo u kontaktu!') }}
                         </h2>
-                        <p class="mb-6 font-light text-gray-500 dark:text-gray-400">
+                        <p class=" mb-6 font-light text-gray-500 dark:text-gray-400">
                             {{ App::getLocale() === 'en'
                                 ? 'Sign up to be notified about the latest news'
                                 : (App::getLocale() === 'sr-Cyrl'
