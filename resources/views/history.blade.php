@@ -18,7 +18,7 @@
                     </span>
                 </button>
             </div>
-        @auth
+        @endauth
         <h1 class="text-center text-5xl font-extrabold mb-6 flex items-center justify-center gap-4">
             @switch(App::getLocale())
                 @case('en') History @break
@@ -63,11 +63,11 @@
                 @csrf
                 @method('PATCH')
                 <div id="contentDisplay" class="prose dark:prose-invert max-w-none">
-                    {!! nl2br(e($history->translate('content'))) !!}
+                    {{ __('history.content') }}
                 </div>
 
                 <textarea name="content" id="contentEdit" rows="15" 
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('content', $history->translate('content')) ?? '' }}</textarea>
+                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('history.content')) }}</textarea>
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelBtn"
@@ -126,7 +126,7 @@
             </form>
         @else
             <div class="prose dark:prose-invert max-w-none">
-                {!! nl2br(e($history->translate('content'))) !!}
+                {!! nl2br(e(__('history.content'))) !!}
             </div>
         @endauth
 
@@ -147,6 +147,7 @@
                 {!! App::getLocale() === 'en' 
                     ? '
                     By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the history content.<br><br>
+                    You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
                     If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the content will revert to its previous state without changes.<br><br>
                     To save your edits, click the <strong>"Save"</strong> button.<br>
                     You will be asked to confirm before the changes are applied.
@@ -154,12 +155,14 @@
                     : (App::getLocale() === 'sr-Cyrl' 
                     ? '
                         Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста историјата.<br><br>
+                        Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br> 
                         Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
                         Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
                         Бићете упитани за потврду пре него што се промене примене.
                     '
                     : '
                         Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta istorije.<br><br>
+                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br>  <br>                
                         Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
                         Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
                         Bićete upitani za potvrdu pre nego što se promene primene.
@@ -176,7 +179,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    @auth
     const editBtn = document.getElementById('editBtn');
     const cancelBtn = document.getElementById('cancelBtn');
     const saveBtn = document.getElementById('saveBtn');
@@ -222,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             editBtn.classList.remove('hidden');
         });
     });
-    @endauth
 });
 
 function toggleHelpModal() {
