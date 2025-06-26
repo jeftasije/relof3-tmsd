@@ -18,6 +18,8 @@ class News extends Model
         'summary_cy',
         'image_path',
         'author',
+        'author_en',   
+        'author_cy',  
         'published_at',
     ];
 

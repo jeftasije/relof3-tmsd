@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 
 class ComplaintController extends Controller
 {
-    public function index() {
+    /*public function index()
+    {
+        $comments = \App\Models\Comment::latest()->get();
+        return view('complaints', compact('comments'));
+    }*/
+
+    public function index()
+    {
         $comments = Comment::latest()->get();
+
         return view('complaints', compact('comments'));
     }
+
 
     public function store(Request $request) {
         $validated = $request->validate([
@@ -32,4 +41,11 @@ class ComplaintController extends Controller
         
         return redirect()->back()->with('success', 'Žalba je uspešno poslata.');
     }
+
+    public function answerPage()
+    {
+        $complaints = Complaint::latest()->get();
+        return view('complaintAnswer', compact('complaints'));
+    }
+
 }
