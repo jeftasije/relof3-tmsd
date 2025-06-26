@@ -116,8 +116,7 @@
                                             class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                             data-drawer-target="typography-sidebar"
                                             data-drawer-toggle="typography-sidebar"
-                                            aria-controls="typography-sidebar"
-                                        >
+                                            aria-controls="typography-sidebar">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-letter-case">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M17.5 15.5m-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0" />
@@ -140,8 +139,7 @@
                                             class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                             data-drawer-target="color-sidebar"
                                             data-drawer-toggle="color-sidebar"
-                                            aria-controls="color-sidebar"
-                                        >
+                                            aria-controls="color-sidebar">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" />
@@ -297,7 +295,7 @@
                         </div>
                     </div>
                 </aside>
-                
+
                 <aside id="typography-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-typography">
                     <div class="flex justify-start">
                         <button data-drawer-target="typography-sidebar" data-drawer-toggle="typography-sidebar" aria-controls="typography-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -360,7 +358,7 @@
                             <span class="sr-only">Close sidebar</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrow-left">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M5 12h14" />
                                 <path d="M5 12l6 6" />
                                 <path d="M5 12l6 -6" />
@@ -422,7 +420,7 @@
                             @foreach($mainSections as $mainSection)
                             <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
                                 <button type="button" class="flex items-center justify-between w-10/12 p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-section-{{ $mainSection->id }}">
-                                    <span>{{ $mainSection->name }}</span>
+                                    <span>{{ $mainSection->translate('name') }}</span>
                                     <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
@@ -447,7 +445,7 @@
                                 <div id="dropdownMenuDots-{{ $mainSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
                                     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton-{{ $mainSection->id }}">
                                         <li>
-                                            <button {{ $mainSection->is_deletable ? '' : 'disabled' }} data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $mainSection->id }}" data-nav-title="{{ $mainSection->name }}"
+                                            <button {{ $mainSection->is_deletable ? '' : 'disabled' }} data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $mainSection->id }}" data-nav-title="{{ $mainSection->name }}" data-nav-title-en="{{ $mainSection->name_en }}"
                                                 class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white
                                                 disabled:opacity-50 disabled:cursor-not-allowed 
                                                 disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
@@ -481,7 +479,7 @@
                                     <div>
                                         <div class="flex flex-row items-center gap-1">
                                             <button class="flex items-center justify-between p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600" data-collapse-toggle="dropdown-subSection-{{ $subSection->id }}">
-                                                <span>{{ $subSection->name }}</span>
+                                                <span>{{ $subSection->translate('name') }}</span>
                                                 <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                                 </svg>
@@ -503,7 +501,7 @@
                                                         </button>
                                                     </li>
                                                     <li>
-                                                        <button {{ $subSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}"
+                                                        <button {{ $subSection->is_deletable ? '' : 'disabled' }} data-modal-target="deleteNavigationModal" data-modal-toggle="deleteNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}" data-nav-title-en="{{ $subSection->name_en }}"
                                                             class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-600
                                                             disabled:opacity-50 disabled:cursor-not-allowed 
                                                             disabled:text-gray-400 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent">
@@ -521,7 +519,7 @@
                                             <ul class="">
                                                 @foreach ($subSection->children as $child)
                                                 <li class="flex items-center justify-between p-1 ml-10">
-                                                    <div class="">{{ $child->name }}</div>
+                                                    <div class="">{{ $child->translate('name') }}</div>
                                                 </li>
                                                 @endforeach
                                             </ul>
@@ -564,16 +562,31 @@
                     </div>
 
                     <!-- Plus Modal -->
-                    <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                    <div id="plusModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
                         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
                             <div class="mt-3 text-center">
-                                <h3 class="text-lg leading-6 font-medium dark:text-gray-100 text-gray-900">{{ App::getLocale() === 'en' ? 'Add New Section' : (App::getLocale() === 'sr-Cyrl' ? 'Додај нову секцију' : 'Dodaj novu sekciju') }}</h3>
-                                <div class="mt-2 px-7 py-3">
-                                    <input type="text" id="section-name" class="px-3 py-2 border border-gray-300 rounded-md w-full" placeholder="{{ App::getLocale() === 'en' ? 'Section Name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив секције' : 'Naziv sekcije') }}">
-                                </div>
-                                <div class="items-center px-4 py-3">
-                                    <button id="confirm-btn" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-24 mr-2">{{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}</button>
-                                    <button id="cancel-btn" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}</button>
+                                <h3 class="text-lg leading-6 mb-4 font-medium dark:text-gray-100 text-gray-900">{{ App::getLocale() === 'en' ? 'Add new section' : (App::getLocale() === 'sr-Cyrl' ? 'Додај нову секцију' : 'Dodaj novu sekciju') }}</h3>
+                                <div class="flex flex-col text-left">
+                                    <label for="section-name">
+                                        @switch(App::getLocale())
+                                        @case('en') Enter a new name in Serbian @break
+                                        @case('sr-Cyrl') Унесите нови назив на српском @break
+                                        @default Unesite novi naziv na srpskom
+                                        @endswitch
+                                    </label>
+                                    <input type="text" id="section-name" class="w-full p-2 border mb-5 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Section Name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив секције' : 'Naziv sekcije') }}">
+                                    <label for="section-name-en">
+                                        @switch(App::getLocale())
+                                        @case('en') Enter a new name in English @break
+                                        @case('sr-Cyrl') Унесите нови назив на енглеском @break
+                                        @default Unesite novi naziv na engleskom
+                                        @endswitch
+                                    </label>
+                                    <input type="text" id="section-name-en" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Section name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив секције' : 'Naziv sekcije') }}">
+                                    </div>
+                                <div class="items-center px-4 py-3 mt-4">
+                                    <button id="plus-confirm-btn" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-24 mr-2">{{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}</button>
+                                    <button id="plus-cancel-btn" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -622,7 +635,22 @@
                                     ? 'Преименуј навигацију'
                                     : 'Preimenuj navigaciju') }}
                                     </h3>
+                                    <label for="renameNavigationInput">
+                                        @switch(App::getLocale())
+                                        @case('en') Enter a new name in Serbian @break
+                                        @case('sr-Cyrl') Унесите нови назив на српском @break
+                                        @default Unesite novi naziv na srpskom
+                                        @endswitch
+                                    </label>
                                     <input type="text" id="renameNavigationInput" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}">
+                                    <label for="renameNavigationInputEn">
+                                        @switch(App::getLocale())
+                                        @case('en') Enter a new name in English @break
+                                        @case('sr-Cyrl') Унесите нови назив на енглеском @break
+                                        @default Unesite novi naziv na engleskom
+                                        @endswitch
+                                    </label>
+                                    <input type="text" id="renameNavigationInputEn" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}">
                                     <div class="mt-4 text-center">
                                         <button data-modal-hide="renameNavigationModal" id="confirmRenameNavigationButton" type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                             {{ App::getLocale() === 'en'
@@ -770,18 +798,18 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
-                    <div class="relative">
-                        <button id="notificationButton" class="relative focus:outline-none" onclick="toggleNotifications()">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.292-.538 1.292H5.538C5 18 5 17.301 5 16.708c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365ZM8.733 18c.094.852.306 1.54.944 2.112a3.48 3.48 0 0 0 4.646 0c.638-.572 1.236-1.26 1.33-2.112h-6.92Z"/>
-                            </svg>
-                            <span id="notificationBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full hidden">0</span>
-                        </button>
-                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
-                            <ul id="notificationList" class="max-h-60 overflow-y-auto p-2">
-                            </ul>
-                        </div>
+                <div class="relative">
+                    <button id="notificationButton" class="relative focus:outline-none" onclick="toggleNotifications()">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.292-.538 1.292H5.538C5 18 5 17.301 5 16.708c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365ZM8.733 18c.094.852.306 1.54.944 2.112a3.48 3.48 0 0 0 4.646 0c.638-.572 1.236-1.26 1.33-2.112h-6.92Z" />
+                        </svg>
+                        <span id="notificationBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full hidden">0</span>
+                    </button>
+                    <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                        <ul id="notificationList" class="max-h-60 overflow-y-auto p-2">
+                        </ul>
                     </div>
+                </div>
                 @endauth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -866,7 +894,7 @@
 </style>
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 <script>
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     async function fetchRemindersCount() {
         try {
@@ -887,7 +915,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
             if (data.count > 0) {
                 badge.textContent = data.count;
                 badge.classList.remove('hidden');
-            } else if(data.count === 0) {
+            } else if (data.count === 0) {
                 badge.textContent = data.count;
                 badge.classList.remove('hidden');
             } else {
@@ -964,11 +992,11 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
                 const li = document.createElement('li');
                 const locale = '{{ App::getLocale() }}';
                 li.className = 'flex justify-between items-center p-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded';
-                const title = locale === 'en'
-                    ? reminder.title_en
-                    : locale === 'sr-Cyrl'
-                        ? reminder.title_cyr
-                        : reminder.title_lat;
+                const title = locale === 'en' ?
+                    reminder.title_en :
+                    locale === 'sr-Cyrl' ?
+                    reminder.title_cyr :
+                    reminder.title_lat;
                 li.innerHTML = `
                     <span>${title} (${new Date(reminder.time).toLocaleString('sr-RS')})</span>
                     <button onclick="removeNotification(${reminder.id})" class="text-red-500 hover:text-red-700 text-sm font-bold">x</button>
@@ -992,8 +1020,8 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
                 throw new Error('Greška pri brisanju remindera: ' + response.status);
             }
 
-            fetchReminders(); 
-            fetchRemindersCount(); 
+            fetchReminders();
+            fetchRemindersCount();
         } catch (error) {
             console.error('Greška pri brisanju remindera:', error);
         }
@@ -1011,8 +1039,8 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 
     document.addEventListener('DOMContentLoaded', () => {
         @auth
-            fetchRemindersCount(); 
-            setInterval(fetchRemindersCount, 30000); 
+        fetchRemindersCount();
+        setInterval(fetchRemindersCount, 30000);
         @endauth
     });
 
@@ -1182,17 +1210,17 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
             });
         });
 
-        const modal = document.getElementById('modal');
+        const plusModal = document.getElementById('plusModal');
         const sectionNameInput = document.getElementById('section-name');
-        const confirmBtn = document.getElementById('confirm-btn');
-        const cancelBtn = document.getElementById('cancel-btn');
+        const sectionNameEnInput = document.getElementById('section-name-en');
+        const confirmPlusBtn = document.getElementById('plus-confirm-btn');
+        const cancelPlusBtn = document.getElementById('plus-cancel-btn');
         let activeParentId = null;
 
 
         document.querySelectorAll('#plus, [id^="plus-section-"]').forEach(button => {
             button.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-                sectionNameInput.focus();
+                plusModal.classList.remove('hidden');
 
                 if (button.id === 'plus') {
                     activeParentId = null;
@@ -1202,9 +1230,10 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
             });
         });
 
-        confirmBtn.addEventListener('click', () => {
+        confirmPlusBtn.addEventListener('click', () => {
             const sectionName = sectionNameInput.value.trim();
-            if (sectionName) {
+            const sectionNameEn = sectionNameEnInput.value.trim();
+            if (sectionName && sectionNameEn) {
                 const plusButton = document.querySelector('#plus') || document.querySelector('[id^="plus-section-"]:focus');
                 const isMainSection = plusButton.id === 'plus';
 
@@ -1216,6 +1245,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
                         },
                         body: JSON.stringify({
                             name: sectionName,
+                            nameEn: sectionNameEn,
                             parent_id: activeParentId
                         }),
                     })
@@ -1352,6 +1382,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
         });
 
         const renameNavigationModal = document.getElementById('renameNavigationModal');
+        const renameNavigationInputEn = document.getElementById('renameNavigationInputEn');
         const renameNavigationInput = document.getElementById('renameNavigationInput');
         const confirmRenameNavigationButton = document.getElementById('confirmRenameNavigationButton');
 
@@ -1359,11 +1390,13 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
             button.addEventListener('click', () => {
                 currentNavId = button.dataset.navId;
                 renameNavigationInput.value = button.dataset.navTitle;
+                renameNavigationInputEn.value = button.dataset.navTitleEn;
             });
         });
 
         confirmRenameNavigationButton.addEventListener('click', () => {
             const newName = renameNavigationInput.value.trim();
+            const newNameEn = renameNavigationInputEn.value.trim();
             if (!newName) {
                 alert((() => {
                     switch (locale) {
@@ -1386,7 +1419,8 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
                         'Accept': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: newName
+                        name: newName,
+                        nameEn: newNameEn
                     }),
                 })
                 .then(res => res.json())
