@@ -35,7 +35,7 @@
                 @foreach($finishedPages as $page)
                 <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
                     <button type="button" class="flex items-center overflow-hidden justify-between w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
-                        <span class="truncate">{{ $page->title }}</span>
+                        <span class="truncate">{{ $page->translate('title') }}</span>
                     </button>
                     <button id="dropdownPageIconButton-{{ $page->id }}" data-dropdown-toggle="dropdownPageDots-{{ $page->id }}" class="ml-auto inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
@@ -95,7 +95,7 @@
                 @foreach($unfinishedPages as $page)
                 <li class="flex items-center justify-between w-full gap-1" data-id="{{ $mainSection->id }}">
                     <button type="button" class="flex items-center justify-between overflow-hidden w-full p-2 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600">
-                        <span class="truncate">{{ $page->title }}</span>
+                        <span class="truncate">{{ $page->translate('title') }}</span>
                     </button>
                     <button id="dropdownPageIconButton-{{ $page->id }}" data-dropdown-toggle="dropdownPageDots-{{ $page->id }}" class="ml-auto inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button">
                         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
@@ -114,7 +114,7 @@
                                     Edit
                                     @break
                                     @case('sr-Cyrl')
-                                    уреди
+                                    Уреди
                                     @break
                                     @default
                                     Uredi
