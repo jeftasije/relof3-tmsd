@@ -86,10 +86,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 });
 
-Route::get('/usluge', function () {
-    return view('user.services');
-});
-
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
@@ -129,5 +125,7 @@ Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middlewa
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('usluge');
+Route::get('/usluge/promena', [ServicesController::class, 'index'])->name('services.change');
+
 
 require __DIR__.'/auth.php';

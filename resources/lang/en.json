@@ -30,6 +30,130 @@
         "logo_light": "images/nbnp-logo.png",
         "logo_dark": "images/nbnp-logo-dark.png"
     },
+    "services": {
+        "header": "Library Services",
+        "hero_title": "Services for All Your Needs",
+        "hero_subtitle": "Fast, high-quality, and affordable – check out our photocopying and bookbinding offers.",
+        "from_label": "from",
+        "to_label": "to",
+        "price_unit_label": "per item",
+        "sections": [
+            {
+                "title": "Photocopy Center",
+                "description": "Our photocopy center offers all types of copying and printing services, meeting modern standards at affordable prices.",
+                "features": [
+                    "Fast service and high resolution",
+                    "Various paper sizes",
+                    "Copying, printing, and scanning"
+                ],
+                "prices": [
+                    {
+                        "label": "A4 single-sided",
+                        "from": "1.8 RSD",
+                        "to": "5 RSD",
+                        "unit": "RSD/page",
+                        "description": "Ideal for everyday needs",
+                        "popular": true
+                    },
+                    {
+                        "label": "A4 double-sided",
+                        "from": "3 RSD",
+                        "to": "7 RSD",
+                        "unit": "RSD/page",
+                        "description": "Save paper, same sharpness",
+                        "popular": false
+                    },
+                    {
+                        "label": "A3 single-sided",
+                        "from": "5 RSD",
+                        "to": "12 RSD",
+                        "unit": "RSD/page",
+                        "description": "Large format for big ideas",
+                        "popular": false
+                    },
+                    {
+                        "label": "A3 double-sided",
+                        "from": "8 RSD",
+                        "to": "16 RSD",
+                        "unit": "RSD/page",
+                        "description": "Double-sided printing, maximum usage",
+                        "popular": false
+                    },
+                    {
+                        "label": "Scanner A4",
+                        "price": "15 RSD",
+                        "unit": "RSD/page",
+                        "description": "Quickly digitize your documents",
+                        "popular": false
+                    },
+                    {
+                        "label": "Color printing",
+                        "from": "10 RSD",
+                        "to": "25 RSD",
+                        "unit": "RSD/page",
+                        "description": "Vivid colors on every paper",
+                        "popular": true
+                    }
+                ]
+            },
+            {
+                "title": "Bookbinding",
+                "description": "We offer a wide range of bookbinding services for books, magazines, and documents. Whether you need a diploma cover or old book restoration, we're here for you.",
+                "features": [
+                    "Binding for all types of documents",
+                    "Custom cover creation",
+                    "Restoration of old books"
+                ],
+                "prices": [
+                    {
+                        "label": "Graduate thesis (hardcover)",
+                        "price": "354 RSD",
+                        "unit": "per thesis",
+                        "description": "Professional look for your diploma",
+                        "popular": true
+                    },
+                    {
+                        "label": "Doctoral dissertation",
+                        "price": "590 RSD",
+                        "unit": "per dissertation",
+                        "description": "Luxurious binding for special works",
+                        "popular": true
+                    },
+                    {
+                        "label": "Cover creation",
+                        "from": "354 RSD",
+                        "to": "708 RSD",
+                        "unit": "per cover",
+                        "description": "Unique covers for books and documents",
+                        "popular": false
+                    },
+                    {
+                        "label": "Script binding",
+                        "from": "118 RSD",
+                        "to": "236 RSD",
+                        "unit": "per script",
+                        "description": "Practical binding for scripts and notes",
+                        "popular": false
+                    },
+                    {
+                        "label": "Picture lamination",
+                        "from": "95 RSD",
+                        "to": "200 RSD",
+                        "unit": "per picture",
+                        "description": "Protection and durability for your pictures",
+                        "popular": false
+                    },
+                    {
+                        "label": "Old book restoration",
+                        "price": "by agreement",
+                        "unit": "",
+                        "description": "Bring your old books back to life",
+                        "popular": false
+                    }
+                ]
+            }
+        ]
+    },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
     "header.library_name_line1": "Public Library \"Dositej Obradović\"",

@@ -8,13 +8,13 @@ class ServicesController extends Controller
 {
     public function show()
     {
-        $jsonPath = resource_path('lang/sr.json');
-        $jsonData = file_exists($jsonPath)
-            ? json_decode(file_get_contents($jsonPath), true)
-            : [];
-        
-        $servicesData = $jsonData['services'] ?? [];
+        $servicesData = \Lang::get('services');
+        return view('services', compact('servicesData'));
+    }
 
+    public function index()
+    {
+        $servicesData = Lang::get('services');
         return view('services', compact('servicesData'));
     }
 }

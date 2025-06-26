@@ -6,8 +6,7 @@
                     style="color: var(--primary-text); font-family: var(--font-title);">
                     {{ $servicesData['hero_title'] ?? $servicesData['header'] }}
                 </h1>
-                <p class="text-base sm:text-lg md:text-xl max-w-2xl mx-auto"
-                    style="color: var(--secondary-text); font-family: var(--font-body);">
+                <p style="white-space: nowrap;">
                     {{ $servicesData['hero_subtitle'] ?? '' }}
                 </p>
             </div>
@@ -58,8 +57,7 @@
                                 @foreach ($section['prices'] as $price)
                                     <div class="rounded-2xl shadow p-5 mb-2 flex flex-col items-start hover:scale-[1.025] transition-all duration-200 border border-[var(--accent)]"
                                          style="
-                                            background: color-mix(in srgb, var(--primary-bg) 40%, var(--primary-text) 60%);
-                                            background-color: #22223b; /* fallback za stare browsere */
+                                            background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%);
                                             color: var(--primary-text);
                                          ">
                                         <div class="text-lg font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
@@ -69,17 +67,22 @@
                                             <div class="flex gap-2 items-center">
                                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold shadow"
                                                       style="background: var(--accent); color: #fff;">
-                                                    od {{ $price['from'] }}
+                                                    {{ $servicesData['from_label'] ?? 'od' }} {{ $price['from'] }}
                                                 </span>
                                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold shadow"
                                                       style="background: var(--accent); color: #fff;">
-                                                    do {{ $price['to'] }}
+                                                    {{ $servicesData['to_label'] ?? 'do' }} {{ $price['to'] }}
                                                 </span>
                                             </div>
                                         @else
                                             <span class="inline-block px-4 py-1.5 rounded-full text-base font-bold"
                                                   style="background: var(--accent); color: #fff;">
                                                 {{ $price['price'] }}
+                                            </span>
+                                        @endif
+                                        @if(!empty($price['unit']))
+                                            <span class="ml-2 text-xs text-[var(--secondary-text)]">
+                                                {{ $servicesData['price_unit_label'] ?? $price['unit'] }}
                                             </span>
                                         @endif
                                     </div>
@@ -91,8 +94,8 @@
                             <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                                 @foreach ($section['list'] as $item)
                                     <li class="p-4 rounded-xl shadow text-base border border-[var(--accent)]"
-                                        style="background: color-mix(in srgb, var(--primary-bg) 40%, var(--primary-text) 60%);
-                                               background-color: #22223b; color: var(--primary-text); font-family: var(--font-body);">
+                                        style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%);
+                                               color: var(--primary-text); font-family: var(--font-body);">
                                         {!! $item !!}
                                     </li>
                                 @endforeach

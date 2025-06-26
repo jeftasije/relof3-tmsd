@@ -34,7 +34,9 @@
         "header": "Usluge Biblioteke",
         "hero_title": "Usluge za sve potrebe",
         "hero_subtitle": "Brzo, kvalitetno i pristupačno – pogledajte našu ponudu fotokopiranja i knjižnog povezivanja.",
-        "hero_image": "images/library-hero.jpg",
+        "from_label": "od",
+        "to_label": "do",
+        "price_unit_label": "po komadu",
         "sections": [
             {
                 "title": "Fotokopirnica",
