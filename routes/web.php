@@ -127,6 +127,5 @@ Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middlewa
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
-Route::post('/usluge/promena', [ServicesController::class, 'update'])->name('services.update');
 
 require __DIR__.'/auth.php';

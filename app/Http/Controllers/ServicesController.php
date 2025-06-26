@@ -24,6 +24,7 @@ class ServicesController extends Controller
     {
         $validated = $request->validate([
             'locale' => 'required|string|in:sr,sr-Cyrl,en',
+            'header' => 'required|string|max:255',
             'hero_title' => 'required|string|max:255',
             'hero_subtitle' => 'required|string|max:255',
             'sections' => 'required|array',
@@ -32,116 +33,75 @@ class ServicesController extends Controller
         $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
         $lm = app(\App\Http\Controllers\LanguageMapperController::class);
 
-        // Svi fajlovi i jezici
-        $files = [
-            'sr'      => resource_path('lang/sr.json'),
-            'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
-            'en'      => resource_path('lang/en.json'),
+        // Pripremi podatke za editovani jezik
+        $servicesData = [
+            'header'       => $validated['header'],
+            'hero_title'   => $validated['hero_title'],
+            'hero_subtitle'=> $validated['hero_subtitle'],
+            'sections'     => $validated['sections'],
+            'from_label'   => 'od',
+            'to_label'     => 'do',
+            'price_unit_label' => 'po komadu'
         ];
 
-        // Prvo pokupi podatke sa editovanog jezika
-        $src = $validated['locale'];
-        $data = [
-            'hero_title'    => $validated['hero_title'],
-            'hero_subtitle' => $validated['hero_subtitle'],
-            'sections'      => $validated['sections'],
-        ];
-
-        // Napravi verzije za sva tri jezika
+        // Lokalizuj za svaki jezik
         $localized = [
             'sr'      => [],
             'sr-Cyrl' => [],
             'en'      => [],
         ];
 
-        if ($src === 'sr') {
-            $localized['sr'] = $data;
-            $localized['sr-Cyrl']['hero_title']    = $lm->latin_to_cyrillic($data['hero_title']);
-            $localized['sr-Cyrl']['hero_subtitle'] = $lm->latin_to_cyrillic($data['hero_subtitle']);
-            $localized['en']['hero_title']    = $translate->setSource('sr')->setTarget('en')->translate($data['hero_title']);
-            $localized['en']['hero_subtitle'] = $translate->setSource('sr')->setTarget('en')->translate($data['hero_subtitle']);
-            // Sections
-            foreach ($data['sections'] as $i => $s) {
-                // Title — ne prevodi za prva dva!
-                $localized['sr']['sections'][$i]['title'] = $s['title'];
-                $localized['sr-Cyrl']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('sr-Cyrl', $i) : $lm->latin_to_cyrillic($s['title']);
-                $localized['en']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('en', $i) : $translate->setSource('sr')->setTarget('en')->translate($s['title']);
-                // Ostali podaci prevodi
-                foreach ($s as $key => $val) {
-                    if ($key == 'title') continue;
-                    $localized['sr']['sections'][$i][$key]      = $val;
-                    $localized['sr-Cyrl']['sections'][$i][$key] = is_array($val) 
-                        ? array_map(fn($x) => is_string($x) ? $lm->latin_to_cyrillic($x) : $x, $val)
-                        : (is_string($val) ? $lm->latin_to_cyrillic($val) : $val);
-                    $localized['en']['sections'][$i][$key] = is_array($val)
-                        ? array_map(fn($x) => is_string($x) ? $translate->setSource('sr')->setTarget('en')->translate($x) : $x, $val)
-                        : (is_string($val) ? $translate->setSource('sr')->setTarget('en')->translate($val) : $val);
-                }
-            }
-        } elseif ($src === 'sr-Cyrl') {
-            $localized['sr-Cyrl'] = $data;
-            $localized['sr']['hero_title']    = $lm->cyrillic_to_latin($data['hero_title']);
-            $localized['sr']['hero_subtitle'] = $lm->cyrillic_to_latin($data['hero_subtitle']);
-            $localized['en']['hero_title']    = $translate->setSource('sr')->setTarget('en')->translate($localized['sr']['hero_title']);
-            $localized['en']['hero_subtitle'] = $translate->setSource('sr')->setTarget('en')->translate($localized['sr']['hero_subtitle']);
-            foreach ($data['sections'] as $i => $s) {
-                $localized['sr-Cyrl']['sections'][$i]['title'] = $s['title'];
-                $localized['sr']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('sr', $i) : $lm->cyrillic_to_latin($s['title']);
-                $localized['en']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('en', $i) : $translate->setSource('sr')->setTarget('en')->translate($lm->cyrillic_to_latin($s['title']));
-                foreach ($s as $key => $val) {
-                    if ($key == 'title') continue;
-                    $localized['sr-Cyrl']['sections'][$i][$key] = $val;
-                    $localized['sr']['sections'][$i][$key] = is_array($val)
-                        ? array_map(fn($x) => is_string($x) ? $lm->cyrillic_to_latin($x) : $x, $val)
-                        : (is_string($val) ? $lm->cyrillic_to_latin($val) : $val);
-                    $localized['en']['sections'][$i][$key] = is_array($val)
-                        ? array_map(fn($x) => is_string($x) ? $translate->setSource('sr')->setTarget('en')->translate($lm->cyrillic_to_latin($x)) : $x, $val)
-                        : (is_string($val) ? $translate->setSource('sr')->setTarget('en')->translate($lm->cyrillic_to_latin($val)) : $val);
-                }
-            }
-        } else { // en
-            $localized['en'] = $data;
-            $localized['sr']['hero_title']    = $translate->setSource('en')->setTarget('sr')->translate($data['hero_title']);
-            $localized['sr']['hero_subtitle'] = $translate->setSource('en')->setTarget('sr')->translate($data['hero_subtitle']);
-            $localized['sr-Cyrl']['hero_title']    = $lm->latin_to_cyrillic($localized['sr']['hero_title']);
-            $localized['sr-Cyrl']['hero_subtitle'] = $lm->latin_to_cyrillic($localized['sr']['hero_subtitle']);
-            foreach ($data['sections'] as $i => $s) {
-                $localized['en']['sections'][$i]['title'] = $s['title'];
-                $localized['sr']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('sr', $i) : $translate->setSource('en')->setTarget('sr')->translate($s['title']);
-                $localized['sr-Cyrl']['sections'][$i]['title'] = $i <= 1 ? $this->getSectionTitleFromJson('sr-Cyrl', $i) : $lm->latin_to_cyrillic($localized['sr']['sections'][$i]['title']);
-                foreach ($s as $key => $val) {
-                    if ($key == 'title') continue;
-                    $localized['en']['sections'][$i][$key] = $val;
-                    $localized['sr']['sections'][$i][$key] = is_array($val)
-                        ? array_map(fn($x) => is_string($x) ? $translate->setSource('en')->setTarget('sr')->translate($x) : $x, $val)
-                        : (is_string($val) ? $translate->setSource('en')->setTarget('sr')->translate($val) : $val);
-                    $localized['sr-Cyrl']['sections'][$i][$key] = is_array($val)
-                        ? array_map(fn($x) => is_string($x) ? $lm->latin_to_cyrillic($translate->setSource('en')->setTarget('sr')->translate($x)) : $x, $val)
-                        : (is_string($val) ? $lm->latin_to_cyrillic($translate->setSource('en')->setTarget('sr')->translate($val)) : $val);
+        // --- SR verzija ---
+        $localized['sr'] = $servicesData;
+
+        // --- CYRILLIC verzija ---
+        $localized['sr-Cyrl'] = $servicesData;
+        foreach (['header','hero_title','hero_subtitle','from_label','to_label','price_unit_label'] as $field) {
+            $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($servicesData[$field]);
+        }
+        foreach ($servicesData['sections'] as $i => $section) {
+            foreach ($section as $key => $value) {
+                if (is_string($value)) {
+                    $localized['sr-Cyrl']['sections'][$i][$key] = $lm->latin_to_cyrillic($value);
+                } elseif (is_array($value)) {
+                    $localized['sr-Cyrl']['sections'][$i][$key] = array_map(function($v) use ($lm) {
+                        return is_string($v) ? $lm->latin_to_cyrillic($v) : $v;
+                    }, $value);
                 }
             }
         }
 
-        foreach ($files as $lang => $file) {
-            $json = json_decode(\File::get($file), true);
-            $json['services']['hero_title'] = $localized[$lang]['hero_title'];
-            $json['services']['hero_subtitle'] = $localized[$lang]['hero_subtitle'];
-            foreach ($localized[$lang]['sections'] as $i => $s) {
-                foreach ($s as $k => $v) {
-                    $json['services']['sections'][$i][$k] = $v;
+        // --- EN verzija ---
+        $translate->setSource('sr')->setTarget('en');
+        $localized['en'] = $servicesData;
+        foreach (['header','hero_title','hero_subtitle','from_label','to_label','price_unit_label'] as $field) {
+            $localized['en'][$field] = $translate->translate($servicesData[$field]);
+        }
+        foreach ($servicesData['sections'] as $i => $section) {
+            foreach ($section as $key => $value) {
+                if (is_string($value)) {
+                    $localized['en']['sections'][$i][$key] = $translate->translate($value);
+                } elseif (is_array($value)) {
+                    $localized['en']['sections'][$i][$key] = array_map(function($v) use ($translate) {
+                        return is_string($v) ? $translate->translate($v) : $v;
+                    }, $value);
                 }
             }
-            \File::put($file, json_encode($json, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+
+        $files = [
+            'sr'      => resource_path('lang/sr.json'),
+            'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
+            'en'      => resource_path('lang/en.json'),
+        ];
+
+        foreach ($files as $lang => $path) {
+            $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+            $json['services'] = $localized[$lang];
+            file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         }
 
         return back()->with('success', 'Usluge su ažurirane na svim jezicima!');
-    }
-
-    private function getSectionTitleFromJson($lang, $index)
-    {
-        $path = resource_path("lang/{$lang}.json");
-        $json = json_decode(\File::get($path), true);
-        return $json['services']['sections'][$index]['title'] ?? '';
     }
 
 }
