@@ -39,7 +39,6 @@ class DatabaseSeeder extends Seeder
             NavigationSeeder::class,
             ProcurementSeeder::class,
             OrganisationalStructureSeeder::class,
-            GalleryDescriptionsSeeder::class,
             ReminderSeeder::class,
         ]);
 

@@ -64,11 +64,11 @@
                 @method('PATCH')
                 <div class="max-w-lg mx-auto">
                     <div id="valueDisplay" class="prose dark:prose-invert max-w-none text-center">
-                        {!! nl2br(e($galleryDescription->translate('value'))) !!}
+                        {{ __('gallery.description') }}
                     </div>
                     
                     <textarea name="value" id="valueEdit" rows="15" style="text-align: center;"
-                        class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', $galleryDescription->translate('value')) ?? '' }}</textarea>
+                        class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('gallery.description')) }}</textarea>
 
                     <div id="editButtons" class="flex justify-end gap-4 hidden">
                         <button type="button" id="cancelBtn"
@@ -132,7 +132,7 @@
             </form>
         @else
             <div class="prose dark:prose-invert max-w-none">
-                {!! nl2br(e($galleryDescription->translate('value'))) ?? ''  !!}
+                {!! nl2br(e(__('gallery.description'))) !!}
             </div>
         @endauth
     </div>
@@ -353,6 +353,7 @@
                     To save your edits, click the <strong>"Save"</strong> button.<br>
                     You will be asked to confirm before the changes are applied.<br><br>
                     If you want to add <strong>images or videos</strong>, use the provided form to upload your file.<br>
+                    You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected.
                     The system will automatically recognize the file type and place it into the appropriate section.
                     '
                     : (App::getLocale() === 'sr-Cyrl' 
@@ -362,6 +363,7 @@
                         Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
                         Бићете упитани за потврду пре него што се промене примене.<br><br>
                         Ако желите да додате <strong>слику или видео</strong>, користите понуђену форму за отпремање фајла.<br>
+                        Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали.
                         Систем ће аутоматски препознати тип и сврстати га у одговарајући сегмент.
                     '
                     : '
@@ -370,6 +372,7 @@
                         Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
                         Bićete upitani za potvrdu pre nego što se promene primene.<br><br>
                         Ako želite da dodate <strong>sliku ili video</strong>, koristite ponuđeni formular za otpremanje fajla.<br>
+                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate.                   
                         Sistem će automatski prepoznati tip i svrstati ga u odgovarajući segment.
                     '
                     )

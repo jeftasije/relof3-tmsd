@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Kontakt",
         "email": "bibl@gmail.com",
-        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
-        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
+        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
         "work_hours_formatted": [
             "Ponedeljak - Petak: 08:00 - 16:00",
             "Subota: 08:00 - 14:00",
             "Nedelja: Neradna"
         ],
         "work_hours_label": "Radno Vreme",
-        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images/nbnp-logo.png",
-        "logo_dark": "images/nbnp-logo-dark.png"
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
     },
     "header.search_placeholder": "Pretražite sajt...",
     "header.search_button": "Pretraži",
@@ -71,5 +71,6 @@
     "history.edit.save": "Sačuvaj",
     "history.edit.cancel": "Otkaži",
     "history.edit.confirm_message": "Da li ste sigurni da želite da sačuvate izmene?",
-    "history.updated": "Tekst istorijata je uspešno izmenjen."
+    "history.updated": "Tekst istorijata je uspešno izmenjen.",
+    "gallery.description": "Sunce je jako"
 }

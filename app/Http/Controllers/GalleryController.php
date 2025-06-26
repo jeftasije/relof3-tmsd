@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\GalleryItem;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GalleryDescription;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
+use Illuminate\Support\Facades\File;
+
 
 
 
@@ -29,10 +30,8 @@ class GalleryController extends Controller
         $images = GalleryItem::where('type', 'image')->get();
         $videos = GalleryItem::where('type', 'video')->get();
         
-        $galleryDescription = GalleryDescription::first(); 
-
-        
-
+        $locale = app()->getLocale();
+        $galleryDescription = __('gallery.description', [], $locale);
 
         return view('gallery', compact('images', 'videos', 'galleryDescription'));
     }
@@ -82,46 +81,65 @@ class GalleryController extends Controller
     public function updateDescription(Request $request)
     {
         $request->validate([
-            'value' => 'required|string',
+            'value' => 'required|string'
         ]);
 
-        $value = $request->input('value');
-        $locale = app()->getLocale();
+        $originalText = trim($request->input('value'));
 
-        $isCyrillic = preg_match('/[\p{Cyrillic}]/u', $value);
+        $detectedScript = $this->languageMapper->detectScript($originalText);
 
-        if ($locale === 'en') {
-            $value_en = $value;
-            $value_lat = $this->translate->setSource('en')->setTarget('sr')->translate($value_en);
-            $value_cy = $this->languageMapper->latin_to_cyrillic($value_lat);
-        } elseif ($isCyrillic) {
-            $value_cy = $value;
+        $value_cy = '';
+        $value_lat = '';
+        $value_en = '';
+
+        if ($detectedScript === 'cyrillic') {
+            // Uneto je ćirilica
+            $value_cy = $originalText;
             $value_lat = $this->languageMapper->cyrillic_to_latin($value_cy);
             $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
         } else {
-            $value_lat = $value;
-            $value_cy = $this->languageMapper->latin_to_cyrillic($value_lat);
-            $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
+            // Pretpostavljamo da je latinični ili engleski tekst
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
+                // Tekst je srpska latinica
+                $value_lat = $originalText;
+                $value_cy = $this->languageMapper->latin_to_cyrillic($value_lat);
+                $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
+            } else {
+                // Tekst je engleski
+                $value_en = $originalText;
+                $value_cy = $this->translate->setSource('en')->setTarget('sr')->translate($value_en);
+                $value_lat = $this->languageMapper->cyrillic_to_latin($value_cy);
+            }
         }
 
-        $galleryDescription = GalleryDescription::first();
-        if ($galleryDescription) {
-            $galleryDescription->update([
-                'value'    => $value_lat,
-                'value_en' => $value_en,
-                'value_cy' => $value_cy,
-            ]);
-        } else {
-            GalleryDescription::create([
-                'value'    => $value_lat,
-                'value_en' => $value_en,
-                'value_cy' => $value_cy,
-            ]);
-        }
+        $this->updateLangFile('sr', ['gallery.description' => $value_lat]);
+        $this->updateLangFile('sr-Cyrl', ['gallery.description' => $value_cy]);
+        $this->updateLangFile('en', ['gallery.description' => $value_en]);
 
-
-        return back()->with('success', 'Opis galerije uspešno ažuriran na svim jezicima.');
+        return back()->with('success', 'Opis galerije je uspešno ažuriran.');
     }
+
+    protected function updateLangFile($locale, array $data)
+    {
+        $path = resource_path("lang/{$locale}.json");
+
+        if (!File::exists($path)) {
+            File::put($path, '{}');
+        }
+
+        $translations = json_decode(File::get($path), true) ?? [];
+
+        $translations = array_merge($translations, $data);
+
+        File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+
+
+
+
 
 
 }
