@@ -1,0 +1,94 @@
+{
+  "palettes": {
+    "default": {
+      "label": {
+        "en": "Default",
+        "sr": "Standardna",
+        "sr-Cyrl": "Стандардна"
+      },
+      "light": { "primaryBg": "#ffffff", "primaryText": "#1f2937", "secondaryText": "#64748b", "accent": "#22c55e" },
+      "dark":  { "primaryBg": "#111827", "primaryText": "#f8fafc", "secondaryText": "#94a3b8", "accent": "#22c55e" }
+    },
+    "blue": {
+      "label": {
+        "en": "Blue",
+        "sr": "Plava",
+        "sr-Cyrl": "Плава"
+      },
+      "light": { "primaryBg": "#e0f2fe", "primaryText": "#0c4a6e", "secondaryText": "#2563eb", "accent": "#22c55e" },  
+      "dark":  { "primaryBg": "#0c4a6e", "primaryText": "#e0f2fe", "secondaryText": "#38bdf8", "accent": "#f59e42" }   
+    },
+    "red": {
+      "label": {
+        "en": "Red",
+        "sr": "Crvena",
+        "sr-Cyrl": "Црвена"
+      },
+      "light": { "primaryBg": "#fff1f2", "primaryText": "#991b1b", "secondaryText": "#ef4444", "accent": "#2563eb" }, 
+      "dark":  { "primaryBg": "#7f1d1d", "primaryText": "#fff1f2", "secondaryText": "#fca5a5", "accent": "#fbbf24" }  
+    },
+    "orange": {
+      "label": {
+        "en": "Orange",
+        "sr": "Narandžasta",
+        "sr-Cyrl": "Наранџаста"
+      },
+      "light": { "primaryBg": "#fff7ed", "primaryText": "#78350f", "secondaryText": "#f97316", "accent": "#2563eb" },
+      "dark":  { "primaryBg": "#7c2d12", "primaryText": "#fff7ed", "secondaryText": "#fdba74", "accent": "#22c55e" }
+    },
+    "purple": {
+      "label": {
+        "en": "Purple",
+        "sr": "Ljubičasta",
+        "sr-Cyrl": "Љубичаста"
+      },
+      "light": { "primaryBg": "#f3e8ff", "primaryText": "#581c87", "secondaryText": "#a21caf", "accent": "#f59e42" },
+      "dark":  { "primaryBg": "#581c87", "primaryText": "#f3e8ff", "secondaryText": "#c4b5fd", "accent": "#22c55e" }
+    },
+    "green": {
+      "label": {
+        "en": "Green",
+        "sr": "Zelena",
+        "sr-Cyrl": "Зелена"
+      },
+      "light": { "primaryBg": "#ecfdf5", "primaryText": "#064e3b", "secondaryText": "#22c55e", "accent": "#2563eb" },
+      "dark":  { "primaryBg": "#064e3b", "primaryText": "#ecfdf5", "secondaryText": "#6ee7b7", "accent": "#f59e42" }
+    },
+    "yellow": {
+      "label": {
+        "en": "Yellow",
+        "sr": "Žuta",
+        "sr-Cyrl": "Жута"
+      },
+      "light": { "primaryBg": "#fefce8", "primaryText": "#92400e", "secondaryText": "#eab308", "accent": "#2563eb" },
+      "dark":  { "primaryBg": "#92400e", "primaryText": "#fefce8", "secondaryText": "#fde68a", "accent": "#22c55e" }
+    },
+    "teal": {
+      "label": {
+        "en": "Teal",
+        "sr": "Tirkizna",
+        "sr-Cyrl": "Тиркизна"
+      },
+      "light": { "primaryBg": "#f0fdfa", "primaryText": "#134e4a", "secondaryText": "#14b8a6", "accent": "#f59e42" },
+      "dark":  { "primaryBg": "#134e4a", "primaryText": "#f0fdfa", "secondaryText": "#67e8f9", "accent": "#ef4444" }
+    },
+    "gray": {
+      "label": {
+        "en": "Gray",
+        "sr": "Siva",
+        "sr-Cyrl": "Сива"
+      },
+      "light": { "primaryBg": "#f3f4f6", "primaryText": "#111827", "secondaryText": "#6b7280", "accent": "#22c55e" },
+      "dark":  { "primaryBg": "#1f2937", "primaryText": "#f3f4f6", "secondaryText": "#9ca3af", "accent": "#22c55e" }
+    },
+    "pink": {
+      "label": {
+        "en": "Pink",
+        "sr": "Roze",
+        "sr-Cyrl": "Розе"
+      },
+      "light": { "primaryBg": "#fdf2f8", "primaryText": "#9d174d", "secondaryText": "#ec4899", "accent": "#2563eb" },
+      "dark":  { "primaryBg": "#9d174d", "primaryText": "#fdf2f8", "secondaryText": "#fbcfe8", "accent": "#22c55e" }
+    }
+  }
+}
