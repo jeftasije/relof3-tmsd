@@ -31,123 +31,123 @@
         "logo_dark": "images/nbnp-logo-dark.png"
     },
     "services": {
-        "header": "Library Services",
-        "hero_title": "Services for All Your Needs",
-        "hero_subtitle": "Fast, high-quality, and affordable – check out our photocopying and bookbinding offers.",
+        "header": "Library services",
+        "hero_title": "Services for all needs",
+        "hero_subtitle": "Fast, quality and accessible - see our offer of photocopying and book connection.",
         "from_label": "from",
         "to_label": "to",
-        "price_unit_label": "per item",
+        "price_unit_label": "piece",
         "sections": [
             {
-                "title": "Photocopy Center",
-                "description": "Our photocopy center offers all types of copying and printing services, meeting modern standards at affordable prices.",
+                "title": "Photocopier center",
+                "description": "Our photocopier offers all kinds of copying and printing, according to modern standards and favorable prices.",
                 "features": [
                     "Fast service and high resolution",
                     "Various paper sizes",
-                    "Copying, printing, and scanning"
+                    "Copy, print and scan"
                 ],
                 "prices": [
                     {
-                        "label": "A4 single-sided",
-                        "from": "1.8 RSD",
-                        "to": "5 RSD",
-                        "unit": "RSD/page",
-                        "description": "Ideal for everyday needs",
+                        "label": "A4 jednostrano",
+                        "from": "1.8 din",
+                        "to": "5 din",
+                        "unit": "din/str",
+                        "description": "Idealno za svakodnevne potrebe",
                         "popular": true
                     },
                     {
-                        "label": "A4 double-sided",
-                        "from": "3 RSD",
-                        "to": "7 RSD",
-                        "unit": "RSD/page",
-                        "description": "Save paper, same sharpness",
+                        "label": "A4 obostrano",
+                        "from": "3 din",
+                        "to": "7 din",
+                        "unit": "din/str",
+                        "description": "Ušteda na obimu, iste oštrine",
                         "popular": false
                     },
                     {
-                        "label": "A3 single-sided",
-                        "from": "5 RSD",
-                        "to": "12 RSD",
-                        "unit": "RSD/page",
-                        "description": "Large format for big ideas",
+                        "label": "A3 jednostrano",
+                        "from": "5 din",
+                        "to": "12 din",
+                        "unit": "din/str",
+                        "description": "Veliki format za velike ideje",
                         "popular": false
                     },
                     {
-                        "label": "A3 double-sided",
-                        "from": "8 RSD",
-                        "to": "16 RSD",
-                        "unit": "RSD/page",
-                        "description": "Double-sided printing, maximum usage",
+                        "label": "A3 obostrano",
+                        "from": "8 din",
+                        "to": "16 din",
+                        "unit": "din/str",
+                        "description": "Obostrano štampanje, maksimalna iskoristivost",
                         "popular": false
                     },
                     {
-                        "label": "Scanner A4",
-                        "price": "15 RSD",
-                        "unit": "RSD/page",
-                        "description": "Quickly digitize your documents",
+                        "label": "Skener A4",
+                        "price": "15 din",
+                        "unit": "din/str",
+                        "description": "Brzo digitalizujte dokumenta",
                         "popular": false
                     },
                     {
-                        "label": "Color printing",
-                        "from": "10 RSD",
-                        "to": "25 RSD",
-                        "unit": "RSD/page",
-                        "description": "Vivid colors on every paper",
+                        "label": "Štampa u boji",
+                        "from": "10 din",
+                        "to": "25 din",
+                        "unit": "din/str",
+                        "description": "Žive boje na svakom papiru",
                         "popular": true
                     }
                 ]
             },
             {
                 "title": "Bookbinding",
-                "description": "We offer a wide range of bookbinding services for books, magazines, and documents. Whether you need a diploma cover or old book restoration, we're here for you.",
+                "description": "We provide a wide range of books, magazines and documents connecting services. Whether you need a grill or restoration of an old book, we are here for you.",
                 "features": [
-                    "Binding for all types of documents",
-                    "Custom cover creation",
+                    "Connection of all types of documents",
+                    "Making custom crankcase",
                     "Restoration of old books"
                 ],
                 "prices": [
                     {
-                        "label": "Graduate thesis (hardcover)",
-                        "price": "354 RSD",
-                        "unit": "per thesis",
-                        "description": "Professional look for your diploma",
+                        "label": "Diplomski rad (tvrdi povez)",
+                        "price": "354 din",
+                        "unit": "po radu",
+                        "description": "Profesionalni izgled za vašu diplomu",
                         "popular": true
                     },
                     {
-                        "label": "Doctoral dissertation",
-                        "price": "590 RSD",
-                        "unit": "per dissertation",
-                        "description": "Luxurious binding for special works",
+                        "label": "Doktorska disertacija",
+                        "price": "590 din",
+                        "unit": "po radu",
+                        "description": "Luksuzan povez za posebne radove",
                         "popular": true
                     },
                     {
-                        "label": "Cover creation",
-                        "from": "354 RSD",
-                        "to": "708 RSD",
-                        "unit": "per cover",
-                        "description": "Unique covers for books and documents",
+                        "label": "Izrada korica",
+                        "from": "354 din",
+                        "to": "708 din",
+                        "unit": "po komadu",
+                        "description": "Unikatne korice za knjige i spise",
                         "popular": false
                     },
                     {
-                        "label": "Script binding",
-                        "from": "118 RSD",
-                        "to": "236 RSD",
-                        "unit": "per script",
-                        "description": "Practical binding for scripts and notes",
+                        "label": "Povez skripti",
+                        "from": "118 din",
+                        "to": "236 din",
+                        "unit": "po skripti",
+                        "description": "Praktičan povez za skripte i beleške",
                         "popular": false
                     },
                     {
-                        "label": "Picture lamination",
-                        "from": "95 RSD",
-                        "to": "200 RSD",
-                        "unit": "per picture",
-                        "description": "Protection and durability for your pictures",
+                        "label": "Kaširanje slika",
+                        "from": "95 din",
+                        "to": "200 din",
+                        "unit": "po slici",
+                        "description": "Zaštita i postojanost vaših slika",
                         "popular": false
                     },
                     {
-                        "label": "Old book restoration",
-                        "price": "by agreement",
-                        "unit": "",
-                        "description": "Bring your old books back to life",
+                        "label": "Restauracija stare knjige",
+                        "price": "po dogovoru",
+                        "unit": null,
+                        "description": "Vratite sjaj svojim starim knjigama",
                         "popular": false
                     }
                 ]

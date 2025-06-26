@@ -30,7 +30,7 @@
         "logo_light": "images/nbnp-logo.png",
         "logo_dark": "images/nbnp-logo-dark.png"
     },
-        "services": {
+    "services": {
         "header": "Usluge Biblioteke",
         "hero_title": "Usluge za sve potrebe",
         "hero_subtitle": "Brzo, kvalitetno i pristupačno – pogledajte našu ponudu fotokopiranja i knjižnog povezivanja.",
@@ -146,7 +146,7 @@
                     {
                         "label": "Restauracija stare knjige",
                         "price": "po dogovoru",
-                        "unit": "",
+                        "unit": null,
                         "description": "Vratite sjaj svojim starim knjigama",
                         "popular": false
                     }
