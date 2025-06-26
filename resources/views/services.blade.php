@@ -4,14 +4,14 @@
             <div class="text-center mb-12">
                 <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-3"
                     style="color: var(--primary-text); font-family: var(--font-title);">
-                    {{ $servicesData['hero_title'] ?? $servicesData['header'] }}
+                    {{ $text['hero_title'] ?? $text['header'] }}
                 </h1>
                 <p style="white-space: nowrap;">
-                    {{ $servicesData['hero_subtitle'] ?? '' }}
+                    {{ $text['hero_subtitle'] ?? '' }}
                 </p>
             </div>
 
-            @foreach ($servicesData['sections'] ?? [] as $i => $section)
+            @foreach ($text['sections'] ?? [] as $i => $section)
                 <section class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-20 items-stretch">
                     @if($i === 0)
                         <div class="hidden md:flex md:col-span-1 justify-center items-stretch">
@@ -67,11 +67,11 @@
                                             <div class="flex gap-2 items-center">
                                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold shadow"
                                                       style="background: var(--accent); color: #fff;">
-                                                    {{ $servicesData['from_label'] ?? 'od' }} {{ $price['from'] }}
+                                                    {{ $text['from_label'] ?? 'od' }} {{ $price['from'] }}
                                                 </span>
                                                 <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold shadow"
                                                       style="background: var(--accent); color: #fff;">
-                                                    {{ $servicesData['to_label'] ?? 'do' }} {{ $price['to'] }}
+                                                    {{ $text['to_label'] ?? 'do' }} {{ $price['to'] }}
                                                 </span>
                                             </div>
                                         @else
@@ -82,7 +82,7 @@
                                         @endif
                                         @if(!empty($price['unit']))
                                             <span class="ml-2 text-xs text-[var(--secondary-text)]">
-                                                {{ $servicesData['price_unit_label'] ?? $price['unit'] }}
+                                                {{ $text['price_unit_label'] ?? $price['unit'] }}
                                             </span>
                                         @endif
                                     </div>

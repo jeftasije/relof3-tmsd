@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
+
+    Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
 });
 
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
@@ -124,8 +126,7 @@ Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middlewa
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
-Route::get('/usluge', [ServicesController::class, 'show'])->name('usluge');
-Route::get('/usluge/promena', [ServicesController::class, 'index'])->name('services.change');
-
+Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
+Route::post('/usluge/promena', [ServicesController::class, 'update'])->name('services.update');
 
 require __DIR__.'/auth.php';
