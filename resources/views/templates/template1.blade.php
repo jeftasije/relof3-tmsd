@@ -77,59 +77,77 @@
         </button>
     </div>
 
-    <div x-data="{ editingText: false }" class="my-6 w-auto self-start">
+    @php
+        $placeholderText = match (App::getLocale()) {
+            'en' => 'Write your article here...',
+            'sr-Cyrl' => 'Напишите чланак овде...',
+            default => 'Napišite članak ovde...',
+        };
+    @endphp
+
+    <div
+        x-data="{
+        editingText: true,
+        previewContent: @js(old('content.text', $content['text'] ?? '')),
+        init() {
+            if (!this.previewContent.trim()) {
+                this.previewContent = '<p class=\'text-gray-400\'>{{ $placeholderText }}</p>';
+            }
+        }
+    }"
+        x-init="init()"
+        class="my-6 w-11/12">
         <div
-            x-data="{
-                editingText: false,
-                previewContent: @js(old('content.text', $content['text'] ?? ''))
-            }"
-            class="my-6 w-11/12">
+            x-show="!editingText"
+            @click="editingText = true"
+            class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition relative group">
             <div
-                x-show="!editingText"
-                @click="editingText = true"
-                class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition relative group">
-                <div x-ref="preview" x-html="previewContent"
-                    class="text-gray-800 dark:text-gray-200 whitespace-pre-line text-base leading-relaxed">
+                x-ref="preview"
+                x-html="previewContent"
+                class="text-gray-800 dark:text-gray-200 whitespace-pre-line text-base leading-relaxed"></div>
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="absolute top-0 right-[-30px] w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+        </div>
+
+        <div x-show="editingText" class="my-4 w-full">
+            <input id="large-text-input" type="hidden" name="content[text]" form="page-form"
+                value="{{ old('content.text', $content['text'] ?? '') }}">
+            <div class="my-6 w-auto">
+                <div class="bg-white">
+                    <trix-toolbar id="trix-toolbar"></trix-toolbar>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="absolute top-0 right-[-30px] w-5 h-5 text-gray-400 opacity-0 group-hover:opacity-100 transition"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9" />
-                    <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                </svg>
+                <trix-editor input="large-text-input"
+                    toolbar="trix-toolbar"
+                    x-ref="trixEditor"
+                    class="trix-content mt-3 bg-white dark:bg-gray-800 dark:text-white rounded-lg border-gray-300 dark:border-gray-600 min-h-[300px]">
+                </trix-editor>
             </div>
-
-            <div x-show="editingText" class="my-4 w-full">
-                <input id="large-text-input" type="hidden" name="content[text]" form="page-form"
-                    value="{{ old('content.text', $content['text'] ?? '') }}">
-                <div class="my-6 w-auto">
-                    <div class="bg-white">
-                        <trix-toolbar id="trix-toolbar"></trix-toolbar>
-                    </div>
-                    <trix-editor input="large-text-input"
-                        toolbar="trix-toolbar"
-                        x-ref="trixEditor"
-                        class="trix-content mt-3 bg-white dark:bg-gray-800 dark:text-white rounded-lg border-gray-300 dark:border-gray-600 min-h-[300px]">
-                    </trix-editor>
-                </div>
-
-                <div class="mt-2 flex gap-2">
-                    <button type="button"
-                        class="px-3 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
-                        @click="
-                            previewContent = $refs.trixEditor.innerHTML;
-                            editingText = false;
-                        ">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M5 12l5 5l10 -10" />
-                        </svg>
-                    </button>
-                </div>
+            <div class="mt-2 flex gap-2">
+                <button type="button"
+                    class="px-3 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
+                    @click="
+                    let html = $refs.trixEditor.innerHTML.trim();
+                    previewContent = html ? html : '<p class=\'text-gray-400\'>{{ $placeholderText }}</p>';
+                    editingText = false;
+                ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
+
 </div>
 @else
 <x-guest-layout>
