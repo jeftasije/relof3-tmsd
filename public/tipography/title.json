@@ -1,0 +1,14 @@
+{
+  "fonts": [
+    { "key": "inter", "label": "Inter", "family": "Inter" },
+    { "key": "roboto", "label": "Roboto", "family": "Roboto" },
+    { "key": "oswald", "label": "Oswald", "family": "Oswald" },
+    { "key": "montserrat", "label": "Montserrat", "family": "Montserrat" },
+    { "key": "bebasneue", "label": "Bebas Neue", "family": "Bebas Neue" },
+    { "key": "lora", "label": "Lora", "family": "Lora" },
+    { "key": "raleway", "label": "Raleway", "family": "Raleway" },
+    { "key": "playfair", "label": "Playfair Display", "family": "Playfair Display" },
+    { "key": "poppins", "label": "Poppins", "family": "Poppins" },
+    { "key": "merriweather", "label": "Merriweather", "family": "Merriweather" }
+  ]
+}
