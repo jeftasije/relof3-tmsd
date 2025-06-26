@@ -2,21 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\FooterController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
-use App\Http\Controllers\NavigationController;
-use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\HistoryController;
-use App\Http\Controllers\FooterController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ReminderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -126,5 +127,7 @@ Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show
 Route::post('/istorijat/izmena', [HistoryController::class, 'update'])->middleware('auth')->name('history.update');
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
+
+Route::get('/usluge', [ServicesController::class, 'show'])->name('usluge');
 
 require __DIR__.'/auth.php';
