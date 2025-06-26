@@ -3,20 +3,20 @@
         <main class="flex-grow">
             <section class="relative h-screen w-full">
                 <img
-                    src="{{ asset('images/herosection.jpg') }}"
+                    src="{{ asset(__('homepage_hero_image_path')) }}"
                     alt="{{ App::getLocale() === 'en' ? 'Novi Pazar background' : (App::getLocale() === 'sr-Cyrl' ? 'Позадина Нови Пазар' : 'Pozadina Novi Pazar') }}"
                     class="absolute inset-0 w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-black bg-opacity-50"></div>
                 <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4 animate-fadeIn">
-                    <h1 class="text-5xl font-extrabold mb-4">{{ $libraryData['name'] ?? '' }}</h1>
+                    <h1 class="text-5xl font-extrabold mb-4">{{ __('homepage_title') }}</h1>
                     <p class="text-3xl font-semibold">
-                        {{ App::getLocale() === 'en' ? 'Novi Pazar' : (App::getLocale() === 'sr-Cyrl' ? 'Нови Пазар' : 'Novi Pazar') }}
+                        {{ __('homepage_subtitle') }}
                     </p>
                 </div>
             </section>
             <section class="bg-gray-900 py-12">
                 <div class="max-w-screen-xl mx-auto px-4">
-                    <h2 class="text-3xl font-bold text-white mb-6">{{ App::getLocale() === 'en' ? 'Latest News' : (App::getLocale() === 'sr-Cyrl' ? 'Најновије вести' : 'Najnovije vesti') }}</h2>
+                    <h2 class="text-3xl font-bold text-white mb-6">{{ __('homepage_news_title') }}</h2>
                     <div class="relative flex items-center">
                         <button id="scrollLeft" class="z-10 p-2 rounded-full bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
                             <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,7 +69,7 @@
                             <input 
                                 type="email" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                placeholder="{{ App::getLocale() === 'en' ? 'Enter your email' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите свој имејл' : 'Unesite svoj imejl') }}" 
+                                placeholder="{{ App::getLocale() === 'en' ? 'Enter your email' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите своју мејл адресу' : 'Unesite svoju mejl adresu') }}" 
                                 required
                             >
                             <a href="#" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 whitespace-nowrap">
@@ -101,28 +101,27 @@
                                 : 'Unesite naziv knjige, autora ili ISBN broj i bićete preusmereni na COBISS') }}
                     </p>
                     <form
-    action="https://plus.cobiss.net/cobiss/sr/sr/bib/search"
-    method="get"
-    target="_blank"
-    class="mx-auto w-full max-w-3xl flex flex-col sm:flex-row justify-center items-center gap-4"
->
-    <input
-        type="text"
-        name="q"
-        required
-        placeholder="{{ App::getLocale() === 'en' ? 'For example: Ivo Andrić, The Bridge on the Drina...' : (App::getLocale() === 'sr-Cyrl' ? 'На пример: Иво Андрић, На Дрини ћуприја...' : 'Na primer: Ivo Andrić, Na Drini ćuprija...') }}"
-        class="flex-grow w-full p-4 text-lg rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-/>
-    <input type="hidden" name="db" value="nbnp-1">
-    <input type="hidden" name="mat" value="allmaterials">
-    <button
-        type="submit"
-        class="px-6 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-    >
-        {{ App::getLocale() === 'en' ? 'Search' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи' : 'Pretraži') }}
-    </button>
-</form>
-
+                        action="https://plus.cobiss.net/cobiss/sr/sr/bib/search"
+                        method="get"
+                        target="_blank"
+                        class="mx-auto w-full max-w-3xl flex flex-col sm:flex-row justify-center items-center gap-4"
+                    >
+                        <input
+                            type="text"
+                            name="q"
+                            required
+                            placeholder="{{ App::getLocale() === 'en' ? 'For example: Ivo Andrić, The Bridge on the Drina...' : (App::getLocale() === 'sr-Cyrl' ? 'На пример: Иво Андрић, На Дрини ћуприја...' : 'Na primer: Ivo Andrić, Na Drini ćuprija...') }}"
+                            class="flex-grow w-full p-4 text-lg rounded-lg border border-gray-300 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    />
+                        <input type="hidden" name="db" value="nbnp-1">
+                        <input type="hidden" name="mat" value="allmaterials">
+                        <button
+                            type="submit"
+                            class="px-6 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                        >
+                            {{ App::getLocale() === 'en' ? 'Search' : (App::getLocale() === 'sr-Cyrl' ? 'Претражи' : 'Pretraži') }}
+                        </button>
+                    </form>
                 </div>
             </section>
         </main>

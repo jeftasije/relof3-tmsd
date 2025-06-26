@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Contact",
         "email": "bibl@gmail.com",
-        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
-        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
+        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
         "work_hours_formatted": [
             "Monday - Friday: 08:00 - 16:00",
             "Saturday: 08:00 - 14:00",
             "Sunday: Non-working"
         ],
         "work_hours_label": "Working hours",
-        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images/nbnp-logo.png",
-        "logo_dark": "images/nbnp-logo-dark.png"
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
     },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
@@ -64,5 +64,9 @@
     "validation.logo_light_image": "Light logo must be an image.",
     "validation.logo_light_max": "Light logo may not be larger than 2MB.",
     "validation.logo_dark_image": "Dark logo must be an image.",
-    "validation.logo_dark_max": "Dark logo may not be larger than 2MB."
+    "validation.logo_dark_max": "Dark logo may not be larger than 2MB.",
+    "homepage_title": "Milicica love",
+    "homepage_subtitle": "happiness joy",
+    "homepage_news_title": "News",
+    "homepage_hero_image_path": "images\/herosection.jpg"
 }

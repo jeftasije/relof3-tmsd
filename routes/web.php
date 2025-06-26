@@ -17,6 +17,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\HomepageController;
 use App\Models\News;
 
 Route::get('/', function () {
@@ -85,6 +86,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
+
+    Route::get('/naslovna', [HomepageController::class, 'show'])->name('homePage.show');
+    // Korak 1: Unos naslova i podnaslova na srpskom (ćirilica/latinica) → prevod na engleski
+    Route::post('/naslovna/sr', [HomepageController::class, 'updateSr'])->name('homepage.updateSr');
+
+    // Korak 2: Finalno čuvanje svega (uključujući engleski)
+    Route::post('/naslovna/en', [HomepageController::class, 'update'])->name('homepage.update');
+
 });
 
 Route::get('/usluge', function () {
