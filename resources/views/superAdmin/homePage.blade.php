@@ -62,7 +62,7 @@
                     </div>
                 </div>
         </form>
-        <form action="#" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('homepage.updateEn') }}" method="POST" enctype="multipart/form-data">
             @csrf
                 {{-- Desna strana --}}
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
@@ -88,7 +88,5 @@
                 </div>
             </form>
         </div>
-        
-
     </div>
 </x-app-layout>

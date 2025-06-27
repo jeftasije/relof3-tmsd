@@ -80,6 +80,30 @@ class HomepageController extends Controller
         return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
     }
 
+    public function updateEn(Request $request)
+    {
+        $request->validate([
+            'title_en' => 'nullable|string',
+            'subtitle_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('title_en');
+        $subtitle_en = $request->input('subtitle_en');
+
+        $enJson['homepage_title'] = $title_en;
+        $enJson['homepage_subtitle'] = $subtitle_en;
+
+        //dd($title_en, $subtitle_en);
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
     private function validateRequest(Request $request)
     {
         return $request->validate([

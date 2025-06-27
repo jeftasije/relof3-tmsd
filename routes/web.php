@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/naslovna/sr', [HomepageController::class, 'updateSr'])->name('homepage.updateSr');
 
     // Korak 2: Finalno čuvanje svega (uključujući engleski)
-    Route::post('/naslovna/en', [HomepageController::class, 'update'])->name('homepage.update');
+    Route::post('/naslovna/en', [HomepageController::class, 'updateEn'])->name('homepage.updateEn');
 
 });
 
