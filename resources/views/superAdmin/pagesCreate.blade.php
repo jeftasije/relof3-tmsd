@@ -22,9 +22,10 @@
         $refs.hiddenSlug.value = $refs.slug?.value;
         $refs.hiddenMain.value = main;
         $refs.hiddenSub.value = sub;
-    ">
+    "
+        style="background: var(--primary-bg); color: var(--primary-text);">
         <div class="fixed top-0 right-0">
-            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-placement="right" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-placement="right" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" style="color: var(--secondary-text); background: var(--primary-bg);">
                 <span class="sr-only">Open sidebar</span>
                 <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -179,8 +180,7 @@
                     <div class="flex flex-col mt-auto">
                         <button
                             @click="helpOpen = true"
-                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                            style="background: transparent; color: var(--secondary-text);">
+                            class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -266,11 +266,11 @@
         @endif
 
         @if(!isset($page) || $page->is_deletable)
-        <div class="min-h-screen w-full flex items-center justify-center">
+        <div class="min-h-screen w-full flex items-center justify-center" style="background: var(--primary-bg); color: var(--primary-text);">
             @include('templates.template' . $templateId)
         </div>
         @else
-        <div class="flex-1 pr-64">
+        <div class="flex-1 pr-64" style="background: var(--primary-bg); color: var(--primary-text);">
             {!! $basePageContent !!}
         </div>
         @endif
@@ -284,8 +284,8 @@
             <div
                 x-show="helpOpen"
                 x-transition
-                class="relative rounded-xl border-2 border-[var(--secondary-text)] shadow-2xl bg-white dark:bg-gray-900 flex flex-col items-stretch"
-                style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text);"
+                class="relative rounded-xl border-2 shadow-2xl flex flex-col items-stretch"
+                style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"
                 @keydown.escape.window="helpOpen = false"
                 x-data="{ slide: 1, total: 7, enlarged: false }">
                 <button
@@ -301,13 +301,13 @@
                 <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
 
                     <div class="flex flex-col items-center justify-start" style="height: 48%;">
-                        <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
+                        <h3 class="text-lg font-bold text-center mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                             {{ App::getLocale() === 'en' ? 'How to use Page Management' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити управљање страницама' : 'Kako koristiti upravljanje stranicama') }}
                         </h3>
                         <div class="flex items-center justify-center w-full" style="min-height: 170px;">
                             <button type="button" @click="slide = slide === 1 ? total : slide - 1"
                                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
-                                style="min-width:32px;">
+                                style="min-width:32px; color: var(--secondary-text);">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -338,7 +338,7 @@
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"
                                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
-                                style="min-width:32px;">
+                                style="min-width:32px; color: var(--secondary-text);">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -369,10 +369,10 @@
                         <!-- Slide 1 -->
                         <template x-if="slide === 1">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Creating and editing pages' : (App::getLocale() === 'sr-Cyrl' ? 'Креирање и уређивање страница' : 'Kreiranje i uređivanje stranica') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Welcome to the Page creation and editing tool. Here you can easily create and customize pages using simple steps.
@@ -389,10 +389,10 @@
                         <!-- Slide 2 -->
                         <template x-if="slide === 2">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Text input' : (App::getLocale() === 'sr-Cyrl' ? 'Унос текста' : 'Unos teksta') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Enter the desired text, then click the blue button next to the field to save it.<br>
@@ -412,10 +412,10 @@
                         <!-- Slide 3 -->
                         <template x-if="slide === 3">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Adding an image' : (App::getLocale() === 'sr-Cyrl' ? 'Додавање слике' : 'Dodavanje slike') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Drag your photo from your computer and drop it into the upload area. Alternatively, click on the upload area and choose an image from your computer.
@@ -438,10 +438,10 @@
                         <!-- Slide 4 -->
                         <template x-if="slide === 4">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Page URL' : (App::getLocale() === 'sr-Cyrl' ? '"URL" странице' : 'URL stranice') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Enter the page identifier in the 'URL of the page' field, which is the final part of the address (e.g., 'most-important-news'). Use lowercase letters and hyphens instead of spaces.<br>
@@ -458,10 +458,10 @@
                         <!-- Slide 5 -->
                         <template x-if="slide === 5">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Navigation section' : (App::getLocale() === 'sr-Cyrl' ? 'Навигациона секција' : 'Navigaciona sekcija') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Navigation sections link your page to the main menu. Choose a section (e.g., "About us") to connect it to the navigation. Some sections appear gray and disabled because other pages are already linked to them, and these sections are not dropdown. If you want to add new sections or edit existing ones, go to the navigation settings.
@@ -478,10 +478,10 @@
                         <!-- Slide 6 -->
                         <template x-if="slide === 6">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Page automatic translation' : (App::getLocale() === 'sr-Cyrl' ? 'Аутоматски превод странице' : 'Automatski prevod stranice') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     This section manages <strong>automatic translation.</strong> When you enter text and select "Serbian," clicking the <strong>"Save Changes"</strong> button will automatically save and translate the text into the opposite script and English. Click the "English" button to review the translation, correct any errors if present, and save again by clicking "Save Changes."
@@ -498,10 +498,10 @@
                         <!-- Slide 7 -->
                         <template x-if="slide === 7">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Page automatic translation' : (App::getLocale() === 'sr-Cyrl' ? 'Аутоматски превод странице' : 'Automatski prevod stranice') }}
                                 </h4>
-                                <p>
+                                <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
                                     The <strong>"Save Changes"</strong> button saves your edits, allowing you to return and continue editing the page at any time. The page remains visible only to you as the editor until you publish it with the <strong>"Publish"</strong> button.

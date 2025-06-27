@@ -151,19 +151,20 @@
 </div>
 @else
 <x-guest-layout>
-    <div class="flex flex-col items-center w-9/12 mx-auto dark:text-white mt-6">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">{{ $content['title'] ?? '' }}</h1>
+    <div class="flex flex-col items-center w-9/12 mx-auto mt-6" style="background: var(--primary-bg); color: var(--primary-text);">
+        <h1 class="text-3xl font-bold mb-4" style="color: var(--primary-text); font-family: var(--font-title);">{{ $content['title'] ?? '' }}</h1>
 
         @if (!empty($content['image']))
         <img src="{{ asset('storage/' . $content['image']) }}"
             class="rounded shadow w-full h-auto object-contain mb-6" alt="">
         @endif
 
-        <div>
+        <div style="font-family: var(--font-body);">
             {!! $content['text'] !!}
         </div>
 
-        <button id="open-modal" type="button" class="ml-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+        <button id="open-modal" type="button" class="ml-4 font-semibold py-2 px-4 rounded-lg shadow"
+                style="background: var(--accent); color: #fff;">
             @switch(App::getLocale())
             @case('en') Edit @break
             @case('sr-Cyrl') Уреди @break
@@ -171,15 +172,15 @@
             @endswitch
         </button>
 
-
         <!-- Modal -->
-        <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background: rgba(0,0,0,0.5);">
             <form id="edit-form" method="POST" action="{{ route('page.update', $page->slug) }}" enctype="multipart/form-data"
-                class="bg-white dark:bg-gray-800 rounded-lg p-6 w-11/12 md:w-3/4 lg:w-1/2 relative flex flex-col gap-4">
+                class="rounded-lg p-6 w-11/12 md:w-3/4 lg:w-1/2 relative flex flex-col gap-4"
+                style="background: var(--primary-bg); color: var(--primary-text);">
                 @csrf
                 @method('PATCH')
 
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                <h2 class="text-xl font-semibold" style="color: var(--primary-text); font-family: var(--font-title);">
                     @switch(App::getLocale())
                     @case('en') Edit content @break
                     @case('sr-Cyrl') Уредите садржај @break
@@ -188,30 +189,28 @@
                 </h2>
                 @switch(App::getLocale())
                 @case('en')
-                <p class="text-sm text-gray-800 dark:text-white">
+                <p class="text-sm" style="color: var(--secondary-text); font-family: var(--font-body);">
                     The text you enter in Serbian is automatically converted to the other Serbian script and translated into English.
                     We recommend entering the content first in Serbian, saving the page, and then switching to English to review and adjust the translation if needed.
                 </p>
                 @break
-
                 @case('sr-Cyrl')
-                <p class="text-sm text-gray-800 dark:text-white">
+                <p class="text-sm" style="color: var(--secondary-text); font-family: var(--font-body);">
                     Текст који унесете на српском се аутоматски конвертује у друго српско писмо и преводи на енглески језик.
                     Препоручујемо да прво унесете садржај на српском, сачувате страницу, а затим се пребаците на енглески ради прегледа и корекције превода.
                 </p>
                 @break
-
                 @default
-                <p class="text-sm text-gray-800 dark:text-white">
+                <p class="text-sm" style="color: var(--secondary-text); font-family: var(--font-body);">
                     Tekst koji unesete na srpskom se automatski konvertuje u drugo srpsko pismo i prevodi na engleski jezik.
                     Preporučujemo da najpre unesete sadržaj na srpskom, sačuvate stranicu, a zatim se prebacite na engleski kako biste proverili i eventualno izmenili prevod.
                 </p>
                 @endswitch
 
-
-                <div class="flex gap-4 text-gray-700 dark:text-white">
+                <div class="flex gap-4" style="color: var(--secondary-text);">
                     <label>
-                        <input type="radio" name="language" value="sr" checked>
+                        <input type="radio" name="language" value="sr" checked class="w-4 h-4 focus:ring-2"
+                               style="background: var(--primary-bg); border-color: var(--secondary-text);">
                         @switch(App::getLocale())
                         @case('en') Serbian @break
                         @case('sr-Cyrl') Српски @break
@@ -219,7 +218,8 @@
                         @endswitch
                     </label>
                     <label>
-                        <input type="radio" name="language" value="en">
+                        <input type="radio" name="language" value="en" class="w-4 h-4 focus:ring-2"
+                               style="background: var(--primary-bg); border-color: var(--secondary-text);">
                         @switch(App::getLocale())
                         @case('en') English @break
                         @case('sr-Cyrl') Енглески @break
@@ -232,33 +232,37 @@
                 <input type="hidden" name="content_en[text]" id="input-en-hidden">
 
                 <div id="editor-sr-wrapper">
-                    <div class="bg-white">
+                    <div style="background: var(--primary-bg);">
                         <trix-toolbar id="trix-toolbar-sr"></trix-toolbar>
                     </div>
                     <trix-editor input="trix-input-sr" toolbar="trix-toolbar-sr"
-                        class="trix-content bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg min-h-[300px] mt-2">
+                        class="trix-content rounded-lg border min-h-[300px] mt-2"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text); font-family: var(--font-body);">
                     </trix-editor>
                     <input id="trix-input-sr" type="hidden" value="{{ old('content.text', $content['text'] ?? '') }}">
                 </div>
                 <div id="editor-en-wrapper" class="hidden">
-                    <div class="bg-white">
+                    <div style="background: var(--primary-bg);">
                         <trix-toolbar id="trix-toolbar-en"></trix-toolbar>
                     </div>
                     <trix-editor input="trix-input-en" toolbar="trix-toolbar-en"
-                        class="trix-content bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg min-h-[300px] mt-2">
+                        class="trix-content rounded-lg border min-h-[300px] mt-2"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text); font-family: var(--font-body);">
                     </trix-editor>
                     <input id="trix-input-en" type="hidden" value="{{ old('content_en.text', $page->content_en['text'] ?? '') }}">
                 </div>
 
                 <div class="flex justify-end gap-4 mt-4">
-                    <button type="button" id="cancel-modal" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg">
+                    <button type="button" id="cancel-modal" class="px-4 py-2 rounded"
+                            style="background: var(--secondary-text); color: #fff;">
                         @switch(App::getLocale())
                         @case('en') Cancel @break
                         @case('sr-Cyrl') Откажи @break
                         @default Otkaži
                         @endswitch
                     </button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                    <button type="submit" class="px-4 py-2 rounded"
+                            style="background: var(--accent); color: #fff;">
                         @switch(App::getLocale())
                         @case('en') Save @break
                         @case('sr-Cyrl') Сачувај @break
