@@ -138,7 +138,6 @@ class PageController extends Controller
             $data[$k] = $f->store('uploads', 'public');
         }
 
-
         $originalTitle = $request->title;
         $detectedScript = $this->languageMapper->detectScript($originalTitle);
         if ($detectedScript === 'cyrillic') {                                                            //input in serbian cyrillic
@@ -277,12 +276,11 @@ class PageController extends Controller
                 }
             }
         }
-
         if ($request->action === 'draft') {
             return redirect()
                 ->route('page.edit', ['slug' => $page->slug, 'sablon' => $page->template_id])
                 ->withInput()
-                ->with('status', 'Draft saved.');
+                ->with('success', 'Draft saved.');
         }
 
         return redirect()->route('page.show', $page->slug);

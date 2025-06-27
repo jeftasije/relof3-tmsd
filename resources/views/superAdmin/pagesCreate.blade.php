@@ -7,6 +7,7 @@
         subSections: {},
         titleValue: '{{ old('title', $title) }}',
         slugValue: '{{ old('slug', $slug) }}',
+        loading: false
     }"
         x-init="
         subSections = JSON.parse($refs.jsonSubSections.textContent);
@@ -173,12 +174,22 @@
                             name="action"
                             value="draft"
                             form="page-form"
+                            @click="
+                                loading = true;
+                                $refs.actionInput.value = 'draft';
+                                $refs.form.submit();
+                            "
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sačuvaj promene</button>
                         <button
                             type="submit"
                             name="action"
                             value="publish"
                             form="page-form"
+                            @click="
+                                loading = true;
+                                $refs.actionInput.value = 'publish';
+                                $refs.form.submit();
+                            "
                             class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Objavi</button>
                     </div>
                 </div>
@@ -197,6 +208,31 @@
             <input type="hidden" name="navigation[]" x-ref="hiddenMain" :value="main">
             <input type="hidden" name="navigation[]" x-ref="hiddenSub" :value="sub">
         </form>
+        <div
+            x-show="loading"
+            x-transition
+            class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 mb-6 text-orange-800 bg-orange-100 border border-orange-300 p-4 rounded shadow-lg">
+            @switch(App::getLocale())
+            @case('en') Please wait... @break
+            @case('sr-Cyrl') Молимо сачекајте... @break
+            @default Molimo sačekajte...
+            @endswitch
+        </div>
+        @if(session('success'))
+        <div
+            x-data="{ show: true }"
+            x-show="show"
+            x-transition
+            x-init="setTimeout(() => show = false, 4000)"
+            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+            @switch(App::getLocale())
+            @case('en') Saved successfully @break
+            @case('sr-Cyrl') Успешно сачувано @break
+            @default Uspešno sačuvano
+            @endswitch
+        </div>
+        @endif
+
         @if(!isset($page) || $page->is_deletable)
         <div class="min-h-screen w-full flex items-center justify-center">
             @include('templates.template' . $templateId)
