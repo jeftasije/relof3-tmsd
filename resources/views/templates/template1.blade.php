@@ -96,7 +96,7 @@
         }
     }"
         x-init="init()"
-        class="my-6 w-11/12">
+        class="my-6 w-10/12">
         <div
             x-show="!editingText"
             @click="editingText = true"

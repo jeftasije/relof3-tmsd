@@ -54,7 +54,7 @@
                                     Edit
                                     @break
                                     @case('sr-Cyrl')
-                                    уреди
+                                    Уреди
                                     @break
                                     @default
                                     Uredi

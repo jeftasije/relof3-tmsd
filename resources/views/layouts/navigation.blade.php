@@ -1295,8 +1295,8 @@
             }
         });
 
-        cancelBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
+        cancelPlusBtn.addEventListener('click', () => {
+            plusModal.classList.add('hidden');
             sectionNameInput.value = '';
         });
 
