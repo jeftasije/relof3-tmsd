@@ -18,12 +18,18 @@ class Page extends Model
         'is_active',
     ];
 
+    protected $casts = [
+        'content' => 'array',
+        'content_cy' => 'array',
+        'content_en' => 'array'
+    ];
+    
     public function template()
     {
         return $this->belongsTo(Template::class);
     }
 
-    public function translate(string $field): string
+    public function translate(string $field)
     {
         $locale = app()->getLocale();
         if ($locale === 'en') {

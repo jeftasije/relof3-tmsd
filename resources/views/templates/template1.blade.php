@@ -78,11 +78,11 @@
     </div>
 
     @php
-        $placeholderText = match (App::getLocale()) {
-            'en' => 'Write your article here...',
-            'sr-Cyrl' => 'Напишите чланак овде...',
-            default => 'Napišite članak ovde...',
-        };
+    $placeholderText = match (App::getLocale()) {
+    'en' => 'Write your article here...',
+    'sr-Cyrl' => 'Напишите чланак овде...',
+    default => 'Napišite članak ovde...',
+    };
     @endphp
 
     <div
@@ -159,60 +159,115 @@
             class="rounded shadow w-full h-auto object-contain mb-6" alt="">
         @endif
 
-        <form id="edit-page" method="POST" action="{{ route('page.update', $page->slug) }}" enctype="multipart/form-data">
-            @csrf
-            @method('PATCH')
-            <div class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg">
-                <div x-data="{ editingText: false }" class="my-6 w-auto self-start">
-                    <div
-                        x-data="{
-                editingText: false,
-                previewContent: @js(old('content.text', $content['text'] ?? ''))}"
-                        class="my-6 w-11/12">
-                        <button x-show="!editingText" type="button" @click="editingText = true" class="ml-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                            @switch(App::getLocale())
-                            @case('en') Edit @break
-                            @case('sr-Cyrl') Уреди @break
-                            @default Uredi
-                            @endswitch
-                        </button>
-                        <div
-                            x-show="!editingText"
-                            class="w-full p-4 bg-gray-100 dark:bg-gray-900 rounded-lg relative group">
-                            <div x-ref="preview" x-html="previewContent"
-                                class="text-gray-800 dark:text-gray-200 whitespace-pre-line text-base leading-relaxed">
-                            </div>
-                        </div>
+        <div>
+            {!! $content['text'] !!}
+        </div>
 
-                        <div x-show="editingText" class="my-4 w-full">
-                            <button type="submit"
-                                class="text-white bg-blue-600 hover:bg-blue-700 font-semibold py-2 px-4 rounded-lg shadow"
-                                @click="
-                                    previewContent = $refs.trixEditor.innerHTML;
-                                    editingText = false;">
-                                @switch(App::getLocale())
-                                @case('en') Save @break
-                                @case('sr-Cyrl') Сачувај @break
-                                @default Sačuvaj
-                                @endswitch
-                            </button>
-                            <input id="large-text-input" type="hidden" name="content[text]" form="edit-page"
-                                value="{{ old('content.text', $content['text'] ?? '') }}">
-                            <div class="my-6 w-auto">
-                                <div class="bg-white">
-                                    <trix-toolbar id="trix-toolbar"></trix-toolbar>
-                                </div>
-                                <trix-editor input="large-text-input"
-                                    toolbar="trix-toolbar"
-                                    x-ref="trixEditor"
-                                    class="trix-content mt-3 bg-white dark:bg-gray-800 dark:text-white rounded-lg border-gray-300 dark:border-gray-600 min-h-[300px]">
-                                </trix-editor>
-                            </div>
-                        </div>
-                    </div>
+        <button id="open-modal" type="button" class="ml-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            @switch(App::getLocale())
+            @case('en') Edit @break
+            @case('sr-Cyrl') Уреди @break
+            @default Uredi
+            @endswitch
+        </button>
+
+
+        <!-- Modal -->
+        <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+            <form id="edit-form" method="POST" action="{{ route('page.update', $page->slug) }}" enctype="multipart/form-data"
+                class="bg-white dark:bg-gray-800 rounded-lg p-6 w-11/12 md:w-3/4 lg:w-1/2 relative flex flex-col gap-4">
+                @csrf
+                @method('PATCH')
+
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                    @switch(App::getLocale())
+                    @case('en') Edit content @break
+                    @case('sr-Cyrl') Уредите садржај @break
+                    @default Uredite sadržaj
+                    @endswitch
+                </h2>
+                @switch(App::getLocale())
+                @case('en')
+                <p class="text-sm text-gray-800 dark:text-white">
+                    The text you enter in Serbian is automatically converted to the other Serbian script and translated into English.
+                    We recommend entering the content first in Serbian, saving the page, and then switching to English to review and adjust the translation if needed.
+                </p>
+                @break
+
+                @case('sr-Cyrl')
+                <p class="text-sm text-gray-800 dark:text-white">
+                    Текст који унесете на српском се аутоматски конвертује у друго српско писмо и преводи на енглески језик.
+                    Препоручујемо да прво унесете садржај на српском, сачувате страницу, а затим се пребаците на енглески ради прегледа и корекције превода.
+                </p>
+                @break
+
+                @default
+                <p class="text-sm text-gray-800 dark:text-white">
+                    Tekst koji unesete na srpskom se automatski konvertuje u drugo srpsko pismo i prevodi na engleski jezik.
+                    Preporučujemo da najpre unesete sadržaj na srpskom, sačuvate stranicu, a zatim se prebacite na engleski kako biste proverili i eventualno izmenili prevod.
+                </p>
+                @endswitch
+
+
+                <div class="flex gap-4 text-gray-700 dark:text-white">
+                    <label>
+                        <input type="radio" name="language" value="sr" checked>
+                        @switch(App::getLocale())
+                        @case('en') Serbian @break
+                        @case('sr-Cyrl') Српски @break
+                        @default Srpski
+                        @endswitch
+                    </label>
+                    <label>
+                        <input type="radio" name="language" value="en">
+                        @switch(App::getLocale())
+                        @case('en') English @break
+                        @case('sr-Cyrl') Енглески @break
+                        @default Engleski
+                        @endswitch
+                    </label>
                 </div>
-            </div>
-        </form>
+
+                <input type="hidden" name="content[text]" id="input-sr-hidden">
+                <input type="hidden" name="content_en[text]" id="input-en-hidden">
+
+                <div id="editor-sr-wrapper">
+                    <div class="bg-white">
+                        <trix-toolbar id="trix-toolbar-sr"></trix-toolbar>
+                    </div>
+                    <trix-editor input="trix-input-sr" toolbar="trix-toolbar-sr"
+                        class="trix-content bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg min-h-[300px] mt-2">
+                    </trix-editor>
+                    <input id="trix-input-sr" type="hidden" value="{{ old('content.text', $content['text'] ?? '') }}">
+                </div>
+                <div id="editor-en-wrapper" class="hidden">
+                    <div class="bg-white">
+                        <trix-toolbar id="trix-toolbar-en"></trix-toolbar>
+                    </div>
+                    <trix-editor input="trix-input-en" toolbar="trix-toolbar-en"
+                        class="trix-content bg-white dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg min-h-[300px] mt-2">
+                    </trix-editor>
+                    <input id="trix-input-en" type="hidden" value="{{ old('content_en.text', $page->content_en['text'] ?? '') }}">
+                </div>
+
+                <div class="flex justify-end gap-4 mt-4">
+                    <button type="button" id="cancel-modal" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg">
+                        @switch(App::getLocale())
+                        @case('en') Cancel @break
+                        @case('sr-Cyrl') Откажи @break
+                        @default Otkaži
+                        @endswitch
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+                        @switch(App::getLocale())
+                        @case('en') Save @break
+                        @case('sr-Cyrl') Сачувај @break
+                        @default Sačuvaj
+                        @endswitch
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </x-guest-layout>
 @endif
@@ -282,6 +337,63 @@
             if (file && file.type.startsWith('image/')) {
                 showImagePreview(file);
             }
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const openModal = document.getElementById('open-modal');
+        const modal = document.getElementById('edit-modal');
+        const cancelBtn = document.getElementById('cancel-modal');
+
+        const editorSrWrapper = document.getElementById('editor-sr-wrapper');
+        const editorEnWrapper = document.getElementById('editor-en-wrapper');
+
+        const srInputHidden = document.getElementById('input-sr-hidden');
+        const enInputHidden = document.getElementById('input-en-hidden');
+
+        const trixInputSr = document.getElementById('trix-input-sr');
+        const trixInputEn = document.getElementById('trix-input-en');
+
+        function setTrixContent(editorElement, hiddenInput, content) {
+            hiddenInput.value = content;
+            editorElement.editor.loadHTML(content);
+        }
+
+        openModal.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            setTrixContent(document.querySelector('#editor-sr-wrapper trix-editor'), trixInputSr, trixInputSr.value);
+            setTrixContent(document.querySelector('#editor-en-wrapper trix-editor'), trixInputEn, trixInputEn.value);
+
+            editorSrWrapper.classList.remove('hidden');
+            editorEnWrapper.classList.add('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        });
+
+        document.querySelectorAll('input[name="language"]').forEach((radio) => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'sr') {
+                    editorSrWrapper.classList.remove('hidden');
+                    editorEnWrapper.classList.add('hidden');
+                    setTrixContent(document.querySelector('#editor-sr-wrapper trix-editor'), trixInputSr, trixInputSr.value);
+                } else {
+                    editorSrWrapper.classList.add('hidden');
+                    editorEnWrapper.classList.remove('hidden');
+                    setTrixContent(document.querySelector('#editor-en-wrapper trix-editor'), trixInputEn, trixInputEn.value);
+                }
+            });
+        });
+
+
+        document.getElementById('edit-form').addEventListener('submit', function() {
+            srInputHidden.value = trixInputSr.value;
+            enInputHidden.value = trixInputEn.value;
         });
     });
 </script>

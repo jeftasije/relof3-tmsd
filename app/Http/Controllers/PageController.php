@@ -45,7 +45,7 @@ class PageController extends Controller
 
         return view('templates.template' . $page->template_id, [
             'page' => $page,
-            'content' => json_decode($page->translate('content'), true),
+            'content' => $page->translate('content')
         ]);
     }
 
@@ -201,22 +201,22 @@ class PageController extends Controller
             $content_cy['title'] = $titleCy;
             $content_cy['text'] = $textCy;
 
-            if ($request->query('slug')){
+            if ($request->query('slug')) {
                 $page->update([
                     'title'     => $page_titleLat,
                     'title_cy'     => $page_titleCyr,
                     'title_en'     => $page_titleEn,
-                    'content'   => json_encode($content),
-                    'content_en'   => json_encode($content_en),
-                    'content_cy'   => json_encode($content_cy),
+                    'content'   => $content,
+                    'content_en'   => $content_en,
+                    'content_cy'   => $content_cy,
                 ]);
             }
         } else {
             $content_en = $data;
-            if ($request->query('slug')){
+            if ($request->query('slug')) {
                 $page->update([
                     'title_en'     => $request->title,
-                    'content_en'   => json_encode($content_en)
+                    'content_en'   => $content_en
                 ]);
             }
         }
@@ -236,9 +236,9 @@ class PageController extends Controller
                 'title_cy'       => $page_titleCyr,
                 'title_en'       => $page_titleEn,
                 'slug'        => Str::slug($request->slug),
-                'content'     => json_encode($content),
-                'content_en'   => json_encode($content_en),
-                'content_cy'   => json_encode($content_cy),
+                'content'     => $content,
+                'content_en'   => $content_en,
+                'content_cy'   => $content_cy,
                 'is_active'   => $request->action === 'publish',
             ]);
         }
@@ -294,12 +294,9 @@ class PageController extends Controller
             return '';
         }
 
-        // Ensure UTF-8 encoding
         $html = mb_convert_encoding($html, 'UTF-8', 'auto');
 
-        // Try DOMDocument for clean HTML
         $doc = new DOMDocument();
-        // Wrap in a temporary div to ensure valid XML parsing
         $wrappedHtml = '<div>' . $html . '</div>';
         if (@$doc->loadHTML('<?xml encoding="UTF-8">' . $wrappedHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD)) {
             $xpath = new DOMXPath($doc);
@@ -308,7 +305,6 @@ class PageController extends Controller
             foreach ($textNodes as $node) {
                 $text = trim($node->nodeValue);
                 if ($text !== '') {
-                    // Use mapper for Cyrillic <-> Latin, translator for others
                     if (in_array($sourceLang, ['sr-cyr', 'sr-lat']) && in_array($targetLang, ['sr-cyr', 'sr-lat'])) {
                         $processedText = $sourceLang === 'sr-cyr'
                             ? $this->languageMapper->cyrillic_to_latin($text)
@@ -320,7 +316,6 @@ class PageController extends Controller
                 }
             }
 
-            // Extract content without the wrapping div
             $body = $doc->getElementsByTagName('div')->item(0);
             $result = '';
             foreach ($body->childNodes as $child) {
@@ -329,7 +324,6 @@ class PageController extends Controller
             return $result;
         }
 
-        // Fallback: preserve structure by manually replacing text
         $plainText = strip_tags($html);
         $processedText = in_array($sourceLang, ['sr-cyr', 'sr-lat']) && in_array($targetLang, ['sr-cyr', 'sr-lat'])
             ? ($sourceLang === 'sr-cyr'
@@ -337,7 +331,6 @@ class PageController extends Controller
                 : $this->languageMapper->latin_to_cyrillic($plainText))
             : $this->translate->setSource($sourceLang)->setTarget($targetLang)->translate($plainText);
 
-        // Reapply common tags if present in original HTML
         $patterns = [
             '/<div>(.*?)<\/div>/i' => '<div>%s</div>',
             '/<strong>(.*?)<\/strong>/i' => '<strong>%s</strong>',
@@ -349,7 +342,7 @@ class PageController extends Controller
         foreach ($patterns as $pattern => $replacement) {
             if (preg_match($pattern, $html)) {
                 $result = preg_replace($pattern, sprintf($replacement, $processedText), $html);
-                break; // Apply the first matching pattern
+                break;
             }
         }
         return $result ?: $processedText;
@@ -437,13 +430,11 @@ class PageController extends Controller
                 'currentSection' => $currentSection,
                 'parentSection'  => $parentSection,
                 'page'           => $page,
-                'content'        => json_decode($page->content_en, true),
+                'content'        => $page->content_en, true,
                 'title'          => $page->title_en,
                 'slug'           => $page->slug,
                 'isDraft'        => true,
             ];
-
-            // Redirect to superAdmin.pagesCreate view with data
             return view('superAdmin.pagesCreate', $viewData);
         }
 
@@ -454,7 +445,7 @@ class PageController extends Controller
             'currentSection' => $currentSection,
             'parentSection'  => $parentSection,
             'page'           => $page,
-            'content'        => json_decode($page->translate('content'), true),
+            'content'        => $page->translate('content'),
             'title'          => $page->translate('title'),
             'slug'           => $page->slug,
             'isDraft'        => true,
@@ -464,27 +455,48 @@ class PageController extends Controller
     //this is edit for editor
     public function update(Request $request, string $slug)
     {
-        $page = Page::where('slug', $slug)->firstOrFail();
-
         $request->validate([
             'content'     => 'nullable|array',
+            'content_en'     => 'nullable|array',
         ]);
+        $page = Page::where('slug', $slug)->firstOrFail();
 
-        $existing = json_decode($page->content, true) ?: [];
-        $new = $request->input('content', []);
+        $content    = $page->content;
+        $content_en = $page->content_en;
+        $content_cy = $page->content_cy;
 
-        foreach ($new as $key => $value) {
-            if ($request->hasFile("content.$key")) {
-                $file       = $request->file("content.$key");
-                $existing[$key] = $file->store('uploads', 'public');
+        $language = $request->get('language');
+        $data = $request->input('content');
+        if ($language === 'sr') {
+            $detectedScript = $this->languageMapper->detectScript($request->content['text']);
+            $plainTextForTranslation = isset($data['text']) ? strip_tags($data['text']) : '';
+            if ($detectedScript === 'cyrillic') {
+                if ($plainTextForTranslation !== null) {
+                    $textCy = $plainTextForTranslation;
+                    $textLat = $this->translateWithHtmlPreserved($data['text'], 'sr-cyr', 'sr-lat');
+                    $textEn = $this->translateWithHtmlPreserved($data['text'], 'sr', 'en');
+                }
             } else {
-                $existing[$key] = $value;
+                if ($plainTextForTranslation !== null) {
+                    $textLat = $plainTextForTranslation;
+                    $textEn = $this->translateWithHtmlPreserved($data['text'], 'sr', 'en');
+                    $textCy = $this->translateWithHtmlPreserved($data['text'], 'sr-lat', 'sr-cyr');
+                }
             }
+            $content['text']    = $textLat;
+            $content_en['text'] = $textEn;
+            $content_cy['text'] = $textCy;
+        } else {
+            $content_en['text'] = $request->content_en['text'];
         }
 
-        $page->content = json_encode($existing, JSON_UNESCAPED_UNICODE);
-        $page->save();
-
-        return redirect()->back()->with('success', 'Page saved');
+        if ($slug) {
+            $page->update([
+                'content'     => $content,
+                'content_en'  => $content_en,
+                'content_cy'  => $content_cy,
+            ]);
+            return redirect()->back()->with('success', 'Page saved');
+        }
     }
 }
