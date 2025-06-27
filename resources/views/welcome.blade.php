@@ -83,18 +83,10 @@
             <section class="bg-gray-100 dark:bg-gray-800 py-12">
                 <div class="max-w-screen-xl mx-auto px-4 text-center">
                     <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-                        {{ App::getLocale() === 'en'
-                            ? 'Search for books on COBISS'
-                            : (App::getLocale() === 'sr-Cyrl'
-                                ? 'Претражи књиге на COBISS-у'
-                                : 'Pretraži knjige na COBISS-u') }}
+                        {{ __('cobiss_title') }}
                     </h2>
                     <p class="text-lg mb-6 text-gray-700 dark:text-gray-300">
-                        {{ App::getLocale() === 'en'
-                            ? 'Enter the book title, author, or ISBN and you will be redirected to COBISS'
-                            : (App::getLocale() === 'sr-Cyrl'
-                                ? 'Унесите назив књиге, аутора или ISBN број и бићете преусмерени на COBISS'
-                                : 'Unesite naziv knjige, autora ili ISBN broj i bićete preusmereni na COBISS') }}
+                        {{ __('cobiss_subtitle') }}
                     </p>
                     <form
                         action="https://plus.cobiss.net/cobiss/sr/sr/bib/search"

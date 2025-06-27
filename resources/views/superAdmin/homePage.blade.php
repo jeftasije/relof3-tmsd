@@ -6,6 +6,8 @@
         $newsTitleValue = '';
         $contactTitleValue = '';
         $contactSubtitleValue = '';
+        $cobissTitleValue = '';
+        $cobissSubtitleValue = '';
 
         if ($locale === 'sr-Cyrl') {
             $subtitleValue = old('subtitle_sr_cyr', $subtitle_sr_cyr ?? '');
@@ -13,12 +15,17 @@
             $newsTitleValue = old('news_title_sr_cyr', $news_title_sr_cyr ?? '');
             $contactTitleValue = old('contact_title_sr_cyr', $contact_title_sr_cyr ?? '');
             $contactSubtitleValue = old('contact_subtitle_sr_cyr', $contact_subtitle_sr_cyr ?? '');
+            $cobissTitleValue = old('cobiss_title_sr_cyr', $cobiss_title_sr_cyr ?? '');
+            $cobissSubtitleValue = old('cobiss_subtitle_sr_cyr', $cobiss_subtitle_sr_cyr ?? '');
+
         } else {
             $subtitleValue = old('subtitle_sr_lat', $subtitle_sr_lat ?? '');
             $titleValue = old('title_sr_lat', $title_sr_lat ?? '');
             $newsTitleValue = old('news_title_sr_lat', $news_title_sr_lat ?? '');
             $contactTitleValue = old('contact_title_sr_lat', $contact_title_sr_lat ?? '');
             $contactSubtitleValue = old('contact_subtitle_sr_lat', $contact_subtitle_sr_lat ?? '');
+            $cobissTitleValue = old('cobiss_title_sr_lat', $cobiss_title_sr_lat ?? '');
+            $cobissSubtitleValue = old('cobiss_subtitle_sr_lat', $cobiss_subtitle_sr_lat ?? '');
         }
     @endphp
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -221,6 +228,75 @@
                         <div class="mb-4">
                             <label for="contact_subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
                             <input type="text" id="contact_subtitle_en" name="contact_subtitle_en" value="{{ old('contact_subtitle_en', $contact_subtitle_en ?? '') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+                        <button type="submit"
+                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                        </button>
+                    </div>
+            </form>
+        </div>
+
+
+
+
+
+        <div>
+            <div class="flex items-center justify-between mb-6">    
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ App::getLocale() === 'en' ? 'Edit COBISS section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди "COBISS" секцију' : 'Uredi "COBISS" sekciju') }}
+                </h1>
+            </div>
+
+            <form action="{{ route('homepage.updateCobissSr') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+
+                    {{-- Leva strana --}}
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+
+                        {{-- Slika --}}
+                        <div class="mb-4">
+                            <img src="{{ asset('images/cobiss.png') }}" alt="{{ App::getLocale() === 'en' ? 'Hero image preview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед насловне слике' : 'Pregled naslovne slike') }}" class="w-full h-auto border-2 border-gray-300 rounded">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="cobiss_title_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}</label>
+                                <input type="text" id="cobiss_title_sr" name="cobiss_title_sr" value="{{ $cobissTitleValue }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="cobiss_subtitle_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
+                            <input type="text" id="cobiss_subtitle_sr" name="cobiss_subtitle_sr" value="{{ $cobissSubtitleValue }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+                        <div class="flex justify-end mt-6">
+                            <button type="submit"
+                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
+                        </div>
+                    </div>
+            </form>
+            <form action="{{ route('homepage.updateCobissEn') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                    {{-- Desna strana --}}
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                            {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EN)' : 'Naslovni deo (EN)') }}
+                        </h2>
+
+                        <div class="mb-4">
+                            <label for="cobiss_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}</label>
+                            <input type="text" id="cobiss_title_en" name="cobiss_title_en" value="{{ old('cobiss_title_en', $cobiss_title_en ?? '') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="cobiss_subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
+                            <input type="text" id="cobiss_subtitle_en" name="cobiss_subtitle_en" value="{{ old('cobiss_subtitle_en', $cobiss_subtitle_en ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                         </div>
                         <button type="submit"

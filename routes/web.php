@@ -94,6 +94,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/naslovna/vesti/en', [HomepageController::class, 'updateNewsEn'])->name('homepage.updateNewsEn');
     Route::post('/naslovna/kontakt/sr', [HomepageController::class, 'updateContactSr'])->name('homepage.updateContactSr');
     Route::post('/naslovna/kontakt/en', [HomepageController::class, 'updateContactEn'])->name('homepage.updateContactEn');
+    Route::post('/naslovna/cobiss/sr', [HomepageController::class, 'updateCobissSr'])->name('homepage.updateCobissSr');
+    Route::post('/naslovna/cobiss/en', [HomepageController::class, 'updateCobissEn'])->name('homepage.updateCobissEn');
 
 });
 

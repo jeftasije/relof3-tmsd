@@ -26,15 +26,16 @@ class HomepageController extends Controller
         $enPath = resource_path('lang/en.json');
         $srCyrPath = resource_path('lang/sr-Cyrl.json');
 
+        $srLCyrContent = file_exists($srCyrPath) ? file_get_contents($srCyrPath) : null;
+        $srCyrJson = $srLCyrContent !== null && $srLCyrContent !== '' ? json_decode($srLCyrContent, true) : [];
+
         $enContent = file_exists($enPath) ? file_get_contents($enPath) : null;
         $enJson = $enContent !== null && $enContent !== '' ? json_decode($enContent, true) : [];
 
         $srLatContent = file_exists($srPath) ? file_get_contents($srPath) : null;
         $srLatJson = $srLatContent !== null && $srLatContent !== '' ? json_decode($srLatContent, true) : [];
 
-        $srLCyrContent = file_exists($srCyrPath) ? file_get_contents($enPath) : null;
-        $srCyrJson = $srLCyrContent !== null && $srLCyrContent !== '' ? json_decode($srLCyrContent, true) : [];
-
+        
         $title_en = $enJson['homepage_title'] ?? '';
         $subtitle_en = $enJson['homepage_subtitle'] ?? '';
 
@@ -57,10 +58,23 @@ class HomepageController extends Controller
         $contact_title_sr_cyr = $srCyrJson['homepage_contact_title'] ?? '';
         $contact_subtitle_sr_cyr = $srCyrJson['homepage_contact_subtitle'] ?? '';
 
+        $cobiss_title_en = $enJson['cobiss_title'] ?? '';
+        $cobiss_subtitle_en = $enJson['cobiss_subtitle'] ?? '';
+
+        $cobiss_title_sr_lat = $srLatJson['cobiss_title'] ?? '';
+        $cobiss_subtitle_sr_lat = $srLatJson['cobiss_subtitle'] ?? '';
+
+        $cobiss_title_sr_cyr = $srCyrJson['cobiss_title'] ?? '';
+        $cobiss_subtitle_sr_cyr = $srCyrJson['cobiss_subtitle'] ?? '';
+
+        //dd($cobiss_title_en, $cobiss_subtitle_en);
+
         return view('superAdmin.homePage', compact('title_en', 'subtitle_en', 'title_sr_lat', 
         'subtitle_sr_lat', 'title_sr_cyr', 'subtitle_sr_cyr', 'news_title_en', 'news_title_sr_lat', 
         'news_title_sr_cyr', 'contact_title_en', 'contact_subtitle_en', 'contact_title_sr_lat',
-        'contact_subtitle_sr_lat', 'contact_title_sr_cyr', 'contact_subtitle_sr_cyr'));
+        'contact_subtitle_sr_lat', 'contact_title_sr_cyr', 'contact_subtitle_sr_cyr',
+        'cobiss_title_en', 'cobiss_subtitle_en', 'cobiss_title_sr_lat', 'cobiss_subtitle_sr_lat', 
+        'cobiss_title_sr_cyr', 'cobiss_subtitle_sr_cyr'));
     }
 
     public function updateSr(Request $request)
@@ -183,15 +197,6 @@ class HomepageController extends Controller
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
 
-        $contactTileCyr = '';
-        $contactSubileCyr = '';
-
-        $contactTileLat = '';
-        $contactSubileLat = '';
-
-        $contactTileEn = '';
-        $contactSubileEn = '';
-
         //ovdje sam stala
 
         $originalTitle = $request->input('contact_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
@@ -276,29 +281,6 @@ class HomepageController extends Controller
         return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
     }
 
-    /*
-    public function updateEn(Request $request)
-    {
-        $request->validate([
-            'title_en' => 'nullable|string',
-            'subtitle_en' => 'nullable|string'
-        ]);
-
-        $enPath = resource_path('lang/en.json');
-
-        $enJson = $this->readJson($enPath);
-
-        $title_en = $request->input('title_en');
-        $subtitle_en = $request->input('subtitle_en');
-
-        $enJson['homepage_title'] = $title_en;
-        $enJson['homepage_subtitle'] = $subtitle_en;
-
-        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
-    }
-*/
     public function updateNewsEn(Request $request)
     {
         $request->validate([
@@ -311,6 +293,104 @@ class HomepageController extends Controller
         $title_en = $request->input('news_title_en');
 
         $enJson['homepage_news_title'] = $title_en;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    public function updateCobissSr(Request $request)
+    { 
+        $request->validate([
+            'cobiss_title_sr' => 'nullable|string',
+            'cobiss_subtitle_sr' => 'nullable|string'
+        ]);
+
+        $srPath = resource_path('lang/sr.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
+        $enPath = resource_path('lang/en.json');
+
+        $srLatJson = $this->readJson($srPath);
+        $srCyrJson = $this->readJson($srCyrPath);
+        $enJson = $this->readJson($enPath);
+
+        $cobissSubileEn = '';
+
+        $originalTitle = $request->input('cobiss_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalSubtitle = $request->input('cobiss_subtitle_sr');
+
+        //dd($originalTitle, $originalSubtitle);
+
+        $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+
+        if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
+            $cobissTitleCyr = $originalTitle;
+            $cobissTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
+            $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+            $cobissSubtitleCyr = $originalSubtitle;
+            $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
+            $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+                $cobissTitleLat = $originalTitle;
+                $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+                $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+                $cobissSubtitleLat = $originalSubtitle;
+                $cobissSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+                $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+            } else {
+                $cobissTitleEn = $originalTitle;
+                $cobissTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $cobissTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
+
+                $cobissSubtitleEn = $originalSubtitle;
+                $cobissSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+                $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($cobissSubtitleCyr);
+            }
+        }
+
+        $enJson['cobiss_title'] = $cobissTitleEn;
+        $srCyrJson['cobiss_title'] = $cobissTitleCyr;
+        $srLatJson['cobiss_title'] = $cobissTitleLat;
+
+        $enJson['cobiss_subtitle'] = $cobissSubtitleEn;
+        $srCyrJson['cobiss_subtitle'] = $cobissSubtitleCyr;
+        $srLatJson['cobiss_subtitle'] = $cobissSubtitleLat;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    public function updateCobissEn(Request $request)
+    {
+        $request->validate([
+            'cobiss_title_en' => 'nullable|string',
+            'cobiss_subtitle_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('cobiss_title_en');
+        $subtitle_en = $request->input('cobiss_subtitle_en');
+
+        $enJson['cobiss_title'] = $title_en;
+        $enJson['cobiss_subtitle'] = $subtitle_en;
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
