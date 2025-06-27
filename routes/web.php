@@ -88,11 +88,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 
     Route::get('/naslovna', [HomepageController::class, 'show'])->name('homePage.show');
-    // Korak 1: Unos naslova i podnaslova na srpskom (ćirilica/latinica) → prevod na engleski
     Route::post('/naslovna/sr', [HomepageController::class, 'updateSr'])->name('homepage.updateSr');
-
-    // Korak 2: Finalno čuvanje svega (uključujući engleski)
     Route::post('/naslovna/en', [HomepageController::class, 'updateEn'])->name('homepage.updateEn');
+    Route::post('/naslovna/vesti/sr', [HomepageController::class, 'updateNewsSr'])->name('homepage.updateNewsSr');
+    Route::post('/naslovna/vesti/en', [HomepageController::class, 'updateNewsEn'])->name('homepage.updateNewsEn');
+    Route::post('/naslovna/kontakt/sr', [HomepageController::class, 'updateContactSr'])->name('homepage.updateContactSr');
+    Route::post('/naslovna/kontakt/en', [HomepageController::class, 'updateContactEn'])->name('homepage.updateContactEn');
 
 });
 

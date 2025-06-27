@@ -44,7 +44,23 @@ class HomepageController extends Controller
         $title_sr_cyr = $srCyrJson['homepage_title'] ?? '';
         $subtitle_sr_cyr = $srCyrJson['homepage_subtitle'] ?? '';
 
-        return view('superAdmin.homePage', compact('title_en', 'subtitle_en', 'title_sr_lat', 'subtitle_sr_lat', 'title_sr_cyr', 'subtitle_sr_cyr'));
+        $news_title_en = $enJson['homepage_news_title'] ?? '';
+        $news_title_sr_lat = $srLatJson['homepage_news_title'] ?? '';
+        $news_title_sr_cyr = $srCyrJson['homepage_news_title'] ?? '';
+
+        $contact_title_en = $enJson['homepage_contact_title'] ?? '';
+        $contact_subtitle_en = $enJson['homepage_contact_subtitle'] ?? '';
+
+        $contact_title_sr_lat = $srLatJson['homepage_contact_title'] ?? '';
+        $contact_subtitle_sr_lat = $srLatJson['homepage_contact_subtitle'] ?? '';
+
+        $contact_title_sr_cyr = $srCyrJson['homepage_contact_title'] ?? '';
+        $contact_subtitle_sr_cyr = $srCyrJson['homepage_contact_subtitle'] ?? '';
+
+        return view('superAdmin.homePage', compact('title_en', 'subtitle_en', 'title_sr_lat', 
+        'subtitle_sr_lat', 'title_sr_cyr', 'subtitle_sr_cyr', 'news_title_en', 'news_title_sr_lat', 
+        'news_title_sr_cyr', 'contact_title_en', 'contact_subtitle_en', 'contact_title_sr_lat',
+        'contact_subtitle_sr_lat', 'contact_title_sr_cyr', 'contact_subtitle_sr_cyr'));
     }
 
     public function updateSr(Request $request)
@@ -97,7 +113,204 @@ class HomepageController extends Controller
         $enJson['homepage_title'] = $title_en;
         $enJson['homepage_subtitle'] = $subtitle_en;
 
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    public function updateNewsSr(Request $request)
+    {
+        $request->validate([
+            'news_title_sr' => 'nullable|string'
+        ]);
+
+        $srPath = resource_path('lang/sr.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
+        $enPath = resource_path('lang/en.json');
+
+        $srLatJson = $this->readJson($srPath);
+        $srCyrJson = $this->readJson($srCyrPath);
+        $enJson = $this->readJson($enPath);
+
+        $newsTitleCyr = '';
+        $newsTitleLat = '';
+        $newsTitleEn = '';
+        $originalTitle = $request->input('news_title_sr');
+
+        $detectedScript = $this->languageMapper->detectScript($originalTitle);              //greska, ispravi
+        if ($detectedScript === 'cyrillic') {
+            $newsTitleCyr = $originalTitle;
+            $newsTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
+            $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
+                $newsTitleLat = $originalTitle;
+                $newsTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+                $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+            } else {
+                $newsTitleEn = $originalTitle;
+                $newsTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $newsTitleLat = $this->languageMapper->cyrillic_to_latin($newsTitleCyr);
+            }
+        }
+
+        $enJson['homepage_news_title'] = $newsTitleEn;
+        $srCyrJson['homepage_news_title'] = $newsTitleCyr;
+        $srLatJson['homepage_news_title'] = $newsTitleLat;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    public function updateContactSr(Request $request)
+    {
+        $request->validate([
+            'contact_title_sr' => 'nullable|string',
+            'contact_subtitle_sr' => 'nullable|string'
+        ]);
+
+        $srPath = resource_path('lang/sr.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
+        $enPath = resource_path('lang/en.json');
+
+        $srLatJson = $this->readJson($srPath);
+        $srCyrJson = $this->readJson($srCyrPath);
+        $enJson = $this->readJson($enPath);
+
+        $contactTileCyr = '';
+        $contactSubileCyr = '';
+
+        $contactTileLat = '';
+        $contactSubileLat = '';
+
+        $contactTileEn = '';
+        $contactSubileEn = '';
+
+        //ovdje sam stala
+
+        $originalTitle = $request->input('contact_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalSubtitle = $request->input('contact_subtitle_sr');
+
+        //dd($originalTitle, $originalSubtitle);
+
+        $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+
+        if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
+            $contactTitleCyr = $originalTitle;
+            $contactTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
+            $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+            $contactSubtitleCyr = $originalSubtitle;
+            $contactSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
+            $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+                $contactTitleLat = $originalTitle;
+                $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+                $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+                $contactSubtitleLat = $originalSubtitle;
+                $contactSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+                $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+            } else {
+                $contactTitleEn = $originalTitle;
+                $contactTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $contactTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
+
+                $contactSubtitleEn = $originalSubtitle;
+                $contactSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+                $contactSubtitleLat = $this->languageMapper->cyrillic_to_latin($contactSubtitleCyr);
+            }
+        }
+
+        $enJson['homepage_contact_title'] = $contactTitleEn;
+        $srCyrJson['homepage_contact_title'] = $contactTitleCyr;
+        $srLatJson['homepage_contact_title'] = $contactTitleLat;
+
+        $enJson['homepage_contact_subtitle'] = $contactSubtitleEn;
+        $srCyrJson['homepage_contact_subtitle'] = $contactSubtitleCyr;
+        $srLatJson['homepage_contact_subtitle'] = $contactSubtitleLat;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    public function updateContactEn(Request $request)
+    {
+        $request->validate([
+            'contact_title_en' => 'nullable|string',
+            'contact_subtitle_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('contact_title_en');
+        $subtitle_en = $request->input('contact_subtitle_en');
+
         //dd($title_en, $subtitle_en);
+
+        $enJson['homepage_contact_title'] = $title_en;
+        $enJson['homepage_contact_subtitle'] = $subtitle_en;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+    /*
+    public function updateEn(Request $request)
+    {
+        $request->validate([
+            'title_en' => 'nullable|string',
+            'subtitle_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('title_en');
+        $subtitle_en = $request->input('subtitle_en');
+
+        $enJson['homepage_title'] = $title_en;
+        $enJson['homepage_subtitle'] = $subtitle_en;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+*/
+    public function updateNewsEn(Request $request)
+    {
+        $request->validate([
+            'news_title_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('news_title_en');
+
+        $enJson['homepage_news_title'] = $title_en;
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
