@@ -160,8 +160,8 @@
                             <label for="language-radio-button-sr" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                 @switch(App::getLocale())
                                 @case('en') Serbian @break
-                                @case('sr-Cyrl') Српски @break
-                                @default Srpski
+                                @case('sr-Cyrl') српски @break
+                                @default srpski
                                 @endswitch
                             </label>
                         </div>
@@ -170,8 +170,8 @@
                             <label for="language-radio-button-en" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                 @switch(App::getLocale())
                                 @case('en') English @break
-                                @case('sr-Cyrl') Енглески @break
-                                @default Engleski
+                                @case('sr-Cyrl') енглески @break
+                                @default engleski
                                 @endswitch
                             </label>
                         </div>
@@ -369,7 +369,7 @@
                         <!-- Slide 1 -->
                         <template x-if="slide === 1">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Creating and editing pages' : (App::getLocale() === 'sr-Cyrl' ? 'Креирање и уређивање страница' : 'Kreiranje i uređivanje stranica') }}
                                 </h4>
                                 <p>
@@ -389,7 +389,7 @@
                         <!-- Slide 2 -->
                         <template x-if="slide === 2">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Text input' : (App::getLocale() === 'sr-Cyrl' ? 'Унос текста' : 'Unos teksta') }}
                                 </h4>
                                 <p>
@@ -412,24 +412,24 @@
                         <!-- Slide 3 -->
                         <template x-if="slide === 3">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Adding an image' : (App::getLocale() === 'sr-Cyrl' ? 'Додавање слике' : 'Dodavanje slike') }}
                                 </h4>
                                 <p>
                                     @switch(App::getLocale())
                                     @case('en')
                                     Drag your photo from your computer and drop it into the upload area. Alternatively, click on the upload area and choose an image from your computer.
-                                    Alternatively, click on the designated area and choose an image from your computer.<br>
+                                    Once selected, a preview of the image will immediately appear. If you want to remove the image, click the red <strong>"Remove Image"</strong> button.
                                     This will immediately remove the image from the upload area, after which you can add a new one if you wish.
                                     @break
                                     @case('sr-Cyrl')
-                                    Превуците вашу фотографију из рачунара и испустите је у означено подручје. Алтернативно, кликните на означено подручје и изаберите слику са рачунара.<br>
-                                    Once selected, a preview of the image will immediately appear. If you want to remove the image, click the red "Remove Image" button.<br>
+                                    Превуците вашу фотографију из рачунара и испустите је у означено подручје. Алтернативно, кликните на означено подручје и изаберите слику са рачунара.
+                                    Након избора, преглед слике ће се одмах приказати у подручју. Ако желите да уклоните слику, кликните на црвено дугме <strong>"Уклони слику"</strong>.
                                     Ово ће одмах уклонити слику из подручја за отпремање, а након тога можете додати нову уколико желите.
                                     @break
                                     @default
-                                    Prevucite vašu fotografiju iz računara i ispustite je u označeno područje. Alternativno, kliknite na označeno područje i izaberite sliku sa računara.<br>
-                                    Nakon izbora, pregled slike će odmah prikazati u području. Ako želite da uklonite sliku, kliknite na crveno dugme "Ukloni sliku".<br>
+                                    Prevucite vašu fotografiju iz računara i ispustite je u označeno područje. Alternativno, kliknite na označeno područje i izaberite sliku sa računara.
+                                    Nakon izbora, pregled slike će se odmah prikazati u području. Ako želite da uklonite sliku, kliknite na crveno dugme <strong>"Ukloni sliku"</strong>.
                                     Ovo će odmah ukloniti sliku iz područja za otpremanje, a nakon toga možete dodati novu ukoliko želite.
                                     @endswitch
                                 </p>
@@ -438,7 +438,7 @@
                         <!-- Slide 4 -->
                         <template x-if="slide === 4">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Page URL' : (App::getLocale() === 'sr-Cyrl' ? '"URL" странице' : 'URL stranice') }}
                                 </h4>
                                 <p>
@@ -458,16 +458,16 @@
                         <!-- Slide 5 -->
                         <template x-if="slide === 5">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Navigation section' : (App::getLocale() === 'sr-Cyrl' ? 'Навигациона секција' : 'Navigaciona sekcija') }}
                                 </h4>
                                 <p>
                                     @switch(App::getLocale())
                                     @case('en')
-                                    Navigation sections link your page to the main menu. Choose a section (e.g., "About us") to connect it to the navigation. Some sections appear gray and disabled because other pages are already linked to them, and these sections are not expandable. If you want to add new sections or edit existing ones, go to the navigation settings.
+                                    Navigation sections link your page to the main menu. Choose a section (e.g., "About us") to connect it to the navigation. Some sections appear gray and disabled because other pages are already linked to them, and these sections are not dropdown. If you want to add new sections or edit existing ones, go to the navigation settings.
                                     @break
                                     @case('sr-Cyrl')
-                                    Навигaционые секције повезују вашу страницу са главним менијем. Изаберите секцију (нпр. "О нама") да је повежете са навигацијом. Некиe секције су сиви и онемогућени јер су на њих већ повезане друге странице, а те секције нису прошириве. Ако желите да додате нове секције или измените постојеће, идите у подешавања навигације.
+                                    Навигaционые секције повезују вашу страницу са главним менијем. Изаберите секцију (нпр. "О нама") да је повежете са навигацијом. Некe секције су сиве и онемогућене јер су на њих већ повезане друге странице, а те секције нису опадајуће. Ако желите да додате нове секције или измените постојеће, идите у подешавања навигације.
                                     @break
                                     @default
                                     Navigacione sekcije povezuju vašu stranicu sa glavnim menijem. Izaberite sekciju (npr. "O nama") da je povežete sa navigacijom. Neke sekcije su sive i isključene jer su na njih već povezane druge stranice, a te sekcije nisu opadajuće. Ako želite da dodate nove sekcije ili izmenite postojeće, idite u podešavanja navigacije.
@@ -478,19 +478,19 @@
                         <!-- Slide 6 -->
                         <template x-if="slide === 6">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Page automatic translation' : (App::getLocale() === 'sr-Cyrl' ? 'Аутоматски превод странице' : 'Automatski prevod stranice') }}
                                 </h4>
                                 <p>
                                     @switch(App::getLocale())
                                     @case('en')
-                                    This section manages automatic translation. When you enter text and select "Srpski," clicking the "Save Changes" button will automatically save and translate the text into the opposite script and English. Click the "English" button to review the translation, correct any errors if present, and save again by clicking "Save Changes."
+                                    This section manages <strong>automatic translation.</strong> When you enter text and select "Serbian," clicking the <strong>"Save Changes"</strong> button will automatically save and translate the text into the opposite script and English. Click the "English" button to review the translation, correct any errors if present, and save again by clicking "Save Changes."
                                     @break
                                     @case('sr-Cyrl')
-                                    Ова секција управља аутоматским преводом. Када унесете текст и одаберете "Српски", кликом на дугме "Сачувај промене" текст ће се аутоматски сачувати и превести у супротно писмо и на енглески. Кликните на дугме "Енглески" да проверите превод, исправите грешке ако их има, и сачувајте поново кликом на дугме "Сачувај промене".
+                                    Ова секција управља <strong>аутоматским преводом.</strong> Када унесете текст и одаберете "српски", кликом на дугме <strong>"Сачувај промене"</strong> текст ће се аутоматски сачувати и превести у супротно писмо и на енглески. Кликните на дугме "енглески" да проверите превод, исправите грешке ако их има, и сачувајте поново кликом на дугме "Сачувај промене".
                                     @break
                                     @default
-                                    Ova sekcija upravlja automatskim prevodom. Kada unesete tekst i izaberete "Srpski", klikom na dugme "Sačuvaj promene", tekst će se automatski sačuvati i prevesti u suprotno pismo i na engleski. Kliknite na dugme "Engleski" da proverite prevod, ispravite greške ako ih ima, i sačuvajte ponovo klikom na dugme "Sačuvaj promene".
+                                    Ova sekcija upravlja <strong>automatskim prevodom.</strong> Kada unesete tekst i izaberete "srpski", klikom na dugme <strong>"Sačuvaj promene"</strong>, tekst će se automatski sačuvati i prevesti u suprotno pismo i na engleski. Kliknite na dugme "engleski" da proverite prevod, ispravite greške ako ih ima, i sačuvajte ponovo klikom na dugme "Sačuvaj promene".
                                     @endswitch
                                 </p>
                             </div>
@@ -498,19 +498,19 @@
                         <!-- Slide 7 -->
                         <template x-if="slide === 7">
                             <div>
-                                <h4 class="font-semibold mb-2">
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text);">
                                     {{ App::getLocale() === 'en' ? 'Page automatic translation' : (App::getLocale() === 'sr-Cyrl' ? 'Аутоматски превод странице' : 'Automatski prevod stranice') }}
                                 </h4>
                                 <p>
                                     @switch(App::getLocale())
                                     @case('en')
-                                    The "Save Changes" button saves your edits, allowing you to return and continue editing the page at any time. The page remains visible only to you as the editor until you publish it with the "Publish" button.
+                                    The <strong>"Save Changes"</strong> button saves your edits, allowing you to return and continue editing the page at any time. The page remains visible only to you as the editor until you publish it with the <strong>"Publish"</strong> button.
                                     @break
                                     @case('sr-Cyrl')
-                                    Дугме "Сачувај промене" чува ваше измене, омогућавајући вам да се вратите и наставите уређивање странице у било ком тренутку. Страница остаје видљива само вама као уреднику док је не објавите дугметом "Објави".
+                                    Дугме <strong>"Сачувај промене"</strong> чува ваше измене, омогућавајући вам да се вратите и наставите уређивање странице у било ком тренутку. Страница остаје видљива само вама као уреднику док је не објавите дугметом <strong>"Објави"</strong>.
                                     @break
                                     @default
-                                    Dugme "Sačuvaj promene" čuva vaše izmene, omogućavajući vam da se vratite i nastavite uređivanje stranice u bilo kom trenutku. Stranica ostaje vidljiva samo vama kao uredniku dok je ne objavite dugmetom "Objavi".
+                                    Dugme <strong>"Sačuvaj promene"</strong> čuva vaše izmene, omogućavajući vam da se vratite i nastavite uređivanje stranice u bilo kom trenutku. Stranica ostaje vidljiva samo vama kao uredniku dok je ne objavite dugmetom <strong>"Objavi"</strong>.
                                     @endswitch
                                 </p>
                             </div>

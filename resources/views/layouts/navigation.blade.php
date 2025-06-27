@@ -492,7 +492,7 @@
                                             <div id="dropdownMenuDots-{{ $subSection->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
                                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconButton">
                                                     <li>
-                                                        <button data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                        <button data-modal-target="renameNavigationModal" data-modal-toggle="renameNavigationModal" data-nav-id="{{ $subSection->id }}" data-nav-title="{{ $subSection->name }}" data-nav-title-en="{{ $subSection->name_en }}" class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                             {{ App::getLocale() === 'en'
                                                         ? 'Rename'
                                                         : (App::getLocale() === 'sr-Cyrl'
@@ -583,7 +583,7 @@
                                         @endswitch
                                     </label>
                                     <input type="text" id="section-name-en" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" placeholder="{{ App::getLocale() === 'en' ? 'Section name' : (App::getLocale() === 'sr-Cyrl' ? 'Назив секције' : 'Naziv sekcije') }}">
-                                    </div>
+                                </div>
                                 <div class="items-center px-4 py-3 mt-4">
                                     <button id="plus-confirm-btn" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-24 mr-2">{{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}</button>
                                     <button id="plus-cancel-btn" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}</button>
@@ -695,11 +695,11 @@
                                     </h4>
                                     <p>
                                         {{ App::getLocale() === 'en'
-    ? 'Click the "Reorder" button, then drag the ⋮⋮ icon next to each section to move it. When you finish, click "Save" to persist your changes.'
-    : (App::getLocale() === 'sr-Cyrl'
-        ? 'Кликните "Промени редослед", потом превуците иконицу ⋮⋮ поред сваке секције да је померите. Када завршите, кликните "Сачувај" да бисте сачували промене.'
-        : 'Kliknite "Promeni redosled", potom prevucite ikonicu ⋮⋮ pored svake sekcije da je pomerite. Kada završite, kliknite "Sačuvaj" da biste sačuvali promene.')
-}}
+                                            ? 'Click the "Reorder" button, then drag the ⋮⋮ icon next to each section to move it. When you finish, click "Save" to persist your changes.'
+                                            : (App::getLocale() === 'sr-Cyrl'
+                                                ? 'Кликните "Промени редослед", потом превуците иконицу ⋮⋮ поред сваке секције да је померите. Када завршите, кликните "Сачувај" да бисте сачували промене.'
+                                                : 'Kliknite "Promeni redosled", potom prevucite ikonicu ⋮⋮ pored svake sekcije da je pomerite. Kada završite, kliknite "Sačuvaj" da biste sačuvali promene.')
+                                        }}
                                     </p>
                                 </div>
 
@@ -709,11 +709,11 @@
                                     </h4>
                                     <p>
                                         {{ App::getLocale() === 'en'
-    ? 'Press the "+" button at the bottom to add a new top‑level section. Enter its name and confirm.'
-    : (App::getLocale() === 'sr-Cyrl'
-        ? 'Притисните "+" на дну листе за додавање нове главне секције. Унесите назив и потврдите.'
-        : 'Pritisnite "+" na dnu liste za dodavanje nove glavne sekcije. Unesite naziv i potvrdite.')
-}}
+                                            ? 'Press the "+" button at the bottom to add a new top‑level section. Enter its name and confirm.'
+                                            : (App::getLocale() === 'sr-Cyrl'
+                                                ? 'Притисните "+" на дну листе за додавање нове главне секције. Унесите назив и потврдите.'
+                                                : 'Pritisnite "+" na dnu liste za dodavanje nove glavne sekcije. Unesite naziv i potvrdite.')
+                                        }}
                                     </p>
                                 </div>
 
@@ -723,11 +723,11 @@
                                     </h4>
                                     <p>
                                         {{ App::getLocale() === 'en'
-    ? 'First, expand the main section where you want to add a subsection by clicking on it. Then, click the "+" button inside that section, enter the name, and confirm.'
-    : (App::getLocale() === 'sr-Cyrl'
-        ? 'Прво проширите главну секцију у којој желите да додате подсекцију кликом на њу. Затим кликните на дугме "+" унутар те секције, унесите назив и потврдите.'
-        : 'Prvo proširite glavnu sekciju u kojoj želite da dodate podsekciju klikom na nju. Zatim kliknite na dugme "+" unutar te sekcije, unesite naziv i potvrdite.')
-}}
+                                            ? 'First, expand the main section where you want to add a subsection by clicking on it. Then, click the "+" button inside that section, enter the name, and confirm.'
+                                            : (App::getLocale() === 'sr-Cyrl'
+                                                ? 'Прво проширите главну секцију у којој желите да додате подсекцију кликом на њу. Затим кликните на дугме "+" унутар те секције, унесите назив и потврдите.'
+                                                : 'Prvo proširite glavnu sekciju u kojoj želite da dodate podsekciju klikom na nju. Zatim kliknite na dugme "+" unutar te sekcije, unesite naziv i potvrdite.')
+                                        }}
                                     </p>
                                 </div>
 
@@ -737,11 +737,43 @@
                                     </h4>
                                     <p>
                                         {{ App::getLocale() === 'en'
-    ? 'Select the checkboxes next to the sections you want to delete (only those that are deletable). Then, click the trash icon located in the top right corner. In the confirmation window, confirm the deletion.'
-    : (App::getLocale() === 'sr-Cyrl'
-        ? 'Означите поља поред секција које желите да обришете (само оне које могу бити обрисане). Затим кликните на икону канте у горњем десном углу. У искачућем прозору потврдите брисање.'
-        : 'Označite kvadratiće pored sekcija koje želite da obrišete (samo one koje se mogu brisati). Zatim kliknite na ikonu kante u gornjem desnom uglu. U iskačućem prozoru potvrdite brisanje.')
-}}
+                                            ? 'Click the three dots next to the navigation section you want to delete. Then, click the "Delete" button if it is enabled. For mandatory navigation sections, the "Delete" button is disabled.'
+                                            : (App::getLocale() === 'sr-Cyrl'
+                                                ? 'Кликните на три тачке поред навигационе секције коју желите да обришете. Затим кликните на дугме "Обриши" ако је омогућено. За обавезне навигационе секције дугме "Обриши" је онемогућено.'
+                                                : 'Kliknite na tri tačke pored navigacione sekcije koju želite da obrišete. Zatim kliknite na dugme "Obriši" ako je omogućeno. Za obavezne navigacione sekcije dugme "Obriši" je onemogućeno.')
+                                        }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Renaming Sections' : (App::getLocale() === 'sr-Cyrl' ? 'Преименовање секција' : 'Preimenovanje sekcija') }}
+                                    </h4>
+                                    <p>
+                                        {{ App::getLocale() === 'en'
+                                            ? 'To rename a navigation section, click the three dots next to it. Then, click the "Rename" button. In the pop-up window that appears, enter the new name and confirm by clicking "Save".'
+                                            : (App::getLocale() === 'sr-Cyrl'
+                                                ? 'Да бисте преименовали навигациону секцију, кликните на три тачке поред ње. Затим кликните на дугме "Преименуј". У искачућем прозору који се отвори, унесите ново име и потврдите кликом на "Сачувај" или.'
+                                                : 'Da biste preimenovali navigacionu sekciju, kliknite na tri tačke pored nje. Zatim kliknite na dugme "Preimenuj". U iskačućem prozoru koji se otvori, unesite novo ime i potvrdite klikom na "Sačuvaj".')
+                                        }}
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-semibold">
+                                        {{ App::getLocale() === 'en' ? 'Why don’t I see the three dots?' : (App::getLocale() === 'sr-Cyrl' ? 'Зашто не видим три тачкице?' : 'Zašto ne vidim tri tačkice?') }}
+                                    </h4>
+                                    <p>
+                                        @switch(App::getLocale())
+                                        @case('en')
+                                        The three dots are not visible for main navigation sections that are mandatory. This is because these sections do not allow renaming or deletion, which is why the option to interact with them is hidden.
+                                        @break
+                                        @case('sr-Cyrl')
+                                        Три тачке нису видљиве за главне навигационе секције које су обавезне. То је зато што ове секције не дозвољавају преименовање или брисање, па се опција за интеракцију са њима не приказује.
+                                        @break
+                                        @default
+                                        Tri tačke nisu vidljive za glavne navigacione sekcije koje su obavezne. To je zato što ove sekcije ne dozvoljavaju preimenovanje ili brisanje, pa se opcija za interakciju sa njima ne prikazuje.
+                                        @endswitch
                                     </p>
                                 </div>
                             </div>
