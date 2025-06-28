@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 
+    Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 });
 
 Route::get('/usluge', function () {
