@@ -142,12 +142,18 @@
     window.marked.setOptions({ breaks: false });
 
     function markdownRestore(text) {
-        // Srpska ćirilica zaštitni tag
         text = text.replace(/##Б##(.*?)##Б##/gs, '**$1**');
-        // Engleski/fallback zaštitni tag (sa space ili bez)
         text = text.replace(/##\s*B\s*##(.*?)##\s*B\s*##/gs, '**$1**');
+        text = text.replace(/\*\*\s+(.*?)\s+\*\*/gs, '**$1**');
+        text = text.replace(/\*\s+(.*?)\s+\*/gs, '*$1*');
+        // Ispravi razne varijante <u> tagova (latinica/ćirilica/sa space)
+        text = text.replace(/<\s*[uу]\s*>/gi, '<u>');
+        text = text.replace(/<\s*\/\s*[uу]\s*>/gi, '</u>');
+        // Ukloni prazne <u></u>
+        text = text.replace(/<u>\s*<\/u>/gi, '');
         return text;
     }
+
 
     function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
