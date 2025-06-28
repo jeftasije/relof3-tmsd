@@ -30,11 +30,31 @@
     @endphp
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div>
-            <div class="flex items-center justify-between mb-6">    
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            <div class="relative flex items-center justify-center mb-8">
+                <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
                     {{ App::getLocale() === 'en' ? 'Edit homepage' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди почетну страницу' : 'Uredi početnu stranicu') }}
                 </h1>
+
+                <div class="absolute right-0">
+                    <button 
+                        id="help-btn" 
+                        onclick="toggleHelpModal()"
+                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                        </svg>
+                        <span class="ml-3">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
+                </div>
             </div>
+
 
             <form action="{{ route('homepage.updateSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -99,6 +119,7 @@
                         </button>
                     </div>
             </form>
+            
         </div>
 
 
@@ -108,9 +129,33 @@
 
         <div>
             <div class="flex items-center justify-between mb-6">    
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                    {{ App::getLocale() === 'en' ? 'Edit news section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди секцију вести' : 'Uredi sekciju vesti') }}
-                </h1>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {{ App::getLocale() === 'en' ? 'Edit news section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди секцију вести' : 'Uredi sekciju vesti') }}
+                    </h1>
+
+                    <!-- Zeleno oko -->
+                    <svg id="eye-open" class="w-6 h-6 text-green-600 cursor-pointer transition" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                        viewBox="0 0 24 24" onclick="toggleEye()">
+                        <path stroke="currentColor" stroke-width="2"
+                            d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                        <path stroke="currentColor" stroke-width="2"
+                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+
+                    <!-- Crveno precrtano oko -->
+                    <svg id="eye-closed" class="w-6 h-6 text-red-600 cursor-pointer transition hidden" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 24 24" onclick="toggleEye()">
+                        <path
+                            d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
+                        <path
+                            d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
+                        <path
+                            d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
+                    </svg>
+                </div>
             </div>
 
             <form action="{{ route('homepage.updateNewsSr') }}" method="POST" enctype="multipart/form-data">
@@ -306,5 +351,54 @@
                     </div>
             </form>
         </div>
+        <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
+                <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+                    &times;
+                </button>
+                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                </h2>
+                <p class="text-gray-700 dark:text-gray-300 space-y-2">
+                    {!! App::getLocale() === 'en'
+                        ? 'On this page, you can edit your homepage by selecting the components you want to appear on it and editing their content.
+                            The only mandatory component is the title section.
+                            If you want a component to be displayed or hidden on the homepage, you should click the eye icon next to the name of that section. A green eye icon indicates that the component will be displayed, while a red, crossed-out eye indicates that the component will not be displayed on the homepage.
+                            You can change the content of the components in the forms on this page. In the forms for the Serbian language, you can write in both scripts (Latin or Cyrillic), and the system will translate the data into English, which you can then review and, if necessary, correct in the adjacent forms.
+                            The data will be saved by clicking the "save" button.
+                            Each form contains a photo of the section it modifies, allowing you to confirm which component you are editing.'
+                        : (App::getLocale() === 'sr-Cyrl'
+                            ? 'На овој страници можете уредити Вашу почетну страницу, тако што бирате компоненте које желите да се на њој налазе и уређујете њихов садржај.
+                                Једина обавезна компонента је насловни део.
+                                Уколико желите да се нека компонента прикаже или не прикаже на почетној страници, треба да притиснете иконицу ока поред назива те секције. Зелена иконица ока означава да ће та компонента бити приказана, а црвено, прецртано око указује да се та компонента неће приказати на почетној страници.
+                                Садржај компоненти можете да промените у формама на овој страници, у формама за српски језик можете писати на оба писма (латиница или ћирилица), систем ће податке превести на енглески језик, које потом можете проверити и, по потреби, исправити у формама поред.
+                                Подаци ће бити сачувани кликом на дугме "сачувај".
+                                У свакој форми налази се фотографија секције коју та форма мења и на тај начин се можете уверити коју компоненту мењате.'
+                            : 'Na ovoj stranici možete urediti Vašu početnu stranicu, tako što birate komponente koje želite da se na njoj nalaze i uređujete njihov sadržaj.
+                                Jedina obavezna komponenta je naslovni deo.
+                                Ukoliko želite da se neka komponenta prikaže ili ne prikaže na početnoj stranici, treba da pritisnete ikonicu oka pored naziva te sekcije. Zelena ikonica oka označava da će ta komponenta biti prikazana, a crveno, precrtano oko ukazuje da se ta komponenta neće prikazati na početnoj stranici. 
+                                Sadržaj komponenti možete da promenite u formama na ovoj stranici, u formama za srpski jezik možete pisati na oba pisma (latinica ili ćirilica), sistem će podatke prevesti na engleski jezik, koje potom možete proveriti i, po potrebi, ispraviti u formama pored. 
+                                Podaci će biti sačuvani klikom na dugme "sačuvaj".
+                                U svakoj formi nalazi se fotografija sekcije koju ta forma menja i na taj način se možete uveriti koju komponentu menjate.')
+                            !!}
+                </p>
+            </div>
+        </div>
     </div>
+    <script>
+        function toggleEye() {
+            const openEye = document.getElementById('eye-open');
+            const closedEye = document.getElementById('eye-closed');
+
+            openEye.classList.toggle('hidden');
+            closedEye.classList.toggle('hidden');
+        }
+
+        function toggleHelpModal() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.toggle('hidden');
+        }
+
+    </script>
+
 </x-app-layout>
