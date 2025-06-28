@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             ExtendedNewsSeeder::class,
             NavigationSeeder::class,
             ProcurementSeeder::class,
-            OrganisationalStructureSeeder::class, 
+            OrganisationalStructureSeeder::class,
             ReminderSeeder::class, 
         ]);
 
