@@ -233,3 +233,9 @@
         </section>
     </div>
 </x-guest-layout>
+
+<script>
+function clearAnswer() {
+    document.getElementById('answer-textarea').value = '';
+}
+</script>

@@ -261,16 +261,67 @@ class NewsController extends Controller
             'tags_cy' => 'nullable|string',
         ]);
 
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
+
         $updateData = [];
+
         if ($validated['locale'] === 'en') {
-            $updateData['content_en'] = $validated['content_en'] ?? $validated['content'] ?? '';
-            $updateData['tags_en'] = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
-        } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
-            $updateData['content_cy'] = $validated['content_cy'] ?? $validated['content'] ?? '';
-            $updateData['tags_cy'] = !empty($validated['tags_cy']) ? array_map('trim', explode(',', $validated['tags_cy'])) : [];
-        } else {
-            $updateData['content'] = $validated['content'] ?? '';
-            $updateData['tags'] = !empty($validated['tags']) ? array_map('trim', explode(',', $validated['tags'])) : [];
+            $content_en = $validated['content_en'] ?? $validated['content'] ?? '';
+            $tags_en = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
+
+            $content_lat = $translate->setSource('en')->setTarget('sr')->translate($content_en);
+            $tags_lat = array_map(function ($tag) use ($translate) {
+                return $translate->setSource('en')->setTarget('sr')->translate($tag);
+            }, $tags_en);
+
+            $content_cy = $lm->latin_to_cyrillic($content_lat);
+            $tags_cy = array_map(fn($tag) => $lm->latin_to_cyrillic($tag), $tags_lat);
+
+            $updateData['content_en'] = $content_en;
+            $updateData['tags_en'] = $tags_en;
+            $updateData['content'] = $content_lat;
+            $updateData['tags'] = $tags_lat;
+            $updateData['content_cy'] = $content_cy;
+            $updateData['tags_cy'] = $tags_cy;
+        }
+        elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $content_cy = $validated['content_cy'] ?? $validated['content'] ?? '';
+            $tags_cy = !empty($validated['tags_cy']) ? array_map('trim', explode(',', $validated['tags_cy'])) : [];
+
+            $content_lat = $lm->cyrillic_to_latin($content_cy);
+            $tags_lat = array_map(fn($tag) => $lm->cyrillic_to_latin($tag), $tags_cy);
+
+            $content_en = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
+            $tags_en = array_map(function ($tag) use ($translate) {
+                return $translate->setSource('sr')->setTarget('en')->translate($tag);
+            }, $tags_lat);
+
+            $updateData['content_cy'] = $content_cy;
+            $updateData['tags_cy'] = $tags_cy;
+            $updateData['content'] = $content_lat;
+            $updateData['tags'] = $tags_lat;
+            $updateData['content_en'] = $content_en;
+            $updateData['tags_en'] = $tags_en;
+        }
+        else { 
+            $content_lat = $validated['content'] ?? '';
+            $tags_lat = !empty($validated['tags']) ? array_map('trim', explode(',', $validated['tags'])) : [];
+
+            $content_cy = $lm->latin_to_cyrillic($content_lat);
+            $tags_cy = array_map(fn($tag) => $lm->latin_to_cyrillic($tag), $tags_lat);
+
+            $content_en = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
+            $tags_en = array_map(function ($tag) use ($translate) {
+                return $translate->setSource('sr')->setTarget('en')->translate($tag);
+            }, $tags_lat);
+
+            $updateData['content'] = $content_lat;
+            $updateData['tags'] = $tags_lat;
+            $updateData['content_cy'] = $content_cy;
+            $updateData['tags_cy'] = $tags_cy;
+            $updateData['content_en'] = $content_en;
+            $updateData['tags_en'] = $tags_en;
         }
 
         if (!$news->extended) {

@@ -298,7 +298,6 @@
                     </div>
                 </aside>
                 
-<!-- Tipografija sidebar -->
                 <aside id="typography-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-typography">
                     <div class="flex justify-start">
                         <button data-drawer-target="typography-sidebar" data-drawer-toggle="typography-sidebar" aria-controls="typography-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -312,46 +311,81 @@
                         </button>
                     </div>
                     <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
-                        <p class="text-lg text-center font-semibold dark:text-white">
-                            @switch(App::getLocale())
-                            @case('en') Typography @break
-                            @case('sr-Cyrl') Типографија @break
-                            @default Tipografija
-                            @endswitch
+                        <p class="text-lg text-center font-semibold dark:text-white mb-2">
+                            {{ App::getLocale() === 'en' ? 'Typography' : (App::getLocale() === 'sr-Cyrl' ? 'Типографија' : 'Tipografija') }}
                         </p>
-                        <!-- Ovde dodaj sav sadržaj koji želiš da prikažeš za tipografiju -->
-                        <div class="mt-4 text-gray-700 dark:text-white">
-                            <!-- Primer sadržaja -->
-                            <p>Ovde ide podešavanje, pregled i uređivanje tipografije...</p>
+                        <div class="my-4">
+                            <h2 class="text-base font-semibold mb-2">
+                                {{ App::getLocale() === 'en' ? 'Title fonts' : (App::getLocale() === 'sr-Cyrl' ? 'Фонтови за наслов' : 'Fontovi za naslov') }}
+                            </h2>
+                            <div id="title-fonts-list" class="flex flex-col gap-2 overflow-y-auto" style="max-height: 200px;">
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <h2 class="text-base font-semibold mb-2">
+                                {{ App::getLocale() === 'en' ? 'Description fonts' : (App::getLocale() === 'sr-Cyrl' ? 'Фонтови за опис' : 'Fontovi za opis') }}
+                            </h2>
+                            <div id="desc-fonts-list" class="flex flex-col gap-2 overflow-y-auto" style="max-height: 200px;">
+                            </div>
+                        </div>
+                        <div class="my-4">
+                            <h2 class="text-base font-semibold mb-2">
+                                {{ App::getLocale() === 'en' ? 'Preview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед' : 'Pregled') }}
+                            </h2>
+                            <div id="font-preview" class="w-full max-w-xs rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 transition-all duration-300 mb-4 bg-white dark:bg-gray-800 p-4 mx-auto">
+                                <div id="preview-title" class="text-2xl font-bold mb-2">
+                                    {{ App::getLocale() === 'en' ? 'This is a title preview' : (App::getLocale() === 'sr-Cyrl' ? 'Ово је наслов теме' : 'Ovo je naslov teme') }}
+                                </div>
+                                <div id="preview-desc" class="text-base">
+                                    {{ App::getLocale() === 'en'
+                                        ? 'This is a description preview. Change the font and click Save!'
+                                        : (App::getLocale() === 'sr-Cyrl'
+                                            ? 'Ово је приказ текстуалног описа (description). Промени фонт па кликни Сачувај!'
+                                            : 'Ovo je prikaz tekstualnog opisa (description). Promeni font pa klikni Sačuvaj!')
+                                    }}
+                                </div>
+                            </div>
+                            <button id="font-save-btn"
+                                class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
+                                disabled>
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
                         </div>
                     </div>
                 </aside>
 
-                <!-- Boje sidebar -->
                 <aside id="color-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-color">
-                    <div class="flex justify-start">
-                        <button data-drawer-target="color-sidebar" data-drawer-toggle="color-sidebar" aria-controls="color-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    <div class="flex justify-start items-center p-2">
+                        <button id="sidebar-back-btn" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                             <span class="sr-only">Close sidebar</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M5 12l14 0" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrow-left">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 12h14" />
                                 <path d="M5 12l6 6" />
                                 <path d="M5 12l6 -6" />
                             </svg>
                         </button>
+                        <p class="text-lg text-center font-semibold dark:text-white flex-1">@switch(App::getLocale()) @case('en') Colors @break @case('sr-Cyrl') Боје @break @default Boje @endswitch</p>
                     </div>
-                    <div class="flex-col justify-center items-center overflow-y-auto px-3 h-full">
-                        <p class="text-lg text-center font-semibold dark:text-white">
-                            @switch(App::getLocale())
-                            @case('en') Colors @break
-                            @case('sr-Cyrl') Боје @break
-                            @default Boje
-                            @endswitch
-                        </p>
-<!-- Ovde dodaj sadržaj za boje -->
-                        <div class="mt-4 text-gray-700 dark:text-white">
-                            <p>Ovde ide pregled, izbor i uređivanje boja...</p>
+                    <div class="overflow-y-auto max-h-56 px-4" id="palette-list"></div>
+                    <div class="flex flex-col items-center justify-center flex-1 px-4">
+                        <div class="flex gap-2 mb-2">
+                            <button id="sidebar-preview-light" type="button" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 shadow transition hover:bg-yellow-200">
+                                <svg id="sun-svg-preview" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6 text-yellow-400" viewBox="0 0 20 20">
+                                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"></path>
+                                </svg>
+                            </button>
+                            <button id="sidebar-preview-dark" type="button" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 shadow transition hover:bg-gray-800">
+                                <svg id="moon-svg-preview" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6 text-gray-700 dark:text-gray-100" viewBox="0 0 20 20">
+                                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                </svg>
+                            </button>
                         </div>
+                        <div id="palette-preview" class="w-full max-w-xs rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-600 transition-all duration-300 mb-4"></div>
+                        <button id="palette-save-btn"
+                            class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
+                            disabled>Sačuvaj</button>
                     </div>
                 </aside>
 
@@ -654,9 +688,32 @@
                         @endswitch
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('reminders.index')" :active="request()->routeIs('reminders.index')">
+                        @switch(App::getLocale())
+                        @case('en') Reminders @break
+                        @case('sr-Cyrl') Подсетници @break
+                        @default Podsetnici
+                        @endswitch
+                    </x-nav-link>
+                </div>
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                @auth
+                    <div class="relative">
+                        <button id="notificationButton" class="relative focus:outline-none" onclick="toggleNotifications()">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5.365V3m0 2.365a5.338 5.338 0 0 1 5.133 5.368v1.8c0 2.386 1.867 2.982 1.867 4.175 0 .593 0 1.292-.538 1.292H5.538C5 18 5 17.301 5 16.708c0-1.193 1.867-1.789 1.867-4.175v-1.8A5.338 5.338 0 0 1 12 5.365ZM8.733 18c.094.852.306 1.54.944 2.112a3.48 3.48 0 0 0 4.646 0c.638-.572 1.236-1.26 1.33-2.112h-6.92Z"/>
+                            </svg>
+                            <span id="notificationBadge" class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full hidden">0</span>
+                        </button>
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50">
+                            <ul id="notificationList" class="max-h-60 overflow-y-auto p-2">
+                            </ul>
+                        </div>
+                    </div>
+                @endauth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -740,6 +797,156 @@
 </style>
 <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 <script>
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    async function fetchRemindersCount() {
+        try {
+            const response = await fetch(`/podsetnici/aktivni/broj`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('err in loading reminders: ' + response.status);
+            }
+
+            const data = await response.json();
+            const badge = document.getElementById('notificationBadge');
+            if (data.count > 0) {
+                badge.textContent = data.count;
+                badge.classList.remove('hidden');
+            } else if(data.count === 0) {
+                badge.textContent = data.count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('err in counting reminders:', error);
+        }
+    }
+
+    function toggleNotifications() {
+        const dropdown = document.getElementById('notificationDropdown');
+        dropdown.classList.toggle('hidden');
+
+        if (!dropdown.classList.contains('hidden')) {
+            fetchReminders();
+        }
+    }
+
+    async function fetchReminders() {
+        try {
+            const response = await fetch('/podsetnici/aktivni', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('err in loading reminders: ' + response.status);
+            }
+
+            const reminders = await response.json();
+            renderNotifications(reminders);
+        } catch (error) {
+            console.error('err in loading reminders:', error);
+        }
+    }
+
+    function renderNotifications(reminders) {
+        const badge = document.getElementById('notificationBadge');
+        const list = document.getElementById('notificationList');
+
+        if (reminders.length > 0) {
+            badge.textContent = reminders.length;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+
+        list.innerHTML = '';
+
+        let noNotificationsMessage;
+        const locale = '{{ App::getLocale() }}';
+        switch (locale) {
+            case 'en':
+                noNotificationsMessage = 'You currently have no new notifications';
+                break;
+            case 'sr-Cyrl':
+                noNotificationsMessage = 'Тренутно немате нове нотификације';
+                break;
+            default:
+                noNotificationsMessage = 'Trenutno nemate nove notifikacije';
+        }
+
+        if (reminders.length === 0) {
+            const li = document.createElement('li');
+            li.className = 'p-2 text-sm text-gray-700 dark:text-white text-center';
+            li.textContent = noNotificationsMessage;
+            list.appendChild(li);
+        } else {
+            reminders.forEach((reminder) => {
+                const li = document.createElement('li');
+                const locale = '{{ App::getLocale() }}';
+                li.className = 'flex justify-between items-center p-2 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded';
+                const title = locale === 'en'
+                    ? reminder.title_en
+                    : locale === 'sr-Cyrl'
+                        ? reminder.title_cyr
+                        : reminder.title_lat;
+                li.innerHTML = `
+                    <span>${title} (${new Date(reminder.time).toLocaleString('sr-RS')})</span>
+                    <button onclick="removeNotification(${reminder.id})" class="text-red-500 hover:text-red-700 text-sm font-bold">x</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+    }
+
+    async function removeNotification(id) {
+        try {
+            const response = await fetch(`/podsetnici/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Greška pri brisanju remindera: ' + response.status);
+            }
+
+            fetchReminders(); 
+            fetchRemindersCount(); 
+        } catch (error) {
+            console.error('Greška pri brisanju remindera:', error);
+        }
+    }
+
+    document.addEventListener('click', (event) => {
+        const dropdown = document.getElementById('notificationDropdown');
+        const button = document.getElementById('notificationButton');
+
+
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        @auth
+            fetchRemindersCount(); 
+            setInterval(fetchRemindersCount, 30000); 
+        @endauth
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('toggle-sortable');
         const saveButton = document.getElementById('save-order');

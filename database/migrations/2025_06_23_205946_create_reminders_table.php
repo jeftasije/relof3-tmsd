@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
+            $table->string('title_en');
+            $table->string('title_cyr');
+            $table->string('title_lat');
+            $table->dateTime('time');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('reminders');
     }
 };

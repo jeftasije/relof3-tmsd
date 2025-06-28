@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProcurementController extends Controller
 {
+    /*
     public function index(Request $request)
     {
         $query = Procurement::query();
@@ -20,6 +21,33 @@ class ProcurementController extends Controller
 
         return view('procurements', compact('procurements'));
     }
+        */
+
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $sort = in_array($request->input('sort'), ['asc', 'desc']) ? $request->input('sort') : 'asc';
+
+        $query = Procurement::query();
+
+        if (!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        if ($sort === 'asc') 
+            $query->orderBy('updated_at', 'desc');
+        elseif ($sort === 'desc') 
+            $query->orderBy('updated_at', 'asc');
+         else 
+            $query->orderBy('updated_at', 'asc'); 
+        
+        $reminders = $query->get();
+
+        $procurements = $query->get();
+
+        return view('procurements', compact('procurements', 'search', 'sort'));
+    }
+
 
     public function destroy($id)
     {

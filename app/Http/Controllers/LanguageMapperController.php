@@ -53,4 +53,27 @@ class LanguageMapperController extends Controller
         }
         return $data;
     }
+
+    public function detectScript($text): string
+    {
+        if (preg_match('/\p{Cyrillic}/u', $text)) {
+            return 'cyrillic';
+        }
+        return 'latin';
+    }
+
+    public function translate(string $field): string
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === 'en') {
+            $fieldName = $field . '_en';
+        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+            $fieldName = $field . '_cy';
+        } else {
+            $fieldName = $field;
+        }
+
+        return $this->{$fieldName} ?? $this->{$field} ?? '';
+    }
 }
