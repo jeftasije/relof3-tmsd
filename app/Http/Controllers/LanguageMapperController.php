@@ -62,9 +62,10 @@ class LanguageMapperController extends Controller
         return 'latin';
     }
 
-    public function translate(string $field, string $locale = null)
+    public function translate(string $field): string
     {
-        $locale = $locale ?? app()->getLocale();
+        $locale = app()->getLocale();
+
 
         if ($locale === 'en') {
             $fieldName = $field . '_en';
@@ -74,7 +75,7 @@ class LanguageMapperController extends Controller
             $fieldName = $field;
         }
 
-        return $this->{$fieldName} ?? $this->{$field} ?? null;
+        return $this->{$fieldName} ?? $this->{$field} ?? '';
     }
 
 }
