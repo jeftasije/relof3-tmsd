@@ -21,91 +21,69 @@ class ServicesController extends Controller
         return view('services', compact('servicesData'));
     }
 
-    public function update(Request $request)
-    {
-        $validated = $request->validate([
-            'locale'         => 'string|in:sr,sr-Cyrl,en',
-            'header'         => 'nullable|string|max:255',
-            'hero_title'     => 'nullable|string|max:255',
-            'hero_subtitle'  => 'nullable|string|max:255',
-            'sections'       => 'nullable|array',
-            'from_label'     => 'nullable|string|max:255',
-            'to_label'       => 'nullable|string|max:255',
-            'price_unit_label' => 'nullable|string|max:255',
-        ]);
+public function update(Request $request)
+{
+    $validated = $request->validate([
+        'locale'        => 'string|in:sr,sr-Cyrl,en',
+        'hero_title'    => 'nullable|string|max:255',
+        'hero_subtitle' => 'nullable|string|max:255',
+        'main_text'     => 'nullable|string',
+    ]);
 
-        $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
-        $lm = app(\App\Http\Controllers\LanguageMapperController::class);
+    $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
+    $lm = app(\App\Http\Controllers\LanguageMapperController::class);
 
-        $src = $validated['locale'] ?? 'sr';
+    $src = $validated['locale'] ?? 'sr';
 
-        $langFiles = [
-            'sr'      => resource_path('lang/sr.json'),
-            'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
-            'en'      => resource_path('lang/en.json'),
-        ];
-        $oldData = file_exists($langFiles[$src]) ? json_decode(file_get_contents($langFiles[$src]), true) : [];
-        $servicesData = $oldData['services'] ?? [];
+    $langFiles = [
+        'sr'      => resource_path('lang/sr.json'),
+        'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
+        'en'      => resource_path('lang/en.json'),
+    ];
 
-        foreach (['header', 'hero_title', 'hero_subtitle', 'sections', 'from_label', 'to_label', 'price_unit_label'] as $field) {
-            if (array_key_exists($field, $validated)) {
-                $servicesData[$field] = $validated[$field];
-            }
+    // Učitaj postojeći json (ako postoji)
+    $oldData = file_exists($langFiles[$src]) ? json_decode(file_get_contents($langFiles[$src]), true) : [];
+    $servicesData = $oldData['services'] ?? [];
+
+    // Updateuj samo prosleđene vrednosti
+    foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+        if (array_key_exists($field, $validated)) {
+            $servicesData[$field] = $validated[$field];
         }
-
-        $localized = [
-            'sr'      => $servicesData,
-            'sr-Cyrl' => $servicesData,
-            'en'      => $servicesData,
-        ];
-
-        foreach (['header','hero_title','hero_subtitle','from_label','to_label','price_unit_label'] as $field) {
-            if (isset($servicesData[$field])) {
-                $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($servicesData[$field]);
-            }
-        }
-        if (isset($servicesData['sections'])) {
-            foreach ($servicesData['sections'] as $i => $section) {
-                foreach ($section as $key => $value) {
-                    if (is_string($value)) {
-                        $localized['sr-Cyrl']['sections'][$i][$key] = $lm->latin_to_cyrillic($value);
-                    } elseif (is_array($value)) {
-                        $localized['sr-Cyrl']['sections'][$i][$key] = array_map(function($v) use ($lm) {
-                            return is_string($v) ? $lm->latin_to_cyrillic($v) : $v;
-                        }, $value);
-                    }
-                }
-            }
-        }
-
-        $translate->setSource('sr')->setTarget('en');
-        foreach (['header','hero_title','hero_subtitle','from_label','to_label','price_unit_label'] as $field) {
-            if (isset($servicesData[$field])) {
-                $localized['en'][$field] = $translate->translate($servicesData[$field]);
-            }
-        }
-        if (isset($servicesData['sections'])) {
-            foreach ($servicesData['sections'] as $i => $section) {
-                foreach ($section as $key => $value) {
-                    if (is_string($value)) {
-                        $localized['en']['sections'][$i][$key] = $translate->translate($value);
-                    } elseif (is_array($value)) {
-                        $localized['en']['sections'][$i][$key] = array_map(function($v) use ($translate) {
-                            return is_string($v) ? $translate->translate($v) : $v;
-                        }, $value);
-                    }
-                }
-            }
-        }
-
-        foreach ($langFiles as $lang => $path) {
-            $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-            $json['services'] = $localized[$lang];
-            file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        }
-
-        return response()->json(['success' => true, 'message' => 'Usluge su ažurirane na svim jezicima!']);
     }
+
+    // Pripremi za sva tri jezika
+    $localized = [
+        'sr'      => $servicesData,
+        'sr-Cyrl' => $servicesData,
+        'en'      => $servicesData,
+    ];
+
+    // Srpska ćirilica
+    foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+        if (isset($servicesData[$field])) {
+            $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($servicesData[$field]);
+        }
+    }
+
+    // Engleski prevod
+    $translate->setSource('sr')->setTarget('en');
+    foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+        if (isset($servicesData[$field])) {
+            $localized['en'][$field] = $translate->translate($servicesData[$field]);
+        }
+    }
+
+    // Sačuvaj za svaki jezik
+    foreach ($langFiles as $lang => $path) {
+        $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $json['services'] = $localized[$lang];
+        file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
+    return response()->json(['success' => true, 'message' => 'Usluge su ažurirane na svim jezicima!']);
+}
+
 
     public function uploadSectionImage(Request $request, $sectionIndex)
     {
