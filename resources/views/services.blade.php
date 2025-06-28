@@ -141,6 +141,14 @@
     <script>
     window.marked.setOptions({ breaks: false });
 
+    function markdownRestore(text) {
+        // Srpska ćirilica zaštitni tag
+        text = text.replace(/##Б##(.*?)##Б##/gs, '**$1**');
+        // Engleski/fallback zaštitni tag (sa space ili bez)
+        text = text.replace(/##\s*B\s*##(.*?)##\s*B\s*##/gs, '**$1**');
+        return text;
+    }
+
     function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
             form: JSON.parse(JSON.stringify(initial)),
@@ -149,6 +157,7 @@
             get renderedText() {
                 let text = this.form.main_text ?? "";
                 text = text.replace(/\n+/g, '\n');
+                text = markdownRestore(text);
                 text = text.replace(/\n/g, '<br>');
                 return window.marked.parse(text);
             },
