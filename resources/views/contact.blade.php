@@ -14,7 +14,7 @@
             <div class="relative z-10 py-4 lg:py-12 px-6 mx-auto max-w-screen-md 
                 rounded-lg shadow-lg transition-colors duration-300
                 bg-white/80 dark:bg-gray-900/80">
-                
+
                 @auth
                     <div class="flex justify-end mb-2 mt-2">
                         <button 
@@ -265,14 +265,14 @@
                     '
                     : (App::getLocale() === 'sr-Cyrl' 
                     ? '
-                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста историјата.<br><br>
+                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста за контактирање.<br><br>
                         Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br> 
                         Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
                         Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
                         Бићете упитани за потврду пре него што се промене примене.
                     '
                     : '
-                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta istorije.<br><br>
+                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta za kontaktiranje.<br><br>
                         Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br>  <br>                
                         Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
                         Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
