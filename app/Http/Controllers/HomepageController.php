@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
 use Illuminate\Support\Facades\File;
+use App\Models\News;
 
 class HomepageController extends Controller
 {
@@ -75,6 +76,19 @@ class HomepageController extends Controller
         'contact_subtitle_sr_lat', 'contact_title_sr_cyr', 'contact_subtitle_sr_cyr',
         'cobiss_title_en', 'cobiss_subtitle_en', 'cobiss_title_sr_lat', 'cobiss_subtitle_sr_lat', 
         'cobiss_title_sr_cyr', 'cobiss_subtitle_sr_cyr'));
+    }
+
+    public function showWelcome() {
+        $jsonPath = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
+        $newsVisible = $data['news_visible'] ?? true;
+
+        $news = News::latest()->take(5)->get();
+
+        return view('welcome', [
+            'news' => $news,
+            'newsVisible' => $newsVisible,
+        ]);
     }
 
     public function updateSr(Request $request)
@@ -475,6 +489,14 @@ class HomepageController extends Controller
         return [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn];
     }
 
+    public function toggleNewsVisibility()
+    {
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $data['news_visible'] = !($data['news_visible'] ?? true); // toggle
 
+        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
+        return response()->json(['success' => true]);
+    }
 }

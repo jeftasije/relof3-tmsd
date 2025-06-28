@@ -27,6 +27,11 @@
             $cobissTitleValue = old('cobiss_title_sr_lat', $cobiss_title_sr_lat ?? '');
             $cobissSubtitleValue = old('cobiss_subtitle_sr_lat', $cobiss_subtitle_sr_lat ?? '');
         }
+
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $newsVisible = $data['news_visible'] ?? true;
+
     @endphp
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div>
@@ -58,8 +63,12 @@
 
             <form action="{{ route('homepage.updateSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <div class="flex items-center justify-between mb-6">    
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {{ App::getLocale() === 'en' ? 'Edit herosection' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди насловни део' : 'Uredi naslovni deo') }}
+                    </h1>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-
                     {{-- Leva strana --}}
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
 
@@ -93,6 +102,7 @@
                             </button>
                         </div>
                     </div>
+                   
             </form>
             <form action="{{ route('homepage.updateEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -135,26 +145,27 @@
                     </h1>
 
                     <!-- Zeleno oko -->
-                    <svg id="eye-open" class="w-6 h-6 text-green-600 cursor-pointer transition" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                        viewBox="0 0 24 24" onclick="toggleEye()">
-                        <path stroke="currentColor" stroke-width="2"
-                            d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                        <path stroke="currentColor" stroke-width="2"
-                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-
-                    <!-- Crveno precrtano oko -->
-                    <svg id="eye-closed" class="w-6 h-6 text-red-600 cursor-pointer transition hidden" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        viewBox="0 0 24 24" onclick="toggleEye()">
-                        <path
-                            d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
-                        <path
-                            d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
-                        <path
-                            d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
-                    </svg>
+                    <button onclick="toggleNewsVisibility()" id="eyeToggle" class="transition">
+                        @if ($newsVisible)
+                            <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                            </svg>
+                        @else
+                            <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
+                                <path
+                                    d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
+                                <path
+                                    d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
+                            </svg>
+                        @endif
+                    </button>
                 </div>
             </div>
 
@@ -387,16 +398,44 @@
     </div>
     <script>
         function toggleEye() {
-            const openEye = document.getElementById('eye-open');
-            const closedEye = document.getElementById('eye-closed');
+            const eyeOpen = document.getElementById('eye-open');
+            const eyeClosed = document.getElementById('eye-closed');
 
-            openEye.classList.toggle('hidden');
-            closedEye.classList.toggle('hidden');
+            const visible = eyeClosed.classList.contains('hidden') ? 0 : 1;
+
+            fetch("{{ route('homepage.toggleNewsVisibility') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ visible })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    eyeOpen.classList.toggle('hidden');
+                    eyeClosed.classList.toggle('hidden');
+                }
+            });
         }
 
         function toggleHelpModal() {
             const modal = document.getElementById('helpModal');
             modal.classList.toggle('hidden');
+        }
+
+        function toggleNewsVisibility() {
+            fetch("{{ route('homepage.toggleNewsVisibility') }}", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({})
+            }).then(() => {
+                location.reload(); // ili možeš dinamički samo da zameniš SVG
+            });
         }
 
     </script>

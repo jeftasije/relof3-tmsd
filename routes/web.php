@@ -20,10 +20,7 @@ use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\HomepageController;
 use App\Models\News;
 
-Route::get('/', function () {
-    $news = News::latest()->take(5)->get(); 
-    return view('welcome', compact('news'));
-})->name('welcome');
+Route::get('/', [HomepageController::class, 'showWelcome'])->name('welcome');
 
 Route::get('/kontrolni-panel', function () {
     return view('superAdmin.dashboard');
@@ -96,6 +93,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/naslovna/kontakt/en', [HomepageController::class, 'updateContactEn'])->name('homepage.updateContactEn');
     Route::post('/naslovna/cobiss/sr', [HomepageController::class, 'updateCobissSr'])->name('homepage.updateCobissSr');
     Route::post('/naslovna/cobiss/en', [HomepageController::class, 'updateCobissEn'])->name('homepage.updateCobissEn');
+
+    Route::post('/vidljivost-vesti', [HomepageController::class, 'toggleNewsVisibility'])->name('homepage.toggleNewsVisibility');
+
 
 });
 
