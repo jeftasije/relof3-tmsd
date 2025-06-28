@@ -124,6 +124,9 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+    // Omogući <br> na svaki Enter u Markdown tekstu
+    window.marked.setOptions({ breaks: true });
+
     function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
             form: JSON.parse(JSON.stringify(initial)),
