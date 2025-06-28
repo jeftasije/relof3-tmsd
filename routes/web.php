@@ -88,8 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 
-    Route::get('/kontakt/edit', [ContactController::class, 'edit'])->name('contact.edit');
-    Route::post('/kontakt/update', [ContactController::class, 'update'])->name('contact.update');
+    Route::patch('/kontakt', [ContactController::class, 'update'])->name('contact.update');
 });
 
 Route::get('/usluge', function () {
