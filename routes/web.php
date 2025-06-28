@@ -101,7 +101,7 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
-Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
+//Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
@@ -126,5 +126,8 @@ Route::get('/search-results', [SearchController::class, 'search'])->name('search
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+
+Route::get('/komentari', [CommentController::class, 'index'])->name('comments.index');
+Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 require __DIR__.'/auth.php';

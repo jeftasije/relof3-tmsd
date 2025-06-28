@@ -1,5 +1,5 @@
-<x-guest-layput>
-<div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto">
+<x-guest-layout>
+    <div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto">
         <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white text-center">
             @switch(App::getLocale())
                 @case('en') Comments @break
@@ -13,7 +13,12 @@
             </div>
             @endif
 
-            <form method="POST" action="{{ route('comments.store') }}" class="mb-6 space-y-4">
+            @php
+                $isEditor = auth()->check() && auth()->user()->isEditor();
+            @endphp
+
+            <form method="POST" action="{{ route('comments.store') }}" class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }} mb-10"
+                {{ $isEditor ? 'onsubmit=return false;' : '' }}>
                 @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
