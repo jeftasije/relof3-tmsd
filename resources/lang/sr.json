@@ -31,9 +31,9 @@
         "logo_dark": "images/nbnp-logo-dark.png"
     },
     "services": {
-        "hero_title": "Услуге за све лопта",
-        "hero_subtitle": "Брзо, квалитетно и приступачно – погледајте нашу понуду.",
-        "main_text": "Наша установа нуди следеће услуге:\n\n\n- **Фотокопирање и lopte**: Копирање и штампање докумената у црно-белој и колор варијанти, разних формата (А4 и А3). Цена копирања: А4 једнострано од 1.8 до 5 динара по страни, А3 од 5 до 12 динара по страни. Штампа у боји: од 10 до 25 динара по страни. Скенирање докумената: 15 динара по страни.\n\n\n- **Књиговезачке услуге**: Професионални повез и израда корица за дипломске радове, докторске дисертације и остала документа. Цена повезивања дипломског рада (тврди повез): 354 динара по раду. Повез скрипти: од 118 до 236 динара по скрипти. Израда корица: од 354 до 708 динара по комаду. Рестаурација старих књига: цена по договору.\n\n\nНаш стручни тим стоји вам на располагању за сва питања и додатне информације. Посетите нас или нас контактирајте како бисте се детаљније информисали о свим услугама и актуелним ценама."
+        "hero_title": "Usluge za sve potrebe",
+        "hero_subtitle": "Brzo, kvalitetno i pristupačno – pogledajte našu ponudu.",
+        "main_text": "Naša ustanova nudi sledeće usluge:\n\n- ***Fotokopiranje i štampanje***: Kopiranje i štampanje dokumenata u crno-beloj i kolor varijanti, raznih formata (A4 i A3). Cena kopiranja: A4 jednostrano od 1.8 do 5 dinara po strani, A3 od 5 do 12 dinara po strani. Štampa u boji: od 10 do 25 dinara po strani. Skeniranje dokumenata: 15 dinara po strani.\n\n- **Knjigovezačke usluge**: Profesionalni povez i izrada korica za diplomske radove, doktorske disertacije i ostala dokumenta. Cena povezivanja diplomskog rada (tvrdi povez): 354 dinara po radu. Povez skripti: od 118 do 236 dinara po skripti. Izrada korica: od 354 do 708 dinara po komadu. Restauracija starih knjiga: cena po dogovoru.\n\nNaš stručni tim stoji vam na raspolaganju za sva pitanja i dodatne informacije. Posetite nas ili nas kontaktirajte kako biste se detaljnije informisali o svim uslugama i aktuelnim cenama.<u></u>"
     },
     "header.search_placeholder": "Pretražite sajt...",
     "header.search_button": "Pretraži",

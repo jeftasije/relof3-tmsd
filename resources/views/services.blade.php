@@ -85,16 +85,31 @@
                                 />
                             </template>
                         </div>
-                        <!-- Tackice ispod slike su uklonjene -->
                     </div>
                     <!-- Main tekst -->
                     <div class="flex-1 flex flex-col justify-start">
                         <template x-if="editing">
-                            <textarea
-                                x-model="form.main_text"
-                                class="w-full min-h-[350px] rounded-xl border px-4 py-3 text-base font-body"
-                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body);"
-                            ></textarea>
+                            <div>
+                                <!-- Toolbar sa 3 tamna dugmeta -->
+                                <div class="flex gap-2 mb-2">
+                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 font-bold"
+                                        @click="insertMarkdown('**', '**')"><span style="font-weight:bold">B</span></button>
+                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 italic"
+                                        @click="insertMarkdown('*', '*')"><span style="font-style:italic">I</span></button>
+                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 underline"
+                                        @click="insertMarkdown('<u>', '</u>')"><span style="text-decoration:underline">U</span></button>
+                                </div>
+                                <textarea
+                                    x-ref="mainText"
+                                    x-model="form.main_text"
+                                    class="w-full min-h-[350px] rounded-xl border px-4 py-3 text-base font-body"
+                                    style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body);"
+                                ></textarea>
+                                <small class="text-gray-500">
+                                    <strong>Markdown podrška:</strong> 
+                                    Bold: <code>**bold**</code> &nbsp; Italic: <code>*italic*</code> &nbsp; Podvučeno: <code>&lt;u&gt;podvučeno&lt;/u&gt;</code> &nbsp; Novi red: <code>Enter</code>
+                                </small>
+                            </div>
                         </template>
                         <div 
                             x-show="!editing"
@@ -124,8 +139,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-    // Omogući <br> na svaki Enter u Markdown tekstu
-    window.marked.setOptions({ breaks: true });
+    window.marked.setOptions({ breaks: false });
 
     function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
@@ -133,7 +147,10 @@
             original: JSON.parse(JSON.stringify(initial)),
             editing: false,
             get renderedText() {
-                return window.marked.parse(this.form.main_text ?? "");
+                let text = this.form.main_text ?? "";
+                text = text.replace(/\n+/g, '\n');
+                text = text.replace(/\n/g, '<br>');
+                return window.marked.parse(text);
             },
             startEdit() {
                 this.editing = true;
@@ -168,6 +185,23 @@
                 }).catch(() => {
                     alert('Greška!');
                 });
+            },
+            insertMarkdown(before, after) {
+                let textarea = this.$refs.mainText;
+                let val = textarea.value;
+                let start = textarea.selectionStart;
+                let end = textarea.selectionEnd;
+                let selected = val.substring(start, end);
+
+                if (!selected) {
+                    this.form.main_text = val.substring(0, start) + before + after + val.substring(end);
+                    textarea.selectionStart = textarea.selectionEnd = start + before.length;
+                } else {
+                    this.form.main_text = val.substring(0, start) + before + selected + after + val.substring(end);
+                    textarea.selectionStart = start;
+                    textarea.selectionEnd = end + before.length + after.length;
+                }
+                textarea.focus();
             }
         }
     }
