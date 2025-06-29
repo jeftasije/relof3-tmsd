@@ -62,11 +62,11 @@
                                 @csrf
                                 @method('PATCH')
                                 <div id="contentDisplay" class="prose dark:prose-invert max-w-none">
-                                    {{ __('complaints.content') }}
+                                    {!! __('complaints.content') !!}
                                 </div>
 
                                 <textarea name="content" id="contentEdit" rows="15" 
-                                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('complaints.content')) }}</textarea>
+                                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{ !! old('value', __('complaints.content')) !! }</textarea>
 
                                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                                     <button type="button" id="cancelBtn"
@@ -211,8 +211,8 @@
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     @switch(App::getLocale())
                                         @case('en') Email: @break
-                                        @case('sr-Cyrl') Е-пошта: @break
-                                        @default E-pošta:
+                                        @case('sr-Cyrl') Мејл адреса: @break
+                                        @default Mejl adresa:
                                     @endswitch
                                     <span class="text-red-500">*</span>
                                 </label>
