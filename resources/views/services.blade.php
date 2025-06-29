@@ -75,29 +75,27 @@
                     </template>
                     <template x-if="editing">
                         <div class="h-full">
-                            <!-- Lista svih slika sa preview-om i brisanjem -->
-                            <div class="flex flex-col gap-3">
-                                <div class="flex flex-wrap gap-4">
-                                    <template x-for="(img, idx) in form.images" :key="img + idx">
-                                        <div class="relative">
-                                            <img :src="img" class="h-32 w-44 object-cover rounded shadow" />
-                                            <button type="button"
-                                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow"
-                                                @click="removeImage(idx)">
-                                                &times;
-                                            </button>
-                                        </div>
-                                    </template>
-                                    <!-- Dodaj nove slike -->
-                                    <label class="h-32 w-44 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-500 transition"
-                                        title="Dodaj slike">
-                                        <svg class="w-10 h-10 text-gray-400 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                                        </svg>
-                                        <span class="text-xs text-gray-400">Dodaj slike</span>
-                                        <input type="file" class="hidden" multiple @change="onImageSelect">
-                                    </label>
-                                </div>
+                            <!-- Grid prikaz slika, 2 u redu -->
+                            <div class="grid grid-cols-2 gap-5">
+                                <template x-for="(img, idx) in form.images" :key="img + idx">
+                                    <div class="relative">
+                                        <img :src="img" class="h-36 w-full object-cover rounded shadow" />
+                                        <button type="button"
+                                            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow"
+                                            @click="removeImage(idx)">
+                                            &times;
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- Dodaj nove slike -->
+                                <label class="h-36 w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-500 transition"
+                                    title="Dodaj slike">
+                                    <svg class="w-10 h-10 text-gray-400 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    <span class="text-xs text-gray-400">Dodaj slike</span>
+                                    <input type="file" class="hidden" multiple @change="onImageSelect">
+                                </label>
                             </div>
                         </div>
                     </template>
@@ -105,12 +103,12 @@
                 <!-- Main tekst -->
                 <div class="flex flex-col justify-start h-full">
                     <template x-if="editing">
-                        <div>
+                        <div class="flex flex-col h-full">
                             <textarea
                                 x-ref="mainText"
                                 x-model="form.main_text"
-                                class="w-full min-h-[350px] h-full rounded-xl border px-4 py-3 text-base font-body"
-                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body);"
+                                class="w-full min-h-[65vh] rounded-xl border px-4 py-3 text-base font-body"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body); resize:vertical;"
                             ></textarea>
                         </div>
                     </template>
