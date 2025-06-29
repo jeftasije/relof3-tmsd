@@ -11,6 +11,8 @@ return new class extends Migration
     {
         Schema::table('complaints', function (Blueprint $table) {
             $table->text('answer')->nullable();
+            $table->text('answer_en')->nullable();
+            $table->text('answer_cy')->nullable();
         });
     }
 

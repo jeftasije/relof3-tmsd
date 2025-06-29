@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Complaint extends Model
 {
-    protected $fillable = ['name', 'email', 'phone', 'subject', 'subject_en', 'subject_cy', 'message', 'message_en', 'message_cy'];
+    protected $fillable = ['name', 'email', 'phone', 'subject', 'subject_en', 'subject_cy', 'message', 'message_en', 'message_cy', 'answer', 'answer_en', 'answer_cy'];
 
     public function translate(string $field): string
     {

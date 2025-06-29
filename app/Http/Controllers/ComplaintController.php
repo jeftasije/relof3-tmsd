@@ -175,15 +175,69 @@ class ComplaintController extends Controller
             'answer' => 'required|string',
         ]);
 
+        $originalText = trim($request->input('answer'));
+
+        // Detekcija pisma (ćirilica / latinica / engleski)
+        $detectedScript = $this->languageMapper->detectScript($originalText);
+
+        $answerLat = '';
+        $answerCy  = '';
+        $answerEn  = '';
+
+        if ($detectedScript === 'cyrillic') {
+            $answerCy  = $originalText;
+            $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
+            $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
+            $toSrLat = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            if (mb_strtolower($toSrLat) === mb_strtolower($originalText)) {
+                // Dakle — unos je na srpskom (latinica)
+                $answerLat = $originalText;
+                $answerCy  = $this->languageMapper->latin_to_cyrillic($answerLat);
+                $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
+            } else {
+                // Unos je na engleskom
+                $answerEn  = $originalText;
+                $answerCy  = $this->translate->setSource('en')->setTarget('sr')->translate($answerEn);
+                $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
+            }
+        }
+
         $complaint = Complaint::findOrFail($id);
-        $complaint->answer = $request->answer;
+        $complaint->answer     = $answerLat;  // Default prikaz (latinica)
+        $complaint->answer_cy  = $answerCy;
+        $complaint->answer_en  = $answerEn;
         $complaint->save();
 
         return redirect()->back()->with('success', 'Odgovor uspešno sačuvan.');
     }
+
+
     public function answerPage()
     {
-        $complaints = Complaint::latest()->get();
+        $query = Complaint::query();
+
+        if (request()->filled('date_from')) {
+            $query->whereDate('created_at', '>=', request('date_from'));
+        }
+
+        if (request()->filled('date_to')) {
+            $query->whereDate('created_at', '<=', request('date_to'));
+        }
+
+        if (request()->filled('has_answer')) {
+            if (request('has_answer') == '1') {
+                $query->whereNotNull('answer');
+            } elseif (request('has_answer') == '0') {
+                $query->whereNull('answer');
+            }
+        }
+
+        $complaints = $query->orderBy('created_at', 'desc')->paginate(10);
+        $complaints->appends(request()->all());
+
         return view('complaintAnswer', compact('complaints'));
     }
 
