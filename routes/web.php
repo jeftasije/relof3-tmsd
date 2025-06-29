@@ -110,6 +110,7 @@ Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show
 
 Route::get('/usluge', function () {
     return view('user.services');
+});
 
 Route::get('/zaposleni', [EmployeeController::class, 'index'])->name('employees.index');
 Route::get('/zaposleni/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
