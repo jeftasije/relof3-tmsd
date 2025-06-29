@@ -15,6 +15,27 @@
 
     <div x-data="{ open: false, helpOpen: false }" class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" style="background: var(--primary-bg); color: var(--primary-text);">
         <div class="w-full max-w-screen-xl mx-auto">
+        @if (session('success'))
+            <div
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                style="top: 13%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 240px; text-align: center;"
+                x-init="setTimeout(() => show = false, 2000)"
+            >
+                {{ App::getLocale() === 'en'
+                    ? 'News successfully added!'
+                    : (App::getLocale() === 'sr-Cyrl'
+                        ? 'Вест је успешно додата!'
+                        : 'Vest je uspešno dodata!') }}
+            </div>
+        @endif
             <div style="background: var(--primary-bg); color: var(--primary-text);">
                 <div class="p-2 sm:p-4 lg:p-6" style="color: var(--primary-text);">
 

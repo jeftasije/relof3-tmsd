@@ -143,9 +143,7 @@ class NewsController extends Controller
         $translate = $this->translate;
         $lm = $this->languageMapper;
 
-        // Prvo odredi latinicu/cirilicu
         if (preg_match('/[\p{Cyrillic}]/u', $title_src)) {
-            // Polazna je ćirilica
             $title_cy = $title_src;
             $summary_cy = $summary_src;
             $author_cy = $author_src;
@@ -159,7 +157,6 @@ class NewsController extends Controller
             $tags_lat = array_map(fn($t) => $lm->cyrillic_to_latin($t), $tags_cy);
 
         } else {
-            // Polazna je latinica
             $title_lat = $title_src;
             $summary_lat = $summary_src;
             $author_lat = $author_src;
@@ -173,14 +170,12 @@ class NewsController extends Controller
             $tags_cy = array_map(fn($t) => $lm->latin_to_cyrillic($t), $tags_lat);
         }
 
-        // Engleski prevod iz latinice (uvek šalji latinicu na prevod)
         $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
         $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
         $author_en = $translate->setSource('sr')->setTarget('en')->translate($author_lat);
         $content_en = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
         $tags_en = array_map(fn($t) => $translate->setSource('sr')->setTarget('en')->translate($t), $tags_lat);
 
-        // Upis
         $news = News::create([
             'title'        => $title_lat,
             'title_en'     => $title_en,
@@ -228,7 +223,6 @@ class NewsController extends Controller
             $content_en = $validated['content_en'] ?? $validated['content'] ?? '';
             $tags_en = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
 
-            // Ispravno: uvek konvertuj rezultat na latinicu!
             $translated = $translate->setSource('en')->setTarget('sr')->translate($content_en);
             $content_lat = $lm->cyrillic_to_latin($translated);
             $tags_lat = array_map(function ($tag) use ($translate, $lm) {
