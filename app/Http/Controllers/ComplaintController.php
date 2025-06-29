@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\File;
 
 class ComplaintController extends Controller
 {
-    /*public function index()
-    {
-        $comments = \App\Models\Comment::latest()->get();
-        return view('complaints', compact('comments'));
-    }*/
-
     protected $translate;
     protected $languageMapper;
 
@@ -36,7 +30,7 @@ class ComplaintController extends Controller
     }
 
 
-    public function store(Request $request) {
+    /*public function store(Request $request) {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
@@ -56,8 +50,137 @@ class ComplaintController extends Controller
         ]);
         
         return redirect()->back()->with('success', 'Žalba je uspešno poslata.');
+    }*/
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email',
+            'phone'      => 'nullable|string|max:20',
+            'subject'    => 'required|string|max:255',
+            'message'    => 'required|string',
+        ]);
+
+        $name = $validated['first_name'] . ' ' . $validated['last_name'];
+        $subject_src = $validated['subject'];
+        $message_src = $validated['message'];
+
+        $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $subject_src);
+
+        if (app()->getLocale() === 'en') {
+            $subject_en = $subject_src;
+            $message_en = $message_src;
+
+            $subject_lat = $this->translate->setSource('en')->setTarget('sr')->translate($subject_en);
+            $message_lat = $this->translate->setSource('en')->setTarget('sr')->translate($message_en);
+
+            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
+            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
+        } elseif ($is_cyrillic) {
+            $subject_cy = $subject_src;
+            $message_cy = $message_src;
+
+            $subject_lat = $this->languageMapper->cyrillic_to_latin($subject_cy);
+            $message_lat = $this->languageMapper->cyrillic_to_latin($message_cy);
+
+            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
+            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
+        } else {
+            $subject_lat = $subject_src;
+            $message_lat = $message_src;
+
+            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
+            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
+
+            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
+            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
+        }
+
+        $complaint = Complaint::create([
+            'name'         => $name,
+            'email'        => $validated['email'],
+            'phone'        => $validated['phone'] ?? null,
+            'subject'      => $subject_lat,
+            'subject_en'   => $subject_en,
+            'subject_cy'   => $subject_cy,
+            'message'      => $message_lat,
+            'message_en'   => $message_en,
+            'message_cy'   => $message_cy,
+        ]);
+
+        return redirect()->back()->with('success', 'Žalba uspešno poslata!');
     }
 
+    public function updateComplaints(Complaint $complaint)
+    {
+        $locale = app()->getLocale();
+
+        if ($locale === 'en') {
+            $subject_en = $complaint->subject_en;
+            $message_en = $complaint->message_en;
+
+            $subject_lat = $this->translate->setSource('en')->setTarget('sr')->translate($subject_en);
+            $message_lat = $this->translate->setSource('en')->setTarget('sr')->translate($message_en);
+
+            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
+            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
+
+        } elseif ($locale === 'sr-Cyrl') {
+            $subject_cy = $complaint->subject_cy;
+            $message_cy = $complaint->message_cy;
+
+            $subject_lat = $this->languageMapper->cyrillic_to_latin($subject_cy);
+            $message_lat = $this->languageMapper->cyrillic_to_latin($message_cy);
+
+            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
+            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
+
+        } else {
+            $subject_lat = $complaint->subject;
+            $message_lat = $complaint->message;
+
+            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
+            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
+
+            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
+            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
+        }
+
+        $complaint->update([
+            'subject'    => $subject_lat,
+            'subject_en' => $subject_en,
+            'subject_cy' => $subject_cy,
+            'message'    => $message_lat,
+            'message_en' => $message_en,
+            'message_cy' => $message_cy,
+        ]);
+
+        return redirect()->back()->with('success', 'Prevod žalbe je uspešno ažuriran.');
+    }
+
+
+    public function updateAllComplaints()
+    {
+        Complaint::all()->each(function($complaint) {
+            $this->updateComplaints($complaint);
+        });
+
+        return redirect()->back()->with('success', 'Svi prevodi su uspešno ažurirani.');
+    }
+
+    public function answer(Request $request, $id)
+    {
+        $request->validate([
+            'answer' => 'required|string',
+        ]);
+
+        $complaint = Complaint::findOrFail($id);
+        $complaint->answer = $request->answer;
+        $complaint->save();
+
+        return redirect()->back()->with('success', 'Odgovor uspešno sačuvan.');
+    }
     public function answerPage()
     {
         $complaints = Complaint::latest()->get();
