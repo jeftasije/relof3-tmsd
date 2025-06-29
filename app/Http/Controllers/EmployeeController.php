@@ -249,11 +249,11 @@ class EmployeeController extends Controller
             $exp_en = $validated['experience_translated'] ?? '';
             $skills_en_arr = !empty($validated['skills_translated']) ? array_map('trim', explode(',', $validated['skills_translated'])) : [];
 
-            $bio_lat = $translate->setSource('en')->setTarget('sr')->translate($bio_en);
-            $uni_lat = $translate->setSource('en')->setTarget('sr')->translate($uni_en);
-            $exp_lat = $translate->setSource('en')->setTarget('sr')->translate($exp_en);
-            $skills_lat = array_map(function($s) use ($translate) {
-                return $translate->setSource('en')->setTarget('sr')->translate($s);
+            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
+            $uni_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($uni_en));
+            $exp_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($exp_en));
+            $skills_lat = array_map(function($s) use ($translate, $lm) {
+                return $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($s));
             }, $skills_en_arr);
 
             $bio_cy = $lm->latin_to_cyrillic($bio_lat);

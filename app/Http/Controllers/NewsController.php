@@ -270,9 +270,12 @@ class NewsController extends Controller
             $content_en = $validated['content_en'] ?? $validated['content'] ?? '';
             $tags_en = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
 
-            $content_lat = $translate->setSource('en')->setTarget('sr')->translate($content_en);
-            $tags_lat = array_map(function ($tag) use ($translate) {
-                return $translate->setSource('en')->setTarget('sr')->translate($tag);
+            // Ispravno: uvek konvertuj rezultat na latinicu!
+            $translated = $translate->setSource('en')->setTarget('sr')->translate($content_en);
+            $content_lat = $lm->cyrillic_to_latin($translated);
+            $tags_lat = array_map(function ($tag) use ($translate, $lm) {
+                $translated_tag = $translate->setSource('en')->setTarget('sr')->translate($tag);
+                return $lm->cyrillic_to_latin($translated_tag);
             }, $tags_en);
 
             $content_cy = $lm->latin_to_cyrillic($content_lat);
