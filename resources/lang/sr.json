@@ -30,6 +30,15 @@
         "logo_light": "images/nbnp-logo.png",
         "logo_dark": "images/nbnp-logo-dark.png"
     },
+    "services": {
+        "hero_title": "Usluge za sve potrebe",
+        "hero_subtitle": "Brz, visok kvalitet i pristupačan - pogledajte našu ponudu.",
+        "images": [
+            "/images/fotokopirnica.png",
+            "/images/knjigoveznica.jpg"
+        ],
+        "main_text": "Naša institucija nudi ljubavnu ljubav:\n\n- Fotokopiranje i štampanje: \nKopirajte i štampajte dokumente u crno-beloj boji ili boji, različite formate (A4 i A3). Kopirajte cenu: A4 jednostrani od 1,8 do 5 dinara po stranici, A3 od 5 do 12 dinara po stranici. \n\n- Štampanje u boji: \nod 10 do 25 dinara po stranici. Skeniranje dokumenata: 15 dinara po stranici.\n\n- Knjigovodstvene usluge: \nProfesionalno vezivanje i proizvodnja radilice za diplomatske teze, doktorske disertacije i druge dokumente. Cena za vezivanje diplomiranih tema (tvrdi poklopac): 354 dinara po radu.\n\n- Povezivanje skripte: \nod 118 do 236 dinara po scenariju.\n\n- Stvaranje korice:\n od 354 do 708 dinara po komadu.\n\n- Oporavi stare knjige: \nCena po dogovoru. Naš stručni tim je dostupan za sva pitanja i dodatne informacije. \n\nPosetite nas ili nas kontaktirajte za detaljnije informacije o svim uslugama i trenutnim cenama."
+    },
     "header.search_placeholder": "Pretražite sajt...",
     "header.search_button": "Pretraži",
     "header.library_name_line1": "Narodna biblioteka \"Dositej Obradović\"",
@@ -65,6 +74,19 @@
     "validation.logo_light_max": "Light logo ne sme biti veći od 2MB.",
     "validation.logo_dark_image": "Dark logo mora biti slika.",
     "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB.",
-    
+    "page_settings": "Podešavanja stranice",
+    "url_label": "URL stranice",
+    "name_label": "Naziv stranice",
+    "url_tooltip": "Ovo je deo URL-a koji identifikuje stranicu, npr. 'moja-nova-stranica'. Koristite mala slova i crtice.",
+    "main_section_label": "Glavna navigaciona sekcija",
+    "sub_section_label": "Podsekcija navigacije",
+    "subsection_required": "Podsekcija je obavezna jer je glavna sekcija opadajuća",
+    "title_required": "Molimo unesite naziv stranice",
+    "page_slug_required": "Polje za URL je obavezno.",
+    "page_slug_unique": "Ovaj URL je već u upotrebi.",
+    "page_slug_alpha_dash": "URL može sadržati samo slova, brojeve, crtice i donje crte.",
+    "page_navigation_main_required": "Molimo izaberite glavnu sekciju.",
+    "page_navigation_main_exists": "Izabrana glavna sekcija nije ispravna.",
+    "page_navigation_sub_exists": "Izabrana podsekcija nije ispravna.",
     "history.content": "Početkom 20. veka, Novi Pazar je bio kulturno i ekonomski nerazvijen. Kulturni život je bio podeljen po verskoj liniji: muslimani su imali privatne biblioteke u kućama i džamijama, a pravoslavno stanovništvo u okviru crkveno-školskih opština. Prva štamparija se pojavila 1912, a prvi lokalni list 1921. godine. Prva javna biblioteka osnovana je 30. juna 1921. U međuratnom periodu biblioteke su uglavnom postojale u školama. Tokom Drugog svetskog rata fond knjiga je uglavnom uništen ili izgubljen. Nakon rata, 23. decembra 1944. godine osnovana je Narodna biblioteka. Iako je počela u teškim uslovima, već 1957. postaje Gradska biblioteka „Dositej Obradović“. Narednih decenija se razvija, a 1983. postaje matična biblioteka opštine. Od 1996. nalazi se u zgradi u Gradskom parku. Modernizacija počinje 2006. godine uvođenjem COBISS sistema i elektronske pozajmice knjiga. Danas biblioteka ima 25 zaposlenih, 10 odeljenja, oko 80.000 knjiga i 5.000 aktivnih članova godišnje. Ona ostaje ključna kulturna ustanova Novog Pazara."
 }
