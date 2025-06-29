@@ -30,6 +30,15 @@
         "logo_light": "images/nbnp-logo.png",
         "logo_dark": "images/nbnp-logo-dark.png"
     },
+    "services": {
+        "hero_title": "Services for all needs",
+        "hero_subtitle": "Fast, high quality and accessible - see our offer.",
+        "images": [
+            "/images/fotokopirnica.png",
+            "/images/knjigoveznica.jpg"
+        ],
+        "main_text": "Our institution offers love love:\n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduate topics (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices."
+    },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
     "header.library_name_line1": "Public Library \"Dositej Obradović\"",
