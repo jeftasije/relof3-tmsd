@@ -82,12 +82,16 @@ class HomepageController extends Controller
         $jsonPath = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
         $newsVisible = $data['news_visible'] ?? true;
+        $contactVisible = $data['contact_visible'] ?? true;
+        $cobissVisible = $data['cobiss_visible'] ?? true;
 
         $news = News::latest()->take(5)->get();
 
         return view('welcome', [
             'news' => $news,
             'newsVisible' => $newsVisible,
+            'contactVisible' => $contactVisible,
+            'cobissVisible' => $cobissVisible
         ]);
     }
 
@@ -494,6 +498,28 @@ class HomepageController extends Controller
         $path = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
         $data['news_visible'] = !($data['news_visible'] ?? true); // toggle
+
+        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return response()->json(['success' => true]);
+    }
+
+    public function toggleContactVisibility()
+    {
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $data['contact_visible'] = !($data['contact_visible'] ?? true); 
+
+        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return response()->json(['success' => true]);
+    }
+
+    public function toggleCobissVisibility()
+    {
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $data['cobiss_visible'] = !($data['cobiss_visible'] ?? true); 
 
         file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

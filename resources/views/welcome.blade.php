@@ -54,6 +54,7 @@
                     </div>
                 </section>
             @endif
+            @if ($contactVisible)
             <section class="bg-white dark:bg-gray-900">
                 <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                     <div class="mr-auto place-self-center lg:col-span-7">
@@ -82,6 +83,8 @@
                     </div>
                 </div>
             </section>
+            @endif
+            @if ($cobissVisible)
             <section class="bg-gray-100 dark:bg-gray-800 py-12">
                 <div class="max-w-screen-xl mx-auto px-4 text-center">
                     <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -114,6 +117,7 @@
                     </form>
                 </div>
             </section>
+            @endif
         </main>
     </div>
 

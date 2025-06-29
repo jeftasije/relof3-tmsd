@@ -95,7 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/naslovna/cobiss/en', [HomepageController::class, 'updateCobissEn'])->name('homepage.updateCobissEn');
 
     Route::post('/vidljivost-vesti', [HomepageController::class, 'toggleNewsVisibility'])->name('homepage.toggleNewsVisibility');
-
+    Route::post('/vidljivost-kontakt', [HomepageController::class, 'toggleContactVisibility'])->name('homepage.toggleContactVisibility');
+    Route::post('/vidljivost-cobiss', [HomepageController::class, 'toggleCobissVisibility'])->name('homepage.toggleCobissVisibility');
 
 });
 
