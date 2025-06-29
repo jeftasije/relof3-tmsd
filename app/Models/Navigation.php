@@ -14,6 +14,7 @@ class Navigation extends Model
         'name_cy',
         'is_deletable',
         'redirect_url',
+        'is_active',
     ];
 
     public function children()

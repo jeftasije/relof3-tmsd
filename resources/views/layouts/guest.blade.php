@@ -19,15 +19,22 @@
 
 <body class="bg-white dark:bg-gray-900">
     @auth
-        <x-app-layout/>
+    @if(!Request::is('uredi-stranicu/*'))
+    <x-app-layout />
+    @endif
     @endauth
+
+    @if(!Request::is('uredi-stranicu/*'))
     @include('layouts.header')
+    @endif
 
     <div>
         {{ $slot }}
     </div>
 
+    @if(!Request::is('uredi-stranicu/*'))
     @include('layouts.footer')
+    @endif
 </body>
 
 </html>
