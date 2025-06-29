@@ -38,6 +38,9 @@ class NewsController extends Controller
 
     public function update(Request $request, News $news)
     {
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'summary' => 'required|string|max:2000',
@@ -45,19 +48,58 @@ class NewsController extends Controller
         ]);
 
         if ($validated['locale'] === 'en') {
+            $title_en = $validated['title'];
+            $summary_en = $validated['summary'];
+
+            $title_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($title_en));
+            $summary_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($summary_en));
+
+            $title_cy = $lm->latin_to_cyrillic($title_lat);
+            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
+
             $news->update([
-                'title_en' => $validated['title'],
-                'summary_en' => $validated['summary'],
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
             ]);
         } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $title_cy = $validated['title'];
+            $summary_cy = $validated['summary'];
+
+            $title_lat = $lm->cyrillic_to_latin($title_cy);
+            $summary_lat = $lm->cyrillic_to_latin($summary_cy);
+
+            $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
+
             $news->update([
-                'title_cy' => $validated['title'],
-                'summary_cy' => $validated['summary'],
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
             ]);
         } else {
+            $title_lat = $validated['title'];
+            $summary_lat = $validated['summary'];
+
+            $title_cy = $lm->latin_to_cyrillic($title_lat);
+            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
+
+            $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
+
             $news->update([
-                'title' => $validated['title'],
-                'summary' => $validated['summary'],
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
             ]);
         }
 

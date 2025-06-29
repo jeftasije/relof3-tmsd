@@ -36,34 +36,68 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
         $locale = app()->getLocale();
 
+        $validated = $request->validate([
+            'biography' => 'nullable|string',
+            'position' => 'required|string|max:255',
+        ]);
+
         if ($locale === 'en') {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_en = $validated['biography'] ?? '';
+            $pos_en = $validated['position'];
+
+            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
+            $pos_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($pos_en));
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $pos_cy = $lm->latin_to_cyrillic($pos_lat);
+
             $employee->update([
-                'biography_en' => $validated['biography'],
-                'position_en' => $validated['position'],
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
             ]);
         } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_cy = $validated['biography'] ?? '';
+            $pos_cy = $validated['position'];
+
+            $bio_lat = $lm->cyrillic_to_latin($bio_cy);
+            $pos_lat = $lm->cyrillic_to_latin($pos_cy);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $pos_en = $translate->setSource('sr')->setTarget('en')->translate($pos_lat);
+
             $employee->update([
-                'biography_cy' => $validated['biography'],
-                'position_cy' => $validated['position'],
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
             ]);
         } else {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_lat = $validated['biography'] ?? '';
+            $pos_lat = $validated['position'];
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $pos_cy = $lm->latin_to_cyrillic($pos_lat);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $pos_en = $translate->setSource('sr')->setTarget('en')->translate($pos_lat);
+
             $employee->update([
-                'biography' => $validated['biography'],
-                'position' => $validated['position'],
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
             ]);
         }
 
