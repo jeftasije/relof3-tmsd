@@ -13,6 +13,7 @@
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="relative mb-12 flex flex-col items-center">
                 <!-- Dugmad za editovanje -->
+                @auth
                 <div class="w-full absolute right-0 top-0 flex justify-end items-center" style="height: 70px; min-width:220px; max-width: 240px;">
                     <div class="flex items-center">
                         <button x-show="!editing" @click="startEdit()"
@@ -36,6 +37,7 @@
                         </template>
                     </div>
                 </div>
+                @endauth
                 <div class="w-full flex flex-col items-center">
                     <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-3"
                         style="color: var(--primary-text); font-family: var(--font-title);">
@@ -55,69 +57,54 @@
             </div>
 
             <!-- Carousel + main_text -->
-            <div class="w-full max-w-5xl mx-auto">
-                <div class="flex flex-col md:flex-row gap-10 items-stretch">
-                    <!-- Carousel slike -->
-                    <div 
-                        class="md:w-[420px] w-full flex-shrink-0 flex items-start justify-center"
-                        x-data="{
-                            images: [
-                                '{{ asset('images/fotokopirnica.png') }}',
-                                '{{ asset('images/knjigoveznica.jpg') }}'
-                            ],
-                            current: 0,
-                            start() {
-                                setInterval(() => {
-                                    this.current = (this.current + 1) % this.images.length;
-                                }, 3500);
-                            }
-                        }"
-                        x-init="start()"
-                    >
-                        <div class="group overflow-hidden rounded-2xl shadow-xl w-full h-[440px] bg-white relative">
-                            <template x-for="(img, idx) in images" :key="idx">
-                                <img
-                                    :src="img"
-                                    class="object-cover object-center w-full h-full absolute inset-0 transition-all duration-1000"
-                                    :class="current === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'"
-                                    alt=""
-                                    style="transition-property: opacity;"
-                                />
-                            </template>
-                        </div>
-                    </div>
-                    <!-- Main tekst -->
-                    <div class="flex-1 flex flex-col justify-start">
-                        <template x-if="editing">
-                            <div>
-                                <!-- Toolbar sa 3 tamna dugmeta -->
-                                <div class="flex gap-2 mb-2">
-                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 font-bold"
-                                        @click="insertMarkdown('**', '**')"><span style="font-weight:bold">B</span></button>
-                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 italic"
-                                        @click="insertMarkdown('*', '*')"><span style="font-style:italic">I</span></button>
-                                    <button type="button" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-800 underline"
-                                        @click="insertMarkdown('<u>', '</u>')"><span style="text-decoration:underline">U</span></button>
-                                </div>
-                                <textarea
-                                    x-ref="mainText"
-                                    x-model="form.main_text"
-                                    class="w-full min-h-[350px] rounded-xl border px-4 py-3 text-base font-body"
-                                    style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body);"
-                                ></textarea>
-                                <small class="text-gray-500">
-                                    <strong>Markdown podrška:</strong> 
-                                    Bold: <code>**bold**</code> &nbsp; Italic: <code>*italic*</code> &nbsp; Podvučeno: <code>&lt;u&gt;podvučeno&lt;/u&gt;</code> &nbsp; Novi red: <code>Enter</code>
-                                </small>
-                            </div>
+            <div class="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[500px_1fr] gap-10 min-h-[calc(100vh-120px)]">
+                <!-- Carousel slike -->
+                <div 
+                    class="flex flex-col h-full"
+                    x-data="{
+                        images: [
+                            '{{ asset('images/fotokopirnica.png') }}',
+                            '{{ asset('images/knjigoveznica.jpg') }}'
+                        ],
+                        current: 0,
+                        start() {
+                            setInterval(() => {
+                                this.current = (this.current + 1) % this.images.length;
+                            }, 3500);
+                        }
+                    }"
+                    x-init="start()"
+                >
+                    <div class="group h-full overflow-hidden rounded-2xl shadow-xl bg-white relative flex-1 flex">
+                        <template x-for="(img, idx) in images" :key="idx">
+                            <img
+                                :src="img"
+                                class="object-cover object-left w-full h-full absolute inset-0 transition-all duration-1000"
+                                :class="current === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'"
+                                alt=""
+                                style="transition-property: opacity;"
+                            />
                         </template>
-                        <div 
-                            x-show="!editing"
-                            class="prose prose-lg max-w-none"
-                            style="color: var(--primary-text); font-family: var(--font-body);"
-                            x-html="renderedText"
-                        ></div>
                     </div>
+                </div>
+                <!-- Main tekst -->
+                <div class="flex flex-col justify-start h-full">
+                    <template x-if="editing">
+                        <div>
+                            <textarea
+                                x-ref="mainText"
+                                x-model="form.main_text"
+                                class="w-full min-h-[350px] h-full rounded-xl border px-4 py-3 text-base font-body"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body);"
+                            ></textarea>
+                        </div>
+                    </template>
+                    <div 
+                        x-show="!editing"
+                        class="prose prose-lg max-w-none h-full"
+                        style="color: var(--primary-text); font-family: var(--font-body);"
+                        x-html="renderedText"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -141,20 +128,6 @@
     <script>
     window.marked.setOptions({ breaks: false });
 
-    function markdownRestore(text) {
-        text = text.replace(/##Б##(.*?)##Б##/gs, '**$1**');
-        text = text.replace(/##\s*B\s*##(.*?)##\s*B\s*##/gs, '**$1**');
-        text = text.replace(/\*\*\s+(.*?)\s+\*\*/gs, '**$1**');
-        text = text.replace(/\*\s+(.*?)\s+\*/gs, '*$1*');
-        // Ispravi razne varijante <u> tagova (latinica/ćirilica/sa space)
-        text = text.replace(/<\s*[uу]\s*>/gi, '<u>');
-        text = text.replace(/<\s*\/\s*[uу]\s*>/gi, '</u>');
-        // Ukloni prazne <u></u>
-        text = text.replace(/<u>\s*<\/u>/gi, '');
-        return text;
-    }
-
-
     function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
         return {
             form: JSON.parse(JSON.stringify(initial)),
@@ -162,8 +135,9 @@
             editing: false,
             get renderedText() {
                 let text = this.form.main_text ?? "";
+                // Dodaj razmak iza svakog \n koji ima još neki \n iza sebe
+                text = text.replace(/\n(?=\n)/g, '\n ');
                 text = text.replace(/\n+/g, '\n');
-                text = markdownRestore(text);
                 text = text.replace(/\n/g, '<br>');
                 return window.marked.parse(text);
             },
@@ -200,23 +174,6 @@
                 }).catch(() => {
                     alert('Greška!');
                 });
-            },
-            insertMarkdown(before, after) {
-                let textarea = this.$refs.mainText;
-                let val = textarea.value;
-                let start = textarea.selectionStart;
-                let end = textarea.selectionEnd;
-                let selected = val.substring(start, end);
-
-                if (!selected) {
-                    this.form.main_text = val.substring(0, start) + before + after + val.substring(end);
-                    textarea.selectionStart = textarea.selectionEnd = start + before.length;
-                } else {
-                    this.form.main_text = val.substring(0, start) + before + selected + after + val.substring(end);
-                    textarea.selectionStart = start;
-                    textarea.selectionEnd = end + before.length + after.length;
-                }
-                textarea.focus();
             }
         }
     }
