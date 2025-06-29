@@ -19,9 +19,6 @@ use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\NavigationController;
-use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrganisationalStructureController;
 
 Route::get('/', function () {
