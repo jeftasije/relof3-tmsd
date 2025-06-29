@@ -152,6 +152,7 @@
         <hr class="border-t-2 mb-2 w-10/12" style="border-color: var(--secondary-text);">
         <ul class="space-y-1">
           @foreach ($subSection->children as $child)
+          @if($child->is_active)
           <li>
             @php
             $isPdf = substr($child->redirect_url, -4) === '.pdf';
@@ -161,6 +162,7 @@
               <div class="font-semibold" style="color: var(--primary-text);">{{ $child->translate('name') }}</div>
             </a>
           </li>
+          @endif
           @endforeach
         </ul>
       </div>
