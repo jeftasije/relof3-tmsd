@@ -73,7 +73,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
   
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
+
     Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+    Route::get('/kontaktiranja', [ContactController::class, 'answerPage'])->name('contact.answer');
+    Route::post('/kontaktiranja', [ContactController::class, 'updateAllComplaints'])->name('contact.updateAllTranslations');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
   

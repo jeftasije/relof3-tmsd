@@ -230,7 +230,7 @@
 
                     <div class="flex justify-center">
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded w-full sm:w-auto text-center">
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded sm:w-auto text-center">
                             @switch(App::getLocale())
                                 @case('en') Send message @break
                                 @case('sr-Cyrl') Пошаљи поруку @break
