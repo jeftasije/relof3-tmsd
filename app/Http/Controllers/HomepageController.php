@@ -78,22 +78,21 @@ class HomepageController extends Controller
         'cobiss_title_sr_cyr', 'cobiss_subtitle_sr_cyr'));
     }
 
-    public function showWelcome() {
+    public function showWelcome()
+    {
         $jsonPath = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
+
+        $order = $data['component_order'] ?? ['hero', 'news', 'contact', 'cobiss'];
         $newsVisible = $data['news_visible'] ?? true;
         $contactVisible = $data['contact_visible'] ?? true;
         $cobissVisible = $data['cobiss_visible'] ?? true;
 
         $news = News::latest()->take(5)->get();
 
-        return view('welcome', [
-            'news' => $news,
-            'newsVisible' => $newsVisible,
-            'contactVisible' => $contactVisible,
-            'cobissVisible' => $cobissVisible
-        ]);
+        return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible'));
     }
+
 
     public function updateSr(Request $request)
     {
@@ -525,4 +524,23 @@ class HomepageController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function updateComponentOrder(Request $request)
+    {
+        $components = $request->input('components', []);
+        
+        if (empty($components) || $components[0] !== 'hero') {
+            return back()->with('error', 'Hero section must be the first one in the order.');
+        }
+
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+
+        $data['component_order'] = $components;
+
+        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return back()->with('success', 'Order saved successfully.');
+    }
+
 }

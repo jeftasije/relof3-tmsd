@@ -448,8 +448,59 @@
                 </p>
             </div>
         </div>
+        <form action="{{ route('homepage.updateComponentOrder') }}" method="POST" class="mt-10">
+            @csrf
+            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                    {{ App::getLocale() === 'en' ? 'Sort visible components' : (App::getLocale() === 'sr-Cyrl' ? 'Поређај видљиве компоненте' : 'Poređaj vidljive komponente') }}
+                </h2>
+
+                <ul id="sortable" class="space-y-2 cursor-move">
+                    {{-- Hero sekcija je uvek prva --}}
+                    <li class="px-4 py-2 bg-gray-200 text-gray-700 rounded shadow">
+                        HERO (fixed first)
+                        <input type="hidden" name="components[]" value="hero">
+                    </li>
+
+                    {{-- Ostale vidljive komponente (news, contact, cobiss) --}}
+                    @php
+                        $visibleComponents = [];
+                        if ($newsVisible) $visibleComponents[] = 'news';
+                        if ($contactVisible) $visibleComponents[] = 'contact';
+                        if ($cobissVisible) $visibleComponents[] = 'cobiss';
+                        $currentOrder = $data['component_order'] ?? [];
+                        $sorted = array_filter($currentOrder, fn($item) => in_array($item, $visibleComponents));
+                        $remaining = array_diff($visibleComponents, $sorted);
+                        $finalOrder = array_merge($sorted, $remaining);
+                    @endphp
+
+                    @foreach ($finalOrder as $component)
+                        <li class="px-4 py-2 bg-gray-100 text-gray-900 rounded shadow">
+                            {{ strtoupper($component) }}
+                            <input type="hidden" name="components[]" value="{{ $component }}">
+                        </li>
+                    @endforeach
+                </ul>
+
+                <button type="submit"
+                    class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
+                    {{ App::getLocale() === 'en' ? 'Save order' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај поредак' : 'Sačuvaj poredak') }}
+                </button>
+            </div>
+        </form>
+
     </div>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
     <script>
+        $(function () {
+            $("#sortable").sortable({
+                items: "li:not(:first-child)" // Prva stavka (HERO) ne može da se pomera
+            });
+        });
+
         function toggleEye() {
             const eyeOpen = document.getElementById('eye-open');
             const eyeClosed = document.getElementById('eye-closed');

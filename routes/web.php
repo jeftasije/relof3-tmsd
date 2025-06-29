@@ -98,6 +98,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/vidljivost-kontakt', [HomepageController::class, 'toggleContactVisibility'])->name('homepage.toggleContactVisibility');
     Route::post('/vidljivost-cobiss', [HomepageController::class, 'toggleCobissVisibility'])->name('homepage.toggleCobissVisibility');
 
+    Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
+
 });
 
 Route::get('/usluge', function () {
