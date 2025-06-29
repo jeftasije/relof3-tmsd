@@ -347,12 +347,16 @@
                     matchingDocs.forEach(doc => {
                         const li = document.createElement('li');
                         li.className = 'p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer';
-                        li.textContent = doc.textContent;
+
+                        const link = doc.querySelector('a');
+                        li.textContent = link ? link.textContent : 'Neimenovan dokument';
+
                         li.dataset.docId = doc.dataset.docId;
                         li.dataset.categoryId = doc.dataset.categoryId;
                         li.addEventListener('click', () => handleDocumentSelect(doc));
                         searchResults.appendChild(li);
                     });
+
                 }
             });
 
