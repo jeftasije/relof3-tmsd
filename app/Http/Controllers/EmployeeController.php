@@ -142,6 +142,8 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
+        $locale = $request->input('locale', 'sr'); // dodaj u formu ili detektuj, po potrebi
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
@@ -169,16 +171,62 @@ class EmployeeController extends Controller
         $skills_src = $validated['skills'] ?? '';
         $skills_arr = array_filter(array_map('trim', preg_split('/[,;]+/', $skills_src)));
 
-        $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $name_src);
+        $locale = $request->input('locale', 'sr'); // ili iz vue forme
 
-        if ($is_cyrillic) {
-            $name_lat = $this->languageMapper->cyrillic_to_latin($name_src);
-            $position_lat = $this->languageMapper->cyrillic_to_latin($position_src);
-            $biography_lat = $this->languageMapper->cyrillic_to_latin($biography_src);
-            $bio_ext_lat = $this->languageMapper->cyrillic_to_latin($bio_ext_src);
-            $univ_lat = $this->languageMapper->cyrillic_to_latin($univ_src);
-            $exp_lat = $this->languageMapper->cyrillic_to_latin($exp_src);
-            $skills_lat = array_map(function ($s) { return $this->languageMapper->cyrillic_to_latin($s); }, $skills_arr);
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
+
+        if ($locale === 'en') {
+            // PRVO PREVOD sa EN na SR (dobijaš ćirilicu ili latinicu, zavisi od Google Translate-a)
+            $name_sr = $translate->setSource('en')->setTarget('sr')->translate($name_src);
+            $position_sr = $translate->setSource('en')->setTarget('sr')->translate($position_src);
+            $biography_sr = $translate->setSource('en')->setTarget('sr')->translate($biography_src);
+            $bio_ext_sr = $translate->setSource('en')->setTarget('sr')->translate($bio_ext_src);
+            $univ_sr = $translate->setSource('en')->setTarget('sr')->translate($univ_src);
+            $exp_sr = $translate->setSource('en')->setTarget('sr')->translate($exp_src);
+            $skills_sr_arr = array_map(function ($s) use ($translate) {
+                return $translate->setSource('en')->setTarget('sr')->translate($s);
+            }, $skills_arr);
+
+            // Zatim forsiraj latinicu (pa ćirilicu iz latinice)
+            $name_lat = $lm->cyrillic_to_latin($name_sr);
+            $position_lat = $lm->cyrillic_to_latin($position_sr);
+            $biography_lat = $lm->cyrillic_to_latin($biography_sr);
+            $bio_ext_lat = $lm->cyrillic_to_latin($bio_ext_sr);
+            $univ_lat = $lm->cyrillic_to_latin($univ_sr);
+            $exp_lat = $lm->cyrillic_to_latin($exp_sr);
+            $skills_lat = array_map(fn($s) => $lm->cyrillic_to_latin($s), $skills_sr_arr);
+
+            $name_en = $name_src;
+            $position_en = $position_src;
+            $biography_en = $biography_src;
+            $bio_ext_translated = $bio_ext_src;
+            $univ_translated = $univ_src;
+            $exp_translated = $exp_src;
+            $skills_translated = $skills_arr;
+        }
+        elseif (preg_match('/[\p{Cyrillic}]/u', $name_src)) {
+            $name_lat = $lm->cyrillic_to_latin($name_src);
+            $position_lat = $lm->cyrillic_to_latin($position_src);
+            $biography_lat = $lm->cyrillic_to_latin($biography_src);
+            $bio_ext_lat = $lm->cyrillic_to_latin($bio_ext_src);
+            $univ_lat = $lm->cyrillic_to_latin($univ_src);
+            $exp_lat = $lm->cyrillic_to_latin($exp_src);
+            $skills_lat = array_map(function ($s) use ($lm) {
+                return $lm->cyrillic_to_latin($s);
+            }, $skills_arr);
+
+            $name_en = $translate->setSource('sr')->setTarget('en')->translate($name_lat);
+            $position_en = $translate->setSource('sr')->setTarget('en')->translate($position_lat);
+            $biography_en = $translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+
+            $bio_ext_translated = $translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
+            $univ_translated = $translate->setSource('sr')->setTarget('en')->translate($univ_lat);
+            $exp_translated = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_translated = [];
+            foreach ($skills_lat as $skill) {
+                $skills_translated[] = $translate->setSource('sr')->setTarget('en')->translate($skill);
+            }
         } else {
             $name_lat = $name_src;
             $position_lat = $position_src;
@@ -187,15 +235,28 @@ class EmployeeController extends Controller
             $univ_lat = $univ_src;
             $exp_lat = $exp_src;
             $skills_lat = $skills_arr;
+
+            $name_en = $translate->setSource('sr')->setTarget('en')->translate($name_lat);
+            $position_en = $translate->setSource('sr')->setTarget('en')->translate($position_lat);
+            $biography_en = $translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+
+            $bio_ext_translated = $translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
+            $univ_translated = $translate->setSource('sr')->setTarget('en')->translate($univ_lat);
+            $exp_translated = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_translated = [];
+            foreach ($skills_lat as $skill) {
+                $skills_translated[] = $translate->setSource('sr')->setTarget('en')->translate($skill);
+            }
         }
 
-        $name_en = $this->translate->setSource('sr')->setTarget('en')->translate($name_lat);
-        $position_en = $this->translate->setSource('sr')->setTarget('en')->translate($position_lat);
-        $biography_en = $this->translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+        $name_cy = $lm->latin_to_cyrillic($name_lat);
+        $position_cy = $lm->latin_to_cyrillic($position_lat);
+        $biography_cy = $lm->latin_to_cyrillic($biography_lat);
 
-        $name_cy = $this->languageMapper->latin_to_cyrillic($name_lat);
-        $position_cy = $this->languageMapper->latin_to_cyrillic($position_lat);
-        $biography_cy = $this->languageMapper->latin_to_cyrillic($biography_lat);
+        $bio_ext_cy = $lm->latin_to_cyrillic($bio_ext_lat);
+        $univ_cy = $lm->latin_to_cyrillic($univ_lat);
+        $exp_cy = $lm->latin_to_cyrillic($exp_lat);
+        $skills_cy = array_map(fn($s) => $lm->latin_to_cyrillic($s), $skills_lat);
 
         $employee = Employee::create([
             'name'         => $name_lat,
@@ -209,22 +270,6 @@ class EmployeeController extends Controller
             'biography_cy' => $biography_cy,
             'image_path'   => $validated['image_path'] ?? null,
         ]);
-
-        $bio_ext_translated = $this->translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
-        $univ_translated    = $this->translate->setSource('sr')->setTarget('en')->translate($univ_lat);
-        $exp_translated     = $this->translate->setSource('sr')->setTarget('en')->translate($exp_lat);
-        $skills_translated = [];
-        foreach ($skills_lat as $skill) {
-            $skills_translated[] = $this->translate->setSource('sr')->setTarget('en')->translate($skill);
-        }
-
-        $bio_ext_cy = $this->languageMapper->latin_to_cyrillic($bio_ext_lat);
-        $univ_cy    = $this->languageMapper->latin_to_cyrillic($univ_lat);
-        $exp_cy     = $this->languageMapper->latin_to_cyrillic($exp_lat);
-        $skills_cy  = array_map(
-            fn($skill) => $this->languageMapper->latin_to_cyrillic($skill),
-            $skills_lat
-        );
 
         $employee->extendedBiography()->create([
             'biography'             => $bio_ext_lat,
