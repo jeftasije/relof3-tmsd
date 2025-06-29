@@ -79,10 +79,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
   
-    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+    Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
-  
+    Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
+    
+    Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
+
     Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
     Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
     Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
@@ -147,5 +150,6 @@ Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.inde
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
+
 
 require __DIR__.'/auth.php';

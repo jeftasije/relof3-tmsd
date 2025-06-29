@@ -66,6 +66,7 @@ class LanguageMapperController extends Controller
     {
         $locale = app()->getLocale();
 
+
         if ($locale === 'en') {
             $fieldName = $field . '_en';
         } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
@@ -76,4 +77,5 @@ class LanguageMapperController extends Controller
 
         return $this->{$fieldName} ?? $this->{$field} ?? '';
     }
+
 }

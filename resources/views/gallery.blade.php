@@ -1,21 +1,212 @@
 <x-guest-layout>
-    <h1 class="text-4xl font-bold text-center my-6 text-gray-800 dark:text-white">
-        @switch(App::getLocale())
-        @case('en') Gallery @break
-        @case('sr-Cyrl') Галерија @break
-        @default Galerija
-        @endswitch
+    <div class="max-w-4xl mx-auto py-10 px-6 text-gray-900 dark:text-white">
+        @auth
+            <div class="flex justify-end mb-2">
+                <button 
+                    id="help-btn" 
+                    onclick="toggleHelpModal()"
+                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                    <span class="ml-3">
+                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                    </span>
+                </button>
+            </div>
+        @endauth
+
+        <h1 class="text-4xl font-bold text-center my-6 text-gray-800 dark:text-white">
+            @switch(App::getLocale())
+                @case('en') Gallery @break
+                @case('sr-Cyrl') Галерија @break
+                @default Galerija
+            @endswitch
         </h1>
 
-    <p class="text-center text-gray-600 dark:text-gray-300 mb-10">
-        @switch(App::getLocale())
-        @case('en') Discover our collection of images and videos. @break
-        @case('sr-Cyrl') Погледајте нашу колекцију слика и видео снимака. @break
-        @default Pogledajte našu kolekciju slika i video snimaka.
-        @endswitch
-    </p>
+        @auth
+            <div class="text-right mb-6">
+                <button id="editBtn" 
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
+                    type="button">
+                    @switch(App::getLocale())
+                        @case('en') Edit @break
+                        @case('sr-Cyrl') Уреди @break
+                        @default Uredi
+                    @endswitch
+                </button>
+            </div>
+        @endauth
 
-    
+        @if(session('success'))
+            <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
+                {{ session('success') }}
+            </div>
+
+            <script>
+                setTimeout(() => {
+                    const el = document.getElementById('successMessage');
+                    if (el) {
+                        el.style.opacity = '0';
+                        setTimeout(() => el.style.display = 'none', 500);
+                    }
+                }, 3000); // 3000ms = 3s
+            </script>
+        @endif
+        
+        @auth
+            <form action="{{ route('gallery.updateDescription') }}" method="POST" id="galleryForm" class="space-y-4 ">
+                @csrf
+                @method('PATCH')
+                <div class="max-w-lg mx-auto">
+                    <div id="valueDisplay" class="prose dark:prose-invert max-w-none text-center">
+                        {{ __('gallery.description') }}
+                    </div>
+                    
+                    <textarea name="value" id="valueEdit" rows="15" style="text-align: center;"
+                        class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('gallery.description')) }}</textarea>
+
+                    <div id="editButtons" class="flex justify-end gap-4 hidden">
+                        <button type="button" id="cancelBtn"
+                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                            @switch(App::getLocale())
+                                @case('en') Cancel @break
+                                @case('sr-Cyrl') Откажи @break
+                                @default Otkaži
+                            @endswitch
+                        </button>
+
+                        <button type="button" id="saveBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                            @switch(App::getLocale())
+                                @case('en') Save changes @break
+                                @case('sr-Cyrl') Сачувај промене @break
+                                @default Sačuvaj promene
+                            @endswitch
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-end gap-4">
+                    
+
+                    <!-- Confirm Submission Modal -->
+                    <div id="submitModal" tabindex="-1"
+                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-md max-h-full mx-auto">
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <div class="p-6 text-center">
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                        @switch(App::getLocale())
+                                            @case('en') Are you sure you want to save the changes? @break
+                                            @case('sr-Cyrl') Да ли сте сигурни да желите да сачувате измене? @break
+                                            @default Da li ste sigurni da želite da sačuvate izmene?
+                                        @endswitch
+                                    </h3>
+                                    <button id="confirmSubmitBtn" type="button"
+                                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                        @switch(App::getLocale())
+                                            @case('en') Save @break
+                                            @case('sr-Cyrl') Сачувај @break
+                                            @default Sačuvaj
+                                        @endswitch
+                                    </button>
+                                    <button data-modal-hide="submitModal" type="button"
+                                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        @switch(App::getLocale())
+                                            @case('en') Cancel @break
+                                            @case('sr-Cyrl') Откажи @break
+                                            @default Otkaži
+                                        @endswitch
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        @else
+            <div class="prose dark:prose-invert max-w-none">
+                {!! nl2br(e(__('gallery.description'))) !!}
+            </div>
+        @endauth
+    </div>
+
+    @auth
+        <div class="max-w-xl mx-auto mt-6 mb-10">
+            <form method="POST" action="{{ route('gallery.upload') }}" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                @csrf
+                <label for="file" class="block text-base font-medium text-gray-700 dark:text-white mb-2">
+                    @switch(App::getLocale())
+                    @case('en') Upload new file @break
+                    @case('sr-Cyrl') Додај нови фајл @break
+                    @default Dodaj novi fajl
+                    @endswitch
+                </label>
+                <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png, .mp4, .mov, .avi"
+                       class="w-full text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg cursor-pointer dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600">
+                <p class="mb-2  text-sm font-normal text-gray-500 dark:text-gray-400">
+                    @switch(App::getLocale())
+                        @case('en')
+                            Your file supports up to 2 MB.
+                            @break
+                        @case('sr-Cyrl')
+                            Ваш фајл може бити до 2 МБ.
+                            @break
+                        @default
+                            Vaš fajl može biti do 2 MB.
+                    @endswitch
+                </p>
+                <div class="mt-4 flex justify-end space-x-2">
+                    <div id="file-error" class="text-red-600 mt-2 text-sm hidden">
+                        @switch(App::getLocale())
+                        @case('en') Please select an image or video before submitting. @break
+                        @case('sr-Cyrl') Молимо вас да изаберете слику или видео пре слања. @break
+                        @default Molimo vas da izaberete sliku ili video pre slanja.
+                        @endswitch
+                    </div>
+                    <button type="reset"
+                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                        @switch(App::getLocale())
+                        @case('en') Cancel @break
+                        @case('sr-Cyrl') Откажи @break
+                        @default Otkaži
+                        @endswitch                    
+                    </buttonS>
+                    <button type="submit" id="add-button"
+                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        @switch(App::getLocale())
+                        @case('en') Add @break
+                        @case('sr-Cyrl') Додај @break
+                        @default Dodaj
+                        @endswitch
+                    </button>
+                </div>
+            </form>
+            @if(session('error'))
+                <div id="errorMessage" class="mb-6 text-red-800 bg-red-100 border border-red-300 p-4 rounded transition-opacity duration-500">
+                    {{ session('error') }}
+                </div>
+
+                <script>
+                    setTimeout(() => {
+                        const el = document.getElementById('errorMessage');
+                        if (el) {
+                            el.style.opacity = '0';
+                            setTimeout(() => el.style.display = 'none', 500);
+                        }
+                    }, 3000); 
+                </script>
+            @endif
+            
+        </div>
+    @endauth
+
     <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-white">
         @switch(App::getLocale())
         @case('en') Photo gallery @break
@@ -29,11 +220,46 @@
             <div class="relative group">
                 <img src="{{ asset('storage/' . $image->path) }}" class="rounded-lg w-full h-48 object-cover" alt="Image" />
                 @auth
-                    <form method="POST" action="{{ route('gallery.destroy', $image->id) }}" class="absolute top-2 right-2 hidden group-hover:block">
+                    <form method="POST" action="{{ route('gallery.destroy', $image->id) }}" class="absolute top-2 right-2 hidden group-hover:block delete-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs">🗑</button>
+                        <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">🗑</button>
                     </form>
+                    <div class="flex justify-end">
+                        <!-- Delete Confirmation Modal -->
+                        <div id="deleteModal" tabindex="-1"
+                            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
+                            <div class="relative w-full max-w-md max-h-full mx-auto">
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <div class="p-6 text-center">
+                                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                            @switch(App::getLocale())
+                                                @case('en') Are you sure you want to delete this image? @break
+                                                @case('sr-Cyrl') Да ли сте сигурни да желите да обришете ову слику? @break
+                                                @default Da li ste sigurni da želite da obrišete ovu sliku?
+                                            @endswitch
+                                        </h3>
+                                        <button id="confirmDeleteBtn" type="button"
+                                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                            @switch(App::getLocale())
+                                                @case('en') Delete @break
+                                                @case('sr-Cyrl') Обриши @break
+                                                @default Obriši
+                                            @endswitch
+                                        </button>
+                                        <button id="cancelDeleteBtn" type="button"
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            @switch(App::getLocale())
+                                                @case('en') Cancel @break
+                                                @case('sr-Cyrl') Откажи @break
+                                                @default Otkaži
+                                            @endswitch
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endauth
             </div>
         @endforeach
@@ -61,51 +287,102 @@
                     @endswitch
                 </video>
                 @auth
-                    <form method="POST" action="{{ route('gallery.destroy', $video->id) }}" class="absolute top-2 right-2 hidden group-hover:block">
+                    <form method="POST" action="{{ route('gallery.destroy', $video->id) }}" class="absolute top-2 right-2 hidden group-hover:block delete-form">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs">🗑</button>
+                        <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">🗑</button>
                     </form>
+                    <div class="flex justify-end">
+                        <!-- Delete Confirmation Modal -->
+                        <div id="deleteModal" tabindex="-1"
+                            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
+                            <div class="relative w-full max-w-md max-h-full mx-auto">
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <div class="p-6 text-center">
+                                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                            @switch(App::getLocale())
+                                                @case('en') Are you sure you want to delete this video? @break
+                                                @case('sr-Cyrl') Да ли сте сигурни да желите да обришете овај видео? @break
+                                                @default Da li ste sigurni da želite da obrišete ovaj video?
+                                            @endswitch
+                                        </h3>
+                                        <button id="confirmDeleteBtn" type="button"
+                                            class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                            @switch(App::getLocale())
+                                                @case('en') Delete @break
+                                                @case('sr-Cyrl') Обриши @break
+                                                @default Obriši
+                                            @endswitch
+                                        </button>
+                                        <button id="cancelDeleteBtn" type="button"
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            @switch(App::getLocale())
+                                                @case('en') Cancel @break
+                                                @case('sr-Cyrl') Откажи @break
+                                                @default Otkaži
+                                            @endswitch
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endauth
             </div>
         @endforeach
     </div>
 
     
-    @auth
-        <div class="max-w-xl mx-auto mt-10">
-            <form method="POST" action="{{ route('gallery.upload') }}" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                @csrf
-                <label for="file" class="block text-sm font-medium text-gray-700 dark:text-white mb-2">
-                    @switch(App::getLocale())
-                    @case('en') Upload new file @break
-                    @case('sr-Cyrl') Додај нови фајл @break
-                    @default Dodaj novi fajl
-                    @endswitch
-                </label>
-                <input type="file" name="file" id="file" accept=".jpg, .jpeg, .png, .mp4, .mov, .avi"
-                       class="w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg cursor-pointer dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600">
-                <div class="mt-4 flex justify-end space-x-2">
-                    <button type="reset"
-                        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                        @switch(App::getLocale())
-                        @case('en') Cancel @break
-                        @case('sr-Cyrl') Откажи @break
-                        @default Otkaži
-                        @endswitch                    
-                    </button>
-                    <button type="submit"
-                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        @switch(App::getLocale())
-                        @case('en') Add @break
-                        @case('sr-Cyrl') Додај @break
-                        @default Dodaj
-                        @endswitch
-                    </button>
-                </div>
-            </form>
+    
+    <div 
+        id="helpModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center"
+    >
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+                &times;
+            </button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
+                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
+                {!! App::getLocale() === 'en' 
+                    ? '
+                    By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the gallery content.<br><br>
+                    If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the content will revert to its previous state without changes.<br><br>
+                    To save your edits, click the <strong>"Save"</strong> button.<br>
+                    You will be asked to confirm before the changes are applied.<br><br>
+                    If you want to add <strong>images or videos</strong>, use the provided form to upload your file.<br>
+                    You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected.
+                    The system will automatically recognize the file type and place it into the appropriate section.
+                    '
+                    : (App::getLocale() === 'sr-Cyrl' 
+                    ? '
+                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста галерије.<br><br>
+                        Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
+                        Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
+                        Бићете упитани за потврду пре него што се промене примене.<br><br>
+                        Ако желите да додате <strong>слику или видео</strong>, користите понуђену форму за отпремање фајла.<br>
+                        Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали.
+                        Систем ће аутоматски препознати тип и сврстати га у одговарајући сегмент.
+                    '
+                    : '
+                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta galerije.<br><br>
+                        Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
+                        Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
+                        Bićete upitani za potvrdu pre nego što se promene primene.<br><br>
+                        Ako želite da dodate <strong>sliku ili video</strong>, koristite ponuđeni formular za otpremanje fajla.<br>
+                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate.                   
+                        Sistem će automatski prepoznati tip i svrstati ga u odgovarajući segment.
+                    '
+                    )
+                !!}
+            </p>
+
+
+
         </div>
-    @endauth
+    </div>
 </x-guest-layout>
 
 <script>
@@ -121,7 +398,7 @@
 
             if (file && file.size > maxFileSize) {
                 e.preventDefault();
-                alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.' }}");
+                alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
                 fileInput.value = '';
                 return;
             }
@@ -135,4 +412,103 @@
             submitButton.disabled = false;
         });
     });
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        @auth
+        const editBtn = document.getElementById('editBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
+        const modal = document.getElementById('submitModal');
+        const form = document.getElementById('galleryForm');
+        const valueDisplay = document.getElementById('valueDisplay');
+        const valueEdit = document.getElementById('valueEdit');
+        const editButtons = document.getElementById('editButtons');
+
+        editBtn.addEventListener('click', () => {
+            valueDisplay.classList.add('hidden');
+            valueEdit.classList.remove('hidden');
+            editButtons.classList.remove('hidden');
+            editBtn.classList.add('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            valueEdit.value = valueDisplay.innerText.replace(/\n/g, '\n');
+            valueDisplay.classList.remove('hidden');
+            valueEdit.classList.add('hidden');
+            editButtons.classList.add('hidden');
+            editBtn.classList.remove('hidden');
+        });
+
+        saveBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        confirmSubmitBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            form.submit();
+        });
+
+        document.querySelectorAll('[data-modal-hide="submitModal"]').forEach((el) => {
+            el.addEventListener('click', () => {
+                modal.classList.add('hidden');
+
+                valueEdit.value = valueDisplay.innerText.replace(/\n/g, '\n');
+                valueDisplay.classList.remove('hidden');
+                valueEdit.classList.add('hidden');
+                editButtons.classList.add('hidden');
+                editBtn.classList.remove('hidden');
+            });
+        });
+        @endauth
+    });
+    
+    function toggleHelpModal() {
+        const modal = document.getElementById('helpModal');
+        modal.classList.toggle('hidden');
+    }
+
+    document.getElementById('add-button').addEventListener('click', function(e) {
+        const fileInput = document.getElementById('file');
+        const errorDiv = document.getElementById('file-error');
+
+        if (!fileInput.value) {
+            e.preventDefault(); // Sprečava submit
+            errorDiv.style.display = 'block';
+        } else {
+            errorDiv.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let formToDelete = null;  // Čuva formu koju treba obrisati
+        
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                formToDelete = e.target.closest('form');
+                const deleteModal = document.getElementById('deleteModal');
+                deleteModal.classList.remove('hidden');
+            });
+        });
+
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const deleteModal = document.getElementById('deleteModal');
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (formToDelete) {
+                formToDelete.submit();
+            }
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            formToDelete = null;
+        });
+    });
+
+
+
 </script>
