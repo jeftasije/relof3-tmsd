@@ -39,7 +39,7 @@ class ContactController extends Controller
             'message'    => 'required|string',
         ]);
 
-        $name = $validated['first_name'] . ' ' . $validated['last_name'];
+        //$name = $validated['first_name'] . ' ' . $validated['last_name'];
         $message_src = $validated['message'];
 
         $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $message_src);
@@ -59,7 +59,8 @@ class ContactController extends Controller
         }
 
         $contact = Contact::create([
-            'name'         => $name,
+            'first_name'   => $validated['first_name'],
+            'last_name'    => $validated['last_name'],
             'email'        => $validated['email'],
             'phone'        => $validated['phone'] ?? null,
             'message'      => $message_lat,

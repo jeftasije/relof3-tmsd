@@ -52,19 +52,49 @@
             <form method="GET" class="mb-6 bg-white dark:bg-gray-800 p-4 rounded shadow space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Datum od</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            @switch(App::getLocale())
+                                @case('en') Date from: @break
+                                @case('sr-Cyrl') Датум од: @break
+                                @default Datum od:
+                            @endswitch
+                        </label>
                         <input type="date" id="date_from" name="date_from" value="{{ request('date_from') }}" class="w-full p-2 rounded border-gray-300 dark:bg-gray-700 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Datum do</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                             @switch(App::getLocale())
+                                @case('en') Date until: @break
+                                @case('sr-Cyrl') Датум до: @break
+                                @default Datum do:
+                            @endswitch
+                        </label>
                         <input type="date" id="date_to" name="date_to" value="{{ request('date_to') }}" class="w-full p-2 rounded border-gray-300 dark:bg-gray-700 dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ima odgovor?</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            @switch(App::getLocale())
+                                @case('en') Is there an answer? @break
+                                @case('sr-Cyrl') Има одговор? @break
+                                @default Ima odgovor?
+                            @endswitch
+                        </label>
                         <select name="has_answer" class="w-full p-2 rounded border-gray-300 dark:bg-gray-700 dark:text-white">
                             <option value="">—</option>
-                            <option value="1" {{ request('has_answer') === '1' ? 'selected' : '' }}>Da</option>
-                            <option value="0" {{ request('has_answer') === '0' ? 'selected' : '' }}>Ne</option>
+                            <option value="1" {{ request('has_answer') === '1' ? 'selected' : '' }}>
+                                @switch(App::getLocale())
+                                    @case('en') Yes @break
+                                    @case('sr-Cyrl') Да @break
+                                    @default Da
+                                @endswitch
+                            </option>
+                            <option value="0" {{ request('has_answer') === '0' ? 'selected' : '' }}>
+                                @switch(App::getLocale())
+                                    @case('en') No @break
+                                    @case('sr-Cyrl') Не @break
+                                    @default Ne
+                                @endswitch
+                            </option>
                         </select>
                     </div>
                     <div class="flex items-end space-x-2">
@@ -99,7 +129,13 @@
                         @default Ime:
                         @endswitch
                     </strong> {{ $message->first_name }} {{ $message->last_name }}</p>
-                    <p><strong>Email:</strong> {{ $message->email ?? 'Nije unet' }}</p>
+                    <p><strong>
+                        @switch(App::getLocale())
+                            @case('en') Email: @break
+                            @case('sr-Cyrl') Мејл адреса: @break
+                            @default Mejl adresa:
+                        @endswitch
+                    </strong> {{ $message->email (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
                     <p><strong>
                         @switch(App::getLocale())
                         @case('en') Phone: @break

@@ -72,7 +72,7 @@
                 @endif
 
                 @auth
-                <form action="{{ route('contact.update') }}" method="POST" id="contactForm" class="space-y-4">
+                <form action="{{ route('contact.update') }}" method="POST" id="editForm" class="space-y-4">
                     @csrf
                     @method('PATCH')
                     <div id="contentDisplay" class="prose dark:prose-invert max-w-none mb-8 text-center">
@@ -83,7 +83,7 @@
                         class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('contact.content')) }}</textarea>
 
                     <div id="editButtons" class="flex justify-end gap-4 hidden">
-                        <button type="button" id="cancelBtn"
+                        <button type="button" id="cancelEditBtn"
                             class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
                             @switch(App::getLocale())
                                 @case('en') Cancel @break
@@ -92,7 +92,7 @@
                             @endswitch
                         </button>
 
-                        <button type="button" id="saveBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
+                        <button type="button" id="saveEditBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
                             @switch(App::getLocale())
                                 @case('en') Save changes @break
@@ -103,7 +103,7 @@
                     </div>
 
                     <!-- Confirm Submission Modal -->
-                    <div id="submitModal" tabindex="-1"
+                    <div id="submitModal1" tabindex="-1"
                         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full mx-auto">
                             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -115,7 +115,7 @@
                                             @default Da li ste sigurni da želite da sačuvate izmene?
                                         @endswitch
                                     </h3>
-                                    <button id="confirmSubmitBtn" type="button"
+                                    <button id="confirmSubmitBtn1" type="button"
                                         class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
                                         @switch(App::getLocale())
                                             @case('en') Save @break
@@ -123,7 +123,7 @@
                                             @default Sačuvaj
                                         @endswitch
                                     </button>
-                                    <button data-modal-hide="submitModal" type="button"
+                                    <button data-modal-hide="submitModal1" type="button"
                                         class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                         @switch(App::getLocale())
                                             @case('en') Cancel @break
@@ -148,7 +148,7 @@
                     $isEditor = auth()->check() && auth()->user()->isEditor();
                 @endphp
 
-                <form action="{{ route('contact.store') }}" method="POST"
+                <form action="{{ route('contact.store') }}" method="POST" id="contactForm"
                     class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
                     {{ $isEditor ? 'onsubmit=return false;' : '' }}>
                     @csrf
@@ -188,7 +188,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Email
+                                @switch(App::getLocale())
+                                    @case('en') Email: @break
+                                    @case('sr-Cyrl') Мејл адреса: @break
+                                    @default Mejl adresa:
+                                @endswitch
                             </label>
                             <input type="email" id="email" name="email"
                                 class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700
@@ -229,7 +233,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <button type="submit"
+                        <button type="submit" id="sendBtn"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded sm:w-auto text-center">
                             @switch(App::getLocale())
                                 @case('en') Send message @break
@@ -291,56 +295,59 @@
 function clearAnswer() {
     document.getElementById('answer-textarea').value = '';
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const editBtn = document.getElementById('editBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const saveBtn = document.getElementById('saveBtn');
-    const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
-    const modal = document.getElementById('submitModal');
-    const form = document.getElementById('contactForm');
-    const contentDisplay = document.getElementById('contentDisplay');
-    const contentEdit = document.getElementById('contentEdit');
-    const editButtons = document.getElementById('editButtons');
 
-    editBtn.addEventListener('click', () => {
-        contentDisplay.classList.add('hidden');
-        contentEdit.classList.remove('hidden');
-        editButtons.classList.remove('hidden');
-        editBtn.classList.add('hidden');
-    });
-
-    cancelBtn.addEventListener('click', () => {
-        contentEdit.value = contentDisplay.innerText.replace(/\n/g, '\n');
-        contentDisplay.classList.remove('hidden');
-        contentEdit.classList.add('hidden');
-        editButtons.classList.add('hidden');
-        editBtn.classList.remove('hidden');
-    });
-
-    saveBtn.addEventListener('click', () => {
-        modal.classList.remove('hidden');
-    });
-
-    confirmSubmitBtn.addEventListener('click', () => {
-        modal.classList.add('hidden');
-        form.submit();
-    });
-
-    document.querySelectorAll('[data-modal-hide="submitModal"]').forEach((el) => {
-        el.addEventListener('click', () => {
-            modal.classList.add('hidden');
-
-            contentEdit.value = contentDisplay.innerText.replace(/\n/g, '\n');
-            contentDisplay.classList.remove('hidden');
-            contentEdit.classList.add('hidden');
-            editButtons.classList.add('hidden');
-            editBtn.classList.remove('hidden');
-        });
-    });
-});
 
 function toggleHelpModal() {
     const modal = document.getElementById('helpModal');
     modal.classList.toggle('hidden');
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editBtn = document.getElementById('editBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const saveEditBtn = document.getElementById('saveEditBtn');
+    const confirmSubmitBtn = document.getElementById('confirmSubmitBtn1');
+    const submitModal = document.getElementById('submitModal1');
+
+    const contentDisplay = document.getElementById('contentDisplay');
+    const contentEdit = document.getElementById('contentEdit');
+    const editButtons = document.getElementById('editButtons');
+    const editForm = document.getElementById('editForm');
+
+    let originalContent = contentEdit.value;
+
+    // Klik na "Uredi"
+    editBtn.addEventListener('click', () => {
+        contentDisplay.classList.add('hidden');
+        contentEdit.classList.remove('hidden');
+        editButtons.classList.remove('hidden');
+        contentEdit.value = originalContent;
+    });
+
+    // Klik na "Otkaži"
+    cancelEditBtn.addEventListener('click', () => {
+        contentEdit.classList.add('hidden');
+        contentDisplay.classList.remove('hidden');
+        editButtons.classList.add('hidden');
+        contentEdit.value = originalContent;
+    });
+
+    // Klik na "Sačuvaj" (otvara modal)
+    saveEditBtn.addEventListener('click', () => {
+        submitModal.classList.remove('hidden');
+    });
+
+    // Klik na "Potvrdi - Sačuvaj" u modalu (submituje formu)
+    confirmSubmitBtn.addEventListener('click', () => {
+        submitModal.classList.add('hidden');
+        editForm.submit();
+    });
+
+    // Modal close dugme (otkazuje modal)
+    document.querySelectorAll('[data-modal-hide="submitModal1"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            submitModal.classList.add('hidden');
+        });
+    });
+});
 </script>
