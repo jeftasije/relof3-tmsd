@@ -10,6 +10,8 @@
                     @include('components.contact')
                 @elseif ($component === 'cobiss' && $cobissVisible)
                     @include('components.cobiss')
+                @elseif ($component === 'our_team' && $ourTeamVisible)
+                    @include('components.ourTeam')
                 @endif
             @endforeach
 

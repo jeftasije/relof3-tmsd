@@ -65,12 +65,14 @@
     "validation.logo_light_max": "Light logo may not be larger than 2MB.",
     "validation.logo_dark_image": "Dark logo must be an image.",
     "validation.logo_dark_max": "Dark logo may not be larger than 2MB.",
-    "homepage_title": "Milicica love stefi very much",
-    "homepage_subtitle": "happiness joy",
+    "homepage_title": "Library of happiness",
+    "homepage_subtitle": "Happiness joy",
     "homepage_news_title": "News try 23",
     "homepage_contact_title": "I'm changing",
     "homepage_contact_subtitle": "contact",
     "homepage_hero_image_path": "images\/herosection.jpg",
-    "cobiss_title": "I check something something now and now",
-    "cobiss_subtitle": "here"
+    "cobiss_title": "I check something something now a little",
+    "cobiss_subtitle": "here",
+    "our_team_title": "Our team of change nova234",
+    "our_team_subtitle": "I'm checking"
 }

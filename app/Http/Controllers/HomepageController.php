@@ -7,6 +7,8 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
 use Illuminate\Support\Facades\File;
 use App\Models\News;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Storage;
 
 class HomepageController extends Controller
 {
@@ -68,6 +70,28 @@ class HomepageController extends Controller
         $cobiss_title_sr_cyr = $srCyrJson['cobiss_title'] ?? '';
         $cobiss_subtitle_sr_cyr = $srCyrJson['cobiss_subtitle'] ?? '';
 
+        $our_team_title_en = $enJson['our_team_title'] ?? '';
+        $our_team_subtitle_en = $enJson['our_team_subtitle'] ?? '';
+
+        $our_team_title_sr_lat = $srLatJson['our_team_title'] ?? '';
+        $our_team_subtitle_sr_lat = $srLatJson['our_team_subtitle'] ?? '';
+
+        $our_team_title_sr_cyr = $srCyrJson['our_team_title'] ?? '';
+        $our_team_subtitle_sr_cyr = $srCyrJson['our_team_subtitle'] ?? '';
+        
+        $templateImages = [
+            'template1' => 'images/ourTeam.png',
+            'template2' => 'images/template2.png',
+            'template3' => 'images/template3.png',
+            'template4' => 'images/template4.png',
+        ];
+
+        $employees = Employee::all();
+        $ourTeamVisible = $data['our_team_visible'] ?? true;
+        $ourTeamIsSelected = $data['our_team_is_selected'] ?? true;
+        $visibilityJson = json_decode(file_get_contents(storage_path('app/public/homepageVisibility.json')), true);
+        $selectedEmployees = $visibilityJson['visible_employees'] ?? [];
+
         //dd($cobiss_title_en, $cobiss_subtitle_en);
 
         return view('superAdmin.homePage', compact('title_en', 'subtitle_en', 'title_sr_lat', 
@@ -75,7 +99,10 @@ class HomepageController extends Controller
         'news_title_sr_cyr', 'contact_title_en', 'contact_subtitle_en', 'contact_title_sr_lat',
         'contact_subtitle_sr_lat', 'contact_title_sr_cyr', 'contact_subtitle_sr_cyr',
         'cobiss_title_en', 'cobiss_subtitle_en', 'cobiss_title_sr_lat', 'cobiss_subtitle_sr_lat', 
-        'cobiss_title_sr_cyr', 'cobiss_subtitle_sr_cyr'));
+        'cobiss_title_sr_cyr', 'cobiss_subtitle_sr_cyr', 'templateImages', 'employees',
+        'our_team_title_en', 'our_team_subtitle_en', 'our_team_title_sr_lat', 'our_team_subtitle_sr_lat',
+         'our_team_title_sr_cyr', 'our_team_subtitle_sr_cyr', 'ourTeamVisible', 'ourTeamIsSelected',
+        'selectedEmployees'));
     }
 
     public function showWelcome()
@@ -83,14 +110,18 @@ class HomepageController extends Controller
         $jsonPath = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
-        $order = $data['component_order'] ?? ['hero', 'news', 'contact', 'cobiss'];
+        $order = $data['component_order'] ?? [];
         $newsVisible = $data['news_visible'] ?? true;
         $contactVisible = $data['contact_visible'] ?? true;
         $cobissVisible = $data['cobiss_visible'] ?? true;
+        $ourTeamVisible = $data['our_team_visible'] ?? true;
+        $visibleEmployeeIds = $data['visible_employees'] ?? [];
 
         $news = News::latest()->take(5)->get();
+        $visibleEmployees = Employee::whereIn('id', $visibleEmployeeIds)->get();
 
-        return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible'));
+        return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible',
+        'ourTeamVisible', 'visibleEmployees'));
     }
 
 
@@ -331,8 +362,6 @@ class HomepageController extends Controller
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
 
-        $cobissSubileEn = '';
-
         $originalTitle = $request->input('cobiss_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
         $originalSubtitle = $request->input('cobiss_subtitle_sr');
 
@@ -413,6 +442,118 @@ class HomepageController extends Controller
 
         return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
     }
+
+    public function updateOurTeamSr(Request $request)
+    { 
+        $request->validate([
+            'our_team_title_sr' => 'nullable|string',
+            'our_team_subtitle_sr' => 'nullable|string',
+            'employees' => 'nullable|array',
+            'employees.*' => 'integer|exists:employees,id'
+        ]);
+
+        $srPath = resource_path('lang/sr.json');
+        $srCyrPath = resource_path('lang/sr-Cyrl.json');
+        $enPath = resource_path('lang/en.json');
+        $visibilityPath = storage_path('app/public/homepageVisibility.json');
+
+        $srLatJson = $this->readJson($srPath);
+        $srCyrJson = $this->readJson($srCyrPath);
+        $enJson = $this->readJson($enPath);
+        $visibilityJson = json_decode(file_get_contents($visibilityPath), true);
+
+        $originalTitle = $request->input('our_team_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalSubtitle = $request->input('our_team_subtitle_sr');
+
+        //dd($originalTitle, $originalSubtitle);
+
+        $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+
+        if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
+            $ourTeamTitleCyr = $originalTitle;
+            $ourTeamTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
+            $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+            $ourTeamSubtitleCyr = $originalSubtitle;
+            $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
+            $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+                $ourTeamTitleLat = $originalTitle;
+                $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+                $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+
+                $ourTeamSubtitleLat = $originalSubtitle;
+                $ourTeamSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+                $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
+
+            } else {
+                $ourTeamTitleEn = $originalTitle;
+                $ourTeamTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $ourTeamTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
+
+                $ourTeamSubtitleEn = $originalSubtitle;
+                $ourTeamSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
+                $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($ourTeamSubtitleCyr);
+            }
+        }
+
+        $enJson['our_team_title'] = $ourTeamTitleEn;
+        $srCyrJson['our_team_title'] = $ourTeamTitleCyr;
+        $srLatJson['our_team_title'] = $ourTeamTitleLat;
+
+        $enJson['our_team_subtitle'] = $ourTeamSubtitleEn;
+        $srCyrJson['our_team_subtitle'] = $ourTeamSubtitleCyr;
+        $srLatJson['our_team_subtitle'] = $ourTeamSubtitleLat;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        // Ažuriraj visible_employees u homepageVisibility.json
+        if ($request->has('employees')) {
+            $visibilityJson['visible_employees'] = $request->input('employees');
+        } else {
+            $visibilityJson['visible_employees'] = []; // Ako nije prosleđen nijedan zaposleni
+        }
+
+        // Sačuvaj ažurirani homepageVisibility.json
+        file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+            return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        }
+
+        public function updateOurTeamEn(Request $request)
+    {
+        $request->validate([
+            'our_team_title_en' => 'nullable|string',
+            'our_team_subtitle_en' => 'nullable|string'
+        ]);
+
+        $enPath = resource_path('lang/en.json');
+
+        $enJson = $this->readJson($enPath);
+
+        $title_en = $request->input('our_team_title_en');
+        $subtitle_en = $request->input('our_team_subtitle_en');
+
+        $enJson['our_team_title'] = $title_en;
+        $enJson['our_team_subtitle'] = $subtitle_en;
+
+        file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+    }
+
+
 
     private function validateRequest(Request $request)
     {
@@ -525,6 +666,17 @@ class HomepageController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function toggleOurTeamVisibility()
+    {
+        $path = storage_path('app/public/homepageVisibility.json');
+        $data = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $data['our_team_visible'] = !($data['our_team_visible'] ?? true); 
+
+        file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return response()->json(['success' => true]);
+    }
+
     public function updateComponentOrder(Request $request)
     {
         $components = $request->input('components', []);
@@ -542,5 +694,36 @@ class HomepageController extends Controller
 
         return back()->with('success', 'Order saved successfully.');
     }
+
+    public function saveTeamVisibility(Request $request)
+    {
+        $request->validate([
+            'employees' => 'required|array',
+            'employees.*' => 'integer',
+        ]);
+
+        $jsonPath = storage_path('app/public/homepageVisibility.json');
+
+        $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
+
+        $data['our_team_visible'] = true;
+        $data['our_team_is_selected'] = true;
+        $data['visible_employees'] = $request->input('employees');
+
+        // Dodaj 'our_team' u component_order ako već nije prisutan
+        if (!isset($data['component_order'])) {
+            $data['component_order'] = [];
+        }
+
+        if (!in_array('our_team', $data['component_order'])) {
+            $data['component_order'][] = 'our_team';
+        }
+
+        file_put_contents($jsonPath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        return redirect()->back()->with('success', 'Team visibility updated successfully!');
+    }
+
+
 
 }

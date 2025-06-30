@@ -65,12 +65,14 @@
     "validation.logo_light_max": "Light logo ne sme biti veći od 2MB.",
     "validation.logo_dark_image": "Dark logo mora biti slika.",
     "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB.",
-    "homepage_title": "milicica ljubav",
-    "homepage_subtitle": "sreca radost",
+    "homepage_title": "biblioteka sreca",
+    "homepage_subtitle": "Sreca Radost",
     "homepage_news_title": "Vesti proba 2",
     "homepage_contact_title": "menjam",
     "homepage_contact_subtitle": "kontakt",
     "homepage_hero_image_path": "images\/herosection.jpg",
-    "cobiss_title": "proveravam nesto nesto sada",
-    "cobiss_subtitle": "ovdje"
+    "cobiss_title": "proveravam nesto nesto sada malo",
+    "cobiss_subtitle": "ovdje",
+    "our_team_title": "Naš tim promena nova234",
+    "our_team_subtitle": "proveravam"
 }

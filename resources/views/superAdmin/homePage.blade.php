@@ -8,6 +8,8 @@
         $contactSubtitleValue = '';
         $cobissTitleValue = '';
         $cobissSubtitleValue = '';
+        $ourTeamTitleValue = '';
+        $ourTeamSubtitleValue = '';
 
         if ($locale === 'sr-Cyrl') {
             $subtitleValue = old('subtitle_sr_cyr', $subtitle_sr_cyr ?? '');
@@ -17,6 +19,8 @@
             $contactSubtitleValue = old('contact_subtitle_sr_cyr', $contact_subtitle_sr_cyr ?? '');
             $cobissTitleValue = old('cobiss_title_sr_cyr', $cobiss_title_sr_cyr ?? '');
             $cobissSubtitleValue = old('cobiss_subtitle_sr_cyr', $cobiss_subtitle_sr_cyr ?? '');
+            $ourTeamTitleValue = old('our_team_title_sr_cyr', $our_team_title_sr_cyr ?? '');
+            $ourTeamSubtitleValue = old('our_team_subtitle_sr_cyr', $our_team_subtitle_sr_cyr ?? '');
 
         } else {
             $subtitleValue = old('subtitle_sr_lat', $subtitle_sr_lat ?? '');
@@ -26,6 +30,8 @@
             $contactSubtitleValue = old('contact_subtitle_sr_lat', $contact_subtitle_sr_lat ?? '');
             $cobissTitleValue = old('cobiss_title_sr_lat', $cobiss_title_sr_lat ?? '');
             $cobissSubtitleValue = old('cobiss_subtitle_sr_lat', $cobiss_subtitle_sr_lat ?? '');
+            $ourTeamTitleValue = old('our_team_title_sr_lat', $our_team_title_sr_lat ?? '');
+            $ourTeamSubtitleValue = old('our_team_subtitle_sr_lat', $our_team_subtitle_sr_lat ?? '');
         }
 
         $path = storage_path('app/public/homepageVisibility.json');
@@ -33,6 +39,8 @@
         $newsVisible = $data['news_visible'] ?? true;
         $contactVisible = $data['contact_visible'] ?? true;
         $cobissVisible = $data['cobiss_visible'] ?? true;
+        $ourTeamVisible = $data['our_team_visible'] ?? true;
+        $ourTeamIsSelected = $data['our_team_is_selected'] ?? true;
 
     @endphp
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -108,29 +116,37 @@
             </form>
             <form action="{{ route('homepage.updateEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                    {{-- Desna strana --}}
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
-                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EN)' : 'Naslovni deo (EN)') }}
-                        </h2>
+                {{-- Desna strana --}}
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EH)' : 'Naslovni deo (EN)') }}
+                    </h2>
 
-                        <div class="mb-4">
-                            <label for="title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}</label>
-                            <input type="text" id="title_en" name="title_en" value="{{ old('title_en', $title_en ?? '') }}"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
-                        </div>
+                    <div class="mb-4">
+                        <label for="title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
+                        </label>
+                        <input type="text" id="title_en" name="title_en" value="{{ old('title_en', $title_en ?? '') }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
-                            <input type="text" id="subtitle_en" name="subtitle_en" value="{{ old('subtitle_en', $subtitle_en ?? '') }}"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
-                        </div>
+                    <div class="mb-4">
+                        <label for="subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}
+                        </label>
+                        <input type="text" id="subtitle_en" name="subtitle_en" value="{{ old('subtitle_en', $subtitle_en ?? '') }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                    </div>
+
+                    <div class="mt-auto flex justify-end">
                         <button type="submit"
                             class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                             {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
+                </div>
             </form>
+
             
         </div>
 
@@ -142,7 +158,7 @@
         <div>
             <div class="flex items-center justify-between mb-6">    
                 <div class="flex items-center gap-2">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                         {{ App::getLocale() === 'en' ? 'Edit news section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди секцију вести' : 'Uredi sekciju vesti') }}
                     </h1>
 
@@ -200,9 +216,9 @@
                 <form action="{{ route('homepage.updateNewsEn') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                         {{-- Desna strana --}}
-                        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+                        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                                {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EN)' : 'Naslovni deo (EN)') }}
+                                {{ App::getLocale() === 'en' ? 'News section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Вести (EН)' : 'Vesti (EN)') }}
                             </h2>
 
                             <div class="mb-4">
@@ -210,10 +226,12 @@
                                 <input type="text" id="news_title_en" name="news_title_en" value="{{ old('news_title_en', $news_title_en ?? '') }}"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                             </div>
-                            <button type="submit"
-                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                            </button>
+                                <div class="flex justify-end mt-6">
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                        {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                    </button>
+                                </div>
                         </div>
                 </form>
         </div>
@@ -227,7 +245,7 @@
         <div>
             <div class="flex items-center justify-between mb-6"> 
                 <div class="flex items-center gap-2">   
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                         {{ App::getLocale() === 'en' ? 'Edit contact section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди контакт секцију' : 'Uredi kontakt sekciju') }}
                     </h1>
 
@@ -298,9 +316,9 @@
             <form action="{{ route('homepage.updateContactEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     {{-- Desna strana --}}
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EN)' : 'Naslovni deo (EN)') }}
+                            {{ App::getLocale() === 'en' ? 'Contact section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт (EН)' : 'kontakt (EN)') }}
                         </h2>
 
                         <div class="mb-4">
@@ -314,10 +332,12 @@
                             <input type="text" id="contact_subtitle_en" name="contact_subtitle_en" value="{{ old('contact_subtitle_en', $contact_subtitle_en ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                         </div>
-                        <button type="submit"
-                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                        </button>
+                            <div class="flex justify-end mt-6">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                </button>
+                            </div>
                     </div>
             </form>
         </div>
@@ -329,7 +349,7 @@
         <div>
             <div class="flex items-center justify-between mb-6">    
                 <div class="flex items-center gap-2">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                         {{ App::getLocale() === 'en' ? 'Edit COBISS section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди "COBISS" секцију' : 'Uredi "COBISS" sekciju') }}
                     </h1>
 
@@ -392,9 +412,9 @@
             <form action="{{ route('homepage.updateCobissEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     {{-- Desna strana --}}
-                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                            {{ App::getLocale() === 'en' ? 'Hero section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Насловни део (EN)' : 'Naslovni deo (EN)') }}
+                            {{ App::getLocale() === 'en' ? 'Cobiss section (EN)' : (App::getLocale() === 'sr-Cyrl' ? '"Cobiss" (EH)' : '"Cobiss" (EN)') }}
                         </h2>
 
                         <div class="mb-4">
@@ -408,13 +428,136 @@
                             <input type="text" id="cobiss_subtitle_en" name="cobiss_subtitle_en" value="{{ old('cobiss_subtitle_en', $cobiss_subtitle_en ?? '') }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                         </div>
-                        <button type="submit"
-                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                        </button>
+                            <div class="flex justify-end mt-6">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                </button>
+                            </div>
                     </div>
             </form>
         </div>
+
+        @if ($ourTeamIsSelected)
+            <div>
+                <div class="flex items-center justify-between mb-6">    
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                            {{ App::getLocale() === 'en' ? 'Edit our team section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди "Наш тим" секцију' : 'Uredi "Naš tim" sekciju') }}
+                        </h1>
+
+                        <!-- Zeleno oko -->
+                        <button onclick="toggleOurTeamVisibility()" id="cobissToggle" class="transition">
+                            @if ($ourTeamVisible)
+                                <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                </svg>
+                            @else
+                                <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="m4 15.6 3.055-3.056A4.913 4.913 0 0 1 7 12.012a5.006 5.006 0 0 1 5-5c.178.009.356.027.532.054l1.744-1.744A8.973 8.973 0 0 0 12 5.012c-5.388 0-10 5.336-10 7A6.49 6.49 0 0 0 4 15.6Z" />
+                                    <path
+                                        d="m14.7 10.726 4.995-5.007A.998.998 0 0 0 18.99 4a1 1 0 0 0-.71.305l-4.995 5.007a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.402.211.59l-4.995 4.983a1 1 0 1 0 1.414 1.414l4.995-4.983c.189.091.386.162.59.211.011 0 .021.007.033.01a2.982 2.982 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z" />
+                                    <path
+                                        d="m19.821 8.605-2.857 2.857a4.952 4.952 0 0 1-5.514 5.514l-1.785 1.785c.767.166 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z" />
+                                </svg>
+                            @endif
+                        </button>
+                    </div>
+                </div>
+
+                <form action="{{ route('homepage.updateOurTeamSr') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+
+                        {{-- Leva strana --}}
+                        <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+
+                            {{-- Slika --}}
+                            <div class="mb-4">
+                                <img src="{{ asset('images/editOurTeam.png') }}" alt="{{ App::getLocale() === 'en' ? 'Hero image preview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед насловне слике' : 'Pregled naslovne slike') }}" class="w-full h-auto border-2 border-gray-300 rounded">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="our_team_title_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}</label>
+                                    <input type="text" id="our_team_title_sr" name="our_team_title_sr" value="{{ $ourTeamTitleValue }}"
+                                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="our_team_subtitle_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
+                                <input type="text" id="our_team_subtitle_sr" name="our_team_subtitle_sr" value="{{ $ourTeamSubtitleValue }}"
+                                    class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            </div>
+
+                            {{-- Izbor zaposlenih --}}
+                            <div class="mb-4">
+                                <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                                    {{ App::getLocale() === 'en' ? 'Select employees:' : (App::getLocale() === 'sr-Cyrl' ? 'Изабери запослене:' : 'Izaberi zaposlene:') }}
+                                </h3>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 max-h-80 overflow-y-auto">
+                                    @foreach ($employees as $employee)
+                                        <label class="flex items-center space-x-3 p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                            <input type="checkbox" name="employees[]" value="{{ $employee->id }}"
+                                                {{ in_array($employee->id, $selectedEmployees ?? []) ? 'checked' : '' }}
+                                                class="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600">
+                                            <span class="text-gray-900 dark:text-gray-200">{{ $employee->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end mt-6">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                </button>
+                            </div>
+                        </div>
+                </form>
+                <form action="{{ route('homepage.updateOurTeamEn') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    {{-- Desna strana --}}
+                    <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                            {{ App::getLocale() === 'en' ? 'Team section (EN)' : (App::getLocale() === 'sr-Cyrl' ? 'Тим (EН)' : 'Tim (EN)') }}
+                        </h2>
+
+                        <div class="mb-4">
+                            <label for="our_team_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
+                            </label>
+                            <input type="text" id="our_team_title_en" name="our_team_title_en" value="{{ old('our_team_title_en', $our_team_title_en ?? '') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="our_team_subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}
+                            </label>
+                            <input type="text" id="our_team_subtitle_en" name="our_team_subtitle_en" value="{{ old('our_team_subtitle_en', $our_team_subtitle_en ?? '') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                        </div>
+
+                        <!-- Ovo je div koji gura dugme na dno i desno -->
+                        <div class="mt-auto flex justify-end">
+                            <button type="submit"
+                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @endif
+
+
         <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
                 <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
@@ -448,40 +591,142 @@
                 </p>
             </div>
         </div>
+
+
+       <div class="mt-10">
+            <button onclick="showTemplates()" type="button"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                {{ App::getLocale() === 'en' ? 'Add new section' : (App::getLocale() === 'sr-Cyrl' ? 'Додај нову секцију' : 'Dodaj novu sekciju') }}
+            </button>
+        </div>
+
+        <!-- Sakrivena forma koja se prikazuje klikom -->
+        <div id="templateForm" class="mt-6 hidden">
+            <form method="POST" action="{{ route('homepage.saveTeamVisibility') }}">
+                @csrf
+                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+                    <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                        {{ App::getLocale() === 'en' ? 'Choose a section template:' : (App::getLocale() === 'sr-Cyrl' ? 'Изабери шаблон секције:' : 'Izaberi šablon sekcije:') }}
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+                        @foreach ($templateImages as $key => $imagePath)
+                            @if (!($ourTeamIsSelected && $key === 'template1'))
+                                <label class="cursor-pointer border-2 border-gray-300 dark:border-gray-600 rounded-lg p-3 hover:border-blue-500 transition-all">
+                                    <input type="radio" name="template" value="{{ $key }}" class="hidden peer" required onclick="showEmployeesForm('{{ $key }}')">
+                                    <img src="{{ asset($imagePath) }}" alt="Template {{ $key }}"
+                                        class="rounded-lg w-full h-48 object-cover peer-checked:ring-4 peer-checked:ring-blue-500">
+                                </label>
+                            @endif
+                        @endforeach
+                    </div>
+
+                    <!-- Forma sa zaposlenima -->
+                    <div id="employeesForm" class="hidden">
+                        <h3 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                            {{ App::getLocale() === 'en' ? 'Select employees:' : (App::getLocale() === 'sr-Cyrl' ? 'Изабери запослене:' : 'Izaberi zaposlene:') }}
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 max-h-80 overflow-y-auto">
+                            @foreach ($employees as $employee)
+                                <label class="flex items-center space-x-3 p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <input type="checkbox" name="employees[]" value="{{ $employee->id }}"
+                                        class="w-5 h-5 rounded text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600">
+                                    <span class="text-gray-900 dark:text-gray-200">{{ $employee->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+
+                        <div class="flex justify-end mt-6 space-x-4">
+                            <button type="button" onclick="hideEmployeesForm()"
+                                class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 focus:outline-none">
+                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                            </button>
+                            <button id="show-team-forms" type="submit"
+                                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                {{ App::getLocale() === 'en' ? 'Add' : (App::getLocale() === 'sr-Cyrl' ? 'Додај' : 'Dodaj') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <form action="{{ route('homepage.updateComponentOrder') }}" method="POST" class="mt-10">
             @csrf
-            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
+            <div class="p-6 bg-white dark:bg-gray-800 rounded-lg max-w-full md:max-w-[49%]">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                     {{ App::getLocale() === 'en' ? 'Sort visible components' : (App::getLocale() === 'sr-Cyrl' ? 'Поређај видљиве компоненте' : 'Poređaj vidljive komponente') }}
                 </h2>
 
                 <ul id="sortable" class="space-y-2 cursor-move">
-                    {{-- Hero sekcija je uvek prva --}}
-                    <li class="px-4 py-2 bg-gray-200 text-gray-700 rounded shadow">
-                        HERO (fixed first)
-                        <input type="hidden" name="components[]" value="hero">
-                    </li>
-
-                    {{-- Ostale vidljive komponente (news, contact, cobiss) --}}
                     @php
+                        // Mapiranje internih imena u čitljive nazive za različite jezike
+                        $componentMap = [
+                            'en' => [
+                                'news' => 'News',
+                                'contact' => 'Contact',
+                                'cobiss' => 'Cobiss',
+                                'our_team' => 'Team',
+                            ],
+                            'sr-Cyrl' => [
+                                'news' => 'Вести',
+                                'contact' => 'Контакт',
+                                'cobiss' => 'Cobiss',
+                                'our_team' => 'Тим',
+                            ],
+                            'sr-Latn' => [
+                                'news' => 'Vesti',
+                                'contact' => 'Kontakt',
+                                'cobiss' => 'Cobiss',
+                                'our_team' => 'Tim',
+                            ],
+                        ];
+
                         $visibleComponents = [];
-                        if ($newsVisible) $visibleComponents[] = 'news';
-                        if ($contactVisible) $visibleComponents[] = 'contact';
-                        if ($cobissVisible) $visibleComponents[] = 'cobiss';
+                        if ($newsVisible ?? false) $visibleComponents[] = 'news';
+                        if ($contactVisible ?? false) $visibleComponents[] = 'contact';
+                        if ($cobissVisible ?? false) $visibleComponents[] = 'cobiss';
+                        if ($ourTeamVisible ?? false) $visibleComponents[] = 'our_team';
+
+                        // Trenutni raspored iz JSON-a (ako postoji)
                         $currentOrder = $data['component_order'] ?? [];
                         $sorted = array_filter($currentOrder, fn($item) => in_array($item, $visibleComponents));
                         $remaining = array_diff($visibleComponents, $sorted);
                         $finalOrder = array_merge($sorted, $remaining);
+
+                        // Odredi trenutni jezik
+                        $locale = App::getLocale();
                     @endphp
 
-                    @foreach ($finalOrder as $component)
-                        <li class="px-4 py-2 bg-gray-100 text-gray-900 rounded shadow">
-                            {{ strtoupper($component) }}
-                            <input type="hidden" name="components[]" value="{{ $component }}">
+                    <ul id="sortable" class="space-y-2 cursor-move">
+                        {{-- Hero sekcija je uvek prva --}}
+                        <li class="flex items-center justify-between w-64 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded shadow">
+                            <span class="truncate">
+                                {{ $locale === 'en' ? 'HERO (fixed first)' : ($locale === 'sr-Cyrl' ? 'Насловни део (фиксно)' : 'Naslovni deo (fiksno)') }}
+                            </span>
+                            <input type="hidden" name="components[]" value="hero">
                         </li>
-                    @endforeach
-                </ul>
 
+                        {{-- Vidljive komponente u odabranom redosledu --}}
+                        @foreach ($finalOrder as $component)
+                            <li class="flex items-center justify-between w-64 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded shadow">
+                                <span class="truncate">
+                                    {{ $componentMap[$locale][$component] ?? ucfirst(str_replace('_', ' ', $component)) }}
+                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 dark:text-gray-300 cursor-move" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path d="M9 5a1 1  0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                    <path d="M9 12a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                    <path d="M9 19a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                    <path d="M15 5a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                    <path d="M15 12a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                    <path d="M15 19a1 1 0 1 0 2 0 1 1 0 1 0 -2 0" />
+                                </svg>
+                                <input type="hidden" name="components[]" value="{{ $component }}">
+                            </li>
+                        @endforeach
+                    </ul>
+                </ul>
                 <button type="submit"
                     class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 focus:outline-none">
                     {{ App::getLocale() === 'en' ? 'Save order' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај поредак' : 'Sačuvaj poredak') }}
@@ -497,7 +742,7 @@
     <script>
         $(function () {
             $("#sortable").sortable({
-                items: "li:not(:first-child)" // Prva stavka (HERO) ne može da se pomera
+                items: "li:not(:first-child)" // Prva stavka (HERO) ne može da se pomjeri
             });
         });
 
@@ -564,6 +809,36 @@
             }).then(() => location.reload());
         }
 
-    </script>
+        function toggleOurTeamVisibility() {
+            fetch("{{ route('homepage.toggleOurTeamVisibility') }}", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({})
+            }).then(() => location.reload());
+        }
 
+        function showTemplates() {
+            document.getElementById('templateForm').classList.toggle('hidden');
+        }
+
+        function showEmployeesForm(templateKey) {
+            const employeesForm = document.getElementById('employeesForm');
+
+            if (templateKey === 'template1') {
+                employeesForm.classList.remove('hidden');
+            } else {
+                employeesForm.classList.add('hidden');
+                alert("Implementacija ovog šablona nije obuhvaćena MVP rešenjem. Prikaz ove komponente treba da prikaže na koji način bi ova internet stranica bila skalabilna. Sekcija koja jeste implementirana u ovom MVP rešenju je \"Naš tim\", koju u potpunosti možete testirati.");
+            }
+        }
+
+        function hideEmployeesForm() {
+            document.getElementById('employeesForm').classList.add('hidden');
+            document.getElementById('employeeSearch').value = ''; // Reset search
+            filterEmployees(); // Reset filter
+        }
+    </script>
 </x-app-layout>

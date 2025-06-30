@@ -65,12 +65,14 @@
     "validation.logo_light_max": "Лого за светлу тему не сме бити већи од 2MB.",
     "validation.logo_dark_image": "Лого за тамну тему мора бити слика.",
     "validation.logo_dark_max": "Лого за тамну тему не сме бити већи од 2MB.",
-    "homepage_title": "милицица љубав",
-    "homepage_subtitle": "среца радост",
+    "homepage_title": "библиотека среца",
+    "homepage_subtitle": "Среца Радост",
     "homepage_news_title": "Вести проба 2",
     "homepage_contact_title": "мењам",
     "homepage_contact_subtitle": "контакт",
     "homepage_hero_image_path": "images\/herosection.jpg",
-    "cobiss_title": "проверавам несто несто сада",
-    "cobiss_subtitle": "овдје"
+    "cobiss_title": "проверавам несто несто сада мало",
+    "cobiss_subtitle": "овдје",
+    "our_team_title": "Наш тим промена нова234",
+    "our_team_subtitle": "проверавам"
 }

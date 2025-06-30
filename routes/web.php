@@ -93,12 +93,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/naslovna/kontakt/en', [HomepageController::class, 'updateContactEn'])->name('homepage.updateContactEn');
     Route::post('/naslovna/cobiss/sr', [HomepageController::class, 'updateCobissSr'])->name('homepage.updateCobissSr');
     Route::post('/naslovna/cobiss/en', [HomepageController::class, 'updateCobissEn'])->name('homepage.updateCobissEn');
+    Route::post('/naslovna/tim/sr', [HomepageController::class, 'updateOurTeamSr'])->name('homepage.updateOurTeamSr');
+    Route::post('/naslovna/tim/en', [HomepageController::class, 'updateOurTeamEn'])->name('homepage.updateOurTeamEn');
 
     Route::post('/vidljivost-vesti', [HomepageController::class, 'toggleNewsVisibility'])->name('homepage.toggleNewsVisibility');
     Route::post('/vidljivost-kontakt', [HomepageController::class, 'toggleContactVisibility'])->name('homepage.toggleContactVisibility');
     Route::post('/vidljivost-cobiss', [HomepageController::class, 'toggleCobissVisibility'])->name('homepage.toggleCobissVisibility');
+    Route::post('/vidljivost-tim', [HomepageController::class, 'toggleOurTeamVisibility'])->name('homepage.toggleOurTeamVisibility');
 
     Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
+    //Route::post('/pocetna/izbor-tima', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
+    Route::post('/homepage/team-visibility', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
+
 
 });
 
