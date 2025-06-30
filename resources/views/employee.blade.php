@@ -383,7 +383,6 @@
             }
             document.querySelectorAll('[x-show]').forEach(el => el.style.display = 'none');
 
-            // AJAX paginacija koja ponovo inicijalizuje Alpine tree posle učitavanja nove stranice sa paginacijom
             document.body.addEventListener('click', e => {
                 const link = e.target.closest('#employees-wrapper .pagination a');
                 if (!link) return;
