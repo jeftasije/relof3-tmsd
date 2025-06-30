@@ -1,5 +1,38 @@
 @php $locale = App::getLocale(); @endphp
 <x-guest-layout>
+@php $locale = App::getLocale(); @endphp
+
+@if(session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+        x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+        class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+        style="
+            top: 14%; 
+            transform: translateX(-50%);
+            background: #22c55e; 
+            color: #fff; 
+            font-weight: 600; 
+            letter-spacing: 0.03em;
+            min-width: 240px;
+            text-align: center;"
+        x-init="setTimeout(() => show = false, 2200)"
+    >
+        {{
+            $locale === 'en'
+                ? 'Biography is successfully changed!'
+                : ($locale === 'sr-Cyrl'
+                    ? 'Биографија је успешно измењена!'
+                    : 'Biografija je uspešno izmenjna!')
+        }}
+    </div>
+@endif
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>

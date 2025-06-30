@@ -38,6 +38,9 @@ class NewsController extends Controller
 
     public function update(Request $request, News $news)
     {
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'summary' => 'required|string|max:2000',
@@ -45,19 +48,58 @@ class NewsController extends Controller
         ]);
 
         if ($validated['locale'] === 'en') {
+            $title_en = $validated['title'];
+            $summary_en = $validated['summary'];
+
+            $title_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($title_en));
+            $summary_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($summary_en));
+
+            $title_cy = $lm->latin_to_cyrillic($title_lat);
+            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
+
             $news->update([
-                'title_en' => $validated['title'],
-                'summary_en' => $validated['summary'],
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
             ]);
         } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $title_cy = $validated['title'];
+            $summary_cy = $validated['summary'];
+
+            $title_lat = $lm->cyrillic_to_latin($title_cy);
+            $summary_lat = $lm->cyrillic_to_latin($summary_cy);
+
+            $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
+
             $news->update([
-                'title_cy' => $validated['title'],
-                'summary_cy' => $validated['summary'],
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
             ]);
         } else {
+            $title_lat = $validated['title'];
+            $summary_lat = $validated['summary'];
+
+            $title_cy = $lm->latin_to_cyrillic($title_lat);
+            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
+
+            $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
+
             $news->update([
-                'title' => $validated['title'],
-                'summary' => $validated['summary'],
+                'title' => $title_lat,
+                'summary' => $summary_lat,
+                'title_cy' => $title_cy,
+                'summary_cy' => $summary_cy,
+                'title_en' => $title_en,
+                'summary_en' => $summary_en,
             ]);
         }
 
@@ -72,6 +114,8 @@ class NewsController extends Controller
 
     public function store(Request $request)
     {
+        $locale = $request->input('locale', app()->getLocale());
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'summary' => 'required|string|max:2000',
@@ -89,162 +133,71 @@ class NewsController extends Controller
             $validated['image_path'] = 'images/' . $filename;
         }
 
-        $locale = app()->getLocale();
         $title_src    = $validated['title'];
         $summary_src  = $validated['summary'];
         $author_src   = $validated['author'];
+        $content_src  = $validated['content'] ?? '';
+        $tags_src     = $validated['tags'] ?? '';
+        $tags_arr     = array_filter(array_map('trim', preg_split('/[,;]+/', $tags_src)));
 
-        $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $title_src);
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
 
-        // Transliteration & Translation
-        if ($locale === 'en') {
-            $title_en = $title_src;
-            $summary_en = $summary_src;
-            $author_en = $author_src;
-
-            $title_lat = $this->translate->setSource('en')->setTarget('sr')->translate($title_en);
-            $summary_lat = $this->translate->setSource('en')->setTarget('sr')->translate($summary_en);
-            $author_lat = $this->translate->setSource('en')->setTarget('sr')->translate($author_en);
-
-            $title_cy = $this->languageMapper->latin_to_cyrillic($title_lat);
-            $summary_cy = $this->languageMapper->latin_to_cyrillic($summary_lat);
-            $author_cy = $this->languageMapper->latin_to_cyrillic($author_lat);
-
-            $news = News::create([
-                'title'       => $title_lat,
-                'title_en'    => $title_en,
-                'title_cy'    => $title_cy,
-                'summary'     => $summary_lat,
-                'summary_en'  => $summary_en,
-                'summary_cy'  => $summary_cy,
-                'image_path'  => $validated['image_path'] ?? null,
-                'author'      => $author_lat,
-                'author_en'   => $author_en,
-                'author_cy'   => $author_cy,
-                'published_at'=> $validated['published_at'] ?? null,
-            ]);
-        } elseif ($is_cyrillic) {
+        if (preg_match('/[\p{Cyrillic}]/u', $title_src)) {
             $title_cy = $title_src;
             $summary_cy = $summary_src;
             $author_cy = $author_src;
+            $content_cy = $content_src;
+            $tags_cy = $tags_arr;
 
-            $title_lat = $this->languageMapper->cyrillic_to_latin($title_cy);
-            $summary_lat = $this->languageMapper->cyrillic_to_latin($summary_cy);
-            $author_lat = $this->languageMapper->cyrillic_to_latin($author_cy);
+            $title_lat = $lm->cyrillic_to_latin($title_cy);
+            $summary_lat = $lm->cyrillic_to_latin($summary_cy);
+            $author_lat = $lm->cyrillic_to_latin($author_cy);
+            $content_lat = $lm->cyrillic_to_latin($content_cy);
+            $tags_lat = array_map(fn($t) => $lm->cyrillic_to_latin($t), $tags_cy);
 
-            $title_en = $this->translate->setSource('sr')->setTarget('en')->translate($title_lat);
-            $summary_en = $this->translate->setSource('sr')->setTarget('en')->translate($summary_lat);
-            $author_en = $this->translate->setSource('sr')->setTarget('en')->translate($author_lat);
-
-            $news = News::create([
-                'title'       => $title_lat,
-                'title_en'    => $title_en,
-                'title_cy'    => $title_cy,
-                'summary'     => $summary_lat,
-                'summary_en'  => $summary_en,
-                'summary_cy'  => $summary_cy,
-                'image_path'  => $validated['image_path'] ?? null,
-                'author'      => $author_lat,
-                'author_en'   => $author_en,
-                'author_cy'   => $author_cy,
-                'published_at'=> $validated['published_at'] ?? null,
-            ]);
         } else {
             $title_lat = $title_src;
             $summary_lat = $summary_src;
             $author_lat = $author_src;
-
-            $title_cy = $this->languageMapper->latin_to_cyrillic($title_lat);
-            $summary_cy = $this->languageMapper->latin_to_cyrillic($summary_lat);
-            $author_cy = $this->languageMapper->latin_to_cyrillic($author_lat);
-
-            $title_en = $this->translate->setSource('sr')->setTarget('en')->translate($title_lat);
-            $summary_en = $this->translate->setSource('sr')->setTarget('en')->translate($summary_lat);
-            $author_en = $this->translate->setSource('sr')->setTarget('en')->translate($author_lat);
-
-            $news = News::create([
-                'title'       => $title_lat,
-                'title_en'    => $title_en,
-                'title_cy'    => $title_cy,
-                'summary'     => $summary_lat,
-                'summary_en'  => $summary_en,
-                'summary_cy'  => $summary_cy,
-                'image_path'  => $validated['image_path'] ?? null,
-                'author'      => $author_lat,
-                'author_en'   => $author_en,
-                'author_cy'   => $author_cy,
-                'published_at'=> $validated['published_at'] ?? null,
-            ]);
-        }
-
-        // EXTENDED NEWS
-        $content_src = $request->input('content', '');
-        $tags_src = $request->input('tags', '');
-        $tags_arr = array_filter(array_map('trim', preg_split('/[,;]+/', $tags_src)));
-
-        if ($locale === 'en') {
-            $content_en = $content_src;
-            $tags_en = $tags_arr;
-
-            $content_lat = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
-            $tags_lat = array_map(function ($tag) {
-                return $this->translate->setSource('en')->setTarget('sr')->translate($tag);
-            }, $tags_en);
-
-            $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
-            $tags_cy = array_map(fn($tag) => $this->languageMapper->latin_to_cyrillic($tag), $tags_lat);
-
-            $news->extended()->create([
-                'content'    => $content_lat,
-                'content_en' => $content_en,
-                'content_cy' => $content_cy,
-                'tags'       => $tags_lat,
-                'tags_en'    => $tags_en,
-                'tags_cy'    => $tags_cy,
-            ]);
-        } elseif ($is_cyrillic) {
-            $content_cy = $content_src;
-            $tags_cy = array_map('trim', preg_split('/[,;]+/', $tags_src));
-
-            $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            $tags_lat = array_map(function ($tag) {
-                return $this->languageMapper->cyrillic_to_latin($tag);
-            }, $tags_cy);
-
-            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-            $tags_en = array_map(function ($tag) {
-                return $this->translate->setSource('sr')->setTarget('en')->translate($tag);
-            }, $tags_lat);
-
-            $news->extended()->create([
-                'content'    => $content_lat,
-                'content_en' => $content_en,
-                'content_cy' => $content_cy,
-                'tags'       => $tags_lat,
-                'tags_en'    => $tags_en,
-                'tags_cy'    => $tags_cy,
-            ]);
-        } else {
             $content_lat = $content_src;
             $tags_lat = $tags_arr;
 
-            $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
-            $tags_cy = array_map(fn($tag) => $this->languageMapper->latin_to_cyrillic($tag), $tags_lat);
-
-            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-            $tags_en = array_map(function ($tag) {
-                return $this->translate->setSource('sr')->setTarget('en')->translate($tag);
-            }, $tags_lat);
-
-            $news->extended()->create([
-                'content'    => $content_lat,
-                'content_en' => $content_en,
-                'content_cy' => $content_cy,
-                'tags'       => $tags_lat,
-                'tags_en'    => $tags_en,
-                'tags_cy'    => $tags_cy,
-            ]);
+            $title_cy = $lm->latin_to_cyrillic($title_lat);
+            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
+            $author_cy = $lm->latin_to_cyrillic($author_lat);
+            $content_cy = $lm->latin_to_cyrillic($content_lat);
+            $tags_cy = array_map(fn($t) => $lm->latin_to_cyrillic($t), $tags_lat);
         }
+
+        $title_en = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+        $summary_en = $translate->setSource('sr')->setTarget('en')->translate($summary_lat);
+        $author_en = $translate->setSource('sr')->setTarget('en')->translate($author_lat);
+        $content_en = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
+        $tags_en = array_map(fn($t) => $translate->setSource('sr')->setTarget('en')->translate($t), $tags_lat);
+
+        $news = News::create([
+            'title'        => $title_lat,
+            'title_en'     => $title_en,
+            'title_cy'     => $title_cy,
+            'summary'      => $summary_lat,
+            'summary_en'   => $summary_en,
+            'summary_cy'   => $summary_cy,
+            'image_path'   => $validated['image_path'] ?? null,
+            'author'       => $author_lat,
+            'author_en'    => $author_en,
+            'author_cy'    => $author_cy,
+            'published_at' => $validated['published_at'] ?? null,
+        ]);
+
+        $news->extended()->create([
+            'content'    => $content_lat,
+            'content_en' => $content_en,
+            'content_cy' => $content_cy,
+            'tags'       => $tags_lat,
+            'tags_en'    => $tags_en,
+            'tags_cy'    => $tags_cy,
+        ]);
 
         return redirect()->route('news.index')->with('success', 'Vest uspešno dodata!');
     }
@@ -270,9 +223,11 @@ class NewsController extends Controller
             $content_en = $validated['content_en'] ?? $validated['content'] ?? '';
             $tags_en = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
 
-            $content_lat = $translate->setSource('en')->setTarget('sr')->translate($content_en);
-            $tags_lat = array_map(function ($tag) use ($translate) {
-                return $translate->setSource('en')->setTarget('sr')->translate($tag);
+            $translated = $translate->setSource('en')->setTarget('sr')->translate($content_en);
+            $content_lat = $lm->cyrillic_to_latin($translated);
+            $tags_lat = array_map(function ($tag) use ($translate, $lm) {
+                $translated_tag = $translate->setSource('en')->setTarget('sr')->translate($tag);
+                return $lm->cyrillic_to_latin($translated_tag);
             }, $tags_en);
 
             $content_cy = $lm->latin_to_cyrillic($content_lat);
