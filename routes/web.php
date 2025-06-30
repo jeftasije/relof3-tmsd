@@ -77,21 +77,31 @@ Route::middleware('auth')->group(function () {
     Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
+<<<<<<< HEAD
     Route::post('/pregled-zalbi', [ComplaintController::class, 'updateAllComplaints'])->name('complaints.updateAllTranslations');
     Route::post('/pregled-zalbi/{id}/odgovor', [ComplaintController::class, 'answer'])->name('complaints.answer');
 
     Route::patch('/zalbe', [HistoryController::class, 'update'])->name('complaints.update');
 
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+=======
+  
+    Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
+>>>>>>> f95235d14835b67b7546324526b9d8d104717afd
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
-  
+    Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
+    
+    Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
+
     Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
     Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
     Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
     Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
+
+    Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 
     Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
 
@@ -149,7 +159,12 @@ Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
 
+<<<<<<< HEAD
 Route::get('/komentari', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 require __DIR__.'/auth.php';
+=======
+
+require __DIR__.'/auth.php';
+>>>>>>> f95235d14835b67b7546324526b9d8d104717afd

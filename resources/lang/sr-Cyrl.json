@@ -75,6 +75,7 @@
     "validation.logo_dark_image": "Лого за тамну тему мора бити слика.",
     "validation.logo_dark_max": "Лого за тамну тему не сме бити већи од 2MB.",
 
+    "gallery.description": "Сунце је јако",
     "page_settings": "Подешавања странице",
     "url_label": "\"URL\" странице",
     "name_label": "Назив странице",
