@@ -106,7 +106,7 @@
                             @endswitch
                         </button>
 
-                        <a href="{{ route('contact.index') }}" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
+                        <a href="{{ route('contact.answerPage') }}" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
                             @switch(App::getLocale())
                                 @case('en') Reset @break
                                 @case('sr-Cyrl') Ресетуј @break
@@ -120,7 +120,7 @@
 
 
 
-            @foreach ($messages as $message)
+            @foreach ($contacts as $contact)
                 <div class="bg-white dark:bg-gray-800 p-6 rounded shadow dark:text-gray-300">
                     <p><strong>
                         @switch(App::getLocale())
@@ -128,21 +128,21 @@
                         @case('sr-Cyrl') Име: @break
                         @default Ime:
                         @endswitch
-                    </strong> {{ $message->first_name }} {{ $message->last_name }}</p>
+                    </strong> {{ $contact->first_name }} {{ $contact->last_name }}</p>
                     <p><strong>
                         @switch(App::getLocale())
                             @case('en') Email: @break
                             @case('sr-Cyrl') Мејл адреса: @break
                             @default Mejl adresa:
                         @endswitch
-                    </strong> {{ $message->email (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
+                    </strong> {{ $contact->email ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
                     <p><strong>
                         @switch(App::getLocale())
                         @case('en') Phone: @break
                         @case('sr-Cyrl') Телефон: @break
                         @default Telefon:
                         @endswitch
-                    </strong> {{ $message->phone ?? 'Nije unet' }}</p>
+                    </strong> {{ $contact->phone ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
                     <p><strong>
                         @switch(App::getLocale())
                         @case('en') Message: @break
@@ -151,15 +151,15 @@
                         @endswitch
                     </strong> 
                         @switch(App::getLocale())
-                        @case('en') {{ $message->message_en }} @break
-                        @case('sr-Cyrl') {{ $message->message_cy }} @break
-                        @default {{ $message->message }}
+                        @case('en') {{ $contact->message_en }} @break
+                        @case('sr-Cyrl') {{ $contact->message_cy }} @break
+                        @default {{ $contact->message }}
                         @endswitch
                     </p>
 
                     <div class="mt-4">
-                        @if (!$ contact->answer)
-                            <form method="POST" id="contactAnswerForm" action="{{ route('contact.answer', $ contact->id) }}" onsubmit="return openConfirmModal(this)">
+                        @if (!$contact->answer)
+                            <form method="POST" id="contactAnswerForm" action="{{ route('contact.answer', $contact->id) }}" onsubmit="return openConfirmModal(this)">
                                 @csrf
                                 <div class="mt-4">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -190,37 +190,36 @@
                                     </div>
                                 </div>
                                 <!-- Confirm Answer Submission Modal -->
-                                <div id="submitAnswerModal" tabindex="-1"
-                                    class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-                                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
-                                        <h3 class="text-lg font-medium text-gray-900 dark:text-white text-center mb-4">
-                                            @switch(App::getLocale())
-                                                @case('en') Are you sure you want to send the answer? @break
-                                                @case('sr-Cyrl') Да ли сте сигурни да желите да пошаљете одговор? @break
-                                                @default Da li ste sigurni da želite da pošaljete odgovor?
-                                            @endswitch
-                                        </h3>
-                                        <div class="flex justify-center gap-4">
-                                            <button type="button" id="confirmSendBtn"
-                                                class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
+                                    <div id="submitAnswerModal" tabindex="-1"
+                                        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+                                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+                                            <h3 class="text-lg font-medium text-gray-900 dark:text-white text-center mb-4">
                                                 @switch(App::getLocale())
-                                                    @case('en') Send @break
-                                                    @case('sr-Cyrl') Пошаљи @break
-                                                    @default Pošalji
+                                                    @case('en') Are you sure you want to send the answer? @break
+                                                    @case('sr-Cyrl') Да ли сте сигурни да желите да пошаљете одговор? @break
+                                                    @default Da li ste sigurni da želite da pošaljete odgovor?
                                                 @endswitch
-                                            </button>
-                                            <button type="button" data-modal-hide="submitAnswerModal"
-                                                class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5">
-                                                @switch(App::getLocale())
-                                                    @case('en') Cancel @break
-                                                    @case('sr-Cyrl') Откажи @break
-                                                    @default Otkaži
-                                                @endswitch
-                                            </button>
+                                            </h3>
+                                            <div class="flex justify-center gap-4">
+                                                <button type="button" id="confirmSendBtn"
+                                                    class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
+                                                    @switch(App::getLocale())
+                                                        @case('en') Send @break
+                                                        @case('sr-Cyrl') Пошаљи @break
+                                                        @default Pošalji
+                                                    @endswitch
+                                                </button>
+                                                <button type="button" data-modal-hide="submitAnswerModal"
+                                                    class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5">
+                                                    @switch(App::getLocale())
+                                                        @case('en') Cancel @break
+                                                        @case('sr-Cyrl') Откажи @break
+                                                        @default Otkaži
+                                                    @endswitch
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
                             </form>
                         @else
                             <div class="mt-4">
@@ -233,9 +232,9 @@
                                 </label>
                                 <p class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-3 rounded">
                                     @switch(App::getLocale())
-                                        @case('en') {{ $ message->answer_en ?? $ message->answer }} @break
-                                        @case('sr-Cyrl') {{ $ message->answer_cy ?? $ message->answer }} @break
-                                        @default {{ $ message->answer }}
+                                        @case('en') {{ $contact->answer_en ?? $contact->answer }} @break
+                                        @case('sr-Cyrl') {{ $contact->answer_cy ?? $contact->answer }} @break
+                                        @default {{ $contact->answer }}
                                     @endswitch
                                 </p>
                             </div>
@@ -244,7 +243,7 @@
                 </div>
             @endforeach
             <div class="mt-6">
-                {{ $message->appends(request()->all())->links() }}
+                {{ $contacts->appends(request()->all())->links() }}
             </div>
         </div>
     </div>
@@ -312,30 +311,6 @@
         modal.classList.toggle('hidden');
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const sendBtn = document.getElementById('sendAnswerBtn'); 
-        const confirmModal = document.getElementById('submitAnswerModal');
-        const confirmSendBtn = document.getElementById('confirmSendBtn');
-        const form = document.getElementById('contactAnswerForm'); 
-
-        sendBtn?.addEventListener('click', () => {
-            confirmModal.classList.remove('hidden');
-        });
-
-        confirmSendBtn?.addEventListener('click', () => {
-            confirmModal.classList.add('hidden');
-            form.submit();
-        });
-
-        document.querySelectorAll('[data-modal-hide="submitAnswerModal"]').forEach((el) => {
-            el.addEventListener('click', () => {
-                confirmModal.classList.add('hidden');
-            });
-        });
-    });
-
-
-
     const dateFrom = document.getElementById('date_from');
     const dateTo = document.getElementById('date_to');
 
@@ -359,4 +334,27 @@
             }
         }
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const sendBtn = document.getElementById('sendAnswerBtn'); 
+        const confirmModal = document.getElementById('submitAnswerModal');
+        const confirmSendBtn = document.getElementById('confirmSendBtn');
+        const form = document.getElementById('contactAnswerForm'); 
+
+        sendBtn?.addEventListener('click', () => {
+            confirmModal.classList.remove('hidden');
+        });
+
+        confirmSendBtn?.addEventListener('click', () => {
+            confirmModal.classList.add('hidden');
+            form.submit();
+        });
+
+        document.querySelectorAll('[data-modal-hide="submitAnswerModal"]').forEach((el) => {
+            el.addEventListener('click', () => {
+                confirmModal.classList.add('hidden');
+            });
+        });
+    });
+
 </script>

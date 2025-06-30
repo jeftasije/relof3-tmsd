@@ -71,7 +71,7 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'Poruka uspešno poslata!');
     }
 
-    public function updateComplaints(Contact $contact)
+    public function updateContacts(Contact $contact)
     {
         $locale = app()->getLocale();
 
@@ -101,10 +101,10 @@ class ContactController extends Controller
     }
 
 
-    public function updateAllComplaints()
+    public function updateAllContacts()
     {
-        contact::all()->each(function($contact) {
-            $this->updateComplaints($contact);
+        Contact::all()->each(function($contact) {
+            $this->updateContacts($contact);
         });
 
         return redirect()->back()->with('success', 'Svi prevodi su uspešno ažurirani.');
@@ -176,7 +176,7 @@ class ContactController extends Controller
         $contacts = $query->orderBy('created_at', 'desc')->paginate(10);
         $contacts->appends(request()->all());
 
-        return view('complaintAnswer', compact('contacts'));
+        return view('contactAnswer', compact('contacts'));
     }
 
 
