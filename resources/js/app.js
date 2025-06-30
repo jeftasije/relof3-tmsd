@@ -349,3 +349,26 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.style.setProperty('--font-title', fontStack(titleFont));
     document.documentElement.style.setProperty('--font-body', fontStack(descFont));
 });
+
+
+// ---------- AJAX PAGINACIJA za news ----------
+document.body.addEventListener('click', function (e) {
+    let link = e.target.closest('#news-wrapper .pagination a');
+    if (link) {
+        e.preventDefault();
+        let url = link.href;
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(response => response.text())
+            .then(html => {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                var wrapper = doc.getElementById('news-wrapper');
+                document.getElementById('news-wrapper').innerHTML = wrapper.innerHTML;
+                if (window.Alpine && Alpine.initTree) {
+                    Alpine.initTree(document.getElementById('news-wrapper'));
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+    }
+});
+
