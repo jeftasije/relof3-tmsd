@@ -30,6 +30,17 @@
         "logo_light": "images\/nbnp-logo.png",
         "logo_dark": "images\/nbnp-logo-dark.png"
     },
+    "services": {
+        "hero_title": "Services for all needs",
+        "hero_subtitle": "Fast, high quality and accessible - see our offer.",
+        "images": [
+            "\/images\/fotokopirnica.png",
+            "\/images\/knjigoveznica.jpg"
+        ],
+        "main_text": "Our institution offers love love:\n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduate topics (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices.",
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
+    },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
     "header.library_name_line1": "Public Library \"Dositej Obradović\"",
@@ -65,6 +76,21 @@
     "validation.logo_light_max": "Light logo may not be larger than 2MB.",
     "validation.logo_dark_image": "Dark logo must be an image.",
     "validation.logo_dark_max": "Dark logo may not be larger than 2MB.",
+    "gallery.description": "The sun is very",
+    "page_settings": "Page settings",
+    "url_label": "Page URL",
+    "name_label": "Page Name",
+    "url_tooltip": "This is the part of the URL that identifies the page, e.g., 'my-new-page'. Use lowercase letters and hyphens.",
+    "main_section_label": "Main navigation section",
+    "sub_section_label": "Navigation subsection",
+    "subsection_required": "Subsection is required because the main section is a dropdown",
+    "title_required": "Please enter the page title",
+    "page_slug_required": "The URL field is required.",
+    "page_slug_unique": "This URL is already in use.",
+    "page_slug_alpha_dash": "The URL can only contain letters, numbers, hyphens, and underscores.",
+    "page_navigation_main_required": "Please select the main section.",
+    "page_navigation_main_exists": "The selected main section is invalid.",
+    "page_navigation_sub_exists": "The selected subsection is invalid.",
     "history.content": "At the beginning of the 20th century, Novi Pazar was a culturally and economically underdeveloped town. Cultural life was divided along religious lines: Muslims maintained private libraries in homes and mosques, while the Orthodox community organized church libraries and reading rooms. In 1912, the first printing press appeared, followed by the first local newspaper in 1921. The first public library in Novi Pazar was officially established on June 30, 1921. During the interwar period, libraries mainly existed within schools. World War II brought devastation—most books were destroyed or lost. After the war, efforts were made to rebuild. The People’s Library was founded on December 23, 1944. Despite modest beginnings in poor facilities, by 1957 it became the “Dositej Obradović” City Library. Over the next decades, it expanded its collection and services, becoming the municipal reference library in 1983. In 1996, it moved to its current building in the city park. Modernization began in 2006 with the introduction of the COBISS system and electronic lending. Today, the library has 25 employees, 10 departments, about 80,000 books, and around 5,000 active members yearly. It remains a key cultural institution in Novi Pazar.",
-    "contact.content": "Our team is here to answer all your questions and provide you with the best possible service!!!!"
+    "contact.content": "Our team is here to answer all your questions and give you the best possible service !!!!!!?"
 }

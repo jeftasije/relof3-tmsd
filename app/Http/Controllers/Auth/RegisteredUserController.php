@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -42,10 +42,21 @@ class RegisteredUserController extends Controller
             'role' => 'editor',
         ]);
 
-        event(new Registered($user));
+        $user->save();
+        return redirect()->back()->with('success', 'Editor created successfully');
+    }
 
-        Auth::login($user);
+    public function getEditors()
+    {
+        $editors = User::where('role', 'editor')->get();
+        return response()->json($editors);
+    }
 
-        return redirect(route('dashboard', absolute: false));
+    public function deleteEditor($id)
+    {
+        $user = User::where('id', $id)->where('role', 'editor')->firstOrFail();
+        $user->delete();
+
+        return response()->json(['success' => true]);
     }
 }

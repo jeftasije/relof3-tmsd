@@ -2,21 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\FooterController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\LibraryDataController;
 use App\Http\Controllers\ProcurementController;
-use App\Http\Controllers\NavigationController;
-use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrganisationalStructureController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\HistoryController;
-use App\Http\Controllers\FooterController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ReminderController;
 
 
 
@@ -67,8 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/podnozje/en', [FooterController::class, 'editEn'])->name('footer.edit.en');
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
+    Route::patch('/navigacija/{id}', [NavigationController::class, 'edit'])->name('navigation.edit');
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
-    Route::delete('/navigacija', [NavigationController::class, 'destroy'])->name('navigation.destroy');
+    Route::delete('/navigacija/{id}', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
     Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
   
@@ -80,10 +84,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
   
-    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+    Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
+    
+    Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
 
-  
     Route::get('/podsetnici', [ReminderController::class, 'index'])->name('reminders.index');
     Route::post('/podsetnici', [ReminderController::class, 'store'])->name('reminders.store');
     Route::patch('/podsetnici/{id}/preimenuj', [ReminderController::class, 'update'])->name('reminders.edit');
@@ -92,14 +98,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
 
     Route::patch('/kontakt', [ContactController::class, 'update'])->name('contact.update');
+    Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
+
+    Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
+
+    Route::get('/kreiraj-stranicu', [PageController::class, 'create'])->name('page.create');
+    Route::post('/kreiraj-stranicu', [PageController::class, 'store'])->name('page.store');
+    Route::get('/uredi-stranicu/{slug}', [PageController::class, 'edit'])->name('page.edit');
+    Route::delete('/stranica/{id}', [PageController::class, 'destroy'])->name('page.destroy');
+    Route::patch('/stranica/{slug}', [PageController::class, 'update'])->name('page.update');
+
+    Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
+    Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
+    Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
 });
+
+Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
 
 Route::get('/usluge', function () {
     return view('user.services');
 });
 
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
-Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+Route::get('/zaposleni', [EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/zaposleni/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 
 Route::get('/kontakt', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.store');
@@ -109,8 +130,8 @@ Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.s
 
 Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
-Route::get('/news', [NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
+Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
 
 Route::get('/nabavke', [ProcurementController::class, 'index'])->name('procurements.index');
 
@@ -132,5 +153,8 @@ Route::get('/search-results', [SearchController::class, 'search'])->name('search
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
+
+Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
+
 
 require __DIR__.'/auth.php';
