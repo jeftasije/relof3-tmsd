@@ -26,14 +26,13 @@
     >
         {{
             $locale === 'en'
-                ? 'Employee added successfully!'
+                ? 'Biography is successfully changed!'
                 : ($locale === 'sr-Cyrl'
-                    ? 'Запослени је успешно додат!'
-                    : 'Zaposleni je uspešno dodat!')
+                    ? 'Биографија је успешно измењена!'
+                    : 'Biografija je uspešno izmenjna!')
         }}
     </div>
 @endif
-
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>
