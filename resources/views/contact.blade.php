@@ -7,20 +7,27 @@
 
     <div class="w-full">
         <section 
-            class="relative w-full bg-gray-900 bg-cover bg-center bg-no-repeat min-h-screen py-12" 
-            style="background-image: url('/images/contact.jpg');">
-           
+            class="relative w-full bg-gray-900 bg-cover bg-center bg-no-repeat min-h-screen py-12" >           
 
             <div class="relative z-10 py-4 lg:py-12 px-6 mx-auto max-w-screen-md 
                 rounded-lg shadow-lg transition-colors duration-300
                 bg-white/80 dark:bg-gray-900/80">
 
-                @auth
-                    <div class="flex justify-end mb-2 mt-2">
+                <div class="flex items-center justify-center relative mb-6 mt-8">
+                    <h2 class="text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white flex-grow">
+                        @switch(App::getLocale())
+                            @case('en') Contact us @break
+                            @case('sr-Cyrl') Контактирајте нас @break
+                            @default Kontaktirajte nas
+                        @endswitch
+                    </h2>
+
+                    @auth
                         <button 
                             id="help-btn" 
                             onclick="toggleHelpModal()"
-                            class="flex items-center  text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                            class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
+                            style="top: 50%; transform: translateY(-50%)"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -32,15 +39,9 @@
                                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                             </span>
                         </button>
-                    </div>
-                @endauth
-                <h2 class="mb-6 mt-8 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
-                    @switch(App::getLocale())
-                    @case('en') Contact us @break
-                    @case('sr-Cyrl') Контактирајте нас @break
-                    @default Kontaktirajte nas
-                    @endswitch
-                </h2>
+                    @endauth
+                </div>
+
                 @auth
                     <div class="text-right mb-10 mt-6">
                         <button id="editBtn" 

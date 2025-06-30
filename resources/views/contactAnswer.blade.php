@@ -13,30 +13,34 @@
     <div class="py-12 bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
-            <div class="flex justify-end">
-                <button 
-                    id="help-btn" 
-                    onclick="toggleHelpModal()"
-                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                        <path d="M12 17l0 .01" />
-                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                    </svg>
-                    <span class="ml-3">
-                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                    </span>
-                </button>
+            <div class="flex items-center justify-center relative mb-8">
+                <h2 class="text-4xl font-bold text-gray-800 dark:text-white text-center flex-grow">
+                    @switch(App::getLocale())
+                        @case('en') Contacting overview @break
+                        @case('sr-Cyrl') Преглед контактирања @break
+                        @default Pregled kontaktiranja
+                    @endswitch
+                </h2>
+
+                <div class="absolute right-0">
+                    <button 
+                        id="help-btn" 
+                        onclick="toggleHelpModal()"
+                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                        </svg>
+                        <span class="ml-3">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
+                </div>
             </div>
-            <h2 class="text-4xl font-bold text-gray-800 dark:text-white text-center mb-2 mt-8">
-                @switch(App::getLocale())
-                    @case('en') Contacting overview @break
-                    @case('sr-Cyrl') Преглед контактирања @break
-                    @default Pregled kontaktiranja
-                @endswitch
-            </h2>
+
             <p class="mb-4 font-light text-center text-gray-600 dark:text-gray-300 sm:text-lg max-w-3xl mx-auto">
                 @switch(App::getLocale())
                     @case('en')
