@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Complaint;
 use App\Models\Comment;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
-use Illuminate\Support\Facades\File;
 
 class ComplaintController extends Controller
 {
@@ -24,11 +25,9 @@ class ComplaintController extends Controller
 
     public function index()
     {
-        $locale = app()->getLocale();
-        $complaintsContent = __('complaints.content', [], $locale);
-        return view('complaints', compact('complaintsContent'));
+        $text = Lang::get('complaints');
+        return view('complaints', compact('text'));
     }
-
 
     /*public function store(Request $request) {
         $validated = $request->validate([
