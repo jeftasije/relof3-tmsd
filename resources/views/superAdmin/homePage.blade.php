@@ -538,7 +538,6 @@
 
                 <ul id="sortable" class="space-y-2 cursor-move">
                     @php
-                        // Mapiranje internih imena u čitljive nazive za različite jezike
                         $componentMap = [
                             'en' => [
                                 'news' => 'News',
@@ -566,13 +565,11 @@
                         if ($cobissVisible ?? false) $visibleComponents[] = 'cobiss';
                         if ($ourTeamVisible ?? false) $visibleComponents[] = 'our_team';
 
-                        // Trenutni raspored iz JSON-a (ako postoji)
                         $currentOrder = $data['component_order'] ?? [];
                         $sorted = array_filter($currentOrder, fn($item) => in_array($item, $visibleComponents));
                         $remaining = array_diff($visibleComponents, $sorted);
                         $finalOrder = array_merge($sorted, $remaining);
 
-                        // Odredi trenutni jezik
                         $locale = App::getLocale();
                     @endphp
 
@@ -585,7 +582,6 @@
                             <input type="hidden" name="components[]" value="hero">
                         </li>
 
-                        {{-- Vidljive komponente u odabranom redosledu --}}
                         @foreach ($finalOrder as $component)
                             <li class="flex items-center justify-between w-64 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded shadow">
                                 <span class="truncate">
@@ -679,7 +675,6 @@
                         </div>
                     </div>
 
-                    <!-- Enlarged image modal -->
                     <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
                         style="backdrop-filter: blur(2px);" @click="enlarged = false">
                         <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
