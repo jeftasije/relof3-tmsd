@@ -87,9 +87,9 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                         </div>
                         <div class="mb-4">
-                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'New background photo' : (App::getLocale() === 'sr-Cyrl' ? 'Нова позадинска фотографија' : 'Nova pozadinska fotografija') }}</label>
+                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'New background photo (max 2MB)' : (App::getLocale() === 'sr-Cyrl' ? 'Нова позадинска фотографија (max 2MB)' : 'Nova pozadinska fotografija (max 2MB)') }}</label>
                             <input type="file" id="image" name="image" accept="image/*"
-                                class="mt-1 block w-full text-sm text-gray-900 dark:text-white bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                                class="mt-1 block w-full text-sm text-gray-900 dark:text-white bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"></input>
                         </div>
                         <div class="flex justify-end mt-6">
                             <button type="submit"
@@ -244,7 +244,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
                         </div>
                         <div class="mb-4">
-                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'New photo' : (App::getLocale() === 'sr-Cyrl' ? 'Нова фотографија' : 'Nova fotografija') }}</label>
+                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'New photo (max 2MB)' : (App::getLocale() === 'sr-Cyrl' ? 'Нова фотографија (max 2MB)' : 'Nova fotografija (max 2MB)') }}</label>
                             <input type="file" id="image2" name="image2" accept="image/*"
                                 class="mt-1 block w-full text-sm text-gray-900 dark:text-white bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600">
                         </div>

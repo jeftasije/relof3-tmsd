@@ -125,6 +125,7 @@ class HomepageController extends Controller
 
     public function updateSr(Request $request)
     {
+        //dd($request->file('image'));
         $validated = $this->validateRequest($request);
 
         $imagePath = $this->handleImageUpload($request->file('image'));
@@ -555,10 +556,20 @@ class HomepageController extends Controller
         if (!$image) return null;
 
         $imageName = 'herosection.' . $image->getClientOriginalExtension();
-        $imagePath = 'images/' . $imageName;
+        $imagePath = public_path('images/' . $imageName);
+
+        if (file_exists($imagePath)) {
+            try {
+                dd('bravo majmune');
+                unlink($imagePath);
+            } catch (\Exception $e) {
+                \Log::error("could not delete photo $imageName: " . $e->getMessage());
+            }
+        }
+
         $image->move(public_path('images'), $imageName);
 
-        return $imagePath;
+        return 'images/' . $imageName;
     }
 
     private function readJson($path)
