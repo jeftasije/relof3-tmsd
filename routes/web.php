@@ -20,6 +20,8 @@ use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrganisationalStructureController;
+use App\Http\Controllers\QuestionController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -106,6 +108,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
+
+    Route::post('/pitanja', [QuestionController::class, 'store'])->name('questions.store'); // Dodavanje pitanja
+    Route::patch('/pitanja/{question}', [QuestionController::class, 'update'])->name('questions.update'); // Izmena pitanja/odgovora
+    Route::delete('/pitanja/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy'); // Brisanje pitanja
+    Route::get('/pitanja/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
+
 });
 
 Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
@@ -151,5 +159,6 @@ Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
 
+Route::get('/pitanja', [QuestionController::class, 'index'])->name('questions.index');
 
 require __DIR__.'/auth.php';
