@@ -112,6 +112,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
+
+    Route::post('/zalbe/izmeni-sadrzaj', [ComplaintController::class, 'updateContent'])->name('complaints.updateContent');
 });
 
 Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
@@ -159,5 +161,6 @@ Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show'
 
 Route::get('/komentari', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
+
 
 require __DIR__.'/auth.php';

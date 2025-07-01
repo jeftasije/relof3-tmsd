@@ -295,4 +295,56 @@ class ComplaintController extends Controller
 
         File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
+
+    // ComplaintController.php
+
+public function updateContent(Request $request)
+{
+    $validated = $request->validate([
+        'locale'  => 'required|string|in:sr,sr-Cyrl,en',
+        'content' => 'required|string'
+    ]);
+
+    $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
+    $lm = app(\App\Http\Controllers\LanguageMapperController::class);
+
+    $src = $validated['locale'];
+    $content = $validated['content'];
+
+    $localized = [
+        'sr'      => $content,
+        'sr-Cyrl' => $content,
+        'en'      => $content,
+    ];
+
+    if ($src === 'sr') {
+        $localized['sr-Cyrl'] = $lm->latin_to_cyrillic($content);
+        $translate->setSource('sr')->setTarget('en');
+        $localized['en'] = $translate->translate($content);
+    } elseif ($src === 'sr-Cyrl') {
+        $localized['sr'] = $lm->cyrillic_to_latin($content);
+        $translate->setSource('sr')->setTarget('en');
+        $localized['en'] = $translate->translate($localized['sr']);
+    } else { // en
+        $translate->setSource('en')->setTarget('sr');
+        $sr = $translate->translate($content);
+        $localized['sr'] = $lm->cyrillic_to_latin($sr);
+        $localized['sr-Cyrl'] = $lm->latin_to_cyrillic($localized['sr']);
+    }
+
+    $langFiles = [
+        'sr'      => resource_path('lang/sr.json'),
+        'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
+        'en'      => resource_path('lang/en.json'),
+    ];
+
+    foreach ($langFiles as $lang => $path) {
+        $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+        $json['complaints.content'] = $localized[$lang];
+        file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
+    return response()->json(['success' => true, 'message' => 'Tekst uspešno sačuvan!']);
+}
+
 }
