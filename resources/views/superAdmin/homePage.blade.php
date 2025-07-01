@@ -43,7 +43,7 @@
         $ourTeamIsSelected = $data['our_team_is_selected'] ?? true;
 
     @endphp
-    <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+    <div x-data="{helpOpen: false}" class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div>
             <div class="relative flex items-center justify-center mb-8">
                 <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
@@ -51,21 +51,16 @@
                 </h1>
 
                 <div class="absolute right-0">
-                    <button 
-                        id="help-btn" 
-                        onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button
+                        @click="helpOpen = true"
+                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
                             <path d="M12 17l0 .01" />
                             <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
                         </svg>
-                        <span class="ml-3">
-                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                        </span>
+                        <span class="ml-3">{{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}</span>
                     </button>
                 </div>
             </div>
@@ -136,7 +131,7 @@
         <div>
             <div class="flex items-center justify-between mb-6">    
                 <div class="flex items-center gap-2">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                         {{ App::getLocale() === 'en' ? 'Edit news section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди секцију вести' : 'Uredi sekciju vesti') }}
                     </h1>
                     <button onclick="toggleNewsVisibility()" id="eyeToggle" class="transition">
@@ -205,7 +200,7 @@
         <div>
             <div class="flex items-center justify-between mb-6"> 
                 <div class="flex items-center gap-2">   
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                         {{ App::getLocale() === 'en' ? 'Edit contact section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди контакт секцију' : 'Uredi kontakt sekciju') }}
                     </h1>
                     <button onclick="toggleContactVisibility()" id="eyeToggleContact" class="transition">
@@ -290,7 +285,7 @@
         <div>
             <div class="flex items-center justify-between mb-6">    
                 <div class="flex items-center gap-2">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                         {{ App::getLocale() === 'en' ? 'Edit COBISS section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди "COBISS" секцију' : 'Uredi "COBISS" sekciju') }}
                     </h1>
                     <button onclick="toggleCobissVisibility()" id="cobissToggle" class="transition">
@@ -375,7 +370,7 @@
             <div>
                 <div class="flex items-center justify-between mb-6">    
                     <div class="flex items-center gap-2">
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                             {{ App::getLocale() === 'en' ? 'Edit our team section' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди "Наш тим" секцију' : 'Uredi "Naš tim" sekciju') }}
                         </h1>
                         <button onclick="toggleOurTeamVisibility()" id="cobissToggle" class="transition">
@@ -479,39 +474,6 @@
                 </form>
             </div>
         @endif
-        <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
-                <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
-                    &times;
-                </button>
-                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                </h2>
-                <p class="text-gray-700 dark:text-gray-300 space-y-2">
-                    {!! App::getLocale() === 'en'
-                        ? 'On this page, you can edit your homepage by selecting the components you want to appear on it and editing their content.
-                            The only mandatory component is the title section.
-                            If you want a component to be displayed or hidden on the homepage, you should click the eye icon next to the name of that section. A green eye icon indicates that the component will be displayed, while a red, crossed-out eye indicates that the component will not be displayed on the homepage.
-                            You can change the content of the components in the forms on this page. In the forms for the Serbian language, you can write in both scripts (Latin or Cyrillic), and the system will translate the data into English, which you can then review and, if necessary, correct in the adjacent forms.
-                            The data will be saved by clicking the "save" button.
-                            Each form contains a photo of the section it modifies, allowing you to confirm which component you are editing.'
-                        : (App::getLocale() === 'sr-Cyrl'
-                            ? 'На овој страници можете уредити Вашу почетну страницу, тако што бирате компоненте које желите да се на њој налазе и уређујете њихов садржај.
-                                Једина обавезна компонента је насловни део.
-                                Уколико желите да се нека компонента прикаже или не прикаже на почетној страници, треба да притиснете иконицу ока поред назива те секције. Зелена иконица ока означава да ће та компонента бити приказана, а црвено, прецртано око указује да се та компонента неће приказати на почетној страници.
-                                Садржај компоненти можете да промените у формама на овој страници, у формама за српски језик можете писати на оба писма (латиница или ћирилица), систем ће податке превести на енглески језик, које потом можете проверити и, по потреби, исправити у формама поред.
-                                Подаци ће бити сачувани кликом на дугме "сачувај".
-                                У свакој форми налази се фотографија секције коју та форма мења и на тај начин се можете уверити коју компоненту мењате.'
-                            : 'Na ovoj stranici možete urediti Vašu početnu stranicu, tako što birate komponente koje želite da se na njoj nalaze i uređujete njihov sadržaj.
-                                Jedina obavezna komponenta je naslovni deo.
-                                Ukoliko želite da se neka komponenta prikaže ili ne prikaže na početnoj stranici, treba da pritisnete ikonicu oka pored naziva te sekcije. Zelena ikonica oka označava da će ta komponenta biti prikazana, a crveno, precrtano oko ukazuje da se ta komponenta neće prikazati na početnoj stranici. 
-                                Sadržaj komponenti možete da promenite u formama na ovoj stranici, u formama za srpski jezik možete pisati na oba pisma (latinica ili ćirilica), sistem će podatke prevesti na engleski jezik, koje potom možete proveriti i, po potrebi, ispraviti u formama pored. 
-                                Podaci će biti sačuvani klikom na dugme "sačuvaj".
-                                U svakoj formi nalazi se fotografija sekcije koju ta forma menja i na taj način se možete uveriti koju komponentu menjate.')
-                            !!}
-                </p>
-            </div>
-        </div>
        <div class="mt-10">
             <button onclick="showTemplates()" type="button"
                 class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -590,7 +552,7 @@
                                 'cobiss' => 'Cobiss',
                                 'our_team' => 'Тим',
                             ],
-                            'sr-Latn' => [
+                            'sr' => [
                                 'news' => 'Vesti',
                                 'contact' => 'Kontakt',
                                 'cobiss' => 'Cobiss',
@@ -648,6 +610,194 @@
                 </button>
             </div>
         </form>
+        <div
+            x-show="helpOpen"
+            x-transition
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background:rgba(0,0,0,0.5);"
+            @click.self="helpOpen = false">
+            <div
+                x-show="helpOpen"
+                x-transition
+                class="relative rounded-xl border-2 shadow-2xl flex flex-col items-stretch"
+                style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"
+                @keydown.escape.window="helpOpen = false"
+                x-data="{ slide: 1, total: 4, enlarged: false }">
+                <button
+                    @click="helpOpen = false"
+                    class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                    style="color: var(--secondary-text);"
+                    aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
+
+                    <div class="flex flex-col items-center justify-start" style="height: 48%;">
+                        <h3 class="text-lg font-bold text-center mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                            {{ App::getLocale() === 'en' ? 'How to use homepage edit' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити уређивање почетне странице' : 'Kako koristiti uređivanje početne stranice') }}
+                        </h3>
+                        <div class="flex items-center justify-center w-full" style="min-height: 170px;">
+                            <button type="button" @click="slide = slide === 1 ? total : slide - 1"
+                                class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
+                                style="min-width:32px; color: var(--secondary-text);">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <div class="flex-1 flex justify-center items-center min-h-[150px] cursor-zoom-in">
+                                <template x-if="slide === 1">
+                                    <img @click="enlarged = '/images/eyeIconVisibilityGif.gif'" src="/images/eyeIconVisibilityGif.gif" alt="change component visibility" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                                <template x-if="slide === 2">
+                                    <img @click="enlarged = '/images/newsSection.gif'" src="/images/newsSection.gif" alt="Edit Form" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                                <template x-if="slide === 3">
+                                    <img @click="enlarged = '/images/additionalSect.gif'" src="/images/additionalSect.gif" alt="Additional section" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                                <template x-if="slide === 4">
+                                    <img @click="enlarged = '/images/reordering.gif" src="/images/reordering.gif" alt="reordering" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                </template>
+                            </div>
+                            <button type="button" @click="slide = slide === total ? 1 : slide + 1"
+                                class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
+                                style="min-width:32px; color: var(--secondary-text);">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex justify-center mt-2 space-x-1">
+                            <template x-for="i in total">
+                                <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
+                                    class="w-2 h-2 rounded-full transition-all duration-200"></div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Enlarged image modal -->
+                    <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+                        style="backdrop-filter: blur(2px);" @click="enlarged = false">
+                        <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
+                        <button @click="enlarged = false" class="absolute top-5 right-8 bg-white/80 hover:bg-white p-2 rounded-full shadow" aria-label="Close" style="color: var(--primary-text);">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
+                        style="color: var(--secondary-text); min-height: 160px; max-height: 48%;">
+                        <!-- Slide 1 -->
+                        <template x-if="slide === 1">
+                            <div>
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                    {{ App::getLocale() === 'en' ? 'Components visibility' : (App::getLocale() === 'sr-Cyrl' ? 'Видљивост компонената' : 'Vidljivost komponenata') }}
+                                </h4>
+                                <p style="font-family: var(--font-body);">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    On this page, you can edit your homepage by <strong>selecting the components</strong> you want to appear on it and editing their content. </br>
+                                    The only mandatory component is the <strong>title section</strong>.</br>
+                                    If you want a component to be displayed or hidden on the homepage, you should click the <strong>eye icon</strong> next to the name of that section. A <strong>green eye</strong> icon indicates that the component will be displayed, while a <strong>red, crossed-out eye</strong> indicates that the component will not be displayed on the homepage.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    На овој страници можете уредити Вашу почетну страницу, тако што <strong>бирате компоненте</strong> које желите да се на њој налазе и уређујете њихов садржај. </br>
+                                    Једина обавезна компонента је <strong>насловни део</strong>.</br>
+                                    Уколико желите да се нека компонента прикаже или не прикаже на почетној страници, треба да притиснете <strong>иконицу ока</strong> поред назива те секције. <strong>Зелена иконица ока</strong> означава да ће та компонента бити приказана, а <strong>црвено, прецртано око</strong> указује да се та компонента неће приказати на почетној страници.
+                                    @break
+                                    @default
+                                    Na ovoj stranici možete urediti Vašu početnu stranicu, tako što <strong>birate komponente</strong> koje želite da se na njoj nalaze i uređujete njihov sadržaj.</br>
+                                    Jedina obavezna komponenta je <strong>naslovni deo</strong>.</br>
+                                    Ukoliko želite da se neka komponenta prikaže ili ne prikaže na početnoj stranici, treba da pritisnete <strong>ikonicu oka</strong> pored naziva te sekcije. <strong>Zelena ikonica oka</strong> označava da će ta komponenta biti prikazana, a <strong>crveno, precrtano oko</strong> ukazuje da se ta komponenta neće prikazati na početnoj stranici.
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                        <!-- Slide 2 -->
+                        <template x-if="slide === 2">
+                            <div>
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                    {{ App::getLocale() === 'en' ? 'Changing section data' : (App::getLocale() === 'sr-Cyrl' ? 'Промена података секције' : 'Promena podataka sekcije') }}
+                                </h4>
+                                <p style="font-family: var(--font-body);">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    You can change the content of the components in the forms on this page.</br> In the forms for the Serbian language, you can write in <strong>both scripts</strong> (Latin or Cyrillic), and the <strong>system will translate</strong> the data into English, which you can then <strong>review</strong> and, if necessary, <strong>correct</strong> in the adjacent forms.</br>
+                                    The data will be saved by clicking the <strong>"save" button</strong>.
+                                    Each form contains a photo of the section it modifies, allowing you to confirm which component you are editing.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    Садржај компонената можете да промените у формама на овој страници. </br> У формама за српски језик можете писати на <strong>оба писма</strong> (латиница или ћирилица), <strong>систем ће податке превести</strong> на енглески језик, које потом можете <strong>проверити</strong> и, по потреби, <strong>исправити</strong> у формама поред.</br>
+                                    Подаци ће бити сачувани кликом на <strong>дугме "сачувај"</strong>.
+                                    У свакој форми налази се фотографија секције коју та форма мења и на тај начин се можете уверити коју компоненту мењате.
+                                    @break
+                                    @default
+                                    Sadržaj komponenata možete da promenite u formama na ovoj stranici. </br> U formama za srpski jezik možete pisati na <strong>oba pisma</strong> (latinica ili ćirilica), <strong>sistem će podatke prevesti</strong> na engleski jezik, koje potom možete <strong>proveriti</strong> i, po potrebi, <strong>ispraviti</strong> u formama pored. </br>
+                                    Podaci će biti sačuvani klikom na dugme "sačuvaj".
+                                    U svakoj formi nalazi se fotografija sekcije koju ta forma menja i na taj način se možete uveriti koju komponentu menjate.
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                        <!-- Slide 3 -->
+                        <template x-if="slide === 3">
+                            <div>
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                    {{ App::getLocale() === 'en' ? 'Adding new section' : (App::getLocale() === 'sr-Cyrl' ? 'Додавање нове секције' : 'Dodavanje nove sekcije') }}
+                                </h4>
+                                <p style="font-family: var(--font-body);">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    To add a new section to the homepage, you need to press the "Add New Section" button and then select the section you want to add. If you are sure you want to add the section, press the "Save" button.
+                                    The data for the new section, as well as all other sections, can be modified in the form that will automatically appear on the page once the section is added.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    Да бисте додали нову секцију на почетну страницу, потребно је да притиснете дугме „Додај нову секцију“, а затим треба да изаберете секцију коју желите додати. Уколико сте сигурни да желите да додате секцију, притисните дугме „Сачувај“.
+                                    Подаци нове секције, као и свих осталих, могу се променити у форми, која ће се аутоматски приказати на страници чим додате секцију.
+                                    @break
+                                    @default
+                                    Da biste dodali novu sekciju na početnu stranicu, potrebno je da pritisnete dugme <strong>"Dodaj novu sekciju"</strong>, a potom treba da <strong>izaberete sekciju</strong> koju želite dodati. </br> Ukoliko ste sigurni da želite da dodate sekciju, pritisnite dugme <strong>"Sačuvaj".</strong> </br>
+                                    Podatke nove sekcije, kao i svih ostalih, možete promeniti u formi, koja će se automatski prikazati na stranici, čim dodate sekciju.
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                        <!-- Slide 4 -->
+                        <template x-if="slide === 4">
+                            <div>
+                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                    {{ App::getLocale() === 'en' ? 'Reordering sections' : (App::getLocale() === 'sr-Cyrl' ? 'Промена редоследа секција' : 'Promena redosleda sekcija') }}
+                                </h4>
+                                <p style="font-family: var(--font-body);">
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    Since the header section is the only <strong>mandatory component</strong>, it is always <strong>displayed first</strong> on the page. </br>
+                                    The order of the other components can be changed at the bottom of the page by simply dragging the component to the desired position, as shown in the screenshot.</br>
+                                    Save the order by pressing the <strong>"Save"</strong> button.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    Будући да је насловни део једина <strong>обавезна компонента</strong>, она се увек <strong>приказује прва</strong> на страници.</br>
+                                    Распоред осталих компоненти можете променити у дну странице, једноставним превлачењем компоненте на жељено место, као што је приказано на снимку.</br>
+                                    Редослед сачувајте притиском на дугме <strong>„Сачувај“</strong>.
+                                    @break
+                                    @default
+                                    Budući da je naslovni deo jedina <strong>obavezna komponenta</strong>, ona se uvek <strong>prikazuje prva</strong> na stranici.</br>
+                                    Raspored ostalih komponenata možete promeniti u dnu stranice, jednostavnim prevlačenjem komponente na željeno mesto, kao što je prikazano na snimku.</br>
+                                    Redosled sačuvajte pritiskom da dugme <strong>"Sačuvaj"</strong>.
+                                    @endswitch
+                                </p>
+                            </div>
+                        </template>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
@@ -682,11 +832,6 @@
                     eyeClosed.classList.toggle('hidden');
                 }
             });
-        }
-
-        function toggleHelpModal() {
-            const modal = document.getElementById('helpModal');
-            modal.classList.toggle('hidden');
         }
 
         function toggleNewsVisibility() {
