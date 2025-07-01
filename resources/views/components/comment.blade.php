@@ -1,22 +1,22 @@
-<article x-data="{ openReply: false }" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow mb-4">
+<article x-data="{ openReply: false }" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow mb-4" style="background: var(--primary-bg); color: var(--primary-text);">
     <header class="flex items-center justify-between mb-2">
         <div class="flex flex-row items-center">
             @if($comment->is_official)
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class=" ml-1 icon icon-tabler icons-tabler-filled icon-tabler-rosette-discount-check">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class=" ml-1 icon icon-tabler icons-tabler-filled icon-tabler-rosette-discount-check" style="color: var(--accent);">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z" />
             </svg>
-            <h3 class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $libary_name }}</h3>
+            <h3 class="ml-2 text-lg font-semibold text-gray-900 dark:text-white" style="color: var(--primary-text);">{{ $libary_name }}</h3>
             @else
-            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600" style="background: var(--secondary-text);">
+                <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="color: var(--primary-text);">
                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
                 </svg>
             </div>
-            <h3 class="ml-2 text-lg font-semibold text-gray-900 dark:text-white">{{ $comment->name }}</h3>
+            <h3 class="ml-2 text-lg font-semibold text-gray-900 dark:text-white" style="color: var(--primary-text);">{{ $comment->name }}</h3>
             @endif
         </div>
-        <time datetime="{{ $comment->created_at }}" class="text-xs italic text-gray-400 dark:text-gray-500">
+        <time datetime="{{ $comment->created_at }}" class="text-xs italic text-gray-400 dark:text-gray-500" style="color: var(--secondary-text);">
             {{ \Carbon\Carbon::parse($comment->created_at)->translatedFormat('d. F Y.') }}
         </time>
     </header>
@@ -31,11 +31,11 @@
     @endphp
 
     <div x-data="{ showTranslated: false }">
-        <div class="flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2">
-            <p x-show="!showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200">
+        <div class="flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+            <p x-show="!showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200" style="color: var(--primary-text);">
                 {{ $comment->comment }}
             </p>
-            <p x-show="showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200">
+            <p x-show="showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200" style="color: var(--primary-text);">
                 {{ $comment->translate('comment') }}
             </p>
             @auth
@@ -59,7 +59,7 @@
         </div>
         <button
             @click="showTranslated = !showTranslated"
-            class="text-sm text-blue-600 hover:underline mb-2">
+            class="text-sm text-blue-600 hover:underline mb-2" style="color: var(--accent);">
             <template x-if="!showTranslated">
                 <span>{{ $languageLabel }}</span>
             </template>
@@ -80,7 +80,7 @@
         @click="openReply = !openReply"
         class="text-blue-600 text-sm mt-2 hover:underline">
         <template x-if="!openReply">
-            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" style="background: var(--accent); color: #fff;">
                 @switch(App::getLocale())
                 @case('en') Reply @break
                 @case('sr-Cyrl') Одговори @break
@@ -89,7 +89,7 @@
             </button>
         </template>
         <template x-if="openReply">
-            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" style="background: var(--secondary-text); color: #fff;">
                 @switch(App::getLocale())
                 @case('en') Cancel @break
                 @case('sr-Cyrl') Откажи @break
@@ -114,10 +114,12 @@
                     value="{{ $libary_name }}"
                     readonly
                     class="w-full p-3 shadow-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-gray-500 border border-gray-300 dark:border-gray-600 text-sm rounded-lg cursor-not-allowed"
+                    style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);"
                     aria-describedby="name-tooltip">
 
                 <div id="name-tooltip"
-                    class="absolute top-full mt-1 left-0 w-max max-w-s px-2 py-1 text-s text-white bg-gray-800 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    class="absolute top-full mt-1 left-0 w-max max-w-s px-2 py-1 text-s text-white bg-gray-800 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    style="background: var(--secondary-text); color: #fff;">
                     @switch(App::getLocale())
                     @case('en') This name is automatically set to the institution name. @break
                     @case('sr-Cyrl') Име је аутоматски подешено на назив установе. @break
@@ -125,21 +127,24 @@
                     @endswitch
                 </div>
             </div>
-            @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+            @error('name') <p class="text-red-500 text-sm col-span-2" style="color: var(--accent);">{{ $message }}</p> @enderror
             @else
             <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last name' : 'Ime i prezime' }}"
                 value="{{ old('name') }}" required
-                class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200">
-            @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+                class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200"
+                style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+            @error('name') <p class="text-red-500 text-sm col-span-2" style="color: var(--accent);">{{ $message }}</p> @enderror
             @endif
             <div>
                 <textarea name="comment" rows="2" required
                     placeholder="{{ App::getLocale() === 'en' ? 'Write a reply...' : 'Napiši odgovor...' }}"
-                    class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"></textarea>
+                    class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                    style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"></textarea>
             </div>
             <div>
                 <button type="submit"
-                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    style="background: var(--accent); color: #fff;">
                     @switch(App::getLocale())
                     @case('en') Send reply @break
                     @case('sr-Cyrl') Пошаљи одговор @break
@@ -153,7 +158,7 @@
 
     @if($comment->replies->count())
     <div x-data="{ showReplies: false }" class="mt-4">
-        <button @click="showReplies = !showReplies" class="text-sm text-blue-600 hover:underline">
+        <button @click="showReplies = !showReplies" class="text-sm text-blue-600 hover:underline" style="color: var(--accent);">
             <template x-if="!showReplies">
                 <span>
                     @switch(App::getLocale())

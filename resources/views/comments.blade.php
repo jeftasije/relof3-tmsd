@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto">
+    <div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto" style="background: var(--primary-bg); color: var(--primary-text);">
         <div class="flex flex-col">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
                 style="color: var(--primary-text); font-family: var(--font-title);">
@@ -16,12 +16,10 @@
                 We invite you to explore our blog, share your thoughts, and read comments from the community.<br>
                 Your voice matters—join the conversation!
                 @break
-
                 @case('sr-Cyrl')
                 Позивамо Вас да прегледате наш блог, поделите своје мишљење и прочитате коментаре заједнице.<br>
                 Ваш глас је важан — укључите се у разговор!
                 @break
-
                 @default
                 Pozivamo Vas da pregledate naš blog, podelite svoje mišljenje i pročitate komentare zajednice.<br>
                 Vaš glas je važan — uključite se u razgovor!
@@ -43,10 +41,12 @@
                         required
                         readonly
                         class="w-full p-3 shadow-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-gray-500 border border-gray-300 dark:border-gray-600 text-sm rounded-lg cursor-not-allowed"
+                        style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);"
                         aria-describedby="name-tooltip">
 
                     <div id="name-tooltip"
-                        class="absolute top-full mt-1 left-0 w-max max-w-s px-2 py-1 text-s text-white bg-gray-800 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        class="absolute top-full mt-1 left-0 w-max max-w-s px-2 py-1 text-s text-white bg-gray-800 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        style="background: var(--secondary-text); color: #fff;">
                         @switch(App::getLocale())
                         @case('en') This name is automatically set to the institution name. @break
                         @case('sr-Cyrl') Име је аутоматски подешено на назив установе. @break
@@ -54,26 +54,29 @@
                         @endswitch
                     </div>
                 </div>
-                @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+                @error('name') <p class="text-red-500 text-sm col-span-2" style="color: var(--accent);">{{ $message }}</p> @enderror
                 @else
                 <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last name' : 'Ime i prezime' }}"
                     value="{{ old('name') }}" required
-                    class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200">
-                @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+                    class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200"
+                    style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+                @error('name') <p class="text-red-500 text-sm col-span-2" style="color: var(--accent);">{{ $message }}</p> @enderror
                 @endif
             </div>
 
             <div>
                 <textarea name="comment" rows="4"
                     class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200"
+                    style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"
                     placeholder="{{ App::getLocale() === 'en' ? 'Write a comment...' : 'Napiši komentar...' }}"
                     required>{{ old('comment') }}</textarea>
-                @error('comment') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                @error('comment') <p class="text-red-500 text-sm" style="color: var(--accent);">{{ $message }}</p> @enderror
             </div>
 
             <div>
                 <button type="submit"
-                    class="px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                    class="px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+                    style="background: var(--accent); color: #fff;">
                     @switch(App::getLocale())
                     @case('en') Send comment @break
                     @case('sr-Cyrl') Пошаљи коментар @break
@@ -84,7 +87,7 @@
         </form>
 
         <p class="text-center mb-6 text-2xl font-semibold text-gray-700 dark:text-gray-300"
-            style="font-family: var(--font-title);">
+            style="color: var(--primary-text); font-family: var(--font-title);">
             @switch(App::getLocale())
             @case('en')
             User Comments @break
@@ -109,7 +112,8 @@
             x-show="show"
             x-transition
             x-init="setTimeout(() => show = false, 4000)"
-            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg"
+            style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
             {{ session('success') }}
         </div>
         @endif
