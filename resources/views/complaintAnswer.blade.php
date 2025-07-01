@@ -12,10 +12,25 @@
     @auth
         <div class="py-12 bg-gray-100 dark:bg-gray-900">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                
+
+                {{-- ALERT za uspešno slanje odgovora --}}
+                @if(session('success'))
+                    <div
+                        x-data="{ show: true }"
+                        x-show="show"
+                        x-transition
+                        @click="show = false"
+                        class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                        style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                        x-init="setTimeout(() => show = false, 4000)"
+                    >
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 <div class="flex justify-end">
-                    <button 
-                        id="help-btn" 
+                    <button
+                        id="help-btn"
                         onclick="toggleHelpModal()"
                         class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                     >
@@ -108,22 +123,40 @@
                                     @default Filtriraj
                                 @endswitch
                             </button>
-
-                            <a href="{{ route('complaints.index') }}" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
+                            <button type="reset" id="reset-filter-btn" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
                                 @switch(App::getLocale())
                                     @case('en') Reset @break
                                     @case('sr-Cyrl') Ресетуј @break
                                     @default Resetuj
                                 @endswitch
-                            </a>
+                            </button>
                         </div>
-
                     </div>
                 </form>
 
-
                 @foreach ($complaints as $complaint)
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow dark:text-gray-300">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded shadow dark:text-gray-300 relative">
+                        {{-- Oznaka odgovoreno/neodgovoreno --}}
+                        <div class="absolute top-4 right-4">
+                            @if($complaint->answer)
+                                <span class="inline-block px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
+                                    @switch(App::getLocale())
+                                        @case('en') Answered @break
+                                        @case('sr-Cyrl') Одговорено @break
+                                        @default Odgovoreno
+                                    @endswitch
+                                </span>
+                            @else
+                                <span class="inline-block px-3 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">
+                                    @switch(App::getLocale())
+                                        @case('en') Not answered @break
+                                        @case('sr-Cyrl') Није одговорено @break
+                                        @default Nije odgovoreno
+                                    @endswitch
+                                </span>
+                            @endif
+                        </div>
+
                         <p><strong>
                             @switch(App::getLocale())
                                 @case('en') Name: @break
@@ -154,7 +187,7 @@
                                 @case('sr-Cyrl') Наслов: @break
                                 @default Naslov:
                             @endswitch
-                        </strong> 
+                        </strong>
                             @switch(App::getLocale())
                                 @case('en') {{ $complaint->subject_en }} @break
                                 @case('sr-Cyrl') {{ $complaint->subject_cy }} @break
@@ -168,7 +201,7 @@
                                 @case('sr-Cyrl') Порука: @break
                                 @default Poruka:
                             @endswitch
-                        </strong> 
+                        </strong>
                             @switch(App::getLocale())
                                 @case('en') {{ $complaint->message_en }} @break
                                 @case('sr-Cyrl') {{ $complaint->message_cy }} @break
@@ -198,7 +231,6 @@
                                                     @default Otkaži
                                                 @endswitch
                                             </button>
-
                                             <button type="button" id="sendAnswerBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                                                 @switch(App::getLocale())
                                                     @case('en') Send answer @break
@@ -250,7 +282,7 @@
                                             @default Vaš odgovor:
                                         @endswitch
                                     </label>
-                                    <p class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-3 rounded">
+                                    <p class="text-gray-800 dark:text-gray-200 p-3">
                                         @switch(App::getLocale())
                                             @case('en') {{ $complaint->answer_en ?? $complaint->answer }} @break
                                             @case('sr-Cyrl') {{ $complaint->answer_cy ?? $complaint->answer }} @break
@@ -265,12 +297,11 @@
                 <div class="mt-6">
                     {{ $complaints->appends(request()->all())->links() }}
                 </div>
-
             </div>
         </div>
     @endauth
 
-    <div 
+    <div
         id="helpModal"
         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center"
     >
@@ -282,7 +313,7 @@
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
             <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
-                {!! App::getLocale() === 'en' 
+                {!! App::getLocale() === 'en'
                     ? '
                     In the answer field, you can write your response to a complaint or suggestion submitted by a user.
                     You may write the response in Serbian (Cyrillic or Latin) or in English — the system will automatically translate it into the other languages based on the language of the page.
@@ -295,7 +326,7 @@
                     After submission, your response will be displayed below the complaint.
                     <strong>You will not be able to edit the answer once it has been sent.</strong>
                     '
-                    : (App::getLocale() === 'sr-Cyrl' 
+                    : (App::getLocale() === 'sr-Cyrl'
                     ? '
                         У пољу за одговор можете унети свој одговор на жалбу или сугестију коју је корисник послао.
                         Текст можете написати на српском језику (ћирилицом или латиницом) или на енглеском — систем ће аутоматски превести одговор на остале језике, у зависности од језика странице.
@@ -334,10 +365,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const sendBtn = document.getElementById('sendAnswerBtn'); 
+        const sendBtn = document.getElementById('sendAnswerBtn');
         const confirmModal = document.getElementById('submitAnswerModal');
         const confirmSendBtn = document.getElementById('confirmSendBtn');
-        const form = document.getElementById('complaintAnswerForm'); 
+        const form = document.getElementById('complaintAnswerForm');
 
         sendBtn?.addEventListener('click', () => {
             confirmModal.classList.remove('hidden');
@@ -354,8 +385,6 @@
             });
         });
     });
-
-
 
     const dateFrom = document.getElementById('date_from');
     const dateTo = document.getElementById('date_to');
