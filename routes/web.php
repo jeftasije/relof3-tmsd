@@ -72,12 +72,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/navigacija', [NavigationController::class, 'store'])->name('navigation.store');
     Route::delete('/navigacija/{id}', [NavigationController::class, 'destroy'])->name('navigation.destroy');
 
-    Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
   
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
     Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
+    Route::post('/pregled-zalbi', [ComplaintController::class, 'updateAllComplaints'])->name('complaints.updateAllTranslations');
+    Route::post('/pregled-zalbi/{id}/odgovor', [ComplaintController::class, 'answer'])->name('complaints.answer');
+
+    Route::patch('/zalbe', [HistoryController::class, 'update'])->name('complaints.update');
+
+    Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
+
   
     Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
@@ -106,6 +112,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
+
+    Route::post('/zalbe/izmeni-sadrzaj', [ComplaintController::class, 'updateContent'])->name('complaints.updateContent');
 });
 
 Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
@@ -123,7 +131,7 @@ Route::post('/kontakt', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/zalbe', [ComplaintController::class, 'index'])->name('complaints.index');
 Route::post('/zalbe', [ComplaintController::class, 'store'])->name('complaints.store');
 
-Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
+//Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/vesti', [NewsController::class, 'index'])->name('news.index');
 Route::get('/vesti/{news}', [NewsController::class, 'show'])->name('news.show');
@@ -150,6 +158,9 @@ Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.inde
 Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show');
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
+
+Route::get('/komentari', [CommentController::class, 'index'])->name('comments.index');
+Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 
 require __DIR__.'/auth.php';
