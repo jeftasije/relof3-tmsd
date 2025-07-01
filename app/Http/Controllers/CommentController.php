@@ -13,18 +13,21 @@ class CommentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'comment' => 'required|string',
+            'parent_id' => 'nullable|exists:comments,id',
         ]);
 
-        Comment::create($validated);
+        Comment::create([
+            'name' => $request->name,
+            'comment' => $request->comment,
+            'parent_id' => $request->parent_id,
+        ]);
 
-        return redirect()->route('complaints.index')->with('success_comment', 'Komentar je uspešno dodat!');
+        return redirect()->back()->with('success', 'Komentar je uspešno dodat!');
     }
 
     public function index()
     {
         $comments = Comment::latest()->get();
-        return view('comments', compact('comments')); 
+        return view('comments', compact('comments'));
     }
-
-
 }
