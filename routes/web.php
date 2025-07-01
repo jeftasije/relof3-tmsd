@@ -159,7 +159,7 @@ Route::get('/istorijat', [HistoryController::class, 'show'])->name('history.show
 
 Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show');
 
-Route::get('/komentari', [CommentController::class, 'index'])->name('comments.index');
+Route::get('/blog', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
 

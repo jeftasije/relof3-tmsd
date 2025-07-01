@@ -80,22 +80,22 @@
         @click="openReply = !openReply"
         class="text-blue-600 text-sm mt-2 hover:underline">
         <template x-if="!openReply">
-            <span>
+            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 @switch(App::getLocale())
                 @case('en') Reply @break
                 @case('sr-Cyrl') Одговори @break
                 @default Odgovori
                 @endswitch
-            </span>
+            </button>
         </template>
         <template x-if="openReply">
-            <span>
+            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 @switch(App::getLocale())
                 @case('en') Cancel @break
                 @case('sr-Cyrl') Откажи @break
                 @default Otkaži
                 @endswitch
-            </span>
+            </button>
         </template>
     </button>
 
@@ -153,25 +153,18 @@
 
     @if($comment->replies->count())
     <div x-data="{ showReplies: false }" class="mt-4">
-        <div class="text-sm text-gray-500 mt-1">
-            @switch(App::getLocale())
-            @case('en')
-            {{ $comment->replies->count() }} {{ Str::plural('reply', $comment->replies->count()) }}
-            @break
-            @case('sr-Cyrl')
-            {{ $comment->replies->count() }} одговор{{ $comment->replies->count() === 1 ? '' : 'а' }}
-            @break
-            @default
-            {{ $comment->replies->count() }} odgovor{{ $comment->replies->count() === 1 ? '' : 'a' }}
-            @endswitch
-        </div>
         <button @click="showReplies = !showReplies" class="text-sm text-blue-600 hover:underline">
             <template x-if="!showReplies">
                 <span>
                     @switch(App::getLocale())
-                    @case('en') Show replies @break
-                    @case('sr-Cyrl') Прикажи одговоре @break
-                    @default Prikaži odgovore
+                    @case('en')
+                    {{ $comment->replies->count() }} {{ Str::plural('reply', $comment->replies->count()) }}
+                    @break
+                    @case('sr-Cyrl')
+                    {{ $comment->replies->count() }} одговор{{ $comment->replies->count() === 1 ? '' : 'а' }}
+                    @break
+                    @default
+                    {{ $comment->replies->count() }} odgovor{{ $comment->replies->count() === 1 ? '' : 'a' }}
                     @endswitch
                 </span>
             </template>
