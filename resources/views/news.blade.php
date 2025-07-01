@@ -1,8 +1,8 @@
 <x-guest-layout>
     @php $locale = App::getLocale(); @endphp
 
-    @if(session('success'))
-        <div 
+    @if(session('success') === 'added')
+        <div
             x-data="{ show: true }"
             x-show="show"
             x-transition:enter="transition ease-out duration-300"
@@ -24,6 +24,31 @@
             }}
         </div>
     @endif
+
+    @if(session('success') === 'deleted')
+        <div
+            x-data="{ show: true }"
+            x-show="show"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+            class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+            style="top: 14%; transform: translateX(-50%); background: #ef4444; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 240px; text-align: center;"
+            x-init="setTimeout(() => show = false, 2200)"
+        >
+            {{
+                $locale === 'en'
+                    ? 'News deleted successfully!'
+                    : ($locale === 'sr-Cyrl'
+                        ? 'Вест је успешно обрисана!'
+                        : 'Vest je uspešno obrisana!')
+            }}
+        </div>
+    @endif
+
 
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
@@ -367,31 +392,32 @@
         document.addEventListener('alpine:init', initAlpineModalsStore);
 
         document.addEventListener('DOMContentLoaded', () => {
-            initAlpineModalsStore();
-            if (window.Alpine && Alpine.store('modals')) {
-                Alpine.store('modals').closeAll();
-            }
-            document.querySelectorAll('[x-show]').forEach(el => el.style.display = 'none');
+        initAlpineModalsStore();
+        if (window.Alpine && Alpine.store('modals')) {
+            Alpine.store('modals').addNewsOpen = false;
+            Alpine.store('modals').helpOpen = false;
+        }
 
-            document.body.addEventListener('click', e => {
-                const link = e.target.closest('#news-wrapper .pagination a');
-                if (!link) return;
-                e.preventDefault();
-                fetch(link.href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                    .then(res => res.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const wrapper = doc.getElementById('news-wrapper');
-                        document.getElementById('news-wrapper').innerHTML = wrapper.innerHTML;
+        document.body.addEventListener('click', e => {
+            const link = e.target.closest('#news-wrapper .pagination a');
+            if (!link) return;
+            e.preventDefault();
+            fetch(link.href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(res => res.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const wrapper = doc.getElementById('news-wrapper');
+                    document.getElementById('news-wrapper').innerHTML = wrapper.innerHTML;
 
-                        if (window.Alpine && Alpine.initTree) {
-                            Alpine.initTree(document.getElementById('news-wrapper'));
-                        }
+                    if (window.Alpine && Alpine.initTree) {
+                        Alpine.initTree(document.getElementById('news-wrapper'));
+                    }
 
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    });
-            });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
         });
+    });
+
     </script>
 </x-guest-layout>

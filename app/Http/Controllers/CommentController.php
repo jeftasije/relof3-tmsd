@@ -20,4 +20,11 @@ class CommentController extends Controller
         return redirect()->route('complaints.index')->with('success_comment', 'Komentar je uspešno dodat!');
     }
 
+    public function index()
+    {
+        $comments = Comment::latest()->get();
+        return view('comments', compact('comments')); 
+    }
+
+
 }
