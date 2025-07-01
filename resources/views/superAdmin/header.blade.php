@@ -101,10 +101,10 @@
                 </div>
             </form>
         </div>
-        <div class="flex items-center space-x-4 mt-4">
-            <label><input type="radio" name="lang" value="sr" checked>{{ App::getLocale() === 'en' ? 'serbian (lat)' : (App::getLocale() === 'sr-Cyrl' ? 'српски (лат)' : 'srpski (lat)') }}</label>
-            <label><input type="radio" name="lang" value="sr_cyrl"> {{ App::getLocale() === 'en' ? 'serbian (cyr)' : (App::getLocale() === 'sr-Cyrl' ? 'српски (ћир)' : 'srpski (ćir)') }}</label>
-            <label><input type="radio" name="lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'енглески' : 'engleski') }}</label>
+        <div>
+            <label class="mr-5"><input type="radio" name="lang" value="sr" checked>{{ App::getLocale() === 'en' ? 'latin' : (App::getLocale() === 'sr-Cyrl' ? 'латиница' : 'latinica') }}</label>
+            <label class="mr-5"><input type="radio" name="lang" value="sr_cyrl"> {{ App::getLocale() === 'en' ? 'cyrillic' : (App::getLocale() === 'sr-Cyrl' ? 'ћирилица' : 'ćirilica') }}</label>
+            <label class="mr-5"><input type="radio" name="lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'енглески' : 'engleski') }}</label>
         </div>
         <div id="header-preview-container" class="mt-6 border rounded-lg shadow-sm">
             <nav class="py-5 px-10" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
@@ -199,7 +199,6 @@
         }
 
         document.getElementById('helpModal').addEventListener('click', function(event) {
-            // Ako je klik bio baš na overlay, a ne na sadržaj
             if (event.target === this) {
                 toggleHelpModal();
             }
