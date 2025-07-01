@@ -15,8 +15,19 @@
             csrf: '{{ csrf_token() }}'
          })">
         <div class="max-w-7xl mx-auto px-4 py-12">
-
-            <!-- Title i description centrirano sa inline editing-om -->
+        @if(session('success'))
+            <div
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                @click="show = false"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                x-init="setTimeout(() => show = false, 4000)"
+            >
+                {{ session('success') }}
+            </div>
+        @endif
             <div class="flex flex-col items-center w-full mb-12 gap-2">
                 <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center" style="color: var(--primary-text); font-family: var(--font-title);">
                     <template x-if="editing">
@@ -51,10 +62,8 @@
                 </div>
             </div>
 
-            <!-- Razmak -->
             <div class="mb-8"></div>
 
-            <!-- "Svako pitanje..." + Edit dugme u liniji -->
             <div class="flex flex-row justify-between items-center mb-6">
                 <h2 class="text-3xl font-bold text-center w-full" style="color: var(--primary-text)">
                     @switch(App::getLocale())
@@ -86,24 +95,8 @@
                 @endauth
             </div>
 
-            <!-- Forma za zalbe -->
             <div class="mb-16">
                 <div>
-                    @if(session('success'))
-                        <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                            {{ session('success') }}
-                        </div>
-                        <script>
-                            setTimeout(() => {
-                                const el = document.getElementById('successMessage');
-                                if (el) {
-                                    el.style.opacity = '0';
-                                    setTimeout(() => el.style.display = 'none', 500);
-                                }
-                            }, 3000);
-                        </script>
-                    @endif
-
                     @php
                         $isEditor = auth()->check() && auth()->user()->isEditor();
                     @endphp
@@ -140,6 +133,20 @@
                                 @error('last_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
                             </div>
                         </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                @switch(App::getLocale())
+                                    @case('en') Mobile phone: @break
+                                    @case('sr-Cyrl') Мобилни телефон: @break
+                                    @default Mobilni telefon:
+                                @endswitch
+                            </label>
+                            <input type="tel" name="phone" pattern="\d*" inputmode="numeric" maxlength="20" value="{{ old('phone') }}"
+                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                            @error('phone') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+
                         <div>
                             <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                 @switch(App::getLocale())
@@ -190,7 +197,7 @@
                                 @endswitch
                             </button>
                         </div>
-                        <!-- Modal for submitting complaint -->
+
                         <div id="submitModal2" tabindex="-1"
                             class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
                             <div class="relative w-full max-w-md max-h-full">
@@ -227,7 +234,6 @@
                 </div>
             </div>
 
-            <!-- CONTENT ISPOD FORME, INLINE EDITING I UVEK PRIKAZAN -->
             <div class="mt-12 max-w-4xl mx-auto w-full prose prose-lg dark:prose-invert">
                 <template x-if="editing">
                     <textarea x-model="form.content"
@@ -250,7 +256,6 @@
         </div>
     </div>
 
-    <!-- HELP MODAL (ostaje isti) -->
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
