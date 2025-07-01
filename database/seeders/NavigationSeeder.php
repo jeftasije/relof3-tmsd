@@ -14,22 +14,26 @@ class NavigationSeeder extends Seeder
             'name_en' => 'About us',
             'name_cy' => 'О нама',
             'is_deletable' => false, 
-            'order'=>1
+            'order'=>1,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Vesti',
             'name_en' => 'News',
             'name_cy' => 'Вести',
             'is_deletable' => false,
-            'redirect_url' => '/news',
-            'order'=>2
+            'redirect_url' => '/vesti',
+            'order'=>2,
+            'is_active' => 1
         ]);
         $dokumenta = Navigation::create([
             'name' => 'Dokumenta',
             'name_en' => 'Documents',
             'name_cy' => 'Документа',
             'is_deletable' => false,
-            'order'=>3
+            'redirect_url' => '/dokumenti',
+            'order'=>3,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Usluge',
@@ -37,7 +41,8 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Услуге',
             'is_deletable' => false,
             'redirect_url' => '/usluge',
-            'order'=>4
+            'order'=>4,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Javne nabavke',
@@ -45,14 +50,17 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Јавне набавке',
             'is_deletable' => false,
             'redirect_url' => '/nabavke',
-            'order'=>5
+            'order'=>5,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Žalbe',
             'name_en' => 'Complaints',
             'name_cy' => 'Жалбе',
             'is_deletable' => false,
-            'order'=>6
+            'redirect_url' => '/zalbe',
+            'order'=>6,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Kontakt',
@@ -60,7 +68,8 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Контакт',
             'is_deletable' => false,
             'redirect_url' => '/kontakt',
-            'order'=>7
+            'order'=>7,
+            'is_active' => 1
         ]);
 
         $pravnaDokumentacija = Navigation::create([
@@ -68,21 +77,24 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Management',
             'name_cy' => 'Пословодство',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true
+            'is_deletable' => false,
+            'is_active' => 1
         ]);
         $planoviIIzveštaji = Navigation::create([
             'name' => 'O radu',
             'name_en' => 'Reports',
             'name_cy' => 'О раду',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true
+            'is_deletable' => false,
+            'is_active' => 1
         ]);
         $informacijeORaduIProcedurama = Navigation::create([
             'name' => 'Informacije o radu i procedurama',
             'name_en' => 'Work info and procedures',
             'name_cy' => 'Информације о раду и процедурама',
             'parent_id' => $dokumenta->id,
-            'is_deletable' => true
+            'is_deletable' => false,
+            'is_active' => 1
         ]);
 
         Navigation::create([
@@ -90,24 +102,27 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Statute',
             'name_cy' => 'Статут',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Statut'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Statut',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Osnivački akti',
             'name_en' => 'Founding acts',
             'name_cy' => 'Оснивачки акти',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Osnivački akti'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Osnivački akti',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Druga akta koja regulišu oblasti etike i integriteta',
             'name_en' => 'Other acts regulating ethics and integrity',
             'name_cy' => 'Друга акта која регулишу области етике и интегритета',
             'parent_id' => $pravnaDokumentacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Druga akta koja regulišu oblasti etike i integriteta'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Druga akta koja regulišu oblasti etike i integriteta',
+            'is_active' => 1
         ]);
 
         Navigation::create([
@@ -115,24 +130,27 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Annual plans',
             'name_cy' => 'Годишњи планови',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Godišnji planovi'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Godišnji planovi',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Izveštaji o radu',
             'name_en' => 'Activity reports',
             'name_cy' => 'Извештаји о раду',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Izveštaji o radu'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Izveštaji o radu',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Izveštaji o radu organa upravljanja',
             'name_en' => 'Management body reports',
             'name_cy' => 'Извештаји о раду органа управљања',
             'parent_id' => $planoviIIzveštaji->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Izveštaji o radu organa upravljanja'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Izveštaji o radu organa upravljanja',
+            'is_active' => 1
         ]);
 
         Navigation::create([
@@ -140,16 +158,18 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Information book',
             'name_cy' => 'Информатор о раду',
             'parent_id' => $informacijeORaduIProcedurama->id,
-            'is_deletable' => true,
-            'redirect_url' => 'https://informator.poverenik.rs/informator?org=evvj4rSTdRPuDbbdT'
+            'is_deletable' => false,
+            'redirect_url' => 'https://informator.poverenik.rs/informator?org=evvj4rSTdRPuDbbdT',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Procedura o izboru direktora',
             'name_en' => 'Director election procedure',
             'name_cy' => 'Процедура о избору директора',
             'parent_id' => $informacijeORaduIProcedurama->id,
-            'is_deletable' => true,
-            'redirect_url' => '/dokumenti?category=Procedura o izboru direktora'
+            'is_deletable' => false,
+            'redirect_url' => '/dokumenti?category=Procedura o izboru direktora',
+            'is_active' => 1
         ]);
 
         $organizacija = Navigation::create([
@@ -157,31 +177,35 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Organization',
             'name_cy' => 'Организација',
             'parent_id' => $oNama->id,
-            'is_deletable' => true
+            'is_deletable' => false,
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Organizaciona struktura',
             'name_en' => 'Organizational structure',
             'name_cy' => 'Организациона структура',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/organizaciona-struktura'
+            'is_deletable' => false,
+            'redirect_url' => '/organizaciona-struktura',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Zaposleni',
             'name_en' => 'Employees',
             'name_cy' => 'Запослени',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/employees'
+            'is_deletable' => false,
+            'redirect_url' => '/zaposleni',
+            'is_active' => 1
         ]);
         Navigation::create([
             'name' => 'Sistematizacija radnih mesta',
             'name_en' => 'Job classification',
             'name_cy' => 'Систематизација радних места',
             'parent_id' => $organizacija->id,
-            'is_deletable' => true,
-            'redirect_url' => '/storage/documents/Sistematizacija-2025.pdf'
+            'is_deletable' => false,
+            'redirect_url' => '/storage/documents/Sistematizacija-2025.pdf',
+            'is_active' => 1
         ]);
     }
 }

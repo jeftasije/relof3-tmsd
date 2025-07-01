@@ -36,34 +36,68 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
         $locale = app()->getLocale();
 
+        $validated = $request->validate([
+            'biography' => 'nullable|string',
+            'position' => 'required|string|max:255',
+        ]);
+
         if ($locale === 'en') {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_en = $validated['biography'] ?? '';
+            $pos_en = $validated['position'];
+
+            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
+            $pos_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($pos_en));
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $pos_cy = $lm->latin_to_cyrillic($pos_lat);
+
             $employee->update([
-                'biography_en' => $validated['biography'],
-                'position_en' => $validated['position'],
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
             ]);
         } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_cy = $validated['biography'] ?? '';
+            $pos_cy = $validated['position'];
+
+            $bio_lat = $lm->cyrillic_to_latin($bio_cy);
+            $pos_lat = $lm->cyrillic_to_latin($pos_cy);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $pos_en = $translate->setSource('sr')->setTarget('en')->translate($pos_lat);
+
             $employee->update([
-                'biography_cy' => $validated['biography'],
-                'position_cy' => $validated['position'],
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
             ]);
         } else {
-            $validated = $request->validate([
-                'biography' => 'nullable|string',
-                'position' => 'required|string|max:255',
-            ]);
+            $bio_lat = $validated['biography'] ?? '';
+            $pos_lat = $validated['position'];
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $pos_cy = $lm->latin_to_cyrillic($pos_lat);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $pos_en = $translate->setSource('sr')->setTarget('en')->translate($pos_lat);
+
             $employee->update([
-                'biography' => $validated['biography'],
-                'position' => $validated['position'],
+                'biography' => $bio_lat,
+                'position' => $pos_lat,
+                'biography_cy' => $bio_cy,
+                'position_cy' => $pos_cy,
+                'biography_en' => $bio_en,
+                'position_en' => $pos_en,
             ]);
         }
 
@@ -108,6 +142,8 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
+        $locale = $request->input('locale', 'sr'); 
+        
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
@@ -135,17 +171,74 @@ class EmployeeController extends Controller
         $skills_src = $validated['skills'] ?? '';
         $skills_arr = array_filter(array_map('trim', preg_split('/[,;]+/', $skills_src)));
 
-        $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $name_src);
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
 
-        if ($is_cyrillic) {
-            $name_lat = $this->languageMapper->cyrillic_to_latin($name_src);
-            $position_lat = $this->languageMapper->cyrillic_to_latin($position_src);
-            $biography_lat = $this->languageMapper->cyrillic_to_latin($biography_src);
-            $bio_ext_lat = $this->languageMapper->cyrillic_to_latin($bio_ext_src);
-            $univ_lat = $this->languageMapper->cyrillic_to_latin($univ_src);
-            $exp_lat = $this->languageMapper->cyrillic_to_latin($exp_src);
-            $skills_lat = array_map(function ($s) { return $this->languageMapper->cyrillic_to_latin($s); }, $skills_arr);
-        } else {
+        if ($locale === 'en') {
+            $name_sr = $translate->setSource('en')->setTarget('sr')->translate($name_src);
+            $position_sr = $translate->setSource('en')->setTarget('sr')->translate($position_src);
+            $biography_sr = $translate->setSource('en')->setTarget('sr')->translate($biography_src);
+            $bio_ext_sr = $translate->setSource('en')->setTarget('sr')->translate($bio_ext_src);
+            $univ_sr = $translate->setSource('en')->setTarget('sr')->translate($univ_src);
+            $exp_sr = $translate->setSource('en')->setTarget('sr')->translate($exp_src);
+            $skills_sr_arr = array_map(function ($tag) use ($translate) {
+                return $translate->setSource('en')->setTarget('sr')->translate($tag);
+            }, $skills_arr);
+
+            $name_lat = $lm->cyrillic_to_latin($name_sr);
+            $position_lat = $lm->cyrillic_to_latin($position_sr);
+            $biography_lat = $lm->cyrillic_to_latin($biography_sr);
+
+            $bio_ext_lat = $lm->cyrillic_to_latin($bio_ext_sr);
+            $univ_lat = $lm->cyrillic_to_latin($univ_sr);
+            $exp_lat = $lm->cyrillic_to_latin($exp_sr);
+            $skills_lat = array_map(fn($t) => $lm->cyrillic_to_latin($t), $skills_sr_arr);
+
+            $name_cy = $lm->latin_to_cyrillic($name_lat);
+            $position_cy = $lm->latin_to_cyrillic($position_lat);
+            $biography_cy = $lm->latin_to_cyrillic($biography_lat);
+
+            $bio_ext_cy = $lm->latin_to_cyrillic($bio_ext_lat);
+            $univ_cy = $lm->latin_to_cyrillic($univ_lat);
+            $exp_cy = $lm->latin_to_cyrillic($exp_lat);
+            $skills_cy = array_map(fn($t) => $lm->latin_to_cyrillic($t), $skills_lat);
+
+            $name_en = $name_src;
+            $position_en = $position_src;
+            $biography_en = $biography_src;
+            $bio_ext_translated = $bio_ext_src;
+            $univ_translated = $univ_src;
+            $exp_translated = $exp_src;
+            $skills_translated = $skills_arr;
+        }
+        elseif (preg_match('/[\p{Cyrillic}]/u', $name_src)) {
+            $name_cy = $name_src;
+            $position_cy = $position_src;
+            $biography_cy = $biography_src;
+            $bio_ext_cy = $bio_ext_src;
+            $univ_cy = $univ_src;
+            $exp_cy = $exp_src;
+            $skills_cy = $skills_arr;
+
+            $name_lat = $lm->cyrillic_to_latin($name_cy);
+            $position_lat = $lm->cyrillic_to_latin($position_cy);
+            $biography_lat = $lm->cyrillic_to_latin($biography_cy);
+
+            $bio_ext_lat = $lm->cyrillic_to_latin($bio_ext_cy);
+            $univ_lat = $lm->cyrillic_to_latin($univ_cy);
+            $exp_lat = $lm->cyrillic_to_latin($exp_cy);
+            $skills_lat = array_map(fn($t) => $lm->cyrillic_to_latin($t), $skills_cy);
+
+            $name_en = $translate->setSource('sr')->setTarget('en')->translate($name_lat);
+            $position_en = $translate->setSource('sr')->setTarget('en')->translate($position_lat);
+            $biography_en = $translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+
+            $bio_ext_translated = $translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
+            $univ_translated = $translate->setSource('sr')->setTarget('en')->translate($univ_lat);
+            $exp_translated = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_translated = array_map(fn($t) => $translate->setSource('sr')->setTarget('en')->translate($t), $skills_lat);
+        }
+        else {
             $name_lat = $name_src;
             $position_lat = $position_src;
             $biography_lat = $biography_src;
@@ -153,15 +246,25 @@ class EmployeeController extends Controller
             $univ_lat = $univ_src;
             $exp_lat = $exp_src;
             $skills_lat = $skills_arr;
+
+            $name_cy = $lm->latin_to_cyrillic($name_lat);
+            $position_cy = $lm->latin_to_cyrillic($position_lat);
+            $biography_cy = $lm->latin_to_cyrillic($biography_lat);
+
+            $bio_ext_cy = $lm->latin_to_cyrillic($bio_ext_lat);
+            $univ_cy = $lm->latin_to_cyrillic($univ_lat);
+            $exp_cy = $lm->latin_to_cyrillic($exp_lat);
+            $skills_cy = array_map(fn($t) => $lm->latin_to_cyrillic($t), $skills_lat);
+
+            $name_en = $translate->setSource('sr')->setTarget('en')->translate($name_lat);
+            $position_en = $translate->setSource('sr')->setTarget('en')->translate($position_lat);
+            $biography_en = $translate->setSource('sr')->setTarget('en')->translate($biography_lat);
+
+            $bio_ext_translated = $translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
+            $univ_translated = $translate->setSource('sr')->setTarget('en')->translate($univ_lat);
+            $exp_translated = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_translated = array_map(fn($t) => $translate->setSource('sr')->setTarget('en')->translate($t), $skills_lat);
         }
-
-        $name_en = $this->translate->setSource('sr')->setTarget('en')->translate($name_lat);
-        $position_en = $this->translate->setSource('sr')->setTarget('en')->translate($position_lat);
-        $biography_en = $this->translate->setSource('sr')->setTarget('en')->translate($biography_lat);
-
-        $name_cy = $this->languageMapper->latin_to_cyrillic($name_lat);
-        $position_cy = $this->languageMapper->latin_to_cyrillic($position_lat);
-        $biography_cy = $this->languageMapper->latin_to_cyrillic($biography_lat);
 
         $employee = Employee::create([
             'name'         => $name_lat,
@@ -175,22 +278,6 @@ class EmployeeController extends Controller
             'biography_cy' => $biography_cy,
             'image_path'   => $validated['image_path'] ?? null,
         ]);
-
-        $bio_ext_translated = $this->translate->setSource('sr')->setTarget('en')->translate($bio_ext_lat);
-        $univ_translated    = $this->translate->setSource('sr')->setTarget('en')->translate($univ_lat);
-        $exp_translated     = $this->translate->setSource('sr')->setTarget('en')->translate($exp_lat);
-        $skills_translated = [];
-        foreach ($skills_lat as $skill) {
-            $skills_translated[] = $this->translate->setSource('sr')->setTarget('en')->translate($skill);
-        }
-
-        $bio_ext_cy = $this->languageMapper->latin_to_cyrillic($bio_ext_lat);
-        $univ_cy    = $this->languageMapper->latin_to_cyrillic($univ_lat);
-        $exp_cy     = $this->languageMapper->latin_to_cyrillic($exp_lat);
-        $skills_cy  = array_map(
-            fn($skill) => $this->languageMapper->latin_to_cyrillic($skill),
-            $skills_lat
-        );
 
         $employee->extendedBiography()->create([
             'biography'             => $bio_ext_lat,
@@ -212,6 +299,8 @@ class EmployeeController extends Controller
 
     public function updateExtendedBiography(Request $request, Employee $employee)
     {
+        $translate = $this->translate;
+        $lm = $this->languageMapper;
         $locale = app()->getLocale();
 
         if (!$employee->extendedBiography) {
@@ -241,46 +330,121 @@ class EmployeeController extends Controller
                 'university_translated' => 'nullable|string|max:255',
                 'experience_translated' => 'nullable|string',
                 'skills_translated' => 'nullable|string',
-                'biography_en' => 'nullable|string',
-                'university_en' => 'nullable|string|max:255',
-                'experience_en' => 'nullable|string',
-                'skills_en' => 'nullable|string',
             ]);
+            $bio_en = $validated['biography_translated'] ?? '';
+            $uni_en = $validated['university_translated'] ?? '';
+            $exp_en = $validated['experience_translated'] ?? '';
+            $skills_en_arr = !empty($validated['skills_translated']) ? array_map('trim', explode(',', $validated['skills_translated'])) : [];
+
+            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
+            $uni_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($uni_en));
+            $exp_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($exp_en));
+            $skills_lat = array_map(function($s) use ($translate, $lm) {
+                return $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($s));
+            }, $skills_en_arr);
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $uni_cy = $lm->latin_to_cyrillic($uni_lat);
+            $exp_cy = $lm->latin_to_cyrillic($exp_lat);
+            $skills_cy = array_map(fn($s) => $lm->latin_to_cyrillic($s), $skills_lat);
+
             $updateData = [
-                'biography_translated' => $validated['biography_translated'] ?? null,
-                'university_translated' => $validated['university_translated'] ?? null,
-                'experience_translated' => $validated['experience_translated'] ?? null,
-                'skills_translated' => !empty($validated['skills_translated']) ? array_map('trim', explode(',', $validated['skills_translated'])) : [],
-                'biography_en' => $validated['biography_en'] ?? null,
-                'university_en' => $validated['university_en'] ?? null,
-                'experience_en' => $validated['experience_en'] ?? null,
-                'skills_en' => !empty($validated['skills_en']) ? array_map('trim', explode(',', $validated['skills_en'])) : [],
+                'biography_translated'  => $bio_en,
+                'university_translated' => $uni_en,
+                'experience_translated' => $exp_en,
+                'skills_translated'     => $skills_en_arr,
+
+                'biography'             => $bio_lat,
+                'university'            => $uni_lat,
+                'experience'            => $exp_lat,
+                'skills'                => $skills_lat,
+
+                'biography_cy'          => $bio_cy,
+                'university_cy'         => $uni_cy,
+                'experience_cy'         => $exp_cy,
+                'skills_cy'             => $skills_cy,
             ];
-        } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
+        }
+        elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
             $validated = $request->validate([
                 'biography_cy' => 'nullable|string',
                 'university_cy' => 'nullable|string|max:255',
                 'experience_cy' => 'nullable|string',
                 'skills_cy' => 'nullable|string',
             ]);
+            $bio_cy = $validated['biography_cy'] ?? '';
+            $uni_cy = $validated['university_cy'] ?? '';
+            $exp_cy = $validated['experience_cy'] ?? '';
+            $skills_cy_arr = !empty($validated['skills_cy']) ? array_map('trim', explode(',', $validated['skills_cy'])) : [];
+
+            $bio_lat = $lm->cyrillic_to_latin($bio_cy);
+            $uni_lat = $lm->cyrillic_to_latin($uni_cy);
+            $exp_lat = $lm->cyrillic_to_latin($exp_cy);
+            $skills_lat = array_map(fn($s) => $lm->cyrillic_to_latin($s), $skills_cy_arr);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $uni_en = $translate->setSource('sr')->setTarget('en')->translate($uni_lat);
+            $exp_en = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_en_arr = array_map(function($s) use ($translate) {
+                return $translate->setSource('sr')->setTarget('en')->translate($s);
+            }, $skills_lat);
+
             $updateData = [
-                'biography_cy' => $validated['biography_cy'] ?? null,
-                'university_cy' => $validated['university_cy'] ?? null,
-                'experience_cy' => $validated['experience_cy'] ?? null,
-                'skills_cy' => !empty($validated['skills_cy']) ? array_map('trim', explode(',', $validated['skills_cy'])) : [],
+                'biography_cy'          => $bio_cy,
+                'university_cy'         => $uni_cy,
+                'experience_cy'         => $exp_cy,
+                'skills_cy'             => $skills_cy_arr,
+
+                'biography'             => $bio_lat,
+                'university'            => $uni_lat,
+                'experience'            => $exp_lat,
+                'skills'                => $skills_lat,
+
+                'biography_translated'  => $bio_en,
+                'university_translated' => $uni_en,
+                'experience_translated' => $exp_en,
+                'skills_translated'     => $skills_en_arr,
             ];
-        } else {
+        }
+        else {
             $validated = $request->validate([
                 'biography' => 'nullable|string',
                 'university' => 'nullable|string|max:255',
                 'experience' => 'nullable|string',
                 'skills' => 'nullable|string',
             ]);
+            $bio_lat = $validated['biography'] ?? '';
+            $uni_lat = $validated['university'] ?? '';
+            $exp_lat = $validated['experience'] ?? '';
+            $skills_lat = !empty($validated['skills']) ? array_map('trim', explode(',', $validated['skills'])) : [];
+
+            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
+            $uni_cy = $lm->latin_to_cyrillic($uni_lat);
+            $exp_cy = $lm->latin_to_cyrillic($exp_lat);
+            $skills_cy = array_map(fn($s) => $lm->latin_to_cyrillic($s), $skills_lat);
+
+            $bio_en = $translate->setSource('sr')->setTarget('en')->translate($bio_lat);
+            $uni_en = $translate->setSource('sr')->setTarget('en')->translate($uni_lat);
+            $exp_en = $translate->setSource('sr')->setTarget('en')->translate($exp_lat);
+            $skills_en_arr = array_map(function($s) use ($translate) {
+                return $translate->setSource('sr')->setTarget('en')->translate($s);
+            }, $skills_lat);
+
             $updateData = [
-                'biography' => $validated['biography'] ?? null,
-                'university' => $validated['university'] ?? null,
-                'experience' => $validated['experience'] ?? null,
-                'skills' => !empty($validated['skills']) ? array_map('trim', explode(',', $validated['skills'])) : [],
+                'biography'             => $bio_lat,
+                'university'            => $uni_lat,
+                'experience'            => $exp_lat,
+                'skills'                => $skills_lat,
+
+                'biography_cy'          => $bio_cy,
+                'university_cy'         => $uni_cy,
+                'experience_cy'         => $exp_cy,
+                'skills_cy'             => $skills_cy,
+
+                'biography_translated'  => $bio_en,
+                'university_translated' => $uni_en,
+                'experience_translated' => $exp_en,
+                'skills_translated'     => $skills_en_arr,
             ];
         }
 
@@ -289,5 +453,4 @@ class EmployeeController extends Controller
         return redirect()->route('employees.show', $employee->id)
             ->with('success', 'Extended biography updated successfully.');
     }
-
 }

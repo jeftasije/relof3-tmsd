@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         DB::table('navigations')->truncate();
         DB::table('procurements')->truncate();
         DB::table('organisational_structures')->truncate();
+        DB::table('templates')->truncate();
+        DB::table('pages')->truncate();
         DB::table('reminders')->truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -38,7 +40,9 @@ class DatabaseSeeder extends Seeder
             ExtendedNewsSeeder::class,
             NavigationSeeder::class,
             ProcurementSeeder::class,
-            OrganisationalStructureSeeder::class, 
+            OrganisationalStructureSeeder::class,
+            TemplateSeeder::class,
+            PageSeeder::class,
             ReminderSeeder::class, 
         ]);
 
