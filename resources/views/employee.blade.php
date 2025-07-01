@@ -406,6 +406,7 @@
             if (window.Alpine && Alpine.store('modals')) {
                 Alpine.store('modals').closeAll();
             }
+            document.querySelectorAll('[x-show]').forEach(el => el.style.display = 'none');
 
             document.body.addEventListener('click', e => {
                 const link = e.target.closest('#employees-wrapper .pagination a');
