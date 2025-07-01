@@ -38,7 +38,7 @@ class CommentController extends Controller
             $comment_cy = $comment;
             $comment_lat = $this->languageMapper->cyrillic_to_latin($comment);
             $comment_en = $this->translate->setSource('sr')->setTarget('en')->translate($comment);
-        }else {
+        } else {
             $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($comment);
             $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
 
@@ -71,5 +71,19 @@ class CommentController extends Controller
         $libary_name = Lang::get('library')['name'];
         $comments = Comment::with('replies')->whereNull('parent_id')->latest()->paginate(5);
         return view('comments', compact('comments', 'libary_name'));
+    }
+
+    public function destroy(Comment $comment)
+    {
+        try {
+            $comment->delete();
+            return response()->json([
+                'message' => 'Comment deleted successfully.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete comment.'
+            ], 500);
+        }
     }
 }

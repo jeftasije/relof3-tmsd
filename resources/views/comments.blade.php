@@ -31,7 +31,7 @@
         @php
         $isLogged = auth()->check();
         @endphp
-        
+
         <form method="POST" action="{{ route('comments.store') }}" class="space-y-6 mb-10">
             @csrf
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -113,6 +113,96 @@
             {{ session('success') }}
         </div>
         @endif
+    </div>
 
+    <div
+        id="delete-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+        aria-hidden="true">
+        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 max-w-md w-full shadow-lg">
+            <p class="mb-4 text-lg font-semibold">
+                @switch(App::getLocale())
+                @case('en') Are you sure you want to delete this comment? @break
+                @case('sr-Cyrl') Да ли сте сигурни да желите да обришете овај коментар? @break
+                @default Da li ste sigurni da želite da obrišete ovaj komentar?
+                @endswitch
+            </p>
+
+            <div class="flex justify-end space-x-4">
+                <button
+                    id="cancel-delete-btn"
+                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-6000">
+                    @switch(App::getLocale())
+                    @case('en') Cancel @break
+                    @case('sr-Cyrl') Откажи @break
+                    @default Otkaži
+                    @endswitch
+                </button>
+                <button
+                    id="confirm-delete-btn"
+                    class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                    @switch(App::getLocale())
+                    @case('en') Confirm @break
+                    @case('sr-Cyrl') Потврди @break
+                    @default Potvrdi
+                    @endswitch
+                </button>
+            </div>
+        </div>
     </div>
 </x-guest-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteBtns = document.querySelectorAll('.delete-comment-btn');
+        const modal = document.getElementById('delete-modal');
+        const cancelBtn = document.getElementById('cancel-delete-btn');
+        const confirmBtn = document.getElementById('confirm-delete-btn');
+
+        let commentId = null;
+
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                commentId = btn.getAttribute('data-comment-id');
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+            });
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            commentId = null;
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            if (!commentId) return;
+
+            fetch(`/komentari/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        return response.json().then(data => {
+                            alert(data.message || 'Failed to delete comment');
+                        });
+                    }
+                })
+                .catch(() => {
+                    alert('Network error');
+                })
+                .finally(() => {
+                    modal.classList.add('hidden');
+                    modal.setAttribute('aria-hidden', 'true');
+                    commentId = null;
+                });
+        });
+    });
+</script>
