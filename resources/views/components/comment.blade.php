@@ -8,6 +8,21 @@
 
     <p class="text-gray-700 dark:text-gray-300">{{ $comment->comment }}</p>
 
+    @if ($comment->replies->count())
+    <div class="text-sm text-gray-500 mt-1">
+        @switch(App::getLocale())
+        @case('en')
+        {{ $comment->replies->count() }} {{ Str::plural('reply', $comment->replies->count()) }}
+        @break
+        @case('sr-Cyrl')
+        {{ $comment->replies->count() }} одговор{{ $comment->replies->count() === 1 ? '' : 'а' }}
+        @break
+        @default
+        {{ $comment->replies->count() }} odgovor{{ $comment->replies->count() === 1 ? '' : 'a' }}
+        @endswitch
+    </div>
+    @endif
+
     @if (is_null($comment->parent_id))
     <button
         @click="openReply = !openReply"
@@ -61,10 +76,33 @@
     @endif
 
     @if($comment->replies->count())
-    <div class="ml-4 mt-4 space-y-4">
-        @foreach($comment->replies as $reply)
-        @include('components.comment', ['comment' => $reply])
-        @endforeach
+    <div x-data="{ showReplies: false }" class="mt-4">
+        <button @click="showReplies = !showReplies" class="text-sm text-blue-600 hover:underline">
+            <template x-if="!showReplies">
+                <span>
+                    @switch(App::getLocale())
+                    @case('en') Show replies @break
+                    @case('sr-Cyrl') Прикажи одговоре @break
+                    @default Prikaži odgovore
+                    @endswitch
+                </span>
+            </template>
+            <template x-if="showReplies">
+                <span>
+                    @switch(App::getLocale())
+                    @case('en') Hide replies @break
+                    @case('sr-Cyrl') Сакриј одговоре @break
+                    @default Sakrij odgovore
+                    @endswitch
+                </span>
+            </template>
+        </button>
+
+        <div x-show="showReplies" x-transition class="ml-6 mt-4 space-y-4">
+            @foreach($comment->replies as $reply)
+            @include('components.comment', ['comment' => $reply])
+            @endforeach
+        </div>
     </div>
     @endif
 </article>

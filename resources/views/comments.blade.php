@@ -1,13 +1,33 @@
 <x-guest-layout>
     <div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto">
-        <h2 class="mb-6 text-3xl font-bold text-gray-900 dark:text-white text-center">
-            @switch(App::getLocale())
-            @case('en') Comments @break
-            @case('sr-Cyrl') Коментари @break
-            @default Komentari
-            @endswitch
-        </h2>
+        <div class="flex flex-col">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
+                style="color: var(--primary-text); font-family: var(--font-title);">
+                @switch(App::getLocale())
+                @case('en') Blog @break
+                @case('sr-Cyrl') Блог @break
+                @default Blog
+                @endswitch
+            </h1>
+            <p class="mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto"
+                style="color: var(--secondary-text); font-family: var(--font-body);">
+                @switch(App::getLocale())
+                @case('en')
+                We invite you to explore our blog, share your thoughts, and read comments from the community.<br>
+                Your voice matters—join the conversation!
+                @break
 
+                @case('sr-Cyrl')
+                Позивамо Вас да прегледате наш блог, поделите своје мишљење и прочитате коментаре заједнице.<br>
+                Ваш глас је важан — укључите се у разговор!
+                @break
+
+                @default
+                Pozivamo Vas da pregledate naš blog, podelite svoje mišljenje i pročitate komentare zajednice.<br>
+                Vaš glas je važan — uključite se u razgovor!
+                @endswitch
+            </p>
+        </div>
         @php
         $isEditor = auth()->check() && auth()->user()->isEditor();
         @endphp
@@ -43,10 +63,30 @@
             </div>
         </form>
 
+        <p class="text-center mb-6 text-2xl font-semibold text-gray-700 dark:text-gray-300"
+            style="font-family: var(--font-title);">
+            @switch(App::getLocale())
+            @case('en')
+            User Comments
+            @break
+
+            @case('sr-Cyrl')
+            Коментари корисника
+            @break
+
+            @default
+            Komentari korisnika
+            @endswitch
+        </p>
+
+
         @foreach($comments->whereNull('parent_id') as $comment)
-            @include('components.comment', ['comment' => $comment])
+        @include('components.comment', ['comment' => $comment])
         @endforeach
 
+        <div class="flex justify-center mt-6">
+            {{ $comments->links() }}
+        </div>
 
         @if(session('success'))
         <div

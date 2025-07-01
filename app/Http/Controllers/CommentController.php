@@ -27,7 +27,7 @@ class CommentController extends Controller
 
     public function index()
     {
-        $comments = Comment::latest()->get();
+        $comments = Comment::with('replies')->whereNull('parent_id')->latest()->paginate(5);
         return view('comments', compact('comments'));
     }
 }
