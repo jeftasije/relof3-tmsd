@@ -265,7 +265,7 @@ class HomepageController extends Controller
             $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
             $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
                 $contactTitleLat = $originalTitle;
                 $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
                 $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
@@ -376,7 +376,7 @@ class HomepageController extends Controller
             $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
             $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
                 $cobissTitleLat = $originalTitle;
                 $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
                 $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
@@ -474,7 +474,7 @@ class HomepageController extends Controller
             $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
             $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        //i ovo mora da se doda
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        
                 $ourTeamTitleLat = $originalTitle;
                 $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
                 $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
