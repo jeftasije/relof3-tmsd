@@ -29,18 +29,38 @@
             </p>
         </div>
         @php
-        $isEditor = auth()->check() && auth()->user()->isEditor();
+        $isLogged = auth()->check();
         @endphp
-
-        <form method="POST" action="{{ route('comments.store') }}" class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }} mb-10"
-            {{ $isEditor ? 'onsubmit=return false;' : '' }}>
+        
+        <form method="POST" action="{{ route('comments.store') }}" class="space-y-6 mb-10">
             @csrf
-
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                @if($isLogged === true)
+                <div class="relative group">
+                    <input type="text"
+                        name="name"
+                        value="{{ $libary_name }}"
+                        required
+                        readonly
+                        class="w-full p-3 shadow-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-gray-500 border border-gray-300 dark:border-gray-600 text-sm rounded-lg cursor-not-allowed"
+                        aria-describedby="name-tooltip">
+
+                    <div id="name-tooltip"
+                        class="absolute top-full mt-1 left-0 w-max max-w-s px-2 py-1 text-s text-white bg-gray-800 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        @switch(App::getLocale())
+                        @case('en') This name is automatically set to the institution name. @break
+                        @case('sr-Cyrl') Име је аутоматски подешено на назив установе. @break
+                        @default Ime je automatski podešeno na naziv ustanove.
+                        @endswitch
+                    </div>
+                </div>
+                @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+                @else
                 <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last name' : 'Ime i prezime' }}"
                     value="{{ old('name') }}" required
                     class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200">
                 @error('name') <p class="text-red-500 text-sm col-span-2">{{ $message }}</p> @enderror
+                @endif
             </div>
 
             <div>
@@ -67,18 +87,13 @@
             style="font-family: var(--font-title);">
             @switch(App::getLocale())
             @case('en')
-            User Comments
-            @break
-
+            User Comments @break
             @case('sr-Cyrl')
-            Коментари корисника
-            @break
-
+            Коментари корисника @break
             @default
             Komentari korisnika
             @endswitch
         </p>
-
 
         @foreach($comments->whereNull('parent_id') as $comment)
         @include('components.comment', ['comment' => $comment])
