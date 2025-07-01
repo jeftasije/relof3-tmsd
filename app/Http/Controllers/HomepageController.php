@@ -554,7 +554,7 @@ class HomepageController extends Controller
     {
         if (!$image) return null;
 
-        $imageName = 'conatct.' . $image->getClientOriginalExtension();
+        $imageName = 'herosection.' . $image->getClientOriginalExtension();
         $imagePath = public_path('images/' . $imageName);
 
         if (file_exists($imagePath)) {
