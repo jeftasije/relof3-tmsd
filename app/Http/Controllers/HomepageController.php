@@ -92,8 +92,6 @@ class HomepageController extends Controller
         $visibilityJson = json_decode(file_get_contents(storage_path('app/public/homepageVisibility.json')), true);
         $selectedEmployees = $visibilityJson['visible_employees'] ?? [];
 
-        //dd($cobiss_title_en, $cobiss_subtitle_en);
-
         return view('superAdmin.homePage', compact('title_en', 'subtitle_en', 'title_sr_lat', 
         'subtitle_sr_lat', 'title_sr_cyr', 'subtitle_sr_cyr', 'news_title_en', 'news_title_sr_lat', 
         'news_title_sr_cyr', 'contact_title_en', 'contact_subtitle_en', 'contact_title_sr_lat',
@@ -199,7 +197,7 @@ class HomepageController extends Controller
         $newsTitleEn = '';
         $originalTitle = $request->input('news_title_sr');
 
-        $detectedScript = $this->languageMapper->detectScript($originalTitle);              //greska, ispravi
+        $detectedScript = $this->languageMapper->detectScript($originalTitle);              
         if ($detectedScript === 'cyrillic') {
             $newsTitleCyr = $originalTitle;
             $newsTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
@@ -245,15 +243,11 @@ class HomepageController extends Controller
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
 
-        //ovdje sam stala
-
-        $originalTitle = $request->input('contact_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalTitle = $request->input('contact_title_sr');               
         $originalSubtitle = $request->input('contact_subtitle_sr');
 
-        //dd($originalTitle, $originalSubtitle);
-
         $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
-        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); 
 
         if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
             $contactTitleCyr = $originalTitle;
@@ -319,8 +313,6 @@ class HomepageController extends Controller
         $title_en = $request->input('contact_title_en');
         $subtitle_en = $request->input('contact_subtitle_en');
 
-        //dd($title_en, $subtitle_en);
-
         $enJson['homepage_contact_title'] = $title_en;
         $enJson['homepage_contact_subtitle'] = $subtitle_en;
 
@@ -362,13 +354,11 @@ class HomepageController extends Controller
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
 
-        $originalTitle = $request->input('cobiss_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalTitle = $request->input('cobiss_title_sr');               
         $originalSubtitle = $request->input('cobiss_subtitle_sr');
 
-        //dd($originalTitle, $originalSubtitle);
-
         $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
-        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); 
 
         if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
             $cobissTitleCyr = $originalTitle;
@@ -462,13 +452,11 @@ class HomepageController extends Controller
         $enJson = $this->readJson($enPath);
         $visibilityJson = json_decode(file_get_contents($visibilityPath), true);
 
-        $originalTitle = $request->input('our_team_title_sr');               //moram da provjerim za oba da l su na cirilici, mozda mijenja samo jedan
+        $originalTitle = $request->input('our_team_title_sr');               
         $originalSubtitle = $request->input('our_team_subtitle_sr');
 
-        //dd($originalTitle, $originalSubtitle);
-
         $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
-        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); //ovdje sam stala
+        $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); 
 
         if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
             $ourTeamTitleCyr = $originalTitle;
@@ -518,14 +506,12 @@ class HomepageController extends Controller
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        // Ažuriraj visible_employees u homepageVisibility.json
         if ($request->has('employees')) {
             $visibilityJson['visible_employees'] = $request->input('employees');
         } else {
-            $visibilityJson['visible_employees'] = []; // Ako nije prosleđen nijedan zaposleni
+            $visibilityJson['visible_employees'] = []; 
         }
 
-        // Sačuvaj ažurirani homepageVisibility.json
         file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
             return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
@@ -710,7 +696,6 @@ class HomepageController extends Controller
         $data['our_team_is_selected'] = true;
         $data['visible_employees'] = $request->input('employees');
 
-        // Dodaj 'our_team' u component_order ako već nije prisutan
         if (!isset($data['component_order'])) {
             $data['component_order'] = [];
         }
