@@ -29,27 +29,6 @@ class ComplaintController extends Controller
         return view('complaints', compact('text'));
     }
 
-    /*public function store(Request $request) {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email',
-            'phone'      => 'nullable|string|max:20',
-            'subject'    => 'required|string|max:255',
-            'message'    => 'required|string',
-        ]);
-
-        //Complaint::create($validated);
-        Complaint::create([
-            'name'    => $validated['first_name'] . ' ' . $validated['last_name'],
-            'email'   => $validated['email'],
-            'phone'   => $validated['phone'] ?? null,
-            'subject' => $validated['subject'],
-            'message' => $validated['message'],
-        ]);
-        
-        return redirect()->back()->with('success', 'Žalba je uspešno poslata.');
-    }*/
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -176,7 +155,6 @@ class ComplaintController extends Controller
 
         $originalText = trim($request->input('answer'));
 
-        // Detekcija pisma (ćirilica / latinica / engleski)
         $detectedScript = $this->languageMapper->detectScript($originalText);
 
         $answerLat = '';
@@ -192,12 +170,10 @@ class ComplaintController extends Controller
             $toSrLat = $this->languageMapper->cyrillic_to_latin($toSr);
 
             if (mb_strtolower($toSrLat) === mb_strtolower($originalText)) {
-                // Dakle — unos je na srpskom (latinica)
                 $answerLat = $originalText;
                 $answerCy  = $this->languageMapper->latin_to_cyrillic($answerLat);
                 $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
             } else {
-                // Unos je na engleskom
                 $answerEn  = $originalText;
                 $answerCy  = $this->translate->setSource('en')->setTarget('sr')->translate($answerEn);
                 $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
@@ -205,7 +181,7 @@ class ComplaintController extends Controller
         }
 
         $complaint = Complaint::findOrFail($id);
-        $complaint->answer     = $answerLat;  // Default prikaz (latinica)
+        $complaint->answer     = $answerLat;  
         $complaint->answer_cy  = $answerCy;
         $complaint->answer_en  = $answerEn;
         $complaint->save();
@@ -234,7 +210,7 @@ class ComplaintController extends Controller
             }
         }
 
-        $complaints = $query->orderBy('created_at', 'desc')->paginate(10);
+        $complaints = $query->orderBy('created_at', 'desc')->paginate(3);
         $complaints->appends(request()->all());
 
         return view('complaintAnswer', compact('complaints'));
@@ -312,7 +288,6 @@ class ComplaintController extends Controller
         $description = $validated['description'];
         $content = $validated['content'];
 
-        // Priprema praznih polja za sva tri jezika
         $localized = [
             'sr'      => ['title' => $title, 'description' => $description, 'content' => $content],
             'sr-Cyrl' => ['title' => $title, 'description' => $description, 'content' => $content],
@@ -320,7 +295,6 @@ class ComplaintController extends Controller
         ];
 
         if ($src === 'sr') {
-            // Latinica -> ćirilica + engleski
             $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($title);
             $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($description);
             $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($content);
@@ -331,7 +305,6 @@ class ComplaintController extends Controller
             $localized['en']['content'] = $translate->translate($content);
 
         } elseif ($src === 'sr-Cyrl') {
-            // Ćirilica -> latinica + engleski
             $localized['sr']['title'] = $lm->cyrillic_to_latin($title);
             $localized['sr']['description'] = $lm->cyrillic_to_latin($description);
             $localized['sr']['content'] = $lm->cyrillic_to_latin($content);
@@ -341,8 +314,7 @@ class ComplaintController extends Controller
             $localized['en']['description'] = $translate->translate($localized['sr']['description']);
             $localized['en']['content'] = $translate->translate($localized['sr']['content']);
 
-        } else { // en
-            // Engleski -> srpski latinica, pa ćirilica
+        } else { 
             $translate->setSource('en')->setTarget('sr');
             $sr_title = $translate->translate($title);
             $sr_description = $translate->translate($description);
@@ -368,7 +340,6 @@ class ComplaintController extends Controller
             if (!isset($json['complaints']) || !is_array($json['complaints'])) {
                 $json['complaints'] = [];
             }
-            // OVDE dodaješ title, description i content:
             $json['complaints']['title'] = $localized[$lang]['title'];
             $json['complaints']['description'] = $localized[$lang]['description'];
             $json['complaints']['content'] = $localized[$lang]['content'];
