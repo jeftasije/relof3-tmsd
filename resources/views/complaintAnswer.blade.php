@@ -13,7 +13,6 @@
         <div class="py-12 bg-gray-100 dark:bg-gray-900">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-                {{-- ALERT za uspešno slanje odgovora --}}
                 @if(session('success'))
                     <div
                         x-data="{ show: true }"
@@ -136,7 +135,6 @@
 
                 @foreach ($complaints as $complaint)
                     <div class="bg-white dark:bg-gray-800 p-6 rounded shadow dark:text-gray-300 relative">
-                        {{-- Oznaka odgovoreno/neodgovoreno --}}
                         <div class="absolute top-4 right-4">
                             @if($complaint->answer)
                                 <span class="inline-block px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
@@ -211,7 +209,7 @@
 
                         <div class="mt-4">
                             @if (!$complaint->answer)
-                                <form method="POST" id="complaintAnswerForm" action="{{ route('complaints.answer', $complaint->id) }}" onsubmit="return openConfirmModal(this)">
+                                <form method="POST" id="complaintAnswerForm-{{ $complaint->id }}" action="{{ route('complaints.answer', $complaint->id) }}" onsubmit="return openConfirmModal(this)">
                                     @csrf
                                     <div class="mt-4">
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -231,7 +229,7 @@
                                                     @default Otkaži
                                                 @endswitch
                                             </button>
-                                            <button type="button" id="sendAnswerBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                            <button type="button" class="sendAnswerBtn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-complaint-id="{{ $complaint->id }}">
                                                 @switch(App::getLocale())
                                                     @case('en') Send answer @break
                                                     @case('sr-Cyrl') Пошаљи одговор @break
@@ -240,9 +238,8 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <!-- Confirm Answer Submission Modal -->
-                                    <div id="submitAnswerModal" tabindex="-1"
-                                        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+
+                                    <div id="submitAnswerModal-{{ $complaint->id }}" tabindex="-1" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
                                         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
                                             <h3 class="text-lg font-medium text-gray-900 dark:text-white text-center mb-4">
                                                 @switch(App::getLocale())
@@ -252,16 +249,14 @@
                                                 @endswitch
                                             </h3>
                                             <div class="flex justify-center gap-4">
-                                                <button type="button" id="confirmSendBtn"
-                                                    class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
+                                                <button type="button" class="confirmSendBtn text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
                                                     @switch(App::getLocale())
                                                         @case('en') Send @break
                                                         @case('sr-Cyrl') Пошаљи @break
                                                         @default Pošalji
                                                     @endswitch
                                                 </button>
-                                                <button type="button" data-modal-hide="submitAnswerModal"
-                                                    class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5">
+                                                <button type="button" data-modal-hide="submitAnswerModal-{{ $complaint->id }}" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 cancelBtn">
                                                     @switch(App::getLocale())
                                                         @case('en') Cancel @break
                                                         @case('sr-Cyrl') Откажи @break
@@ -271,7 +266,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </form>
                             @else
                                 <div class="mt-4">
@@ -365,23 +359,23 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const sendBtn = document.getElementById('sendAnswerBtn');
-        const confirmModal = document.getElementById('submitAnswerModal');
-        const confirmSendBtn = document.getElementById('confirmSendBtn');
-        const form = document.getElementById('complaintAnswerForm');
+        document.querySelectorAll('.sendAnswerBtn').forEach(sendBtn => {
+            sendBtn.addEventListener('click', () => {
+                const complaintId = sendBtn.getAttribute('data-complaint-id');
+                const modal = document.getElementById(`submitAnswerModal-${complaintId}`);
+                modal.classList.remove('hidden');
 
-        sendBtn?.addEventListener('click', () => {
-            confirmModal.classList.remove('hidden');
-        });
+                const confirmSendBtn = modal.querySelector('.confirmSendBtn');
+                const form = document.getElementById(`complaintAnswerForm-${complaintId}`);
 
-        confirmSendBtn?.addEventListener('click', () => {
-            confirmModal.classList.add('hidden');
-            form.submit();
-        });
+                confirmSendBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    form.submit();
+                };
 
-        document.querySelectorAll('[data-modal-hide="submitAnswerModal"]').forEach((el) => {
-            el.addEventListener('click', () => {
-                confirmModal.classList.add('hidden');
+                modal.querySelectorAll('.cancelBtn').forEach(cancelBtn => {
+                    cancelBtn.onclick = () => modal.classList.add('hidden');
+                });
             });
         });
     });
