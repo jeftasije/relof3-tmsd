@@ -58,72 +58,72 @@
                 </script>
             @endif
             
-        
             @auth
-            <form action="{{ route('contact.update') }}" method="POST" id="editForm" class="space-y-4">
-                @csrf
-                @method('PATCH')
-                <div id="contentDisplay" class="prose dark:prose-invert max-w-none mb-8 text-center">
-                    {{ __('question.description') }}
-                </div>
+                <form action="{{ route('questions.updateDescription') }}" method="POST" id="editForm" class="space-y-4">
+                    @csrf
+                    @method('PATCH')
+                    <div id="contentDisplay" class="prose dark:prose-invert max-w-none mb-8 text-center">
+                        {{ __('question.description') }}
+                    </div>
 
-                <textarea name="content" id="contentEdit" rows="15" style="text-align: center;"
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('question.description')) }}</textarea>
+                    <textarea name="content" id="contentEdit" rows="15" style="text-align: center;"
+                        class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('question.description')) }}</textarea>
 
-                <div id="editButtons" class="flex justify-end gap-4 hidden">
-                    <button type="button" id="cancelEditBtn"
-                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
-                        @switch(App::getLocale())
-                            @case('en') Cancel @break
-                            @case('sr-Cyrl') Откажи @break
-                            @default Otkaži
-                        @endswitch
-                    </button>
+                    <div id="editButtons" class="flex justify-end gap-4 hidden">
+                        <button type="button" id="cancelEditBtn"
+                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                            @switch(App::getLocale())
+                                @case('en') Cancel @break
+                                @case('sr-Cyrl') Откажи @break
+                                @default Otkaži
+                            @endswitch
+                        </button>
 
-                    <button type="button" id="saveEditBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-                        @switch(App::getLocale())
-                            @case('en') Save changes @break
-                            @case('sr-Cyrl') Сачувај промене @break
-                            @default Sačuvaj promene
-                        @endswitch
-                    </button>
-                </div>
+                        <button type="button" id="saveEditBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                            @switch(App::getLocale())
+                                @case('en') Save changes @break
+                                @case('sr-Cyrl') Сачувај промене @break
+                                @default Sačuvaj promene
+                            @endswitch
+                        </button>
+                    </div>
 
-                <!-- Confirm Submission Modal -->
-                <div id="submitModal1" tabindex="-1" 
-                    class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-                    <div class="relative w-full max-w-md max-h-full mx-auto">
-                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <div class="p-6 text-center">
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                    @switch(App::getLocale())
-                                        @case('en') Are you sure you want to save the changes? @break
-                                        @case('sr-Cyrl') Да ли сте сигурни да желите да сачувате измене? @break
-                                        @default Da li ste sigurni da želite da sačuvate izmene?
-                                    @endswitch
-                                </h3>
-                                <button id="confirmSubmitBtn1" type="button"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
-                                    @switch(App::getLocale())
-                                        @case('en') Save @break
-                                        @case('sr-Cyrl') Сачувај @break
-                                        @default Sačuvaj
-                                    @endswitch
-                                </button>
-                                <button data-modal-hide="submitModal1" type="button"
-                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                    @switch(App::getLocale())
-                                        @case('en') Cancel @break
-                                        @case('sr-Cyrl') Откажи @break
-                                        @default Otkaži
-                                    @endswitch
-                                </button>
+                    <!-- Confirm Submission Modal -->
+                    <div id="submitModal1" tabindex="-1" 
+                        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+                        <div class="relative w-full max-w-md max-h-full mx-auto">
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <div class="p-6 text-center">
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                        @switch(App::getLocale())
+                                            @case('en') Are you sure you want to save the changes? @break
+                                            @case('sr-Cyrl') Да ли сте сигурни да желите да сачувате измене? @break
+                                            @default Da li ste sigurni da želite da sačuvate izmene?
+                                        @endswitch
+                                    </h3>
+                                    <button id="confirmSubmitBtn1" type="button"
+                                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                        @switch(App::getLocale())
+                                            @case('en') Save @break
+                                            @case('sr-Cyrl') Сачувај @break
+                                            @default Sačuvaj
+                                        @endswitch
+                                    </button>
+                                    <button data-modal-hide="submitModal1" type="button"
+                                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        @switch(App::getLocale())
+                                            @case('en') Cancel @break
+                                            @case('sr-Cyrl') Откажи @break
+                                            @default Otkaži
+                                        @endswitch
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+
+                </form>
             @else
                 <div class="prose dark:prose-invert max-w-none text-center">
                     {!! nl2br(e(__('question.description'))) !!}
@@ -131,7 +131,8 @@
             @endauth
 
 
-        </div>
+
+        </div> 
 
         <!-- Forma za pretragu i sortiranje -->
         <form method="GET" action="{{ route('questions.index') }}">
@@ -162,38 +163,39 @@
                 </div>
             </div>
 
-            <div class="mb-4 flex justify-start items-center">
-                <label for="globalSort" class="mr-2 text-sm" style="color: var(--secondary-text);">
-                    @switch(App::getLocale())
-                    @case('en') Sort by: @break
-                    @case('sr-Cyrl') Сортитај по: @break
-                    @default Sortiraj po:
-                    @endswitch
-                </label>
-                <select
-                    id="globalSort"
-                    name="sort"
-                    onchange="this.form.submit()"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    style="color: var(--secondary-text); border: 1px solid var(--secondary-text); border-radius: 4px;"
+            <div class="mb-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <label for="globalSort" class="mr-2 text-sm" style="color: var(--secondary-text);">
+                        @switch(App::getLocale())
+                            @case('en') Sort by: @break
+                            @case('sr-Cyrl') Сортитај по: @break
+                            @default Sortiraj po:
+                        @endswitch
+                    </label>
+                    <select
+                        id="globalSort"
+                        name="sort"
+                        onchange="this.form.submit()"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        style="color: var(--secondary-text); border: 1px solid var(--secondary-text); border-radius: 4px;"
+                    >
+                        <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>A-Z</option>
+                        <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>Z-A</option>
+                    </select>
+                </div>
+
+                <button 
+                    id="createQuestionBtn"
+                    type="button"
+                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-base"
+                    onclick="toggleCreateQuestionModal()"
                 >
-                    <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>A-Z</option>
-                    <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>Z-A</option>
-                    <option value="date_desc" {{ request('sort') == 'date_desc' ? 'selected' : '' }}>
-                        @switch(App::getLocale())
-                        @case('en') Newest first @break
-                        @case('sr-Cyrl') Новије прво @break
-                        @default Novije prvo
-                        @endswitch
-                    </option>
-                    <option value="date_asc" {{ request('sort') == 'date_asc' ? 'selected' : '' }}>
-                        @switch(App::getLocale())
-                        @case('en') Oldest first @break
-                        @case('sr-Cyrl') Старије прво @break
-                        @default Starije prvo
-                        @endswitch
-                    </option>
-                </select>
+                    @switch(App::getLocale())
+                        @case('en') Create Question @break
+                        @case('sr-Cyrl') Креирај питање @break
+                        @default Kreiraj pitanje
+                    @endswitch
+                </button>
             </div>
         </form>
 
@@ -236,87 +238,7 @@
             @endforeach
         </div>
 
-        <!-- Delete Confirmation Modal -->
-        <div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative w-full max-w-md max-h-full">
-                <div class="relative rounded-lg shadow"
-                    style="background: var(--primary-bg); color: var(--primary-text);">
-                    <div class="p-6 text-center">
-                        <h3 class="mb-5 text-lg font-normal"
-                            style="color: var(--secondary-text);">
-                            {{ App::getLocale() === 'en'
-                                ? 'Are you sure you want to delete?'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Да ли сте сигурни да желите да обришете'
-                                    : 'Da li ste sigurni da želite da obrišete') }}
-                            "<span id="deleteModalTitle"></span>"?
-                        </h3>
-                        <button data-modal-hide="deleteModal" id="confirmDeleteButton" type="button"
-                            class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                            style="background: var(--accent); color: #fff;">
-                            {{ App::getLocale() === 'en'
-                                ? 'Confirm'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Потврди'
-                                    : 'Potvrdi') }}
-                        </button>
-                        <button data-modal-hide="deleteModal" type="button"
-                            class="text-sm font-medium px-5 py-2.5 rounded-lg border"
-                            style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
-                            {{ App::getLocale() === 'en'
-                                ? 'Cancel'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Откажи'
-                                    : 'Otkaži') }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rename Modal -->
-        <div id="renameModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative w-full max-w-md max-h-full">
-                <div class="relative rounded-lg shadow"
-                    style="background: var(--primary-bg); color: var(--primary-text);">
-                    <div class="p-6">
-                        <h3 class="mb-5 text-lg font-normal"
-                            style="color: var(--secondary-text);">
-                            {{ App::getLocale() === 'en'
-                                ? 'Rename document'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Преименуј документ'
-                                    : 'Preimenuj dokument') }}
-                        </h3>
-                        <input type="text" id="renameInput" class="w-full p-2 border rounded-lg focus:outline-none"
-                            placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}"
-                            style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
-                        <div class="mt-4 text-center">
-                            <button data-modal-hide="renameModal" id="confirmRenameButton" type="button"
-                                class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                style="background: var(--accent); color: #fff;">
-                                {{ App::getLocale() === 'en'
-                                    ? 'Save'
-                                    : (App::getLocale() === 'sr-Cyrl'
-                                        ? 'Сачувај'
-                                        : 'Sačuvaj') }}
-                            </button>
-                            <button data-modal-hide="renameModal" type="button"
-                                class="text-sm font-medium px-5 py-2.5 rounded-lg border"
-                                style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
-                                {{ App::getLocale() === 'en'
-                                    ? 'Cancel'
-                                    : (App::getLocale() === 'sr-Cyrl'
-                                        ? 'Откажи'
-                                        : 'Otkaži') }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+  
     <div 
         id="helpModal"
         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center"
@@ -331,9 +253,9 @@
             <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
                 {!! App::getLocale() === 'en' 
                     ? '
-                    By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the contact content.<br><br>
-                    You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
-                    If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the content will revert to its previous state without changes.<br><br>
+                    By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the question description.<br><br>
+                    You can enter description in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
+                    If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the description will revert to its previous state without changes.<br><br>
                     To save your edits, click the <strong>"Save"</strong> button.<br>
                     You will be asked to confirm before the changes are applied.
                     '
@@ -359,6 +281,86 @@
 
         </div>
     </div>
+    <div 
+        id="createQuestionModal" 
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center"
+    >
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+            <button onclick="toggleCreateQuestionModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+                &times;
+            </button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
+                @switch(App::getLocale())
+                    @case('en') Create New Question @break
+                    @case('sr-Cyrl') Креирај ново питање @break
+                    @default Kreiraj novo pitanje
+                @endswitch
+            </h2>
+
+            <form id="createQuestionForm" method="POST" action="{{ route('questions.store') }}">
+                @csrf
+                <div class="mb-4">
+                    <label for="newQuestion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        @switch(App::getLocale())
+                            @case('en') Question @break
+                            @case('sr-Cyrl') Питање @break
+                            @default Pitanje
+                        @endswitch
+                    </label>
+                    <input 
+                        type="text" 
+                        name="question" 
+                        id="newQuestion" 
+                        required 
+                        class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded"
+                    />
+                </div>
+
+                <div class="mb-4">
+                    <label for="newAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        @switch(App::getLocale())
+                            @case('en') Answer @break
+                            @case('sr-Cyrl') Одговор @break
+                            @default Odgovor
+                        @endswitch
+                    </label>
+                    <textarea 
+                        name="answer" 
+                        id="newAnswer" 
+                        rows="5" 
+                        required
+                        class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded"
+                    ></textarea>
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button 
+                        type="button" 
+                        onclick="toggleCreateQuestionModal()" 
+                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+                    >
+                        @switch(App::getLocale())
+                            @case('en') Cancel @break
+                            @case('sr-Cyrl') Откажи @break
+                            @default Otkaži
+                        @endswitch
+                    </button>
+
+                    <button 
+                        type="submit" 
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+                    >
+                        @switch(App::getLocale())
+                            @case('en') Create Question @break
+                            @case('sr-Cyrl') Креирај питање @break
+                            @default Kreiraj pitanje
+                        @endswitch
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </x-guest-layout>
 
 
@@ -366,18 +368,18 @@
     document.querySelectorAll('button[data-accordion-target]').forEach(button => {
         button.addEventListener('click', () => {
             const targetId = button.getAttribute('data-accordion-target').substring(1);
-            const content = document.getElementById(targetId);
+            const description = document.getElementById(targetId);
             const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
             // Toggle aria-expanded
             button.setAttribute('aria-expanded', !isExpanded);
 
             // Toggle visibility
-            if (content) {
+            if (description) {
                 if (isExpanded) {
-                    content.style.display = 'none';
+                    description.style.display = 'none';
                 } else {
-                    content.style.display = 'block';
+                    description.style.display = 'block';
                 }
             }
 
@@ -440,6 +442,7 @@
 
         // Klik na "Potvrdi - Sačuvaj" u modalu (submituje formu)
         confirmSubmitBtn.addEventListener('click', () => {
+            console.log("Submited!");
             submitModal.classList.add('hidden');
             editForm.submit();
         });
@@ -451,4 +454,11 @@
             });
         });
     });
+
+    function toggleCreateQuestionModal() {
+        const modal = document.getElementById('createQuestionModal');
+        modal.classList.toggle('hidden');
+    }
+    
+
 </script>

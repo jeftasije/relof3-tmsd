@@ -59,20 +59,13 @@ class QuestionController extends Controller
         }
 
         // Sortiranje po odabiru
-        $sort = $request->input('sort', 'date_desc');
+        $sort = $request->input('sort');
         switch ($sort) {
-            case 'title_asc':
-                $query->orderBy('question', 'asc');
-                break;
             case 'title_desc':
                 $query->orderBy('question', 'desc');
                 break;
-            case 'date_asc':
-                $query->orderBy('created_at', 'asc');
-                break;
-            case 'date_desc':
             default:
-                $query->orderBy('created_at', 'desc');
+                $query->orderBy('question', 'asc');
                 break;
         }
 
@@ -89,27 +82,31 @@ class QuestionController extends Controller
     // Dodavanje novog pitanja sa automatskim prevodom
     public function store(Request $request)
     {
+        // Validacija ulaznih podataka
         $validated = $request->validate([
-            'question'    => 'required|string|max:255',
-            'answer'      => 'required|string',
+            'question' => 'required|string|max:255',
+            'answer'   => 'required|string',
         ]);
 
         $questionSrc = $validated['question'];
         $answerSrc = $validated['answer'];
 
+        // Dobijamo prevode za pitanje i odgovor
         $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
         $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
 
+        // Kreiramo novo pitanje sa svim prevodima
         $question = Question::create([
-            'question'    => $questionTranslations['lat'],
-            'question_en' => $questionTranslations['en'],
-            'question_cy' => $questionTranslations['cy'],
+            'question'    => $questionTranslations['lat'],  // Latinica ili default
+            'question_en' => $questionTranslations['en'],   // Engleski prevod
+            'question_cy' => $questionTranslations['cy'],   // Ćirilica
             'answer'      => $answerTranslations['lat'],
             'answer_en'   => $answerTranslations['en'],
             'answer_cy'   => $answerTranslations['cy'],
         ]);
 
-        return redirect()->route('questions')->with('success', 'Question created successfully!');
+        // Preusmeravamo nazad sa porukom o uspehu
+        return redirect()->back()->with('success', __('Question created successfully!'));
     }
 
     // Update pitanja sa prevodom
@@ -126,6 +123,7 @@ class QuestionController extends Controller
         $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
         $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
 
+        $question = Question::findOrFail($id);
         $question->update([
             'question'    => $questionTranslations['lat'],
             'question_en' => $questionTranslations['en'],
@@ -135,7 +133,7 @@ class QuestionController extends Controller
             'answer_cy'   => $answerTranslations['cy'],
         ]);
 
-        return redirect()->route('questions')->with('success', 'Question updated successfully!');
+        return back()->with('success', 'Question updated successfully!');
     }
 
 
@@ -144,9 +142,11 @@ class QuestionController extends Controller
     // Brisanje pitanja
     public function destroy(Question $question)
     {
+        $question = Question::findOrFail($id);
         $question->delete();
         return redirect()->back()->with('success', 'Pitanje uspešno obrisano.');
     }
+
     public function edit(Question $question)
     {
         // Možeš dodati autorizaciju ako je potrebno
@@ -173,5 +173,58 @@ class QuestionController extends Controller
         };
     }
 
+    public function updateDescription(Request $request)
+    {
+        $request->validate([
+            'description' => 'required|string',
+        ]);
 
+        $originalText = trim($request->input('description'));
+
+        $detectedScript = $this->languageMapper->detectScript($originalText);
+
+        $content_cy = '';
+        $content_lat = '';
+        $content_en = '';
+
+        if ($detectedScript === 'cyrillic') {
+            $content_cy = $originalText;
+            $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
+            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
+        } else {
+            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
+            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+
+            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
+                $content_lat = $originalText;
+                $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
+                $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
+            } else {
+                $content_en = $originalText;
+                $content_cy = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
+                $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
+            }
+        }
+
+        $this->updateLangFile('sr', ['question.description' => $content_lat]);
+        $this->updateLangFile('sr-Cyrl', ['question.description' => $content_cy]);
+        $this->updateLangFile('en', ['question.description' => $content_en]);
+
+        return redirect()->back()->with('success', 'Prevod poruke je uspešno ažuriran.');
+    }
+
+    protected function updateLangFile($locale, array $data)
+    {
+        $path = resource_path("lang/{$locale}.json");
+
+        if (!File::exists($path)) {
+            File::put($path, '{}');
+        }
+
+        $translations = json_decode(File::get($path), true) ?? [];
+
+        $translations = array_merge($translations, $data);
+
+        File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
 }
