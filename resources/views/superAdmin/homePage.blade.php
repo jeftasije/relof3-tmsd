@@ -655,7 +655,7 @@
                                     <img @click="enlarged = '/images/additionalSect.gif'" src="/images/additionalSect.gif" alt="Additional section" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 4">
-                                    <img @click="enlarged = '/images/reordering.gif" src="/images/reordering.gif" alt="reordering" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/reordering.gif'" src="/images/reordering.gif" alt="reordering" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"

@@ -51,8 +51,8 @@ class FooterController extends Controller
 
             $libraryData = $this->buildLibraryData($request);
 
-            $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo.png');
-            $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo-dark.png');
+            $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo-dark.png');
+            $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo.png');
 
             $isCyrillic = $this->isCyrillic($libraryData['name'] ?? '') || $this->isCyrillic($libraryData['address'] ?? '');
 

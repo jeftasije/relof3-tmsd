@@ -21,6 +21,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrganisationalStructureController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\HeaderController;
 use App\Models\News;
 
 Route::get('/', [HomepageController::class, 'showWelcome'])->name('welcome');
@@ -66,6 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/podnozje', [FooterController::class, 'show'])->name('footer.show');
     Route::patch('/podnozje/sr', [FooterController::class, 'editSr'])->name('footer.edit.sr');
     Route::patch('/podnozje/en', [FooterController::class, 'editEn'])->name('footer.edit.en');
+
+    Route::get('/zaglavlje', [HeaderController::class, 'show'])->name('header.show');
+    Route::patch('/zaglavlje/sr', [HeaderController::class, 'updateSr'])->name('header.edit.sr');
+    Route::patch('/zaglavlje/en', [HeaderController::class, 'updateEn'])->name('header.edit.en');
 
     Route::patch('/navigacija/redosled', [NavigationController::class, 'saveOrder'])->name('navigation.save-order');
     Route::patch('/navigacija/{id}', [NavigationController::class, 'edit'])->name('navigation.edit');

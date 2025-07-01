@@ -554,12 +554,11 @@ class HomepageController extends Controller
     {
         if (!$image) return null;
 
-        $imageName = 'herosection.' . $image->getClientOriginalExtension();
+        $imageName = 'conatct.' . $image->getClientOriginalExtension();
         $imagePath = public_path('images/' . $imageName);
 
         if (file_exists($imagePath)) {
             try {
-                dd('bravo majmune');
                 unlink($imagePath);
             } catch (\Exception $e) {
                 \Log::error("could not delete photo $imageName: " . $e->getMessage());
