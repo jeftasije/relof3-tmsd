@@ -240,8 +240,7 @@
         </div>
 
         <div class="text-center mt-10">
-            <a href="/storage/documents/UPUTSTVO_ZA_ZALBE.pdf"
-               class="inline-block" style="color: var(--accent);" download>
+            <a href="{{ asset('storage/documents/UPUTSTVO%20ZA%20ZALBE.pdf') }}" target="_blank" style="color: var(--accent);">
                 @switch(App::getLocale())
                     @case('en') Download the instructions in PDF format @break
                     @case('sr-Cyrl') Преузмите упутство у PDF формату @break
