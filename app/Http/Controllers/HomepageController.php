@@ -125,7 +125,6 @@ class HomepageController extends Controller
 
     public function updateSr(Request $request)
     {
-        //dd($request->file('image'));
         $validated = $this->validateRequest($request);
 
         $imagePath = $this->handleImageUpload($request->file('image'));
