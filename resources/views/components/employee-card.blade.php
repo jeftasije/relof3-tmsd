@@ -1,9 +1,8 @@
 <div 
-  class="relative max-w-sm h-full rounded-lg shadow-lg flex flex-col"
+  class="relative max-w-sm h-full rounded-lg shadow-lg flex flex-col transition duration-300 hover:-translate-y-1 hover:scale-105"
   style="background: var(--primary-bg) !important; border: 1px solid var(--secondary-text) !important; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);"
   x-data="{
     editing: false,
-    // name je i dalje u stanju, ali se ne edituje!
     name: @js($employee->translate('name')),
     biography: @js($employee->translated_biography),
     position: @js($employee->translated_position),
@@ -35,7 +34,6 @@
         this.originalBiography = this.biography;
         this.originalPosition = this.position;
         this.editing = false;
-        // Prikaz toast poruke
         const locale = '{{ App::getLocale() }}';
         if (locale === 'en') {
           this.successMessage = 'Successfully saved changes!';
@@ -92,7 +90,6 @@
     }
   }"
 >
-    <!-- TOAST PORUKA - centar gore -->
     <div
       x-show="showSuccess"
       x-transition:enter="transition ease-out duration-300"
@@ -102,15 +99,7 @@
       x-transition:leave-start="opacity-100 scale-100 translate-y-0"
       x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
       class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
-      style="
-        top: 18%; 
-        transform: translateX(-50%);
-        background: #22c55e; 
-        color: #fff; 
-        font-weight: 600; 
-        letter-spacing: 0.03em;
-        min-width: 240px;
-        text-align: center;"
+      style="top: 18%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 240px; text-align: center;"
       x-text="successMessage"
     >
     </div>
@@ -162,7 +151,7 @@
           </div>
         </template>
     </div>
-    <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset; background: var(--primary-bg) !important;">
+    <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset; background: var(--primary-bg) !important; filter: brightness(0.89);">
         <div>
             <a href="{{ route('employees.show', $employee->id) }}">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight"
@@ -170,8 +159,6 @@
                     {{ $employee->translate('name') }}
                 </h5>
             </a>
-            <!-- Više nema inputa za ime ni u jednom modu! -->
-
             <template x-if="!editing">
                 <p class="mb-2 font-medium"
                    style="color: var(--secondary-text) !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
@@ -185,7 +172,6 @@
                   style="background: var(--primary-bg) !important; color: var(--primary-text) !important;"
                 />
             </template>
-
             <template x-if="!editing">
                 <p class="mb-4 font-normal"
                    style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);"
