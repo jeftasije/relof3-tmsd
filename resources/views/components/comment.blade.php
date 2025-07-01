@@ -15,8 +15,40 @@
             {{ \Carbon\Carbon::parse($comment->created_at)->translatedFormat('d. F Y.') }}
         </time>
     </header>
-    
-    <p class="text-gray-700 dark:text-gray-300">{{ $comment->comment }}</p>
+
+    @php
+    $locale = App::getLocale();
+    $languageLabel = match($locale) {
+    'en' => 'Translate to English',
+    'sr-Cyrl' => 'Преведи на ћирилицу',
+    default => 'Prevedi na latinicu',
+    };
+    @endphp
+
+    <div x-data="{ showTranslated: false }">
+        <p x-show="!showTranslated" x-transition class="text-gray-700 dark:text-gray-300">
+            {{ $comment->comment }}
+        </p>
+        <p x-show="showTranslated" x-transition class="text-gray-700 dark:text-gray-300">
+            {{ $comment->translate('comment') }}
+        </p>
+        <button
+            @click="showTranslated = !showTranslated"
+            class="text-sm text-blue-600 hover:underline mb-2">
+            <template x-if="!showTranslated">
+                <span>{{ $languageLabel }}</span>
+            </template>
+            <template x-if="showTranslated">
+                <span>
+                    @switch($locale)
+                    @case('en') Show original @break
+                    @case('sr-Cyrl') Прикажи оригинал @break
+                    @default Prikaži original
+                    @endswitch
+                </span>
+            </template>
+        </button>
+    </div>
 
     @if ($comment->replies->count())
     <div class="text-sm text-gray-500 mt-1">
@@ -60,7 +92,7 @@
     @php
     $isLogged = auth()->check();
     @endphp
-    
+
     <div x-show="openReply" x-transition class="mt-4">
         <form method="POST" action="{{ route('comments.store') }}" class="space-y-3">
             @csrf
