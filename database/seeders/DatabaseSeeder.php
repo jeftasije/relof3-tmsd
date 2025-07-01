@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         DB::table('templates')->truncate();
         DB::table('pages')->truncate();
         DB::table('reminders')->truncate();
+        DB::table('users')->truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
@@ -43,14 +44,8 @@ class DatabaseSeeder extends Seeder
             OrganisationalStructureSeeder::class,
             TemplateSeeder::class,
             PageSeeder::class,
-            ReminderSeeder::class, 
+            ReminderSeeder::class,
+            UserSeeder::class
         ]);
-
-        if (!User::where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        }
     }
 }
