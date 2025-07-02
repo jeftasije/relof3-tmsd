@@ -20,10 +20,10 @@ use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrganisationalStructureController;
+use App\Http\Controllers\HomepageController;
+use App\Models\News;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [HomepageController::class, 'showWelcome'])->name('welcome');
 
 Route::get('/kontrolni-panel', function () {
     return view('superAdmin.dashboard');
@@ -98,6 +98,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/podsetnici/{id}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     Route::get('/podsetnici/aktivni', [ReminderController::class, 'getActiveReminders']);
     Route::get('/podsetnici/aktivni/broj', [ReminderController::class, 'getActiveRemindersCount']);
+
+    Route::get('/naslovna', [HomepageController::class, 'show'])->name('homePage.show');
+    Route::post('/naslovna/sr', [HomepageController::class, 'updateSr'])->name('homepage.updateSr');
+    Route::post('/naslovna/en', [HomepageController::class, 'updateEn'])->name('homepage.updateEn');
+    Route::post('/naslovna/vesti/sr', [HomepageController::class, 'updateNewsSr'])->name('homepage.updateNewsSr');
+    Route::post('/naslovna/vesti/en', [HomepageController::class, 'updateNewsEn'])->name('homepage.updateNewsEn');
+    Route::post('/naslovna/kontakt/sr', [HomepageController::class, 'updateContactSr'])->name('homepage.updateContactSr');
+    Route::post('/naslovna/kontakt/en', [HomepageController::class, 'updateContactEn'])->name('homepage.updateContactEn');
+    Route::post('/naslovna/cobiss/sr', [HomepageController::class, 'updateCobissSr'])->name('homepage.updateCobissSr');
+    Route::post('/naslovna/cobiss/en', [HomepageController::class, 'updateCobissEn'])->name('homepage.updateCobissEn');
+    Route::post('/naslovna/tim/sr', [HomepageController::class, 'updateOurTeamSr'])->name('homepage.updateOurTeamSr');
+    Route::post('/naslovna/tim/en', [HomepageController::class, 'updateOurTeamEn'])->name('homepage.updateOurTeamEn');
+
+    Route::post('/vidljivost-vesti', [HomepageController::class, 'toggleNewsVisibility'])->name('homepage.toggleNewsVisibility');
+    Route::post('/vidljivost-kontakt', [HomepageController::class, 'toggleContactVisibility'])->name('homepage.toggleContactVisibility');
+    Route::post('/vidljivost-cobiss', [HomepageController::class, 'toggleCobissVisibility'])->name('homepage.toggleCobissVisibility');
+    Route::post('/vidljivost-tim', [HomepageController::class, 'toggleOurTeamVisibility'])->name('homepage.toggleOurTeamVisibility');
+
+    Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
+    Route::post('/homepage/team-visibility', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
 
     Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 

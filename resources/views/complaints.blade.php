@@ -1,272 +1,270 @@
 <x-guest-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
+        <h2 class="font-semibold text-xl text-center" style="color: var(--primary-text)">
             Žalbe
         </h2>
     </x-slot>
-
-    <div class="w-full">
-        <section 
-            class="relative w-full bg-gray-900 bg-cover bg-center bg-no-repeat py-12" 
-            style="background-image: url('/images/comments.jpg');">
-            <div class="absolute inset-0 bg-black/30"></div>
-            
-            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-12 px-6 py-12">
-
-                    <!-- LEVA STRANA - TEKST + EDIT -->
-                    <div class="flex flex-col">
-                        @auth
-                        <div class="flex justify-end mb-2">
-                            <button 
-                                id="help-btn" 
-                                onclick="toggleHelpModal()"
-                                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                    <path d="M12 17l0 .01" />
-                                    <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                                </svg>
-                                <span class="ml-3">
-                                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                                </span>
-                            </button>
-                        </div>
-                        @endauth
-
-                        <h3 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-                            @switch(App::getLocale())
-                                @case('en') How to file a complaint? @break
-                                @case('sr-Cyrl') Како поднети жалбу? @break
-                                @default Kako podneti žalbu?
-                            @endswitch
-                        </h3>
-                        
-                        <!-- INLINE EDIT ZALBE SADRZAJA -->
-                        <div 
-                            x-data="complaintsEditor({
-                                initial: @js(__('complaints.content')),
-                                updateUrl: '{{ route('complaints.updateContent') }}',
-                                locale: '{{ App::getLocale() }}',
-                                csrf: '{{ csrf_token() }}'
-                            })"
-                            class="relative"
-                        >
-                            @auth
-                            <div class="text-right mb-4" x-show="!editing">
-                                <button @click="startEdit()"
-                                        class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base">
-                                    {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди' : 'Uredi') }}
-                                </button>
-                            </div>
-                            @endauth
-
-                            <div class="prose dark:prose-invert max-w-none space-y-6" x-show="!editing" x-html="displayText"></div>
-
-                            <template x-if="editing">
-                                <div>
-                                    <textarea x-model="form.content"
-                                              rows="12"
-                                              class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white"></textarea>
-                                    <div class="flex justify-end gap-4 mt-3">
-                                        <button @click="saveEdit()"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-                                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                                        </button>
-                                        <button @click="cancelEdit()"
-                                                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
-                                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </template>
-                            <div x-show="successMessage" x-text="successMessage" class="mt-4 text-green-700 bg-green-100 border border-green-300 px-4 py-2 rounded"></div>
-                        </div>
-
-                        <div class="text-center mt-auto mt-8">
-                            <a href="/storage/documents/UPUTSTVO_ZA_ZALBE.pdf"
-                               class="inline-block text-blue-600 hover:underline dark:text-blue-400" 
-                               download>
-                                @switch(App::getLocale())
-                                    @case('en') Download the instructions in PDF format @break
-                                    @case('sr-Cyrl') Преузмите упутство у PDF формату @break
-                                    @default Preuzmite uputstvo u PDF formatu
-                                @endswitch
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- DESNA STRANA - FORMA -->
-                    <div>
-                        <h2 class="mb-4 text-3xl font-bold text-center text-gray-900 dark:text-white">
-                            @switch(App::getLocale())
-                                @case('en') Every question, suggestion or criticism is welcome! @break
-                                @case('sr-Cyrl') Свако Ваше питање, сугестија или критика је добродошла! @break
-                                @default Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
-                            @endswitch
-                        </h2>
-
-                        @if(session('success'))
-                            <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                                {{ session('success') }}
-                            </div>
-                            <script>
-                                setTimeout(() => {
-                                    const el = document.getElementById('successMessage');
-                                    if (el) {
-                                        el.style.opacity = '0';
-                                        setTimeout(() => el.style.display = 'none', 500);
-                                    }
-                                }, 3000);
-                            </script>
-                        @endif
-
-                        @php
-                            $isEditor = auth()->check() && auth()->user()->isEditor();
-                        @endphp
-
-                        <form action="{{ route('complaints.store') }}" method="POST" id="complaintsForm"
-                            class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
-                            {{ $isEditor ? 'onsubmit=return false;' : '' }}>
-                            @csrf
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        @switch(App::getLocale())
-                                            @case('en') First name: @break
-                                            @case('sr-Cyrl') Име: @break
-                                            @default Ime:
-                                        @endswitch
-                                        <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" name="first_name" required value="{{ old('first_name') }}"
-                                        class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
-                                    @error('first_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                                </div>
-
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        @switch(App::getLocale())
-                                            @case('en') Last name: @break
-                                            @case('sr-Cyrl') Презиме: @break
-                                            @default Prezime:
-                                        @endswitch
-                                        <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" name="last_name" required value="{{ old('last_name') }}"
-                                        class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
-                                    @error('last_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    @switch(App::getLocale())
-                                        @case('en') Email: @break
-                                        @case('sr-Cyrl') Мејл адреса: @break
-                                        @default Mejl adresa:
-                                    @endswitch
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" name="email" required value="{{ old('email') }}"
-                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
-                                @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    @switch(App::getLocale())
-                                        @case('en') Subject: @break
-                                        @case('sr-Cyrl') Наслов: @break
-                                        @default Naslov:
-                                    @endswitch
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="subject" required value="{{ old('subject') }}"
-                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
-                                @error('subject') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    @switch(App::getLocale())
-                                        @case('en') Message: @break
-                                        @case('sr-Cyrl') Порука: @break
-                                        @default Poruka:
-                                    @endswitch
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <textarea name="message" required rows="6"
-                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">{{ old('message') }}</textarea>
-                                @error('message') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div class="text-center">
-                                <button id="openSubmitModal" type="button"
-                                    class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-base px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                                    @switch(App::getLocale())
-                                        @case('en') Send complaint @break
-                                        @case('sr-Cyrl') Пошаљи жалбу @break
-                                        @default Pošalji žalbu
-                                    @endswitch
-                                </button>
-                            </div>
-
-                            <!-- Modal for submitting complaint -->
-                            <div id="submitModal2" tabindex="-1"
-                                class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
-                                <div class="relative w-full max-w-md max-h-full">
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                        <div class="p-6 text-center">
-                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                                @switch(App::getLocale())
-                                                    @case('en') Are you sure you want to send the complaint? @break
-                                                    @case('sr-Cyrl') Да ли сте сигурни да желите да пошаљете жалбу? @break
-                                                    @default Da li ste sigurni da želite da pošaljete žalbu?
-                                                @endswitch
-                                            </h3>
-                                            <button id="confirmSubmitBtn2" type="button"
-                                                class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
-                                                @switch(App::getLocale())
-                                                    @case('en') Send @break
-                                                    @case('sr-Cyrl') Пошаљи @break
-                                                    @default Pošalji
-                                                @endswitch
-                                            </button>
-                                            <button data-modal-hide="submitModal2" type="button"
-                                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                                                @switch(App::getLocale())
-                                                    @case('en') Cancel @break
-                                                    @case('sr-Cyrl') Откажи @break
-                                                    @default Otkaži
-                                                @endswitch
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+    <div class="w-full min-h-screen"
+         style="background: var(--primary-bg); color: var(--primary-text);"
+         x-data="complaintsEditor({
+            initialTitle: @js($text['title'] ?? ''),
+            initialDescription: @js($text['description'] ?? ''),
+            initialContent: @js($text['content'] ?? ''),
+            updateUrl: '{{ route('complaints.updateContent') }}',
+            locale: '{{ App::getLocale() }}',
+            csrf: '{{ csrf_token() }}'
+         })">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+        @if(session('success'))
+            <div
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                @click="show = false"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                x-init="setTimeout(() => show = false, 4000)"
+            >
+                {{ session('success') }}
+            </div>
+        @endif
+            <div class="flex flex-col items-center w-full mb-12 gap-2">
+                <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center" style="color: var(--primary-text); font-family: var(--font-title);">
+                    <template x-if="editing">
+                        <input type="text" x-model="form.title"
+                               class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
+                               style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                    </template>
+                    <span x-show="!editing" x-text="form.title"></span>
+                </h1>
+                <div class="flex flex-row items-center gap-3 justify-center w-full">
+                    <template x-if="editing">
+                        <input type="text" x-model="form.description"
+                               class="text-lg w-full max-w-xl border px-2 rounded text-center"
+                               style="background: var(--primary-bg); color: var(--primary-text);" />
+                    </template>
+                    <span x-show="!editing" class="text-lg text-center w-full" style="color: var(--secondary-text);" x-text="form.description"></span>
+                    <button id="help-btn"
+                        onclick="toggleHelpModal()"
+                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        style="color: var(--primary-text); margin-bottom: 0;"
+                        aria-label="Pomoć">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                        </svg>
+                        <span class="ml-3 hidden sm:inline">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
                 </div>
             </div>
-        </section>
+
+            <div class="mb-8"></div>
+
+            <div class="flex flex-row justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-center w-full" style="color: var(--primary-text)">
+                    @switch(App::getLocale())
+                        @case('en') Every question, suggestion or criticism is welcome! @break
+                        @case('sr-Cyrl') Свако Ваше питање, сугестија или критика је добродошла! @break
+                        @default Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
+                    @endswitch
+                </h2>
+                @auth
+                <div class="flex gap-2 ml-4">
+                    <button x-show="!editing" @click="startEdit()"
+                        class="accent font-semibold py-2 px-4 rounded text-base"
+                        style="width:100px">
+                        {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                    </button>
+                    <template x-if="editing">
+                        <div class="flex gap-2">
+                            <button @click="saveEdit()"
+                                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
+                            <button @click="cancelEdit()"
+                                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                            </button>
+                        </div>
+                    </template>
+                </div>
+                @endauth
+            </div>
+
+            <div class="mb-16">
+                <div>
+                    @php
+                        $isEditor = auth()->check() && auth()->user()->isEditor();
+                    @endphp
+
+                    <form action="{{ route('complaints.store') }}" method="POST" id="complaintsForm"
+                        class="space-y-6 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
+                        {{ $isEditor ? 'onsubmit=return false;' : '' }}>
+                        @csrf
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                    @switch(App::getLocale())
+                                        @case('en') First name: @break
+                                        @case('sr-Cyrl') Име: @break
+                                        @default Ime:
+                                    @endswitch
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="first_name" required value="{{ old('first_name') }}"
+                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                @error('first_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                    @switch(App::getLocale())
+                                        @case('en') Last name: @break
+                                        @case('sr-Cyrl') Презиме: @break
+                                        @default Prezime:
+                                    @endswitch
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="last_name" required value="{{ old('last_name') }}"
+                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                @error('last_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                @switch(App::getLocale())
+                                    @case('en') Mobile phone: @break
+                                    @case('sr-Cyrl') Мобилни телефон: @break
+                                    @default Mobilni telefon:
+                                @endswitch
+                            </label>
+                            <input type="tel" name="phone" pattern="\d*" inputmode="numeric" maxlength="20" value="{{ old('phone') }}"
+                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                            @error('phone') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                @switch(App::getLocale())
+                                    @case('en') Email: @break
+                                    @case('sr-Cyrl') Мејл адреса: @break
+                                    @default Mejl adresa:
+                                @endswitch
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" name="email" required value="{{ old('email') }}"
+                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                            @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                @switch(App::getLocale())
+                                    @case('en') Subject: @break
+                                    @case('sr-Cyrl') Наслов: @break
+                                    @default Naslov:
+                                @endswitch
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="subject" required value="{{ old('subject') }}"
+                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                            @error('subject') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
+                                @switch(App::getLocale())
+                                    @case('en') Message: @break
+                                    @case('sr-Cyrl') Порука: @break
+                                    @default Poruka:
+                                @endswitch
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="message" required rows="6"
+                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">{{ old('message') }}</textarea>
+                            @error('message') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="text-center">
+                            <button id="openSubmitModal" type="button"
+                                class="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center"
+                                style="background: var(--accent)">
+                                @switch(App::getLocale())
+                                    @case('en') Send complaint @break
+                                    @case('sr-Cyrl') Пошаљи жалбу @break
+                                    @default Pošalji žalbu
+                                @endswitch
+                            </button>
+                        </div>
+
+                        <div id="submitModal2" tabindex="-1"
+                            class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
+                            <div class="relative w-full max-w-md max-h-full">
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <div class="p-6 text-center">
+                                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                            @switch(App::getLocale())
+                                                @case('en') Are you sure you want to send the complaint? @break
+                                                @case('sr-Cyrl') Да ли сте сигурни да желите да пошаљете жалбу? @break
+                                                @default Da li ste sigurni da želite da pošaljete žalbu?
+                                            @endswitch
+                                        </h3>
+                                        <button id="confirmSubmitBtn2" type="button"
+                                            class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                            @switch(App::getLocale())
+                                                @case('en') Send @break
+                                                @case('sr-Cyrl') Пошаљи @break
+                                                @default Pošalji
+                                            @endswitch
+                                        </button>
+                                        <button data-modal-hide="submitModal2" type="button"
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            @switch(App::getLocale())
+                                                @case('en') Cancel @break
+                                                @case('sr-Cyrl') Откажи @break
+                                                @default Otkaži
+                                            @endswitch
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-12 max-w-4xl mx-auto w-full prose prose-lg dark:prose-invert">
+                <template x-if="editing">
+                    <textarea x-model="form.content"
+                        rows="10"
+                        class="w-full border rounded-xl p-4 text-lg dark:bg-gray-800"
+                        style="background: var(--primary-bg); color: var(--primary-text); resize:vertical;"></textarea>
+                </template>
+                <div x-show="!editing" x-text="form.content.replace(/\n/g, '\n\n')" style="white-space:pre-line; color: var(--primary-text);"></div>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="{{ asset('storage/documents/UPUTSTVO%20ZA%20ZALBE.pdf') }}" target="_blank" style="color: var(--accent);">
+                @switch(App::getLocale())
+                    @case('en') Download the instructions in PDF format @break
+                    @case('sr-Cyrl') Преузмите упутство у PDF формату @break
+                    @default Preuzmite uputstvo u PDF formatu
+                @endswitch
+            </a>
+        </div>
     </div>
 
-    <!-- HELP MODAL -->
-    <div 
-        id="helpModal"
-        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center"
-    >
+    <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
             <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
             </button>
-            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
+            <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text); text-align:center;">
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
-            <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
+            <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
                 {!! App::getLocale() === 'en' 
                     ? '
                     Clicking on the button <strong>\"Edit\"</strong> will open a field for editing instructions on how the user can submit a complaint.
@@ -296,23 +294,24 @@
         </div>
     </div>
 
-    <!-- ALPINEJS + EDIT LOGIKA -->
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
-    function complaintsEditor({ initial, updateUrl, locale, csrf }) {
+    function complaintsEditor({ initialTitle, initialDescription, initialContent, updateUrl, locale, csrf }) {
         return {
             editing: false,
-            form: { content: initial },
-            original: initial,
-            successMessage: '',
-            get displayText() {
-                return (this.form.content || '').replace(/\n/g, '<br>');
+            form: {
+                title: initialTitle,
+                description: initialDescription,
+                content: initialContent
             },
-            startEdit() {
-                this.editing = true;
+            original: {
+                title: initialTitle,
+                description: initialDescription,
+                content: initialContent
             },
+            startEdit() { this.editing = true; },
             cancelEdit() {
-                this.form.content = this.original;
+                this.form = { ...this.original };
                 this.editing = false;
             },
             saveEdit() {
@@ -325,16 +324,16 @@
                     },
                     body: JSON.stringify({
                         locale: locale,
+                        title: this.form.title,
+                        description: this.form.description,
                         content: this.form.content
                     })
                 })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        this.original = this.form.content;
-                        this.successMessage = data.message;
+                        this.original = { ...this.form };
                         this.editing = false;
-                        setTimeout(() => this.successMessage = '', 3000);
                     } else {
                         alert(data.message || 'Greška pri čuvanju!');
                     }
@@ -343,17 +342,10 @@
             }
         }
     }
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('complaintsEditor', complaintsEditor);
-    });
-
-    // Modal logika za help
     function toggleHelpModal() {
         const modal = document.getElementById('helpModal');
         modal.classList.toggle('hidden');
     }
-
-    // Modal logika za slanje žalbe (ostaje nepromenjena)
     document.addEventListener('DOMContentLoaded', function () {
         const submitModal2 = document.getElementById('submitModal2');
         const confirmComplaintSubmitBtn = document.getElementById('confirmSubmitBtn2');

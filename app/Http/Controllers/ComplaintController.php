@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Complaint;
 use App\Models\Comment;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
-use Illuminate\Support\Facades\File;
 
 class ComplaintController extends Controller
 {
@@ -24,40 +25,17 @@ class ComplaintController extends Controller
 
     public function index()
     {
-        $locale = app()->getLocale();
-        $complaintsContent = __('complaints.content', [], $locale);
-        return view('complaints', compact('complaintsContent'));
+        $text = Lang::get('complaints');
+        return view('complaints', compact('text'));
     }
 
-
-    /*public function store(Request $request) {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email',
-            'phone'      => 'nullable|string|max:20',
-            'subject'    => 'required|string|max:255',
-            'message'    => 'required|string',
-        ]);
-
-        //Complaint::create($validated);
-        Complaint::create([
-            'name'    => $validated['first_name'] . ' ' . $validated['last_name'],
-            'email'   => $validated['email'],
-            'phone'   => $validated['phone'] ?? null,
-            'subject' => $validated['subject'],
-            'message' => $validated['message'],
-        ]);
-        
-        return redirect()->back()->with('success', 'Žalba je uspešno poslata.');
-    }*/
     public function store(Request $request)
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             'email'      => 'required|email',
-            'phone'      => 'nullable|string|max:20',
+            'phone' => ['nullable', 'regex:/^\d+$/', 'max:20'],
             'subject'    => 'required|string|max:255',
             'message'    => 'required|string',
         ]);
@@ -177,7 +155,6 @@ class ComplaintController extends Controller
 
         $originalText = trim($request->input('answer'));
 
-        // Detekcija pisma (ćirilica / latinica / engleski)
         $detectedScript = $this->languageMapper->detectScript($originalText);
 
         $answerLat = '';
@@ -193,12 +170,10 @@ class ComplaintController extends Controller
             $toSrLat = $this->languageMapper->cyrillic_to_latin($toSr);
 
             if (mb_strtolower($toSrLat) === mb_strtolower($originalText)) {
-                // Dakle — unos je na srpskom (latinica)
                 $answerLat = $originalText;
                 $answerCy  = $this->languageMapper->latin_to_cyrillic($answerLat);
                 $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
             } else {
-                // Unos je na engleskom
                 $answerEn  = $originalText;
                 $answerCy  = $this->translate->setSource('en')->setTarget('sr')->translate($answerEn);
                 $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
@@ -206,7 +181,7 @@ class ComplaintController extends Controller
         }
 
         $complaint = Complaint::findOrFail($id);
-        $complaint->answer     = $answerLat;  // Default prikaz (latinica)
+        $complaint->answer     = $answerLat;  
         $complaint->answer_cy  = $answerCy;
         $complaint->answer_en  = $answerEn;
         $complaint->save();
@@ -235,7 +210,7 @@ class ComplaintController extends Controller
             }
         }
 
-        $complaints = $query->orderBy('created_at', 'desc')->paginate(10);
+        $complaints = $query->orderBy('created_at', 'desc')->paginate(3);
         $complaints->appends(request()->all());
 
         return view('complaintAnswer', compact('complaints'));
@@ -296,55 +271,84 @@ class ComplaintController extends Controller
         File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 
-    // ComplaintController.php
+    public function updateContent(Request $request)
+    {
+        $validated = $request->validate([
+            'locale'      => 'required|string|in:sr,sr-Cyrl,en',
+            'title'       => 'required|string',
+            'description' => 'required|string',
+            'content'     => 'required|string'
+        ]);
 
-public function updateContent(Request $request)
-{
-    $validated = $request->validate([
-        'locale'  => 'required|string|in:sr,sr-Cyrl,en',
-        'content' => 'required|string'
-    ]);
+        $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
+        $lm = app(\App\Http\Controllers\LanguageMapperController::class);
 
-    $translate = new \Stichoza\GoogleTranslate\GoogleTranslate();
-    $lm = app(\App\Http\Controllers\LanguageMapperController::class);
+        $src = $validated['locale'];
+        $title = $validated['title'];
+        $description = $validated['description'];
+        $content = $validated['content'];
 
-    $src = $validated['locale'];
-    $content = $validated['content'];
+        $localized = [
+            'sr'      => ['title' => $title, 'description' => $description, 'content' => $content],
+            'sr-Cyrl' => ['title' => $title, 'description' => $description, 'content' => $content],
+            'en'      => ['title' => $title, 'description' => $description, 'content' => $content],
+        ];
 
-    $localized = [
-        'sr'      => $content,
-        'sr-Cyrl' => $content,
-        'en'      => $content,
-    ];
+        if ($src === 'sr') {
+            $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($title);
+            $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($description);
+            $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($content);
 
-    if ($src === 'sr') {
-        $localized['sr-Cyrl'] = $lm->latin_to_cyrillic($content);
-        $translate->setSource('sr')->setTarget('en');
-        $localized['en'] = $translate->translate($content);
-    } elseif ($src === 'sr-Cyrl') {
-        $localized['sr'] = $lm->cyrillic_to_latin($content);
-        $translate->setSource('sr')->setTarget('en');
-        $localized['en'] = $translate->translate($localized['sr']);
-    } else { // en
-        $translate->setSource('en')->setTarget('sr');
-        $sr = $translate->translate($content);
-        $localized['sr'] = $lm->cyrillic_to_latin($sr);
-        $localized['sr-Cyrl'] = $lm->latin_to_cyrillic($localized['sr']);
+            $translate->setSource('sr')->setTarget('en');
+            $localized['en']['title'] = $translate->translate($title);
+            $localized['en']['description'] = $translate->translate($description);
+            $localized['en']['content'] = $translate->translate($content);
+
+        } elseif ($src === 'sr-Cyrl') {
+            $localized['sr']['title'] = $lm->cyrillic_to_latin($title);
+            $localized['sr']['description'] = $lm->cyrillic_to_latin($description);
+            $localized['sr']['content'] = $lm->cyrillic_to_latin($content);
+
+            $translate->setSource('sr')->setTarget('en');
+            $localized['en']['title'] = $translate->translate($localized['sr']['title']);
+            $localized['en']['description'] = $translate->translate($localized['sr']['description']);
+            $localized['en']['content'] = $translate->translate($localized['sr']['content']);
+
+        } else { 
+            $translate->setSource('en')->setTarget('sr');
+            $sr_title = $translate->translate($title);
+            $sr_description = $translate->translate($description);
+            $sr_content = $translate->translate($content);
+
+            $localized['sr']['title'] = $lm->cyrillic_to_latin($sr_title);
+            $localized['sr']['description'] = $lm->cyrillic_to_latin($sr_description);
+            $localized['sr']['content'] = $lm->cyrillic_to_latin($sr_content);
+
+            $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($localized['sr']['title']);
+            $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($localized['sr']['description']);
+            $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($localized['sr']['content']);
+        }
+
+        $langFiles = [
+            'sr'      => resource_path('lang/sr.json'),
+            'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
+            'en'      => resource_path('lang/en.json'),
+        ];
+
+        foreach ($langFiles as $lang => $path) {
+            $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+            if (!isset($json['complaints']) || !is_array($json['complaints'])) {
+                $json['complaints'] = [];
+            }
+            $json['complaints']['title'] = $localized[$lang]['title'];
+            $json['complaints']['description'] = $localized[$lang]['description'];
+            $json['complaints']['content'] = $localized[$lang]['content'];
+
+            file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        }
+
+
+        return response()->json(['success' => true, 'message' => 'Tekst uspešno sačuvan!']);
     }
-
-    $langFiles = [
-        'sr'      => resource_path('lang/sr.json'),
-        'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
-        'en'      => resource_path('lang/en.json'),
-    ];
-
-    foreach ($langFiles as $lang => $path) {
-        $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-        $json['complaints.content'] = $localized[$lang];
-        file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-    }
-
-    return response()->json(['success' => true, 'message' => 'Tekst uspešno sačuvan!']);
-}
 
 }
