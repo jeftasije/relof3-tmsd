@@ -99,6 +99,13 @@ class PageController extends Controller
             'navigation.1.exists' => __('page_navigation_sub_exists'),
         ]);
 
+        if($request->action === 'turnOff'){
+            $page = Page::where('slug', $request->query('slug'))->firstOrFail();
+            $page->update([
+                    'is_active'     => false,
+                ]);
+                return redirect()->back()->with('success', 'Page saved');
+        }
         if ($request->has('navigation')) {
             $navigationIds = $request->navigation;
             $mainSectionId = $navigationIds[0];
