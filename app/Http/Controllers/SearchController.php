@@ -90,10 +90,17 @@ class SearchController extends Controller
                 ? asset('storage/' . $proc->file_path) 
                 : null;
 
+            $description = match ($locale) {
+                'sr' => 'Pogledajte dokument.',
+                'sr-Cyrl' => 'Погледајте документ.',
+                'en' => 'See the document',
+                default => 'Pogledajte dokument.',
+            };
+
             if ($fileUrl) {
                 $searchResults[] = [
                     'title' => $proc->title,
-                    'description' => 'Preuzmite dokument.',
+                    'description' => $description,
                     'route' => $fileUrl,
                 ];
             } else {
@@ -115,10 +122,17 @@ class SearchController extends Controller
                 ? asset('storage/' . $doc->file_path) 
                 : null;
 
+            $description = match ($locale) {
+                'sr' => 'Pogledajte dokument.',
+                'sr-Cyrl' => 'Погледајте документ.',
+                'en' => 'See the document',
+                default => 'Pogledajte dokument.',
+            };
+
             if ($fileUrl) {
                 $searchResults[] = [
                     'title' => $doc->title,
-                    'description' => 'Preuzmite dokument.',
+                    'description' => $description,
                     'route' => $fileUrl,
                 ];
             } else {
@@ -128,10 +142,17 @@ class SearchController extends Controller
 
         $orgStructures = OrganisationalStructure::where('title', 'like', "%{$query}%")->get();
 
+            $description = match ($locale) {
+                'sr' => 'Pogledajte dokument.',
+                'sr-Cyrl' => 'Погледајте документ.',
+                'en' => 'See the document',
+                default => 'Pogledajte dokument.',
+            };
+
         foreach ($orgStructures as $org) {
             $searchResults[] = [
                 'title' => $org->title,
-                'description' => 'Preuzmite dokument.',
+                'description' => $description,
                 'route' => route('organisationalStructures.index'),
             ];
         }
@@ -215,35 +236,14 @@ class SearchController extends Controller
                 'sr' => $item->biography,
                 'sr-Cyrl' => $item->biography_cy,
                 'en' => $item->biography_en,
-                default => $item->summary,
+                default => $item->biography,
             };
 
             $searchResults[] = [
                 'title' => $title,
-                'description' => $item->biography ? substr($item->biography, 0, 100) . '...' : 'Pročitajte detaljnije.',
+                'description' => $description ? substr($description, 0, 100) . '...' : 'Pročitajte detaljnije.',
                 'route' => route('employees.show', $item->id),
             ];
-        }
-
-        if (file_exists($langPath)) {
-            $translations = json_decode(file_get_contents($langPath), true);
-
-            $galleryTitle = $translations["gallery.title"] ?? '';
-            $galleryTitleLower = mb_strtolower($galleryTitle);
-
-            $galleryDescription = $translations["gallery.title"] ?? '';
-            $galleryDescriptionLower = mb_strtolower($galleryDescription);
-
-            $queryLower = mb_strtolower($query);
-
-            if (str_contains($galleryTitleLower, $queryLower) || str_contains($queryLower, $galleryTitleLower) ||
-            str_contains($galleryDescriptionLower, $queryLower) || str_contains($queryLower, $galleryDescriptionLower)) {
-                $searchResults[] = [
-                    'title' => __('gallery.title'),
-                    'description' => __('gallery.description'),
-                    'route' => route('gallery.index'),
-                ];
-            }
         }
 
         if (file_exists($langPath)) {
