@@ -48,22 +48,9 @@ class NewsController extends Controller
         ]);
 
         if ($validated['locale'] === 'en') {
-            $title_en = $validated['title'];
-            $summary_en = $validated['summary'];
-
-            $title_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($title_en));
-            $summary_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($summary_en));
-
-            $title_cy = $lm->latin_to_cyrillic($title_lat);
-            $summary_cy = $lm->latin_to_cyrillic($summary_lat);
-
             $news->update([
-                'title_en' => $title_en,
-                'summary_en' => $summary_en,
-                'title' => $title_lat,
-                'summary' => $summary_lat,
-                'title_cy' => $title_cy,
-                'summary_cy' => $summary_cy,
+                'title_en' => $validated['title'],
+                'summary_en' => $validated['summary'],
             ]);
         } elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
             $title_cy = $validated['title'];
@@ -105,6 +92,7 @@ class NewsController extends Controller
 
         return response()->json(['message' => 'News updated']);
     }
+
 
     public function destroy(News $news)
     {
@@ -223,22 +211,8 @@ class NewsController extends Controller
             $content_en = $validated['content_en'] ?? $validated['content'] ?? '';
             $tags_en = !empty($validated['tags_en']) ? array_map('trim', explode(',', $validated['tags_en'])) : [];
 
-            $translated = $translate->setSource('en')->setTarget('sr')->translate($content_en);
-            $content_lat = $lm->cyrillic_to_latin($translated);
-            $tags_lat = array_map(function ($tag) use ($translate, $lm) {
-                $translated_tag = $translate->setSource('en')->setTarget('sr')->translate($tag);
-                return $lm->cyrillic_to_latin($translated_tag);
-            }, $tags_en);
-
-            $content_cy = $lm->latin_to_cyrillic($content_lat);
-            $tags_cy = array_map(fn($tag) => $lm->latin_to_cyrillic($tag), $tags_lat);
-
             $updateData['content_en'] = $content_en;
             $updateData['tags_en'] = $tags_en;
-            $updateData['content'] = $content_lat;
-            $updateData['tags'] = $tags_lat;
-            $updateData['content_cy'] = $content_cy;
-            $updateData['tags_cy'] = $tags_cy;
         }
         elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
             $content_cy = $validated['content_cy'] ?? $validated['content'] ?? '';

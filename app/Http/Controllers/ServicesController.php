@@ -50,83 +50,68 @@ class ServicesController extends Controller
                 $servicesData[$field] = $validated[$field];
             }
         }
-
-        // Dodaj i slike iz zahteva (prepisuje stari niz)
         if (array_key_exists('images', $validated)) {
             $servicesData['images'] = $validated['images'];
         }
 
-        // Početna vrednost za sva tri jezika
-        $localized = [
-            'sr'      => $servicesData,
-            'sr-Cyrl' => $servicesData,
-            'en'      => $servicesData,
-        ];
+        if ($src === 'en') {
+            $json = file_exists($langFiles['en']) ? json_decode(file_get_contents($langFiles['en']), true) : [];
+            $json['services'] = $servicesData;
+            file_put_contents($langFiles['en'], json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        } else {
+            $localized = [
+                'sr'      => $servicesData,
+                'sr-Cyrl' => $servicesData,
+                'en'      => $servicesData,
+            ];
 
-        // Dinamički source: šta god da menjaš, koristiš to kao izvor
-        if ($src === 'sr') {
-            foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
-                if (isset($servicesData[$field])) {
-                    $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($servicesData[$field]);
+            if ($src === 'sr') {
+                foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+                    if (isset($servicesData[$field])) {
+                        $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($servicesData[$field]);
+                    }
+                }
+                if (isset($servicesData['images'])) {
+                    $localized['sr-Cyrl']['images'] = $servicesData['images'];
+                }
+                $translate->setSource('sr')->setTarget('en');
+                foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+                    if (isset($servicesData[$field])) {
+                        $localized['en'][$field] = $translate->translate($servicesData[$field]);
+                    }
+                }
+                if (isset($servicesData['images'])) {
+                    $localized['en']['images'] = $servicesData['images'];
+                }
+            } elseif ($src === 'sr-Cyrl') {
+                foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+                    if (isset($servicesData[$field])) {
+                        $localized['sr'][$field] = $lm->cyrillic_to_latin($servicesData[$field]);
+                    }
+                }
+                if (isset($servicesData['images'])) {
+                    $localized['sr']['images'] = $servicesData['images'];
+                }
+                $translate->setSource('sr')->setTarget('en');
+                foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
+                    if (isset($localized['sr'][$field])) {
+                        $localized['en'][$field] = $translate->translate($localized['sr'][$field]);
+                    }
+                }
+                if (isset($servicesData['images'])) {
+                    $localized['en']['images'] = $servicesData['images'];
                 }
             }
-            if (isset($servicesData['images'])) {
-                $localized['sr-Cyrl']['images'] = $servicesData['images'];
-            }
-            $translate->setSource('sr')->setTarget('en');
-            foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
-                if (isset($servicesData[$field])) {
-                    $localized['en'][$field] = $translate->translate($servicesData[$field]);
-                }
-            }
-            if (isset($servicesData['images'])) {
-                $localized['en']['images'] = $servicesData['images'];
-            }
-        } elseif ($src === 'sr-Cyrl') {
-            foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
-                if (isset($servicesData[$field])) {
-                    $localized['sr'][$field] = $lm->cyrillic_to_latin($servicesData[$field]);
-                }
-            }
-            if (isset($servicesData['images'])) {
-                $localized['sr']['images'] = $servicesData['images'];
-            }
-            $translate->setSource('sr')->setTarget('en');
-            foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
-                if (isset($localized['sr'][$field])) {
-                    $localized['en'][$field] = $translate->translate($localized['sr'][$field]);
-                }
-            }
-            if (isset($servicesData['images'])) {
-                $localized['en']['images'] = $servicesData['images'];
-            }
-        } elseif ($src === 'en') {
-            $translate->setSource('en')->setTarget('sr');
-            foreach (['hero_title', 'hero_subtitle', 'main_text'] as $field) {
-                if (isset($servicesData[$field])) {
-                    // Prvo prevedi na srpski (ne znaš da li je ćirilica ili latinica)
-                    $translated = $translate->translate($servicesData[$field]);
-                    // Latinicu FORSIRAJ transliteracijom, izbegavaš ćirilicu
-                    $localized['sr'][$field] = $lm->cyrillic_to_latin($translated);
-                    // Ćirilica iz latinice
-                    $localized['sr-Cyrl'][$field] = $lm->latin_to_cyrillic($localized['sr'][$field]);
-                }
-            }
-            if (isset($servicesData['images'])) {
-                $localized['sr']['images'] = $servicesData['images'];
-                $localized['sr-Cyrl']['images'] = $servicesData['images'];
+
+            foreach ($langFiles as $lang => $path) {
+                $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+                $json['services'] = $localized[$lang];
+                file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
             }
         }
 
-        foreach ($langFiles as $lang => $path) {
-            $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
-            $json['services'] = $localized[$lang];
-            file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        }
-
-        return response()->json(['success' => true, 'message' => 'Usluge su ažurirane na svim jezicima!']);
+        return response()->json(['success' => true, 'message' => 'Usluge su ažurirane!']);
     }
-
 
     public function uploadImage(Request $request)
     {
