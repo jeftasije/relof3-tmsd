@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
 use Illuminate\Support\Facades\App;
+use Termwind\Components\Dd;
 
 class QuestionController extends Controller
 {
@@ -29,10 +30,7 @@ class QuestionController extends Controller
             $lat = $this->languageMapper->cyrillic_to_latin($cy);
             $en = $this->translate->setSource('sr')->setTarget('en')->translate($lat);
         } else {
-            $translatedToSr = $this->translate->setSource('en')->setTarget('sr')->translate($text);
-            $translatedToSrLat = $this->languageMapper->cyrillic_to_latin($translatedToSr);
-
-            if (mb_strtolower($translatedToSrLat) === mb_strtolower($text)) {
+            if (app()->getLocale() === 'sr') {
                 $lat = $text;
                 $cy = $this->languageMapper->latin_to_cyrillic($lat);
                 $en = $this->translate->setSource('sr')->setTarget('en')->translate($lat);
@@ -55,8 +53,8 @@ class QuestionController extends Controller
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('question', 'like', "%{$search}%")
-                ->orWhere('question_en', 'like', "%{$search}%")
-                ->orWhere('question_cy', 'like', "%{$search}%");
+                    ->orWhere('question_en', 'like', "%{$search}%")
+                    ->orWhere('question_cy', 'like', "%{$search}%");
             });
         }
 
@@ -122,8 +120,20 @@ class QuestionController extends Controller
         $questionSrc = $validated['question'];
         $answerSrc = $validated['answer'];
 
-        $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
-        $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
+        if (app()->getLocale() === 'en') {
+            $questionTranslations['en'] = $questionSrc;
+            $answerTranslations['en'] = $answerSrc;
+
+            $question->update([
+                'question_en'   => $questionTranslations['en'],
+                'answer_en'   => $answerTranslations['en']
+            ]);
+
+            return back()->with('success', 'Question updated successfully!');
+        } else {
+            $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
+            $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
+        }
 
         $question->update([
             'question'    => $questionTranslations['lat'],
@@ -136,9 +146,6 @@ class QuestionController extends Controller
 
         return back()->with('success', 'Question updated successfully!');
     }
-
-
-
 
     // Brisanje pitanja
     public function destroy(Question $question)
@@ -180,29 +187,21 @@ class QuestionController extends Controller
         ]);
 
         $originalText = trim($request->input('description'));
-
         $detectedScript = $this->languageMapper->detectScript($originalText);
-
-        $content_cy = '';
-        $content_lat = '';
-        $content_en = '';
-
         if ($detectedScript === 'cyrillic') {
             $content_cy = $originalText;
             $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
             $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
+            if (app()->getLocale() === 'sr') {
+                dd('SrLatin');
                 $content_lat = $originalText;
                 $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
                 $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
             } else {
                 $content_en = $originalText;
-                $content_cy = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
-                $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
+                $this->updateLangFile('en', ['question.description' => $content_en]);
+                return redirect()->back()->with('success', 'Prevod poruke je uspešno ažuriran.');
             }
         }
 

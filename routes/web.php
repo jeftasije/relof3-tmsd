@@ -140,9 +140,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
 
-    Route::post('/pitanja/store', [QuestionController::class, 'store'])->name('questions.store'); // Dodavanje pitanja
-    Route::patch('/pitanja/{question}', [QuestionController::class, 'update'])->name('questions.update'); // Izmena pitanja/odgovora
-    Route::delete('/pitanja/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy'); // Brisanje pitanja
+    Route::post('/pitanja', [QuestionController::class, 'store'])->name('questions.store');
+    Route::patch('/pitanja/{question}', [QuestionController::class, 'update'])->name('questions.update');
+    Route::delete('/pitanja/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
     Route::patch('/pitanja', [QuestionController::class, 'updateDescription'])->name('questions.updateDescription');
     
 
