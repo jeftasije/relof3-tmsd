@@ -95,7 +95,6 @@ class FooterController extends Controller
             }
         }
 
-        // Dodaj fiksne label-e
         $cyrillicData['address_label'] = 'Адреса';
         $cyrillicData['pib_label'] = 'ПИБ';
         $cyrillicData['phone_label'] = 'Контакт';
@@ -319,7 +318,6 @@ class FooterController extends Controller
             }
         }
 
-        // Dodaj fiksna polja ako ih nema
         $translatedData['address_label'] = 'Address';
         $translatedData['pib_label'] = 'Tax ID (PIB)';
         $translatedData['phone_label'] = 'Contact';
@@ -380,7 +378,6 @@ class FooterController extends Controller
             }
         }
 
-        // Fiksna polja – uvek postaviš korektne vrednosti
         $result['address_label'] = 'Adresa';
         $result['pib_label'] = 'PIB';
         $result['phone_label'] = 'Kontakt';
@@ -401,7 +398,4 @@ class FooterController extends Controller
 
         return $changed;
     }
-
-
-
 }
