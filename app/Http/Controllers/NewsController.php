@@ -109,7 +109,7 @@ class NewsController extends Controller
             'summary' => 'required|string|max:2000',
             'image' => 'nullable|image|max:2048',
             'author' => 'required|string|max:255',
-            'published_at' => 'nullable|date',
+            'published_at' => 'required|nullable|date',
             'content' => 'nullable|string',
             'tags' => 'nullable|string',
         ]);

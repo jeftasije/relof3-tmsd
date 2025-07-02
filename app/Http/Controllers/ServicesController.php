@@ -110,7 +110,7 @@ class ServicesController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'message' => 'Usluge su ažurirane!']);
+        return response()->json(['success' => true]);
     }
 
     public function uploadImage(Request $request)

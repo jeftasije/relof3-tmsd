@@ -14,20 +14,23 @@
             locale: '{{ App::getLocale() }}',
             csrf: '{{ csrf_token() }}'
          })">
+
+        <div 
+            x-show="showEditAlert"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
+            class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+            style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+            x-init="$watch('showEditAlert', val => { if(val){ setTimeout(() => showEditAlert = false, 3200) } })"
+        >
+            <span x-text="msg"></span>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 py-12">
-        @if(session('success'))
-            <div
-                x-data="{ show: true }"
-                x-show="show"
-                x-transition
-                @click="show = false"
-                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
-                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
-                x-init="setTimeout(() => show = false, 4000)"
-            >
-                {{ session('success') }}
-            </div>
-        @endif
             <div class="flex flex-col items-center w-full mb-12 gap-2">
                 <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center" style="color: var(--primary-text); font-family: var(--font-title);">
                     <template x-if="editing">
@@ -309,6 +312,8 @@
                 description: initialDescription,
                 content: initialContent
             },
+            showEditAlert: false,
+            msg: '',
             startEdit() { this.editing = true; },
             cancelEdit() {
                 this.form = { ...this.original };
@@ -332,8 +337,16 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        this.original = { ...this.form };
+                        this.showEditAlert = true;
+                        if (locale === 'en') {
+                            this.msg = "Changes saved successfully!";
+                        } else if (locale === 'sr-Cyrl') {
+                            this.msg = "Измене су успешно сачуване!";
+                        } else {
+                            this.msg = "Izmene su uspešno sačuvane!";
+                        }
                         this.editing = false;
+                        this.original = { ...this.form };
                     } else {
                         alert(data.message || 'Greška pri čuvanju!');
                     }
