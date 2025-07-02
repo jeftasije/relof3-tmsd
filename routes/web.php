@@ -136,6 +136,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/zalbe/izmeni-sadrzaj', [ComplaintController::class, 'updateContent'])->name('complaints.updateContent');
     
     Route::delete('/komentari/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
+    
+    Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
 });
 
 Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');
