@@ -132,8 +132,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pitanja/store', [QuestionController::class, 'store'])->name('questions.store'); // Dodavanje pitanja
     Route::patch('/pitanja/{question}', [QuestionController::class, 'update'])->name('questions.update'); // Izmena pitanja/odgovora
     Route::delete('/pitanja/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy'); // Brisanje pitanja
-    Route::get('/pitanja/{question}/edit', [QuestionController::class, 'edit'])->name('questions.edit');
-    Route::patch('/pitanja/update-description', [QuestionController::class, 'updateDescription'])->name('questions.updateDescription');
+    Route::patch('/pitanja', [QuestionController::class, 'updateDescription'])->name('questions.updateDescription');
     
 
 });

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Support\Facades\File;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
+use Illuminate\Support\Facades\App;
 
 class QuestionController extends Controller
 {
@@ -123,7 +125,6 @@ class QuestionController extends Controller
         $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
         $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
 
-        $question = Question::findOrFail($id);
         $question->update([
             'question'    => $questionTranslations['lat'],
             'question_en' => $questionTranslations['en'],
@@ -142,7 +143,6 @@ class QuestionController extends Controller
     // Brisanje pitanja
     public function destroy(Question $question)
     {
-        $question = Question::findOrFail($id);
         $question->delete();
         return redirect()->back()->with('success', 'Pitanje uspešno obrisano.');
     }

@@ -66,7 +66,7 @@
                         {{ __('question.description') }}
                     </div>
 
-                    <textarea name="content" id="contentEdit" rows="15" style="text-align: center;"
+                    <textarea name="description" id="contentEdit" rows="15" style="text-align: center;"
                         class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('question.description')) }}</textarea>
 
                     <div id="editButtons" class="flex justify-end gap-4 hidden">
@@ -79,7 +79,7 @@
                             @endswitch
                         </button>
 
-                        <button type="button" id="saveEditBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
+                        <button type="button" id="saveEditBtn" data-modal-target="submitModal1" data-modal-toggle="submitModal1"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
                             @switch(App::getLocale())
                                 @case('en') Save changes @break
@@ -102,7 +102,7 @@
                                             @default Da li ste sigurni da želite da sačuvate izmene?
                                         @endswitch
                                     </h3>
-                                    <button id="confirmSubmitBtn1" type="button"
+                                    <button id="confirmSubmitBtn1" type="submit"
                                         class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
                                         @switch(App::getLocale())
                                             @case('en') Save @break
@@ -229,11 +229,68 @@
                         </svg>
                     </button>
                 </h2>
-                <div id="accordion-body-{{ $question->id }}"
-                    class="px-4 pb-4 text-gray-700 dark:text-gray-300 whitespace-pre-line"
-                    style="{{ $isOpen ? '' : 'display:none;' }}">
-                    {!! nl2br(e($question->answer)) !!}
+                
+                <div id="accordion-body-{{ $question->id }}" 
+                    class="px-4 pb-4 text-gray-700 dark:text-gray-300 whitespace-pre-line flex flex-row justify-between: center"
+                    style="{{ $isOpen ? '' : 'display:none;' }}; position: relative;">
+
+                    <div class="answer-text" style="padding-top: 4px;">
+                        {!! nl2br(e($question->answer)) !!}
+                    </div>
+
+                    @auth
+                    <button id="dropdownMenuIconButton"
+                            class="inline-flex items-center p-2 text-sm font-medium text-center rounded-lg focus:ring-4 focus:outline-none"
+                            type="button"
+                            style="
+                                position: absolute;
+                                top: 8px;
+                                right: 8px;
+                                color: var(--primary-text);
+                                margin-bottom: 4px; 
+                                background: var(--primary-bg);
+                                border: none;
+                                cursor: pointer;
+                            ">
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+                            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                        </svg>
+                    </button>    
+                    <div class="dropdown-menu hidden absolute top-10 right-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-md z-20">
+                        <button 
+                            class="dropdown-item px-4 py-1 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left" 
+                            data-action="rename"
+                            data-id="{{ $question->id }}"
+                            data-question="{{ $question->question }}"
+                            data-answer="{{ $question->answer }}"
+                        >
+                            @switch(App::getLocale())
+                                @case('en') Rename @break
+                                @case('sr-Cyrl') Преименуј @break
+                                @default Preimenuj
+                            @endswitch
+                        </button>
+
+                        <button 
+                            class="dropdown-item px-4 py-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-700 w-full text-left" 
+                            data-action="delete"
+                            data-id="{{ $question->id }}"
+                            onclick="openDeleteModal({{ $question->id }})"
+                        >
+                            @switch(App::getLocale())
+                                @case('en') Delete @break
+                                @case('sr-Cyrl') Обриши @break
+                                @default Obriši
+                            @endswitch
+                        </button>
+
+                    </div>
+
+                    @endauth
+
+                    
                 </div>
+
             </div>
             @endforeach
         </div>
@@ -291,7 +348,7 @@
             </button>
             <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
                 @switch(App::getLocale())
-                    @case('en') Create New Question @break
+                    @case('en') Create new question @break
                     @case('sr-Cyrl') Креирај ново питање @break
                     @default Kreiraj novo pitanje
                 @endswitch
@@ -360,6 +417,55 @@
             </form>
         </div>
     </div>
+    <!-- Rename Modal --> 
+    <div id="renameModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+            <button onclick="toggleRenameModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Rename Question</h2>
+
+            <form id="renameForm" method="POST" action="">
+                @csrf
+                @method('PATCH')
+
+                <input type="hidden" id="renameQuestionId" name="question_id" />
+
+                <div class="mb-4">
+                    <label for="renameQuestion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Question</label>
+                    <textarea id="renameQuestion" name="question" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="2" required></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="renameAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Answer</label>
+                    <textarea id="renameAnswer" name="answer" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="5" required></textarea>
+                </div>
+
+                <div class="flex justify-end gap-4">
+                    <button type="button" onclick="toggleRenameModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-sm p-6 relative">
+            <button onclick="toggleDeleteModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Confirm Deletion</h2>
+            <p class="mb-6 text-center text-gray-700 dark:text-gray-300">Are you sure you want to delete this question?</p>
+
+            <form id="deleteForm" method="POST" action="">
+                @csrf
+                @method('DELETE')
+
+                <div class="flex justify-center gap-4">
+                    <button type="button" onclick="toggleDeleteModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
 </x-guest-layout>
 
@@ -459,6 +565,69 @@
         const modal = document.getElementById('createQuestionModal');
         modal.classList.toggle('hidden');
     }
-    
 
+   
+
+    document.querySelectorAll('#dropdownMenuIconButton').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Sakrij sve ostale menije prvo
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if(menu !== button.nextElementSibling) {
+                    menu.classList.add('hidden');
+                }
+            });
+
+            // Pronađi sledeći sibling dropdown meni i toggle prikaz
+            const dropdownMenu = button.nextElementSibling;
+            if (dropdownMenu) {
+                dropdownMenu.classList.toggle('hidden');
+            }
+        });
+    });
+
+    // Klik van menija zatvara sve menije
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    });
+
+    function toggleRenameModal() {
+        document.getElementById('renameModal').classList.toggle('hidden');
+    }
+
+    // Pozivaš ovaj kod kada klikneš na dugme "Rename"
+    function openRenameModal(questionId, questionText, answerText) {
+        toggleRenameModal();
+
+        const form = document.getElementById('renameForm');
+        form.action = `/pitanja/${questionId}`;  // Postavi PATCH URL sa ID-em pitanja
+
+        document.getElementById('renameQuestionId').value = questionId;
+        document.getElementById('renameQuestion').value = questionText;
+        document.getElementById('renameAnswer').value = answerText;
+    }
+    document.querySelectorAll('button[data-action="rename"]').forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.getAttribute('data-id');
+            const question = button.getAttribute('data-question');
+            const answer = button.getAttribute('data-answer');
+
+            openRenameModal(id, question, answer);
+        });
+    });
+
+    function toggleDeleteModal() {
+        document.getElementById('deleteModal').classList.toggle('hidden');
+    }
+
+    // Otvara modal i postavlja formu za delete sa pravim ID-em pitanja
+    function openDeleteModal(questionId) {
+        toggleDeleteModal();
+
+        const form = document.getElementById('deleteForm');
+        form.action = `/pitanja/${questionId}`;
+    }
 </script>
