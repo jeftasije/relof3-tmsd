@@ -79,7 +79,10 @@ Route::middleware('auth')->group(function () {
 
   
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
-    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
+    Route::get('/kontaktiranja', [ContactController::class, 'answerPage'])->name('contact.answerPage');
+    Route::post('/kontaktiranja', [ContactController::class, 'updateAllContacts'])->name('contact.updateAllTranslations');
+    Route::post('/kontaktiranja/{id}/odgovor', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
     Route::post('/pregled-zalbi', [ComplaintController::class, 'updateAllComplaints'])->name('complaints.updateAllTranslations');
@@ -92,7 +95,6 @@ Route::middleware('auth')->group(function () {
   
     Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-
     Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
     
     Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
@@ -123,6 +125,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
     Route::post('/homepage/team-visibility', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
+
+    Route::patch('/kontakt', [ContactController::class, 'update'])->name('contact.update');
 
     Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 
