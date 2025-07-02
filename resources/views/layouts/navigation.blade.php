@@ -63,7 +63,12 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('homePage.show') }}" class="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-home">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                                                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                            </svg>
                                             <span class="flex-1 ml-3 text-left whitespace-nowrap">
                                                 @switch(App::getLocale())
                                                 @case('en') Homepage @break
@@ -233,7 +238,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                                <a id="help-btn" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -320,6 +325,154 @@
                             <span class="sr-only">Toggle dark mode</span>
                         </button>
                     </div>
+
+                    <!-- Help Modal -->
+                    <div id="help-modal" class="fixed inset-0 bg-black/50 z-50 hidden">
+                        <div class="relative mx-auto my-10 p-4 w-11/12 max-w-3xl rounded-xl shadow-xl bg-white dark:bg-gray-900 max-h-[85vh] overflow-y-auto text-sm leading-relaxed">
+                            <div class="relative border-b pb-3 mb-4 text-center">
+                                <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+                                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                                </h3>
+                                <button id="help-close-btn" class="absolute right-0 top-0 text-gray-400 hover:text-red-500 transition" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                                <div class="ml-3 space-y-3">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Basic Information' : (App::getLocale() === 'sr-Cyrl' ? 'Основне информације' : 'Osnovne informacije') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Set up basic site details such as name, description, and contact information.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Подеси основне податке о сајту као што су назив, опис и контакт информације.'
+                                                    : 'Podesi osnovne podatke o sajtu kao što su naziv, opis i kontakt informacije.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Header' : (App::getLocale() === 'sr-Cyrl' ? 'Заглавље' : 'Header') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Set up details in the header, including the logo, institution name, and other key information you want to highlight at the top of the site.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Намести податке у заглављу, укључујући лого, назив установе и друге кључне информације које желиш да истакнеш на врху сајта.'
+                                                    : 'Namesti podatke u zaglavlju, uključujući logo, naziv ustanove i druge ključne informacije koje želiš da istakneš na vrhu sajta.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Homepage' : (App::getLocale() === 'sr-Cyrl' ? 'Насловна страна' : 'Naslovna strana') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Customize the content and layout of the homepage to create a strong first impression for visitors.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Прилагоди садржај и изглед насловне странице како би оставила снажан први утисак на посетиоцима.'
+                                                    : 'Prilagodi sadržaj i izgled naslovne stranice kako bi ostavila snažan prvi utisak na posetiocima.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Подножје' : 'Footer') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Configure the footer to include details like links, institution name, and social media icons for better connectivity.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Конфигуриши подножје тако да садржи податке попут линкова, назива установе и иконица друштвених мрежа за бољу повезаност.'
+                                                    : 'Konfiguriši podnožje tako da sadrži podatke poput linkova, naziva ustanove i ikonica društvenih mreža za bolju povezanost.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Navigation' : (App::getLocale() === 'sr-Cyrl' ? 'Навигација' : 'Navigacija') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Change the order of items, add new ones, or edit existing items in the navigation section for easier site navigation.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Менјај редослед ставки, додај нове или уређуј постојеће ставке у навигационој секцији за лакше кретање по сајту.'
+                                                    : 'Menjaj redosled stavki, dodaj nove ili uređuj postojeće stavke u navigacionoj sekciji za lakše kretanje po sajtu.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Styles' : (App::getLocale() === 'sr-Cyrl' ? 'Стилови' : 'Stilovi') }}
+                                        </h4>
+                                        <div class="ml-3 space-y-2">
+                                            <div>
+                                                <strong>{{ App::getLocale() === 'en' ? 'Typography' : (App::getLocale() === 'sr-Cyrl' ? 'Типографија' : 'Tipografija') }}</strong> —
+                                                {{ App::getLocale() === 'en' ? 'Choose fonts and text sizes.'
+                                                    : (App::getLocale() === 'sr-Cyrl' ? 'Изабери фонтове и величине текста.'
+                                                    : 'Izaberi fontove i veličine teksta.') 
+                                                }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ App::getLocale() === 'en' ? 'Color' : (App::getLocale() === 'sr-Cyrl' ? 'Боја' : 'Boja') }}</strong> —
+                                                {{ App::getLocale() === 'en' ? 'Define the color palette for the site.'
+                                                    : (App::getLocale() === 'sr-Cyrl' ? 'Дефиниши палету боја за сајт.'
+                                                    : 'Definiši paletu boja za sajt.') 
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Pages' : (App::getLocale() === 'sr-Cyrl' ? 'Странице' : 'Stranice') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Manage all site pages, create new ones, delete old ones, or adjust the content of each page as needed.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Управљај свим страницама сајта, креирај нове, бриши старе или прилагођавај садржај сваке странице према потреби.'
+                                                    : 'Upravljaj svim stranicama sajta, kreiraj nove, briši stare ili prilagođavaj sadržaj svake stranice prema potrebi.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Editors' : (App::getLocale() === 'sr-Cyrl' ? 'Уредници' : 'Urednici') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Add or remove users with editing rights.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Додај или уклони кориснике са правима уређивања.'
+                                                    : 'Dodaj ili ukloni korisnike sa pravima uređivanja.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 dark:text-white">
+                                            {{ App::getLocale() === 'en' ? 'Complaints Overview' : (App::getLocale() === 'sr-Cyrl' ? 'Преглед притужби' : 'Pregled pritužbi') }}
+                                        </h4>
+                                        <p>
+                                            {{ App::getLocale() === 'en'
+                                                ? 'Review and manage user complaints.'
+                                                : (App::getLocale() === 'sr-Cyrl'
+                                                    ? 'Прегледај и управљај притужбама корисника.'
+                                                    : 'Pregledaj i upravljaj pritužbama korisnika.') 
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </aside>
 
                 <aside id="typography-sidebar" class="fixed top-0 left-0 z-50 w-96 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidenav-typography">
@@ -581,7 +734,7 @@
                             <button id="save-order" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none">
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
-                            <button id="help-btn" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                            <button id="navigation-help-btn" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                     <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -703,15 +856,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Help Modal -->
-                    <div id="help-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                    <!--Navigation Help Modal -->
+                    <div id="navigation-help-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
                         <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-3xl shadow-lg rounded-md bg-white dark:bg-gray-800">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                     {{ App::getLocale() === 'en' ? 'How to use this page' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити ову страницу' : 'Kako koristiti ovu stranicu') }}
                                 </h3>
-                                <!-- X close button -->
-                                <button id="help-close-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                <button id="navigation-help-close-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -1436,6 +1588,24 @@
                     })());
 
                 });
+        });
+
+        const navigationHelpBtn = document.getElementById('navigation-help-btn');
+        const navigationHelpModal = document.getElementById('navigation-help-modal');
+        const navigationHelpCloseBtn = document.getElementById('navigation-help-close-btn');
+
+        navigationHelpBtn.addEventListener('click', () => {
+            navigationHelpModal.classList.remove('hidden');
+        });
+
+        navigationHelpCloseBtn.addEventListener('click', () => {
+            navigationHelpModal.classList.add('hidden');
+        });
+
+        navigationHelpModal.addEventListener('click', e => {
+            if (e.target === navigationHelpModal) {
+                navigationHelpModal.classList.add('hidden');
+            }
         });
 
         const helpBtn = document.getElementById('help-btn');
