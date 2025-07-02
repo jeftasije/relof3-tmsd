@@ -82,7 +82,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="name"
                                 data-lang="sr"
-                            >{{ $libraryDataSr['name'] }}</textarea>
+                            >{{ app()->getLocale() === 'sr-Cyrl' ? $libraryDataSrCyr['name'] : $libraryDataSr['name'] }}</textarea>
                             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -97,7 +97,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="address"
                                 data-lang="sr"
-                            >{{ old('address', $libraryDataSr['address'] ?? '') }}</textarea>
+                            >{{ old('address', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['address'] ?? '') : ($libraryDataSr['address'] ?? '') ) }}</textarea>
                             @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -109,7 +109,7 @@
                                 type="text"
                                 id="pib"
                                 name="pib"
-                                value="{{ old('pib', $libraryDataSr['pib'] ?? '') }}"
+                                value="{{ old('pib', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['pib'] ?? '') : ($libraryDataSr['pib'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="pib"
                                 data-lang="sr"
@@ -163,7 +163,7 @@
                                 type="text"
                                 id="phone"
                                 name="phone"
-                                value="{{ old('phone', $libraryDataSr['phone'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['phone'] ?? '') : ($libraryDataSr['phone'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="phone"
                                 data-lang="sr"
@@ -179,7 +179,7 @@
                                 type="email"
                                 id="email"
                                 name="email"
-                                value="{{ old('email', $libraryDataSr['email'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['email'] ?? '') : ($libraryDataSr['email'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="email"
                                 data-lang="sr"
@@ -195,7 +195,7 @@
                                 type="url"
                                 id="facebook"
                                 name="facebook"
-                                value="{{ old('facebook', $libraryDataSr['facebook'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['facebook'] ?? '') : ($libraryDataSr['facebook'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="facebook"
                                 data-lang="sr"
@@ -211,7 +211,7 @@
                                 type="url"
                                 id="twitter"
                                 name="twitter"
-                                value="{{ old('twitter', $libraryDataSr['twitter'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['twitter'] ?? '') : ($libraryDataSr['twitter'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="twitter"
                                 data-lang="sr"
@@ -236,7 +236,14 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="work_hours"
                                 data-lang="sr"
-                            >{{ old('work_hours', implode("\n", $libraryDataSr['work_hours_formatted'] ?? [])) }}</textarea>
+                            >{{ old(
+                                    'work_hours', 
+                                    implode("\n", app()->getLocale() === 'sr-Cyrl' 
+                                        ? ($libraryDataSrCyr['work_hours_formatted'] ?? []) 
+                                        : ($libraryDataSr['work_hours_formatted'] ?? [])
+                                    )
+                            ) }}
+                            </textarea>
                             @error('work_hours') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -254,7 +261,7 @@
                                 type="url"
                                 id="map_embed"
                                 name="map_embed"
-                                value="{{ old('map_embed', $libraryDataSr['map_embed'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['map_embed'] ?? '') : ($libraryDataSr['map_embed'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="map_embed"
                                 data-lang="sr"
@@ -273,7 +280,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="copyrights"
                                 data-lang="sr"
-                            >{{ old('copyrights', $libraryDataSr['copyrights'] ?? '') }}</textarea>
+                            >{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['copyrights'] ?? '') : ($libraryDataSr['copyrights'] ?? '') ) }}</textarea>
                             @error('copyrights') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>

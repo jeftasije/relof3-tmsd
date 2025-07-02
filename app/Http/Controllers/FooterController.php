@@ -46,61 +46,64 @@ class FooterController extends Controller
 
     public function editSr(Request $request)
     {
-        try {
-            $this->validateRequest($request);
+        $this->validateRequest($request);
 
-            $libraryData = $this->buildLibraryData($request);
+        $filledFields = $this->getOnlyFilledFields($request);                           
 
-            $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo-dark.png');
-            $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo.png');
+        $srPath = resource_path('lang/sr.json');
+        $existingSrData = file_exists($srPath)
+            ? json_decode(file_get_contents($srPath), true)['library'] ?? []
+            : [];
 
-            $isCyrillic = $this->isCyrillic($libraryData['name'] ?? '') || $this->isCyrillic($libraryData['address'] ?? '');
+        $changedFields = $this->getChangedFields($existingSrData, $filledFields);
+        $mergedSrData = array_merge($existingSrData, $changedFields);
 
-            if ($isCyrillic) {
-                $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $libraryData);
-                $latinData = $this->languageMapper->cyrillic_to_latin_array($libraryData);
-                $this->saveLangFile(resource_path('lang/sr.json'), $latinData);
-            } else {
-                $this->saveLangFile(resource_path('lang/sr.json'), $libraryData);
-                $cyrillicData = $this->convertToCyrillic($libraryData);
-                $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $cyrillicData);
-            }
+        $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo-dark.png');
+        $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo.png');
 
-            $translatedData = $this->translateLibraryData($libraryData);
-            $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
-
-            return response()->json(['success' => true]);
-
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        if ($this->isCyrillic($mergedSrData['name'] ?? '') || $this->isCyrillic($mergedSrData['address'] ?? '')) {
+            $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $changedFields);
+            $latinData = $this->languageMapper->cyrillic_to_latin_array($changedFields);
+            $this->saveLangFile(resource_path('lang/sr.json'), $latinData);
+        } else {
+            $this->saveLangFile(resource_path('lang/sr.json'), $changedFields);
+            $cyrillicData = $this->convertToCyrillic($changedFields);
+            $this->saveLangFile(resource_path('lang/sr-Cyrl.json'), $cyrillicData);
         }
+
+        $translatedData = $this->translateLibraryData($changedFields);
+        $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
+
+        return redirect()->back()->with('success', 'Uspešno ažurirano.');
     }
 
     private function convertToCyrillic(array $libraryData): array
     {
-        $translatableFields = [
-            'name',
-            'address',
-            'work_hours_label',
-            'copyrights',
-        ];
+        $translatableFields = ['name', 'address', 'copyrights'];
 
-        $cyrillicData = $libraryData;
+        $cyrillicData = [];
 
-        foreach ($translatableFields as $field) {
-            if (isset($libraryData[$field]) && !empty($libraryData[$field])) {
-                $cyrillicData[$field] = $this->languageMapper->latin_to_cyrillic($libraryData[$field]);
+        foreach ($libraryData as $key => $value) {
+            if (in_array($key, $translatableFields) && !empty($value)) {
+                $cyrillicData[$key] = $this->languageMapper->latin_to_cyrillic($value);
+            } elseif ($key === 'work_hours_formatted' && is_array($value)) {
+                $cyrillicData[$key] = array_map(function ($line) {
+                    return $this->languageMapper->latin_to_cyrillic($line);
+                }, $value);
+            } else {
+                $cyrillicData[$key] = $value;
             }
         }
 
-        if (isset($libraryData['work_hours_formatted']) && is_array($libraryData['work_hours_formatted'])) {
-            $cyrillicData['work_hours_formatted'] = array_map(function ($line) {
-                return $this->languageMapper->latin_to_cyrillic($line);
-            }, $libraryData['work_hours_formatted']);
-        }
+        // Dodaj fiksne label-e
+        $cyrillicData['address_label'] = 'Адреса';
+        $cyrillicData['pib_label'] = 'ПИБ';
+        $cyrillicData['phone_label'] = 'Контакт';
+        $cyrillicData['work_hours_label'] = 'Радно Време';
 
         return $cyrillicData;
     }
+
 
     public function editEn(Request $request)
     {
@@ -283,14 +286,15 @@ class FooterController extends Controller
 
     private function translateLibraryData(array $libraryData): array
     {
-        $translatableFields = [
-            'name',
-            'address',
-            'address_label',
-            'copyrights',
-        ];
+        $translatableFields = ['name', 'address', 'copyrights'];
 
-        $translatedData = $libraryData;
+        $enPath = resource_path('lang/en.json');
+        $existingData = file_exists($enPath)
+            ? json_decode(file_get_contents($enPath), true)
+            : [];
+
+        $existingLibrary = $existingData['library'] ?? [];
+        $translatedData = $existingLibrary;
 
         foreach ($translatableFields as $field) {
             if (isset($libraryData[$field]) && !empty($libraryData[$field])) {
@@ -306,27 +310,35 @@ class FooterController extends Controller
         if (isset($libraryData['work_hours_formatted']) && is_array($libraryData['work_hours_formatted'])) {
             $translatedData['work_hours_formatted'] = [];
             foreach ($libraryData['work_hours_formatted'] as $line) {
-                if (!empty($line)) {
-                    try {
-                        $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
-                    } catch (\Exception $e) {
-                        Log::error("err in translating working time: " . $e->getMessage());
-                        $translatedData['work_hours_formatted'][] = $line;
-                    }
+                try {
+                    $translatedData['work_hours_formatted'][] = $this->translate->translate($line);
+                } catch (\Exception $e) {
+                    Log::error("err in translating work_hours: " . $e->getMessage());
+                    $translatedData['work_hours_formatted'][] = $line;
                 }
             }
         }
 
+        // Dodaj fiksna polja ako ih nema
+        $translatedData['address_label'] = 'Address';
+        $translatedData['pib_label'] = 'Tax ID (PIB)';
+        $translatedData['phone_label'] = 'Contact';
+        $translatedData['work_hours_label'] = 'Working Hours';
+
         return $translatedData;
     }
 
-    private function saveLangFile(string $filePath, array $libraryData)
+
+    private function saveLangFile(string $filePath, array $newLibraryData)
     {
         $existingData = file_exists($filePath)
-            ? json_decode(file_get_contents($filePath), true) ?? []
+            ? json_decode(file_get_contents($filePath), true)
             : [];
 
-        $existingData['library'] = $libraryData;
+        $existingLibrary = $existingData['library'] ?? [];
+        $mergedLibrary = array_merge($existingLibrary, $newLibraryData);
+
+        $existingData['library'] = $mergedLibrary;
 
         try {
             file_put_contents(
@@ -336,10 +348,60 @@ class FooterController extends Controller
         } catch (\Exception $e) {
             throw new \Exception("Error saving file $filePath.");
         }
-    } 
+    }
+ 
     
     private function isCyrillic(string $text): bool
     {
         return preg_match('/[\p{Cyrillic}]/u', $text) === 1;
     }
+
+    private function getOnlyFilledFields(Request $request): array
+    {
+        $fields = [
+            'name', 'address', 'pib',
+            'phone', 'email', 'facebook', 'twitter',
+            'work_hours', 'map_embed', 'copyrights'
+        ];
+
+        $result = [];
+
+        foreach ($fields as $field) {
+            $value = $request->input($field);
+            if ($value !== null && $value !== '') {
+                if ($field === 'work_hours') {
+                    $lines = array_filter(array_map('trim', explode("\n", $value)));
+                    if (!empty($lines)) {
+                        $result['work_hours_formatted'] = $lines;
+                    }
+                } else {
+                    $result[$field] = $value;
+                }
+            }
+        }
+
+        // Fiksna polja – uvek postaviš korektne vrednosti
+        $result['address_label'] = 'Adresa';
+        $result['pib_label'] = 'PIB';
+        $result['phone_label'] = 'Kontakt';
+        $result['work_hours_label'] = 'Radno Vreme';
+
+        return $result;
+    }
+
+    private function getChangedFields(array $oldData, array $newData): array
+    {
+        $changed = [];
+
+        foreach ($newData as $key => $value) {
+            if (!array_key_exists($key, $oldData) || $oldData[$key] !== $value) {
+                $changed[$key] = $value;
+            }
+        }
+
+        return $changed;
+    }
+
+
+
 }
