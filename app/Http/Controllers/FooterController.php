@@ -74,7 +74,7 @@ class FooterController extends Controller
         $translatedData = $this->translateLibraryData($changedFields);
         $this->saveLangFile(resource_path('lang/en.json'), $translatedData);
 
-        return redirect()->back()->with('success', 'Uspešno ažurirano.');
+        return response()->json(['success' => true]);
     }
 
     private function convertToCyrillic(array $libraryData): array
@@ -111,7 +111,7 @@ class FooterController extends Controller
         $libraryDataEn = $this->buildLibraryDataEn($request);
         $this->saveLangFile(resource_path('lang/en.json'), $libraryDataEn);
 
-        return redirect()->back()->with('success', 'Footer edited successfully.');
+        return response()->json(['success' => true]);
     }
 
     private function validateRequest(Request $request)

@@ -741,12 +741,11 @@
 
             document.addEventListener('DOMContentLoaded', () => {
                 const updateModal = document.getElementById('updateModal');
-                const confirmCloseButton = document.getElementById('confirmCloseButton');
                 const serbianForm = document.getElementById('serbian-form');
                 const englishForm = document.getElementById('english-form');
 
-                if (!updateModal || !serbianForm || !englishForm || !confirmCloseButton) {
-                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm, confirmCloseButton });
+                if (!updateModal || !serbianForm || !englishForm) {
+                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm, });
                     return;
                 }
 
@@ -835,8 +834,6 @@
                     })
                     .catch(error => console.error('Error:', error));
                 });
-
-                confirmCloseButton.addEventListener('click', hideModal);
 
                 updateModal.addEventListener('click', (event) => {
                     if (event.target === updateModal) {
