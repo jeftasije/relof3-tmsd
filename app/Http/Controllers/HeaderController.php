@@ -117,7 +117,7 @@ class HeaderController extends Controller
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'updated header successfully');
+        return response()->json(['success' => true]);
     }
 
     public function updateEn(Request $request)
@@ -139,7 +139,7 @@ class HeaderController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     private function validateRequest(Request $request)
@@ -181,6 +181,4 @@ class HeaderController extends Controller
     {
         return File::exists($path) ? json_decode(file_get_contents($path), true) : [];
     }
-
-
 }
