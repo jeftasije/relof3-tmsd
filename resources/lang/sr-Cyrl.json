@@ -10,8 +10,8 @@
     "library": {
         "name": "Народна библиотека \"Доситеј Обрадовић\"",
         "address": "Стевана Немање 2, 36300 Нови Пазар",
-        "address_label": "Adresa",
-        "city": "Novi Pazar",
+        "address_label": "Адреса",
+        "city": "Нови Пазар",
         "pib": "101234566",
         "pib_label": "ПИБ",
         "phone": "+381 (0)20 331 010",
