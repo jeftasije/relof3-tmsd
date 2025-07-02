@@ -18,7 +18,7 @@
             <div class="bg-white dark:bg-gray-900">
                 <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
                     <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center dark:text-white">
-                        Rezultati pretrage za: "{{ $query }}"
+                        {{ App::getLocale() === 'en' ? 'Search results for: ' : (App::getLocale() === 'sr-Cyrl' ? 'Резултати претраге за: ' : 'Rezultati pretrage za: ') }} "{{ $query }}"
                     </h1>
 
                     @if(empty($searchResults))
@@ -30,7 +30,7 @@
                                     <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ $result['title'] }}</h2>
                                     <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $result['description'] }}</p>
                                     <a href="{{ $result['route'] }}" target="_blank" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                                        Pogledaj
+                                        {{ App::getLocale() === 'en' ? 'Show' : (App::getLocale() === 'sr-Cyrl' ? 'Погледај' : 'Pogledaj') }}
                                     </a>
                                 </div>
                             @endforeach
