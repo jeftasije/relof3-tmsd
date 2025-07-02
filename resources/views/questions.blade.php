@@ -231,10 +231,9 @@
                 </h2>
                 
                 <div id="accordion-body-{{ $question->id }}" 
-                    class="px-4 pb-4 text-gray-700 dark:text-gray-300 whitespace-pre-line flex flex-row justify-between: center"
-                    style="{{ $isOpen ? '' : 'display:none;' }}; position: relative;">
+                    class="px-4 pb-4 text-gray-700 dark:text-gray-300 {{ $isOpen ? '' : 'hidden' }} relative">
 
-                    <div class="answer-text" style="padding-top: 4px;">
+                    <div class="answer-text p-1 break-words max-w-[90%]">
                         {!! nl2br(e($question->answer)) !!}
                     </div>
 
@@ -285,12 +284,8 @@
                         </button>
 
                     </div>
-
                     @endauth
-
-                    
                 </div>
-
             </div>
             @endforeach
         </div>
