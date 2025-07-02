@@ -153,7 +153,7 @@ class HomepageController extends Controller
         $title_en = $enJson['homepage_title'] ?? '';
         $subtitle_en = $enJson['homepage_subtitle'] ?? '';
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateEn(Request $request)
@@ -175,7 +175,7 @@ class HomepageController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateNewsSr(Request $request)
@@ -225,7 +225,7 @@ class HomepageController extends Controller
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateContactSr(Request $request)
@@ -297,7 +297,7 @@ class HomepageController extends Controller
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateContactEn(Request $request)
@@ -318,7 +318,7 @@ class HomepageController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateNewsEn(Request $request)
@@ -336,7 +336,7 @@ class HomepageController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateCobissSr(Request $request)
@@ -408,7 +408,7 @@ class HomepageController extends Controller
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srCyrPath, json_encode($srCyrJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateCobissEn(Request $request)
@@ -430,7 +430,7 @@ class HomepageController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
     public function updateOurTeamSr(Request $request)
@@ -514,7 +514,7 @@ class HomepageController extends Controller
 
         file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-            return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+            return response()->json(['success' => true]);
         }
 
         public function updateOurTeamEn(Request $request)
@@ -536,7 +536,7 @@ class HomepageController extends Controller
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-        return redirect()->back()->with('success', 'Hero sekcija je uspešno ažurirana!');
+        return response()->json(['success' => true]);
     }
 
 
