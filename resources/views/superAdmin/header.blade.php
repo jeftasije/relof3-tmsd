@@ -247,26 +247,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            showModal();
-                            if (data.data) {
-                                const srData = data.data;
-                                document.getElementById('preview-name').textContent = srData.name || '';
-                                document.getElementById('preview-address').textContent = srData.address || '';
-                                document.getElementById('preview-pib').textContent = srData.pib || '';
-                                document.getElementById('preview-phone').textContent = srData.phone || '';
-                                document.getElementById('preview-email').textContent = srData.email || '';
-                                document.getElementById('preview-facebook').href = srData.facebook || '#';
-                                document.getElementById('preview-twitter').href = srData.twitter || '#';
-                                document.getElementById('preview-work_hours').innerHTML = (srData.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
-                                document.getElementById('preview-map_embed').src = srData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
-                                document.getElementById('preview-copyrights').textContent = srData.copyrights || '';
-                                document.getElementById('preview-name_footer').textContent = srData.name || '';
-                                document.getElementById('preview-logo_light').src = srData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = srData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
-                            }
-                        } else {
-                            console.error('Error:', data.message);
-                        }
+                            showModal(); } 
                     })
                     .catch(error => console.error('Error:', error));
                 });
@@ -284,30 +265,6 @@
                         }
                     })
                     .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showModal();
-                            if (data.data) {
-                                const enData = data.data;
-                                document.getElementById('preview-name').textContent = enData.name || '';
-                                document.getElementById('preview-address').textContent = enData.address || '';
-                                document.getElementById('preview-pib').textContent = enData.pib || '';
-                                document.getElementById('preview-phone').textContent = enData.phone || '';
-                                document.getElementById('preview-email').textContent = enData.email || '';
-                                document.getElementById('preview-facebook').href = enData.facebook || '#';
-                                document.getElementById('preview-twitter').href = enData.twitter || '#';
-                                document.getElementById('preview-work_hours').innerHTML = (enData.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
-                                document.getElementById('preview-map_embed').src = enData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
-                                document.getElementById('preview-copyrights').textContent = enData.copyrights || '';
-                                document.getElementById('preview-name_footer').textContent = enData.name || '';
-                                document.getElementById('preview-logo_light').src = enData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = enData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
-                            }
-                        } else {
-                            console.error('Error:', data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
                 });
 
                 updateModal.addEventListener('click', (event) => {
