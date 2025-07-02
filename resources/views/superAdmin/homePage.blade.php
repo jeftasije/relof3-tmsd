@@ -909,15 +909,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             const updateModal = document.getElementById('updateModal');
 
-            // Function to show modal
             function showModal() {
                 updateModal.classList.remove('hidden');
                 setTimeout(() => {
                     updateModal.classList.add('hidden');
-                }, 2000); // Hide after 2 seconds
+                }, 3000); 
             }
 
-            // Generic form submission handler
             function handleFormSubmission(form, url) {
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
@@ -943,7 +941,6 @@
                 });
             }
 
-            // Set up all form submissions
             const forms = [
                 { element: document.getElementById('serbian-hero'), url: "{{ route('homepage.updateSr') }}" },
                 { element: document.getElementById('english-hero'), url: "{{ route('homepage.updateEn') }}" },
@@ -955,7 +952,6 @@
                 { element: document.getElementById('english-cobiss'), url: "{{ route('homepage.updateCobissEn') }}" }
             ];
 
-            // Add our team forms if they exist
             const serbianTeam = document.getElementById('serbian-team');
             const englishTeam = document.getElementById('english-team');
             
@@ -966,14 +962,12 @@
                 forms.push({ element: englishTeam, url: "{{ route('homepage.updateOurTeamEn') }}" });
             }
 
-            // Set up all form handlers
             forms.forEach(formConfig => {
                 if (formConfig.element) {
                     handleFormSubmission(formConfig.element, formConfig.url);
                 }
             });
 
-            // Close modal when clicking outside
             updateModal.addEventListener('click', (event) => {
                 if (event.target === updateModal) {
                     updateModal.classList.add('hidden');
