@@ -222,7 +222,7 @@
                                     return 'Uspešno obrisano!';
                             }
                         })());
-                        window.location.reload();
+                        window.location.href = '/';
                     } else {
                         alert((() => {
                             switch (locale) {

@@ -206,6 +206,26 @@
                             @default Sačuvaj promene
                             @endswitch
                         </button>
+                        @if(isset($page) && $page->is_active)
+                        <button
+                            type="submit"
+                            name="action"
+                            value="turnOff"
+                            form="page-form"
+                            @click="
+                            loading = true;
+                            $refs.actionInput.value = 'turnOff';
+                            $refs.form.submit();"
+                            class="focus:outline-none text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800
+                            disabled:bg-gray-400 dark:disabled:bg-gray-400  disabled:cursor-not-allowed"
+                            @if( isset($page) && !$page->is_deletable) disabled @endif>
+                            @switch(App::getLocale())
+                            @case('en') Turn off the page @break
+                            @case('sr-Cyrl') Искључи страницу @break
+                            @default Isključi stranicu
+                            @endswitch
+                        </button>
+                        @else
                         <button
                             type="submit"
                             name="action"
@@ -223,6 +243,7 @@
                             @default Objavi
                             @endswitch
                         </button>
+                        @endif
                     </div>
                 </div>
             </aside>
@@ -315,25 +336,25 @@
                             </button>
                             <div class="flex-1 flex justify-center items-center min-h-[150px] cursor-zoom-in">
                                 <template x-if="slide === 1">
-                                    <img @click="enlarged = '/images/pages-help1.png'" src="/images/pages-help1.png" alt="Edit or Delete News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help1.png'" src="/images/pages-help1.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 2">
-                                    <img @click="enlarged = '/images/pages-help2.gif'" src="/images/pages-help2.gif" alt="Edit Form" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help2.gif'" src="/images/pages-help2.gif" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 3">
-                                    <img @click="enlarged = '/images/pages-help3.gif'" src="/images/pages-help3.gif" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help3.gif'" src="/images/pages-help3.gif" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 4">
-                                    <img @click="enlarged = '/images/pages-help4.jpg'" src="/images/pages-help4.jpg" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help4.jpg'" src="/images/pages-help4.jpg" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 5">
-                                    <img @click="enlarged = '/images/pages-help5.png'" src="/images/pages-help5.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help5.png'" src="/images/pages-help5.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 6">
-                                    <img @click="enlarged = '/images/pages-help6.png'" src="/images/pages-help6.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help6.png'" src="/images/pages-help6.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 7">
-                                    <img @click="enlarged = '/images/pages-help7.png'" src="/images/pages-help7.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help7.png'" src="/images/pages-help7.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"
