@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Kontakt",
         "email": "bibl@gmail.com",
-        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
-        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
+        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "twitter": "https://x.com/bibliotekamj/with_replies",
         "work_hours_formatted": [
             "Ponedeljak - Petak: 08:00 - 16:00",
             "Subota: 08:00 - 14:00",
             "Nedelja: Neradna"
         ],
         "work_hours_label": "Radno Vreme",
-        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images\/nbnp-logo.png",
-        "logo_dark": "images\/nbnp-logo-dark.png"
+        "logo_light": "images/nbnp-logo.png",
+        "logo_dark": "images/nbnp-logo-dark.png"
     },
     "services": {
         "hero_title": "Usluge za sve potrebe",
@@ -37,7 +37,7 @@
             "\/images\/fotokopirnica.png",
             "\/images\/knjigoveznica.jpg"
         ],
-        "main_text": "Naša institucija nudi ljubavnu ljubav:\n\n- Fotokopiranje i štampanje: \nKopirajte i štampajte dokumente u crno-beloj boji ili boji, različite formate (A4 i A3). Kopirajte cenu: A4 jednostrani od 1,8 do 5 dinara po stranici, A3 od 5 do 12 dinara po stranici. \n\n- Štampanje u boji: \nod 10 do 25 dinara po stranici. Skeniranje dokumenata: 15 dinara po stranici.\n\n- Knjigovodstvene usluge: \nProfesionalno vezivanje i proizvodnja radilice za diplomatske teze, doktorske disertacije i druge dokumente. Cena za vezivanje diplomiranih tema (tvrdi poklopac): 354 dinara po radu.\n\n- Povezivanje skripte: \nod 118 do 236 dinara po scenariju.\n\n- Stvaranje korice:\n od 354 do 708 dinara po komadu.\n\n- Oporavi stare knjige: \nCena po dogovoru. Naš stručni tim je dostupan za sva pitanja i dodatne informacije. \n\nPosetite nas ili nas kontaktirajte za detaljnije informacije o svim uslugama i trenutnim cenama."
+        "main_text": "Naša institucija nudi ljubavnu ljubav: \n\n- Fotokopiranje i štampanje: \nKopirajte i štampajte dokumente u crno-beloj boji ili boji, različite formate (A4 i A3). Kopirajte cenu: A4 jednostrani od 1,8 do 5 dinara po stranici, A3 od 5 do 12 dinara po stranici. \n\n- Štampanje u boji: \nod 10 do 25 dinara po stranici. Dokumenti za skeniranje: 15 dinara po stranici.\n\n- Knjigovodstvene usluge: \nProfesionalno vezivanje i proizvodnja radilice za diplomatske teze, doktorske disertacije i druge dokumente. Cena za vezivanje diplomiranata (tvrdi poklopac): 354 dinara po radu.\n\n- Povezivanje skripte: \nod 118 do 236 dinara po scenariju.\n\n- Stvaranje korice:\n od 354 do 708 dinara po komadu.\n\n- Oporavi stare knjige: \nCena po dogovoru. Naš stručni tim je dostupan za sva pitanja i dodatne informacije. \n\nPosetite nas ili nas kontaktirajte za detaljnije informacije o svim uslugama i trenutnim cenama."
     },
     "header.search_placeholder": "Pretražite sajt...",
     "header.search_button": "Pretraži",
@@ -100,5 +100,12 @@
     "page_navigation_main_exists": "Izabrana glavna sekcija nije ispravna.",
     "page_navigation_sub_exists": "Izabrana podsekcija nije ispravna.",
     "history.content": "Početkom 20. veka, Novi Pazar je bio kulturno i ekonomski nerazvijen. Kulturni život je bio podeljen po verskoj liniji: muslimani su imali privatne biblioteke u kućama i džamijama, a pravoslavno stanovništvo u okviru crkveno-školskih opština. Prva štamparija se pojavila 1912, a prvi lokalni list 1921. godine. Prva javna biblioteka osnovana je 30. juna 1921. U međuratnom periodu biblioteke su uglavnom postojale u školama. Tokom Drugog svetskog rata fond knjiga je uglavnom uništen ili izgubljen. Nakon rata, 23. decembra 1944. godine osnovana je Narodna biblioteka. Iako je počela u teškim uslovima, već 1957. postaje Gradska biblioteka „Dositej Obradović“. Narednih decenija se razvija, a 1983. postaje matična biblioteka opštine. Od 1996. nalazi se u zgradi u Gradskom parku. Modernizacija počinje 2006. godine uvođenjem COBISS sistema i elektronske pozajmice knjiga. Danas biblioteka ima 25 zaposlenih, 10 odeljenja, oko 80.000 knjiga i 5.000 aktivnih članova godišnje. Ona ostaje ključna kulturna ustanova Novog Pazara.",
+    "header_title": "Narodna biblioteka \"Dositej Obradović\"",
+    "header_subtitle": "Novi Pazar",
+    "complaints": {
+        "title": "Prijava žalbi, sugestija i komentara",
+        "description": "Posvećeni smo pružanju vrhunske usluge i stalnom unapređenju našeg rada. Svaka vaša žalba, sugestija ili komentar nam pomažu da postanemo još bolji. Slobodno nas kontaktirajte – garantujemo da će svaka povratna informacija biti pažljivo razmotrena i uvažena.",
+        "content": "Vaše mišljenje nam je važno. Ako imate bilo kakvu žalbu, pitanje, predlogu ili prigovor, molimo vas da popunite donji obrazac. Pažljivo smatramo svaki zahtev i pokušavamo da odgovorimo što je pre moguće. Popunite sva obavezna polja i opišite svoj problem ili predlog sve dok vam možemo efikasno da vam pomognemo."
+    },
     "question.description": "Na ovoj stranici možete pronaći često postavljana pitanja i njihove odgovore. Ako ne pronađete ono što tražite, slobodno nas kontaktirajte ...."
 }

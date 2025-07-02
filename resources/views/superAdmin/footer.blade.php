@@ -5,25 +5,28 @@
         }
     </style>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div class="flex items-center justify-between mb-6">    
+        <div class="relative flex items-center justify-center mb-8">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ App::getLocale() === 'en' ? 'Edit Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди подножје' : 'Uredi podnožje') }}
             </h1>
 
-            <button 
-                id="help-btn" 
-                data-modal-target="helpModal" 
-                data-modal-toggle="helpModal"
-                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+            <div class="absolute right-0">
+                <button 
+                    id="help-btn" 
+                    onclick="toggleHelpModal()"
+                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                 >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-help">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M12 17l0 .01" />
-                    <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                </svg>
-                <span class="ml-3">{{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}</span>
-            </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                    <span class="ml-3">
+                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                    </span>
+                </button>
+            </div>
         </div>
 
         
@@ -79,7 +82,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="name"
                                 data-lang="sr"
-                            >{{ $libraryDataSr['name'] }}</textarea>
+                            >{{ app()->getLocale() === 'sr-Cyrl' ? $libraryDataSrCyr['name'] : $libraryDataSr['name'] }}</textarea>
                             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -94,7 +97,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="address"
                                 data-lang="sr"
-                            >{{ old('address', $libraryDataSr['address'] ?? '') }}</textarea>
+                            >{{ old('address', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['address'] ?? '') : ($libraryDataSr['address'] ?? '') ) }}</textarea>
                             @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -106,7 +109,7 @@
                                 type="text"
                                 id="pib"
                                 name="pib"
-                                value="{{ old('pib', $libraryDataSr['pib'] ?? '') }}"
+                                value="{{ old('pib', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['pib'] ?? '') : ($libraryDataSr['pib'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="pib"
                                 data-lang="sr"
@@ -160,7 +163,7 @@
                                 type="text"
                                 id="phone"
                                 name="phone"
-                                value="{{ old('phone', $libraryDataSr['phone'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['phone'] ?? '') : ($libraryDataSr['phone'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="phone"
                                 data-lang="sr"
@@ -176,7 +179,7 @@
                                 type="email"
                                 id="email"
                                 name="email"
-                                value="{{ old('email', $libraryDataSr['email'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['email'] ?? '') : ($libraryDataSr['email'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="email"
                                 data-lang="sr"
@@ -192,7 +195,7 @@
                                 type="url"
                                 id="facebook"
                                 name="facebook"
-                                value="{{ old('facebook', $libraryDataSr['facebook'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['facebook'] ?? '') : ($libraryDataSr['facebook'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="facebook"
                                 data-lang="sr"
@@ -208,7 +211,7 @@
                                 type="url"
                                 id="twitter"
                                 name="twitter"
-                                value="{{ old('twitter', $libraryDataSr['twitter'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['twitter'] ?? '') : ($libraryDataSr['twitter'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="twitter"
                                 data-lang="sr"
@@ -233,7 +236,14 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="work_hours"
                                 data-lang="sr"
-                            >{{ old('work_hours', implode("\n", $libraryDataSr['work_hours_formatted'] ?? [])) }}</textarea>
+                            >{{ old(
+                                    'work_hours', 
+                                    implode("\n", app()->getLocale() === 'sr-Cyrl' 
+                                        ? ($libraryDataSrCyr['work_hours_formatted'] ?? []) 
+                                        : ($libraryDataSr['work_hours_formatted'] ?? [])
+                                    )
+                            ) }}
+                            </textarea>
                             @error('work_hours') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -251,7 +261,7 @@
                                 type="url"
                                 id="map_embed"
                                 name="map_embed"
-                                value="{{ old('map_embed', $libraryDataSr['map_embed'] ?? '') }}"
+                                value="{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['map_embed'] ?? '') : ($libraryDataSr['map_embed'] ?? '') ) }}"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="map_embed"
                                 data-lang="sr"
@@ -270,7 +280,7 @@
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 data-preview-target="copyrights"
                                 data-lang="sr"
-                            >{{ old('copyrights', $libraryDataSr['copyrights'] ?? '') }}</textarea>
+                            >{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['copyrights'] ?? '') : ($libraryDataSr['copyrights'] ?? '') ) }}</textarea>
                             @error('copyrights') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -633,104 +643,38 @@
                             <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">
                                 {{ App::getLocale() === 'en' ? 'Data changed successfully.' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци су успешно ажурирани.' : 'Podaci su uspešno ažurirani.') }}
                             </h3>
-                            <button 
-                                type="button"
-                                id="confirmCloseButton"
-                                class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                            >
-                                {{ App::getLocale() === 'en' ? 'Close' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}
-                            </button>
                         </div>
                     </div>
                 </div>
-                <div 
-                    id="helpModal" 
-                    data-modal 
-                    tabindex="-1" 
-                    class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50"
-                    >
-                        <div class="bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md">
-                            <div class="p-6 text-left">
-                                <h3 class="mb-4 text-lg font-semibold text-gray-700 dark:text-gray-300">
-                                    {{ App::getLocale() === 'en' ? 'How to Change Footer Data' : (App::getLocale() === 'sr-Cyrl' ? 'Како променити податке у подножју' : 'Kako promeniti podatke u podnožju') }}
-                                </h3>
-                                <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                    <li>
-                                        {{ App::getLocale() === 'en' 
-                                            ? 'To change the footer data, please fill out the form below with the data you want to update. Fields you do not change will remain the same.' 
-                                            : (App::getLocale() === 'sr-Cyrl' 
-                                                ? 'Да бисте променили податке у подножју, потребно је да попуните форму испод подацима које желите да промените. Поља која не промените остаће иста.' 
-                                                : 'Da biste promenili podatke u podnožju, potrebno je da popunite formu ispod podacima koje želite promeniti. Polja koja ne promenite će ostati ista.') }}
-                                    </li>
-                                    <li>
-                                        {{ App::getLocale() === 'en' 
-                                            ? 'The data will be saved by clicking the Save button.' 
-                                            : (App::getLocale() === 'sr-Cyrl' 
-                                                ? 'Подaци ће се сачувати кликом на дугме сачувај.' 
-                                                : 'Podaci će se sačuvati klikom na dugme sačuvaj.') }}
-                                    </li>
-                                    <li>
-                                        {{ App::getLocale() === 'en' 
-                                            ? 'In the second form (the one below the one you previously filled out), you will be able to review the data that has been automatically translated into English based on the data you previously entered. Review the data and edit it if necessary.' 
-                                            : (App::getLocale() === 'sr-Cyrl' 
-                                                ? 'У другој форми (форма испод оне коју сте претходно попунили), моћи ћете да прегледате податке који су аутоматски преведени на енглески језик, на основу оних које сте претходно унели. Податке прегледајте и, по потреби, измените.' 
-                                                : 'U drugoj formi (forma ispod one koju ste prethodno popunili), moći ćete da pregledate podatke koji su automatski prevedeni na engleski jezik, na osnovu onih koje ste prethodno uneli. Podatke pregledajte i, po potrebi, izmenite.') }}
-                                    </li>
-                                    <li>
-                                        {{ App::getLocale() === 'en' 
-                                            ? 'If you change the data in English, save it by clicking the Save button.' 
-                                            : (App::getLocale() === 'sr-Cyrl' 
-                                                ? 'Уколико промените податке на енглеском језику, сачувајте их кликом на дугме сачувај.' 
-                                                : 'Ukoliko promenite podatke na engleskom jeziku, sačuvajte ih klikom na dugme sačuvaj.') }}
-                                    </li>
-                                    <li>
-                                        {{ App::getLocale() === 'en' 
-                                            ? 'To see how the footer will look with the new data, you can check at the bottom of the page.' 
-                                            : (App::getLocale() === 'sr-Cyrl' 
-                                                ? 'Како би подножје изгледало са новим подацима, можете погледати на дну странице.' 
-                                                : 'Kako bi podnožje izgledalo sa novim podacima možete pogledati na dnu stranice.') }}
-                                    </li>
-                                </ol>
-                                <div class="mt-6 text-center">
-                                    <button 
-                                        data-modal-hide="helpModal"
-                                        id="confirmCloseButton"
-                                        type="button"
-                                        class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-                                    >
-                                        {{ App::getLocale() === 'en' ? 'Close' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}
-                                    </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+                    <div id="helpModalContent" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
+                        <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+                            &times;
+                        </button>
+                        <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </h2>
+                        <p class="text-gray-700 dark:text-gray-300 space-y-2">
+                            {!! App::getLocale() === 'en'
+                                ? 'To change the <strong>footer data</strong>, please fill out the form below with the data you want to update. Fields you do not change will remain the same. </br> The data will be saved by clicking the <strong>Save button</strong>.  </br> In the second form (the one below the one you previously filled out), you will be able to review the data that has been <strong>automatically translated</strong> into <strong>English</strong> based on the data you previously entered. <strong>Review</strong> the data and <strong>edit</strong> it if necessary.  </br> If you change the data in English, save it by clicking the <strong>Save button</strong>. To see how the footer will look with the new data, you can check at the bottom of the page.'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Да бисте променили <strong>податке у подножју</strong>, потребно је да попуните форму испод подацима које желите да промените. Поља која не промените остаће иста. </br> Подaци ће се сачувати кликом на дугме <strong>сачувај</strong>.  </br> У другој форми (форма испод оне коју сте претходно попунили), моћи ћете да прегледате податке који су <strong>аутоматски преведени на енглески језик</strong>, на основу оних које сте претходно унели. Податке <strong>прегледајте</strong> и, по потреби, <strong>измените</strong>.  </br> Уколико промените податке на енглеском језику, сачувајте их кликом на <strong>дугме сачувај</strong>. Како би подножје изгледало са новим подацима, можете погледати на дну странице.' 
+                                    : 'Da biste promenili <strong>podatke u podnožju</strong>, potrebno je da popunite formu ispod podacima koje želite promeniti. Polja koja ne promenite će ostati ista. </br> Podaci će se sačuvati klikom na dugme <strong>sačuvaj</strong>.  </br> U drugoj formi (forma ispod one koju ste prethodno popunili), moći ćete da pregledate podatke koji su <strong>automatski prevedeni na engleski jezik</strong>, na osnovu onih koje ste prethodno uneli. Podatke <strong>pregledajte</strong> i, po potrebi, <strong>izmenite</strong>. </br> Ukoliko promenite podatke na engleskom jeziku, sačuvajte ih klikom na <strong>dugme sačuvaj</strong>. Kako bi podnožje izgledalo sa novim podacima možete pogledati na dnu stranice.')
+                            !!}
+                        </p>
                     </div>
-
+                </div>
             </div>
-
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const helpBtn = document.getElementById('help-btn');
-                const helpModal = document.getElementById('helpModal');
-                const confirmCloseButton = document.getElementById('confirmCloseButton');
+            function toggleHelpModal() {
+                const modal = document.getElementById('helpModal');
+                modal.classList.toggle('hidden');
+            }
 
-                function showModal() {
-                    helpModal.classList.remove('hidden');
+            document.getElementById('helpModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    toggleHelpModal();
                 }
-
-                function hideModal() {
-                    helpModal.classList.add('hidden');
-                }
-
-                helpBtn.addEventListener('click', showModal);
-
-                confirmCloseButton.addEventListener('click', hideModal);
-
-                helpModal.addEventListener('click', function(event) {
-                    if (event.target === helpModal) {
-                    hideModal();
-                    }
-                });
             });
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
@@ -797,12 +741,11 @@
 
             document.addEventListener('DOMContentLoaded', () => {
                 const updateModal = document.getElementById('updateModal');
-                const confirmCloseButton = document.getElementById('confirmCloseButton');
                 const serbianForm = document.getElementById('serbian-form');
                 const englishForm = document.getElementById('english-form');
 
-                if (!updateModal || !serbianForm || !englishForm || !confirmCloseButton) {
-                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm, confirmCloseButton });
+                if (!updateModal || !serbianForm || !englishForm) {
+                    console.log('One or more elements not found:', { updateModal, serbianForm, englishForm, });
                     return;
                 }
 
@@ -891,8 +834,6 @@
                     })
                     .catch(error => console.error('Error:', error));
                 });
-
-                confirmCloseButton.addEventListener('click', hideModal);
 
                 updateModal.addEventListener('click', (event) => {
                     if (event.target === updateModal) {

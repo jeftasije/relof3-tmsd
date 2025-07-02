@@ -109,7 +109,7 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         $news->delete();
-        return redirect()->route('news.index')->with('success', 'Vest uspešno obrisana.');
+        return redirect()->route('news.index')->with('success', 'deleted');
     }
 
     public function store(Request $request)
@@ -199,7 +199,7 @@ class NewsController extends Controller
             'tags_cy'    => $tags_cy,
         ]);
 
-        return redirect()->route('news.index')->with('success', 'Vest uspešno dodata!');
+        return redirect()->route('news.index')->with('success', 'added');
     }
 
     public function updateExtendedNews(Request $request, News $news)
