@@ -137,7 +137,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
-        return redirect()->route('employees.index')->with('success', 'Zaposleni je uspešno obrisan.');
+        return redirect()->route('employees.index')->with('success', 'deleted');
     }
 
     public function store(Request $request)
@@ -294,7 +294,7 @@ class EmployeeController extends Controller
             'skills_cy'             => $skills_cy,
         ]);
 
-        return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
+        return redirect()->route('employees.index')->with('success', 'added'); 
     }
 
     public function updateExtendedBiography(Request $request, Employee $employee)

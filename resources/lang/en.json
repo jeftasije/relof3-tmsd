@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Contact",
         "email": "bibl@gmail.com",
-        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
-        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
+        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
+        "twitter": "https://x.com/bibliotekamj/with_replies",
         "work_hours_formatted": [
             "Monday - Friday: 08:00 - 16:00",
             "Saturday: 08:00 - 14:00",
             "Sunday: Non-working"
         ],
         "work_hours_label": "Working hours",
-        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images\/nbnp-logo.png",
-        "logo_dark": "images\/nbnp-logo-dark.png"
+        "logo_light": "images/nbnp-logo.png",
+        "logo_dark": "images/nbnp-logo-dark.png"
     },
     "services": {
         "hero_title": "Services for all needs",
@@ -37,7 +37,7 @@
             "\/images\/fotokopirnica.png",
             "\/images\/knjigoveznica.jpg"
         ],
-        "main_text": "Our institution offers love love:\n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduate topics (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices."
+        "main_text": "Our institution offers love love: \n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduates (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices."
     },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
@@ -101,5 +101,11 @@
     "page_navigation_sub_exists": "The selected subsection is invalid.",
     "history.content": "At the beginning of the 20th century, Novi Pazar was a culturally and economically underdeveloped town. Cultural life was divided along religious lines: Muslims maintained private libraries in homes and mosques, while the Orthodox community organized church libraries and reading rooms. In 1912, the first printing press appeared, followed by the first local newspaper in 1921. The first public library in Novi Pazar was officially established on June 30, 1921. During the interwar period, libraries mainly existed within schools. World War II brought devastation—most books were destroyed or lost. After the war, efforts were made to rebuild. The People’s Library was founded on December 23, 1944. Despite modest beginnings in poor facilities, by 1957 it became the “Dositej Obradović” City Library. Over the next decades, it expanded its collection and services, becoming the municipal reference library in 1983. In 1996, it moved to its current building in the city park. Modernization began in 2006 with the introduction of the COBISS system and electronic lending. Today, the library has 25 employees, 10 departments, about 80,000 books, and around 5,000 active members yearly. It remains a key cultural institution in Novi Pazar.",
     "header_title": "Public library \"Dositej Obradović\"",
-    "header_subtitle": "Novi Pazar"
+    "header_subtitle": "Novi Pazar",
+
+    "complaints": {
+        "title": "Submission of complaints, suggestions and comments",
+        "description": "We are committed to providing top-quality service and continuously improving our work. Every complaint, suggestion, or comment you share helps us become even better. Feel free to contact us – we guarantee that every piece of feedback will be carefully considered and appreciated.",
+        "content": "Your opinion matters to us. If you have any complaint, question, suggestion, or remark, please fill out the form below. We carefully review every request and try to respond as quickly as possible. Please fill in all required fields and describe your issue or suggestion so we can help you effectively."
+    }
 }
