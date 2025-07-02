@@ -64,7 +64,7 @@
                     </button>
                 </div>
             </div>
-            <form action="{{ route('homepage.updateSr') }}" method="POST" enctype="multipart/form-data">
+            <form id="serbian-hero" action="{{ route('homepage.updateSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="flex items-center justify-between mb-6">    
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -99,7 +99,7 @@
                         </div>
                     </div>    
             </form>
-            <form action="{{ route('homepage.updateEn') }}" method="POST" enctype="multipart/form-data">
+            <form id="english-hero" action="{{ route('homepage.updateEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -157,7 +157,7 @@
                     </button>
                 </div>
             </div>
-            <form action="{{ route('homepage.updateNewsSr') }}" method="POST" enctype="multipart/form-data">
+            <form id="serbian-news" action="{{ route('homepage.updateNewsSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
@@ -177,7 +177,7 @@
                         </div>
                     </div>
                 </form>
-                <form action="{{ route('homepage.updateNewsEn') }}" method="POST" enctype="multipart/form-data">
+                <form id="english-news" action="{{ route('homepage.updateNewsEn') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                         <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                             <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -226,7 +226,7 @@
                     </button>
                 </div>
             </div>
-            <form action="{{ route('homepage.updateContactSr') }}" method="POST" enctype="multipart/form-data">
+            <form id="serbian-contact" action="{{ route('homepage.updateContactSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
@@ -256,7 +256,7 @@
                         </div>
                     </div>
             </form>
-            <form action="{{ route('homepage.updateContactEn') }}" method="POST" enctype="multipart/form-data">
+            <form id="english-contact" action="{{ route('homepage.updateContactEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -312,7 +312,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('homepage.updateCobissSr') }}" method="POST" enctype="multipart/form-data">
+            <form id="serbian-cobiss" action="{{ route('homepage.updateCobissSr') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
@@ -338,7 +338,7 @@
                         </div>
                     </div>
             </form>
-            <form action="{{ route('homepage.updateCobissEn') }}" method="POST" enctype="multipart/form-data">
+            <form id="english-cobiss" action="{{ route('homepage.updateCobissEn') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -397,7 +397,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('homepage.updateOurTeamSr') }}" method="POST" enctype="multipart/form-data">
+                <form id="serbian-team" action="{{ route('homepage.updateOurTeamSr') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                         <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
@@ -442,7 +442,7 @@
                             </div>
                         </div>
                 </form>
-                <form action="{{ route('homepage.updateOurTeamEn') }}" method="POST" enctype="multipart/form-data">
+                <form id="english-team" action="{{ route('homepage.updateOurTeamEn') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg flex flex-col">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -606,6 +606,15 @@
                 </button>
             </div>
         </form>
+        <div id="updateModal" tabindex="-1" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow dark:bg-gray-700 w-full max-w-md">
+                <div class="p-6 text-center">
+                    <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">
+                        {{ App::getLocale() === 'en' ? 'Data changed successfully.' : (App::getLocale() === 'sr-Cyrl' ? 'Подаци су успешно ажурирани.' : 'Podaci su uspešno ažurirani.') }}
+                    </h3>
+                </div>
+            </div>
+        </div>
         <div
             x-show="helpOpen"
             x-transition
@@ -655,7 +664,7 @@
                                     <img @click="enlarged = '/images/additionalSect.gif'" src="/images/additionalSect.gif" alt="Additional section" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 4">
-                                    <img @click="enlarged = '/images/reordering.gif" src="/images/reordering.gif" alt="reordering" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/reordering.gif'" src="/images/reordering.gif" alt="reordering" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"
@@ -895,5 +904,75 @@
             document.getElementById('employeeSearch').value = ''; 
             filterEmployees(); 
         }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const updateModal = document.getElementById('updateModal');
+
+            function showModal() {
+                updateModal.classList.remove('hidden');
+                setTimeout(() => {
+                    updateModal.classList.add('hidden');
+                }, 3000); 
+            }
+
+            function handleFormSubmission(form, url) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            showModal();
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            const forms = [
+                { element: document.getElementById('serbian-hero'), url: "{{ route('homepage.updateSr') }}" },
+                { element: document.getElementById('english-hero'), url: "{{ route('homepage.updateEn') }}" },
+                { element: document.getElementById('serbian-news'), url: "{{ route('homepage.updateNewsSr') }}" },
+                { element: document.getElementById('english-news'), url: "{{ route('homepage.updateNewsEn') }}" },
+                { element: document.getElementById('serbian-contact'), url: "{{ route('homepage.updateContactSr') }}" },
+                { element: document.getElementById('english-contact'), url: "{{ route('homepage.updateContactEn') }}" },
+                { element: document.getElementById('serbian-cobiss'), url: "{{ route('homepage.updateCobissSr') }}" },
+                { element: document.getElementById('english-cobiss'), url: "{{ route('homepage.updateCobissEn') }}" }
+            ];
+
+            const serbianTeam = document.getElementById('serbian-team');
+            const englishTeam = document.getElementById('english-team');
+            
+            if (serbianTeam) {
+                forms.push({ element: serbianTeam, url: "{{ route('homepage.updateOurTeamSr') }}" });
+            }
+            if (englishTeam) {
+                forms.push({ element: englishTeam, url: "{{ route('homepage.updateOurTeamEn') }}" });
+            }
+
+            forms.forEach(formConfig => {
+                if (formConfig.element) {
+                    handleFormSubmission(formConfig.element, formConfig.url);
+                }
+            });
+
+            updateModal.addEventListener('click', (event) => {
+                if (event.target === updateModal) {
+                    updateModal.classList.add('hidden');
+                }
+            });
+        });
     </script>
 </x-app-layout>
