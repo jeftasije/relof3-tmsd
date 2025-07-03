@@ -1,4 +1,14 @@
 <x-guest-layout>
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('question.' . session('success')) }}
+    </div>
+    @endif
     <div class="max-w-4xl mx-auto p-4">
         <div class="flex flex-col">
             <div class="flex items-center justify-center relative mb-6 mt-8">
@@ -50,22 +60,7 @@
             </div>
             @endauth
 
-            @if(session('success'))
-            <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                {{ __('question.' . session('success')) }}
-            </div>
-
-            <script>
-                setTimeout(() => {
-                    const el = document.getElementById('successMessage');
-                    if (el) {
-                        el.style.opacity = '0';
-                        setTimeout(() => el.style.display = 'none', 500);
-                    }
-                }, 3000);
-            </script>
-            @endif
-
+            
             @auth
             <form action="{{ route('questions.updateDescription') }}" method="POST" id="editForm" class="space-y-4">
                 @csrf
@@ -190,8 +185,8 @@
                         <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>Z-A</option>
                     </select>
                 </div>
-
-                <button
+                @auth
+                <button 
                     id="createQuestionBtn"
                     type="button"
                     class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-base"
@@ -202,6 +197,7 @@
                     @default Kreiraj pitanje
                     @endswitch
                 </button>
+                @endauth
             </div>
         </form>
 
@@ -411,12 +407,14 @@
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
                             @default Otkaži
-                            @endswitch
-                        </button>
-                        <button
-                            type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-                            @switch(App::getLocale())
+                        @endswitch
+                    </button>
+
+                    <button 
+                        type="submit" 
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+                        style="background: var(--accent); color: #fff;">
+                        @switch(App::getLocale())
                             @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break
                             @default Kreiraj pitanje
