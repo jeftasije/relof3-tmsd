@@ -2,7 +2,7 @@
   <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl py-5 px-10">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <x-application-logo />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap" style="color: var(--primary-text)">
+      <span class="block text-2xl sm:text-xl font-semibold break-words" style="color: var(--primary-text)">
         {{ $libraryData['name'] ?? '' }}<br /> {{ $libraryData['city'] ?? '' }}
       </span>
     </a>
@@ -35,14 +35,14 @@
         @php
         $locale = app()->getLocale();
         $flags = [
-          'sr' => 'fi fi-rs',
-          'sr-Cyrl' => 'fi fi-rs',
-          'en' => 'fi fi-us',
+        'sr' => 'fi fi-rs',
+        'sr-Cyrl' => 'fi fi-rs',
+        'en' => 'fi fi-us',
         ];
         $languages = [
-          'sr' => __('language_sr'),
-          'sr-Cyrl' => __('language_sr_cy'),
-          'en' => __('language_en'),
+        'sr' => __('language_sr'),
+        'sr-Cyrl' => __('language_sr_cy'),
+        'en' => __('language_en'),
         ];
         $localeKey = $locale === 'sr-Cyrl' ? 'sr-Cyrl' : ($locale === 'sr' ? 'sr' : 'en');
         @endphp

@@ -80,7 +80,7 @@
                 class="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[500px_1fr] gap-10 min-h-[calc(100vh-120px)]">
                 <div class="flex flex-col h-full">
                     <template x-if="!editing">
-                        <div class="group h-full overflow-hidden rounded-2xl shadow-xl bg-white relative flex-1 flex">
+                        <div class="group overflow-hidden rounded-2xl shadow-xl bg-white relative flex w-full aspect-[1/1] sm:aspect-auto sm:flex-1">
                             <template x-for="(img, idx) in form.images" :key="img">
                                 <img :src="img"
                                     class="object-cover object-left w-full h-full absolute inset-0 transition-all duration-1000"

@@ -45,6 +45,7 @@
                     </template>
                     <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
                         style="color: var(--secondary-text);" x-text="form.description"></span>
+                    @auth
                     <button id="help-btn" onclick="toggleHelpModal()"
                         class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
                         style="color: var(--primary-text); margin-bottom: 0;" aria-label="Pomoć">
@@ -59,46 +60,46 @@
                             {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                         </span>
                     </button>
+                    @endauth
                 </div>
             </div>
 
             <div class="mb-8"></div>
-            <div class="relative flex items-center mb-6">
-                <h2 class="absolute left-1/2 transform -translate-x-1/2 text-3xl font-bold whitespace-nowrap"
-                    style="color: var(--primary-text);">
+            <div class="relative flex flex-col sm:flex-row sm:items-center mb-6 sm:justify-between">
+                <h2 class="text-2xl sm:text-3xl font-bold text-center w-full break-words" style="color: var(--primary-text);">
                     @switch(App::getLocale())
-                        @case('en')
-                            Every question, suggestion or criticism is welcome!
-                        @break
+                    @case('en')
+                    Every question, suggestion or criticism is welcome!
+                    @break
 
-                        @case('sr-Cyrl')
-                            Свако Ваше питање, сугестија или критика је добродошла!
-                        @break
+                    @case('sr-Cyrl')
+                    Свако Ваше питање, сугестија или критика је добродошла!
+                    @break
 
-                        @default
-                            Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
+                    @default
+                    Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
                     @endswitch
                 </h2>
 
                 @auth
-                    <div class="ml-auto flex gap-2">
-                        <button x-show="!editing" @click="startEdit()"
-                            class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px">
-                            {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                        </button>
-                        <template x-if="editing">
-                            <div class="flex gap-2">
-                                <button @click="saveEdit()"
-                                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                                </button>
-                                <button @click="cancelEdit()"
-                                    class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
-                                    {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                                </button>
-                            </div>
-                        </template>
-                    </div>
+                <div class="ml-auto flex gap-2">
+                    <button x-show="!editing" @click="startEdit()"
+                        class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px">
+                        {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                    </button>
+                    <template x-if="editing">
+                        <div class="flex gap-2">
+                            <button @click="saveEdit()"
+                                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
+                            <button @click="cancelEdit()"
+                                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                            </button>
+                        </div>
+                    </template>
+                </div>
                 @endauth
             </div>
 
@@ -107,7 +108,7 @@
             <div class="mb-16">
                 <div>
                     @php
-                        $isEditor = auth()->check() && auth()->user()->isEditor();
+                    $isEditor = auth()->check() && auth()->user()->isEditor();
                     @endphp
 
                     <form action="{{ route('complaints.store') }}" method="POST" id="complaintsForm"
@@ -119,45 +120,45 @@
                             <div>
                                 <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                     @switch(App::getLocale())
-                                        @case('en')
-                                            First name:
-                                        @break
+                                    @case('en')
+                                    First name:
+                                    @break
 
-                                        @case('sr-Cyrl')
-                                            Име:
-                                        @break
+                                    @case('sr-Cyrl')
+                                    Име:
+                                    @break
 
-                                        @default
-                                            Ime:
+                                    @default
+                                    Ime:
                                     @endswitch
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="first_name" required value="{{ old('first_name') }}"
                                     class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                                 @error('first_name')
-                                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
                                 <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                     @switch(App::getLocale())
-                                        @case('en')
-                                            Last name:
-                                        @break
+                                    @case('en')
+                                    Last name:
+                                    @break
 
-                                        @case('sr-Cyrl')
-                                            Презиме:
-                                        @break
+                                    @case('sr-Cyrl')
+                                    Презиме:
+                                    @break
 
-                                        @default
-                                            Prezime:
+                                    @default
+                                    Prezime:
                                     @endswitch
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="last_name" required value="{{ old('last_name') }}"
                                     class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                                 @error('last_name')
-                                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                                <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -165,90 +166,90 @@
                         <div>
                             <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                 @switch(App::getLocale())
-                                    @case('en')
-                                        Mobile phone:
-                                    @break
+                                @case('en')
+                                Mobile phone:
+                                @break
 
-                                    @case('sr-Cyrl')
-                                        Мобилни телефон:
-                                    @break
+                                @case('sr-Cyrl')
+                                Мобилни телефон:
+                                @break
 
-                                    @default
-                                        Mobilni telefon:
+                                @default
+                                Mobilni telefon:
                                 @endswitch
                             </label>
                             <input type="tel" name="phone" pattern="\d*" inputmode="numeric" maxlength="20"
                                 value="{{ old('phone') }}"
                                 class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                             @error('phone')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div>
                             <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                 @switch(App::getLocale())
-                                    @case('en')
-                                        Email:
-                                    @break
+                                @case('en')
+                                Email:
+                                @break
 
-                                    @case('sr-Cyrl')
-                                        Мејл адреса:
-                                    @break
+                                @case('sr-Cyrl')
+                                Мејл адреса:
+                                @break
 
-                                    @default
-                                        Mejl adresa:
+                                @default
+                                Mejl adresa:
                                 @endswitch
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="email" name="email" required value="{{ old('email') }}"
                                 class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                             @error('email')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
                             <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                 @switch(App::getLocale())
-                                    @case('en')
-                                        Subject:
-                                    @break
+                                @case('en')
+                                Subject:
+                                @break
 
-                                    @case('sr-Cyrl')
-                                        Наслов:
-                                    @break
+                                @case('sr-Cyrl')
+                                Наслов:
+                                @break
 
-                                    @default
-                                        Naslov:
+                                @default
+                                Naslov:
                                 @endswitch
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="subject" required value="{{ old('subject') }}"
                                 class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                             @error('subject')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
                             <label class="block mb-2 text-sm font-medium" style="color: var(--primary-text)">
                                 @switch(App::getLocale())
-                                    @case('en')
-                                        Message:
-                                    @break
+                                @case('en')
+                                Message:
+                                @break
 
-                                    @case('sr-Cyrl')
-                                        Порука:
-                                    @break
+                                @case('sr-Cyrl')
+                                Порука:
+                                @break
 
-                                    @default
-                                        Poruka:
+                                @default
+                                Poruka:
                                 @endswitch
                                 <span class="text-red-500">*</span>
                             </label>
                             <textarea name="message" required rows="6"
                                 class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">{{ old('message') }}</textarea>
                             @error('message')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                            <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="text-center">
@@ -256,16 +257,16 @@
                                 class="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center"
                                 style="background: var(--accent)">
                                 @switch(App::getLocale())
-                                    @case('en')
-                                        Send complaint
-                                    @break
+                                @case('en')
+                                Send complaint
+                                @break
 
-                                    @case('sr-Cyrl')
-                                        Пошаљи жалбу
-                                    @break
+                                @case('sr-Cyrl')
+                                Пошаљи жалбу
+                                @break
 
-                                    @default
-                                        Pošalji žalbu
+                                @default
+                                Pošalji žalbu
                                 @endswitch
                             </button>
                         </div>
@@ -277,46 +278,46 @@
                                     <div class="p-6 text-center">
                                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                             @switch(App::getLocale())
-                                                @case('en')
-                                                    Are you sure you want to send the complaint?
-                                                @break
+                                            @case('en')
+                                            Are you sure you want to send the complaint?
+                                            @break
 
-                                                @case('sr-Cyrl')
-                                                    Да ли сте сигурни да желите да пошаљете жалбу?
-                                                @break
+                                            @case('sr-Cyrl')
+                                            Да ли сте сигурни да желите да пошаљете жалбу?
+                                            @break
 
-                                                @default
-                                                    Da li ste sigurni da želite da pošaljete žalbu?
+                                            @default
+                                            Da li ste sigurni da želite da pošaljete žalbu?
                                             @endswitch
                                         </h3>
                                         <button id="confirmSubmitBtn2" type="button"
                                             class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
                                             @switch(App::getLocale())
-                                                @case('en')
-                                                    Send
-                                                @break
+                                            @case('en')
+                                            Send
+                                            @break
 
-                                                @case('sr-Cyrl')
-                                                    Пошаљи
-                                                @break
+                                            @case('sr-Cyrl')
+                                            Пошаљи
+                                            @break
 
-                                                @default
-                                                    Pošalji
+                                            @default
+                                            Pošalji
                                             @endswitch
                                         </button>
                                         <button data-modal-hide="submitModal2" type="button"
                                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                             @switch(App::getLocale())
-                                                @case('en')
-                                                    Cancel
-                                                @break
+                                            @case('en')
+                                            Cancel
+                                            @break
 
-                                                @case('sr-Cyrl')
-                                                    Откажи
-                                                @break
+                                            @case('sr-Cyrl')
+                                            Откажи
+                                            @break
 
-                                                @default
-                                                    Otkaži
+                                            @default
+                                            Otkaži
                                             @endswitch
                                         </button>
                                     </div>
@@ -337,20 +338,20 @@
             </div>
         </div>
 
-        <div class="text-center mt-10">
+        <div class="text-center my-5">
             <a href="{{ asset('storage/documents/UPUTSTVO%20ZA%20ZALBE.pdf') }}" target="_blank"
                 style="color: var(--accent);">
                 @switch(App::getLocale())
-                    @case('en')
-                        Download the instructions in PDF format
-                    @break
+                @case('en')
+                Download the instructions in PDF format
+                @break
 
-                    @case('sr-Cyrl')
-                        Преузмите упутство у PDF формату
-                    @break
+                @case('sr-Cyrl')
+                Преузмите упутство у PDF формату
+                @break
 
-                    @default
-                        Preuzmite uputstvo u PDF formatu
+                @default
+                Preuzmite uputstvo u PDF formatu
                 @endswitch
             </a>
         </div>
@@ -367,28 +368,28 @@
             </h2>
             <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
                 {!! App::getLocale() === 'en'
-                    ? '
-                                    Clicking on the button <strong>\"Edit\"</strong> will open a field for editing instructions on how the user can submit a complaint.
-                                    You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
-                                    If you decide not to make changes or want to cancel, click the <strong>\"Cancel\"</strong> button and the content will revert to its previous state without changes.<br><br>
-                                    To save your edits, click the <strong>\"Save\"</strong> button.<br>
-                                    You will be asked to confirm before the changes are applied.
-                                    '
-                    : (App::getLocale() === 'sr-Cyrl'
-                        ? '
-                                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за урeђивање упутства како може корисник да приложи жалбу.<br><br>
-                                        Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br> 
-                                        Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
-                                        Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
-                                        Бићете упитани за потврду пре него што се промене примене.
-                                    '
-                        : '
-                                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje uputstva kako može korisnik da priloži žalbu.
-                                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br>  <br>                
-                                        Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
-                                        Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
-                                        Bićete upitani za potvrdu pre nego što se promene primene.
-                                    ') !!}
+                ? '
+                Clicking on the button <strong>\"Edit\"</strong> will open a field for editing instructions on how the user can submit a complaint.
+                You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
+                If you decide not to make changes or want to cancel, click the <strong>\"Cancel\"</strong> button and the content will revert to its previous state without changes.<br><br>
+                To save your edits, click the <strong>\"Save\"</strong> button.<br>
+                You will be asked to confirm before the changes are applied.
+                '
+                : (App::getLocale() === 'sr-Cyrl'
+                ? '
+                Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за урeђивање упутства како може корисник да приложи жалбу.<br><br>
+                Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br>
+                Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
+                Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
+                Бићете упитани за потврду пре него што се промене примене.
+                '
+                : '
+                Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje uputstva kako može korisnik da priloži žalbu.
+                Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br> <br>
+                Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
+                Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
+                Bićete upitani za potvrdu pre nego što se promene primene.
+                ') !!}
             </p>
         </div>
     </div>
