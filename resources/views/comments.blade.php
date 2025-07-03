@@ -112,8 +112,7 @@
             x-show="show"
             x-transition
             x-init="setTimeout(() => show = false, 4000)"
-            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg"
-            style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
+            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
             {{ session('success') }}
         </div>
         @endif
