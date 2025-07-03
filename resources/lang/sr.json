@@ -34,8 +34,8 @@
         "hero_title": "Usluge za sve potrebe",
         "hero_subtitle": "Brz, visok kvalitet i pristupačan - pogledajte našu ponudu.",
         "images": [
-            "/images/fotokopirnica.png",
-            "/images/knjigoveznica.jpg"
+            "\/images\/fotokopirnica.png",
+            "\/images\/knjigoveznica.jpg"
         ],
         "main_text": "Naša institucija vam nudi:\n\n- Fotokopiranje i štampanje: \nKopirajte i štampajte dokumente u crno-beloj boji ili boji, različite formate (A4 i A3). Kopirajte cenu: A4 jednostrani od 1,8 do 5 dinara po stranici, A3 od 5 do 12 dinara po stranici. \n\n- Štampanje u boji: \nod 10 do 25 dinara po stranici. Dokumenti za skeniranje: 15 dinara po stranici.\n\n- Knjigovodstvene usluge: \nProfesionalno vezivanje i proizvodnja radilice za diplomatske teze, doktorske disertacije i druge dokumente. Cena za vezivanje diplomiranata (tvrdi poklopac): 354 dinara po radu.\n\n- Povezivanje skripte: \nod 118 do 236 dinara po scenariju.\n\n- Stvaranje korice:\n od 354 do 708 dinara po komadu.\n\n- Oporavi stare knjige: \nCena po dogovoru. Naš stručni tim je dostupan za sva pitanja i dodatne informacije. \n\nPosetite nas ili nas kontaktirajte za detaljnije informacije o svim uslugama i trenutnim cenama."
     },
@@ -79,7 +79,7 @@
     "homepage_news_title": "Vesti",
     "homepage_contact_title": "Budimo u kontaktu",
     "homepage_contact_subtitle": "Prijavite se kako bismo Vas obavestili o najnovijim vestima",
-    "homepage_hero_image_path": "images/herosection.jpg",
+    "homepage_hero_image_path": "images\/herosection.jpg",
     "cobiss_title": "Pretraži knjige na \"COBISS\"-u",
     "cobiss_subtitle": "Unesite naziv knjige, autora ili ISBN i bićete preusmereni na \"COBISS\"",
     "our_team_title": "Naš tim",

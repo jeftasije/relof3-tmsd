@@ -429,39 +429,37 @@
         <div id="renameModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg p-6 relative">
                 <button id="closeRenameModalBtn" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">×</button>
-                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Rename Question</h2>
+                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">{{ App::getLocale() === 'en' ? 'Rename Question' : (App::getLocale() === 'sr-Cyrl' ? 'Промени питање' : 'Promeni pitanje') }}</h2>
                 <form id="renameForm" method="POST" action="">
                     @csrf
                     @method('PATCH')
                     <input type="hidden" id="renameQuestionId" name="question_id" />
                     <div class="mb-4">
-                        <label for="renameQuestion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Question</label>
+                        <label for="renameQuestion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ App::getLocale() === 'en' ? 'Question' : (App::getLocale() === 'sr-Cyrl' ? 'Питање' : 'Pitanje') }}</label>
                         <textarea id="renameQuestion" name="question" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="2" required></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="renameAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Answer</label>
+                        <label for="renameAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ App::getLocale() === 'en' ? 'Answer' : (App::getLocale() === 'sr-Cyrl' ? 'Одговор' : 'Odgovor') }}</label>
                         <textarea id="renameAnswer" name="answer" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="5" required></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" id="cancelRenameBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">Save</button>
+                        <button type="button" id="cancelRenameBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Delete Confirmation Modal -->
         <div id="deleteModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-sm p-6 relative">
                 <button id="closeDeleteModalBtn" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">×</button>
-                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Confirm Deletion</h2>
-                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">Are you sure you want to delete this question?</p>
+                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Are you sure you want to delete this question?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли ст есигурни да желите да обришете питање?' : 'Da li ste sigurni da želite da obrišete pitanje?') }}</p>
                 <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
                     <div class="flex justify-center gap-4">
-                        <button type="button" id="cancelDeleteBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Delete</button>
+                        <button type="button" id="cancelDeleteBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}</button>
                     </div>
                 </form>
             </div>
@@ -492,7 +490,6 @@
         const globalSort = document.getElementById('globalSort');
         let selectedIndex = -1;
 
-        // Funkcionalnost sortiranja
         if (globalSort) {
             globalSort.addEventListener('change', () => {
                 const sortOrder = globalSort.value; 
@@ -513,7 +510,6 @@
             console.error('Element with ID globalSort not found');
         }
 
-        // Funkcionalnost pretrage
         if (searchInput && searchDropdown && searchResults) {
             searchInput.addEventListener('input', () => {
                 const query = searchInput.value.toLowerCase();
