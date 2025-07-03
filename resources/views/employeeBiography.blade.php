@@ -1,7 +1,5 @@
 @php $locale = App::getLocale(); @endphp
 <x-guest-layout>
-@php $locale = App::getLocale(); @endphp
-
 @if(session('success'))
     <div 
         x-data="{ show: true }"
@@ -33,6 +31,7 @@
         }}
     </div>
 @endif
+
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>
@@ -70,12 +69,30 @@
                             {{ $employee->translate('position') }}
                         </h1>
                         @auth
-                        <button 
-                            @click="editOpen = true"
-                            class="font-semibold px-4 py-2 rounded"
-                            style="background: var(--accent); color: #fff;">
-                            {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                        </button>
+                        <div class="flex flex-col items-end">
+                            <!-- HELP dugme iznad Edit -->
+                            <button @click="helpOpen = true"
+                                class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none"
+                                style="background: transparent; color: var(--secondary-text);" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <circle cx="12" cy="12" r="9" stroke-width="2" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17l0 .01" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
+                                </svg>
+                                <span>
+                                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                                </span>
+                            </button>
+                            <!-- EDIT dugme -->
+                            <button 
+                                @click="editOpen = true"
+                                class="font-semibold px-4 py-2 rounded"
+                                style="background: var(--accent); color: #fff;">
+                                {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                            </button>
+                        </div>
                         @endauth
                     </div>
 
@@ -393,25 +410,6 @@
                 </div>
             </div>
         </div>
-        <!-- Help floating dugme -->
-        <button
-            @click="helpOpen = true"
-            class="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-full shadow-lg bg-[var(--accent)] text-white hover:bg-green-700 transition"
-            style="background: var(--accent);"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M12 17l0 .01" />
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-            </svg>
-            <span>
-                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-            </span>
-        </button>
         @endauth
 
     </div>
