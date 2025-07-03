@@ -17,6 +17,7 @@
           </div>
           <input
             type="search"
+            name="q"
             id="default-search"
             style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
             class="block w-full p-4 ps-10 text-sm rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--accent)]"

@@ -62,7 +62,7 @@
                     
                     const newsId = card.getAttribute('data-news-id');
                     if (newsId) {
-                        window.location.href = `/news/${newsId}`;
+                        window.location.href = `/vesti/${newsId}`;
                     }
                 });
                 card.style.cursor = 'pointer';

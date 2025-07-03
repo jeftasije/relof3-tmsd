@@ -177,8 +177,8 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::get('/organizaciona-struktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
-Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
+Route::get('/pretraga', [SearchController::class, 'index'])->name('search.index');
+Route::get('/pretraga-rezultati', [SearchController::class, 'search'])->name('search.results');
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 

@@ -1,6 +1,6 @@
 <x-guest-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center w-full p-4" id="header">
+        <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg) !important;">
             <div></div>
             <button id="theme-toggle" class="p-2 rounded-full text-gray-900 hover:bg-gray-200 focus:outline-none dark:text-white dark:hover:bg-gray-700">
                 <svg id="moon-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -13,30 +13,31 @@
         </div>
     </x-slot>
 
-    <div class="min-h-[90vh] w-full bg-white flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
+    <div style="background: var(--primary-bg) !important; min-height: 90vh;" class="w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" x-data>
         <div class="w-full max-w-screen-xl mx-auto">
-            <div class="bg-white dark:bg-gray-900">
-                <div class="p-2 sm:p-4 lg:p-6 text-gray-900 dark:text-white">
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center dark:text-white">
-                        Rezultati pretrage za: "{{ $query }}"
+            <div style="background: var(--primary-bg) !important;">
+                <div class="p-2 sm:p-4 lg:p-6">
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 md:mb-6 text-center" style="color: var(--primary-text) !important;">
+                        {{ App::getLocale() === 'en' ? 'Search results for: ' : (App::getLocale() === 'sr-Cyrl' ? 'Резултати претраге за: ' : 'Rezultati pretrage za: ') }} "{{ $query }}"
                     </h1>
 
                     @if(empty($searchResults))
-                        <p class="text-center text-gray-700 dark:text-gray-300">Nema rezultata pretrage.</p>
+                        <p class="text-center text-sm sm:text-base md:text-lg max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto" style="color: var(--secondary-text) !important;">
+                            {{ App::getLocale() === 'en' ? 'No search results.' : (App::getLocale() === 'sr-Cyrl' ? 'Нема резултата претраге.' : 'Nema rezultata pretrage.') }}
+                        </p>
                     @else
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                             @foreach ($searchResults as $result)
-                                <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 shadow hover:shadow-lg transition cursor-pointer">
-                                    <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ $result['title'] }}</h2>
-                                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $result['description'] }}</p>
-                                    <a href="{{ $result['route'] }}" target="_blank" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                                        Pogledaj
+                                <div class="border rounded-lg p-4 shadow hover:shadow-lg transition duration-300 hover:-translate-y-1 hover:scale-105 flex flex-col" style="background: var(--primary-bg) !important; color: var(--primary-text) !important; min-height: 200px; box-shadow: 5px 5px 15px rgba(0,0,0,0.25); border: 1px solid var(--secondary-text) !important;">
+                                    <h2 class="text-xl font-semibold mb-2" style="color: var(--primary-text) !important;">{{ $result['title'] }}</h2>
+                                    <p class="mb-4 text-sm sm:text-base md:text-lg flex-grow" style="color: var(--secondary-text) !important;">{{ $result['description'] }}</p>
+                                    <a href="{{ $result['route'] }}" target="_blank" class="w-fit px-4 py-2 rounded-lg font-semibold transition hover:shadow mt-auto" style="background: var(--accent) !important; color: #fff !important;">
+                                        {{ App::getLocale() === 'en' ? 'Show' : (App::getLocale() === 'sr-Cyrl' ? 'Погледај' : 'Pogledaj') }}
                                     </a>
                                 </div>
                             @endforeach
                         </div>
                     @endif
-
                 </div>
             </div>
         </div>
