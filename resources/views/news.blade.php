@@ -59,14 +59,14 @@
         class="w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" x-data>
         <div class="w-full max-w-screen-xl mx-auto">
 
-            <div class="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
+            <div class="flex items-center w-full p-4 relative" id="header">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full"
                     style="color: var(--primary-text) !important;">
                     {{ $text['title'] }}
                 </h1>
                 @auth
                     <button @click="$store.modals.openHelp()"
-                        class="flex items-center gap-2 ml-4 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]">
+                        class="absolute right-0 flex items-center gap-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -141,7 +141,8 @@
                                     for="summary">
                                     {{ App::getLocale() === 'en' ? 'Summary' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис' : 'Kratak opis') }}
                                 </label>
-                                <textarea name="summary" id="summary" rows="2" required class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                <textarea name="summary" id="summary" rows="2" required
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
                                     style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
 
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
@@ -191,7 +192,8 @@
                             </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-8">
-                            <button type="button" @click="$store.modals.closeAll()" class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
+                            <button type="button" @click="$store.modals.closeAll()"
+                                class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
 
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
