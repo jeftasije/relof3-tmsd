@@ -1,4 +1,14 @@
 <x-guest-layout>
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('comment.' . session('success')) }}
+    </div>
+    @endif
     <div class="bg-white/70 dark:bg-gray-900/80 rounded-lg shadow-lg p-8 max-w-7xl mx-auto" style="background: var(--primary-bg); color: var(--primary-text);">
         <div class="flex flex-col">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
@@ -105,17 +115,6 @@
         <div class="flex justify-center mt-6">
             {{ $comments->links() }}
         </div>
-
-        @if(session('success'))
-        <div
-            x-data="{ show: true }"
-            x-show="show"
-            x-transition
-            x-init="setTimeout(() => show = false, 4000)"
-            class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
-            {{ session('success') }}
-        </div>
-        @endif
     </div>
 
     <div

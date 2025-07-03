@@ -4,7 +4,16 @@
             Kontakt
         </h2>
     </x-slot>
-
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('contact.' . session('success')) }}
+    </div>
+    @endif
     <div class="w-full min-h-screen" style="background: var(--primary-bg); color: var(--primary-text);"
         x-data="contactEditor({
             initialTitle: @js($text['title'] ?? ''),
@@ -97,9 +106,14 @@
                         style="white-space:pre-line; color: var(--primary-text); font-size: 1.2rem;"></div>
                 </div>
             </div>
+            
+            @php
+                $isEditor = auth()->check() && auth()->user()->isEditor();
+            @endphp
 
             <form action="{{ route('contact.store') }}" method="POST" id="contactForm"
-                class="space-y-6 w-full max-w-3xl mx-auto mt-12">
+                class="space-y-6 w-full max-w-3xl mx-auto mt-12 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
+                {{ $isEditor ? 'onsubmit=return false;' : '' }}>
                 @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
