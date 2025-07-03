@@ -141,80 +141,81 @@
                     @click.stop
                 >
                     <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                            <div>
-                                <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
-                                    <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
-                                        {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
-                                    </h2>
-                                </div>
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="title">
-                                    {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
-                                </label>
-                                <input type="text" name="title" id="title" required
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
-
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="summary">
-                                    {{ App::getLocale() === 'en' ? 'Summary' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис' : 'Kratak opis') }}
-                                </label>
-                                <textarea name="summary" id="summary" rows="2"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
-
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="image">
-                                    {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
-                                </label>
-                                <input type="file" name="image" id="image" accept="image/*"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
-
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="author">
-                                    {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
-                                </label>
-                                <input type="text" name="author" id="author"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
-
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="published_at">
-                                    {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
-                                </label>
-                                <input type="date" name="published_at" id="published_at"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                        <div>
+                            <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
+                                <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
+                                    {{ App::getLocale() === 'en' ? 'Add News' : (App::getLocale() === 'sr-Cyrl' ? 'Додај вест' : 'Dodaj vest') }}
+                                </h2>
                             </div>
-                            <div>
-                                <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
-                                    <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
-                                        {{ App::getLocale() === 'en' ? 'Extended News' : (App::getLocale() === 'sr-Cyrl' ? 'Проширена вест' : 'Proširena vest') }}
-                                    </h2>
-                                </div>
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="content">
-                                    {{ App::getLocale() === 'en' ? 'Full Content' : (App::getLocale() === 'sr-Cyrl' ? 'Цео садржај' : 'Ceo sadržaj') }}
-                                </label>
-                                <textarea name="content" id="content" rows="6"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="title">
+                                {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
+                            </label>
+                            <input type="text" name="title" id="title" required
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
 
-                                <label class="block mb-2" style="color: var(--secondary-text) !important;" for="tags">
-                                    {{ App::getLocale() === 'en' ? 'Tags (comma separated)' : (App::getLocale() === 'sr-Cyrl' ? 'Тагови (раздвојени зарезом)' : 'Tagovi (zarez)') }}
-                                </label>
-                                <input type="text" name="tags" id="tags"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="summary">
+                                {{ App::getLocale() === 'en' ? 'Summary' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис' : 'Kratak opis') }}
+                            </label>
+                            <textarea name="summary" id="summary" rows="2" required
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
+
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="image">
+                                {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
+                            </label>
+                            <input type="file" name="image" id="image" accept="image/*"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
+
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="author">
+                                {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
+                            </label>
+                            <input type="text" name="author" id="author" required
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
+
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="published_at">
+                                {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
+                            </label>
+                            <input type="date" name="published_at" id="published_at" required
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
+                                <h2 class="text-xl font-semibold" style="color: var(--primary-text) !important;">
+                                    {{ App::getLocale() === 'en' ? 'Extended News' : (App::getLocale() === 'sr-Cyrl' ? 'Проширена вест' : 'Proširena vest') }}
+                                </h2>
                             </div>
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="content">
+                                {{ App::getLocale() === 'en' ? 'Full Content' : (App::getLocale() === 'sr-Cyrl' ? 'Цео садржај' : 'Ceo sadržaj') }}
+                            </label>
+                            <textarea name="content" id="content" rows="6"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
+
+                            <label class="block mb-2" style="color: var(--secondary-text) !important;" for="tags">
+                                {{ App::getLocale() === 'en' ? 'Tags (comma separated)' : (App::getLocale() === 'sr-Cyrl' ? 'Тагови (раздвојени зарезом)' : 'Tagovi (zarez)') }}
+                            </label>
+                            <input type="text" name="tags" id="tags"
+                                class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
                         </div>
-                        <div class="flex justify-end gap-2 mt-8">
-                            <button type="button" @click="$store.modals.closeAll()" class="px-4 py-2 rounded"
-                                    style="background: #cbd5e1; color: var(--primary-text);">
-                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                            </button>
-                            <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
-                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="flex justify-end gap-2 mt-8">
+                        <button type="button" @click="$store.modals.closeAll()" class="px-4 py-2 rounded"
+                                style="background: #cbd5e1; color: var(--primary-text);">
+                            {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                        </button>
+                        <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                            {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                        </button>
+                    </div>
+                </form>
+
                 </div>
             </div>
 
