@@ -45,19 +45,14 @@ class HistoryController extends Controller
             $content_cy = $originalText;
             $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
             $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
+        } elseif (app()->getLocale() === 'sr') {
+            $content_lat = $originalText;
+            $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
+            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
-                $content_lat = $originalText;
-                $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
-                $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-            } else {
-                $content_en = $originalText;
-                $content_cy = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
-                $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            }
+            $content_en = $originalText;
+            $this->updateLangFile('en', ['history.content' => $content_en]);
+            return back()->with('success', 'Opis istorije je uspešno ažuriran.');
         }
 
         $this->updateLangFile('sr', ['history.content' => $content_lat]);
