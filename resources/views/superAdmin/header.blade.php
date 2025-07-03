@@ -106,14 +106,18 @@
             <label class="mr-5"><input type="radio" name="lang" value="sr_cyrl"> {{ App::getLocale() === 'en' ? 'cyrillic' : (App::getLocale() === 'sr-Cyrl' ? 'ћирилица' : 'ćirilica') }}</label>
             <label class="mr-5"><input type="radio" name="lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'енглески' : 'engleski') }}</label>
         </div>
-        <div id="header-preview-container" class="mt-6 border rounded-lg shadow-sm">
+        <div id="header-preview-container" class="mt-6 border rounded-lg shadow-sm break-words">
             <nav class="py-5 px-10" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
                 <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <div class="flex items-center space-x-3">
                         <x-application-logo/>
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap" style="color: var(--primary-text)">
-                            <span id="preview-header-title">{{ $title_sr_lat }}</span><br />
-                            <span id="preview-header-subtitle">{{ $subtitle_sr_lat }}</span>
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap break-words" style="color: var(--primary-text)">
+                            <span id="preview-header-title" class="break-all whitespace-normal overflow-hidden">
+                                {{ $title_sr_lat }}
+                            </span><br />
+                            <span id="preview-header-subtitle" class="break-all whitespace-normal overflow-hidden">
+                                {{ $subtitle_sr_lat }}
+                            </span>
                         </span>
                     </div>
                 </div>
