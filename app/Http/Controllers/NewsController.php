@@ -119,7 +119,10 @@ class NewsController extends Controller
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['image_path'] = 'images/' . $filename;
+        } else {
+            $validated['image_path'] = 'images/news-default.png'; // <-- Ovo je dodato
         }
+
 
         $title_src    = $validated['title'];
         $summary_src  = $validated['summary'];
