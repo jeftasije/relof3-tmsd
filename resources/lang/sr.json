@@ -113,9 +113,9 @@
         "description": "Vaša pitanja, sugestije ili pohvale su dobrodošle!"
     },
     "question.description": "Na ovoj stranici možete pronaći često postavljana pitanja i njihove odgovore. Ako ne pronađete ono što tražite, slobodno nas kontaktirajte..",
-    "question.update_success": "Pitanje je uspešno ažurirano!",
-    "question.destroy_success": "Pitanje je uspešno obrisano!",
-    "question.store_success": "Pitanje je uspešno kreirano!",
+    "question.update_success": "Pitanje je uspešno ažurirano.",
+    "question.destroy_success": "Pitanje je uspešno obrisano.",
+    "question.store_success": "Pitanje je uspešno kreirano.",
     "question.updateDescription_success": "Opis je uspešno ažuriran.",
     "question.default_success": "Izmene su uspešno sačuvane."
 }
