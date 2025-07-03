@@ -113,9 +113,9 @@
         "description": "Ваша питања, сугестије или похвале су добродошле!"
     },
     "question.description": "На овој страници можете пронаћи често постављана питања и њихове одговоре. Ако не пронађете оно што тражите, слободно нас контактирајте..",
-    "question.update_success": "Питање је успешно ажурирано!",
-    "question.destroy_success": "Питање је успешно обрисано!",
-    "question.store_success": "Питање је успешно креирано!",
+    "question.update_success": "Питање је успешно ажурирано.",
+    "question.destroy_success": "Питање је успешно обрисано.",
+    "question.store_success": "Питање је успешно креирано.",
     "question.updateDescription_success": "Опис је успешно ажуриран.",
     "question.default_success": "Измене су успешно сачуване."
 }
