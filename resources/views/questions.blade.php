@@ -70,7 +70,8 @@
 
                     <div id="editButtons" class="flex justify-end gap-4 hidden">
                         <button type="button" id="cancelEditBtn"
-                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+                            style="background: #cbd5e1; color: var(--primary-text);">
                             @switch(App::getLocale())
                                 @case('en') Cancel @break
                                 @case('sr-Cyrl') Откажи @break
@@ -419,7 +420,7 @@
                     <button 
                         type="submit" 
                         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
-                    >
+                        style="background: var(--accent); color: #fff;">
                         @switch(App::getLocale())
                             @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break

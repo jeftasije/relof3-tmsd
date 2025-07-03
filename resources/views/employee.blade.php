@@ -49,7 +49,6 @@
         </div>
     @endif
 
-
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header">
             <div></div>
@@ -66,7 +65,6 @@
 
     <div style="background: var(--primary-bg) !important; min-height: 90vh;" class="w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" x-data>
         <div class="w-full max-w-screen-xl mx-auto">
-
             <div class="flex justify-between items-center mb-2 sm:mb-4 md:mb-6">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full" style="color: var(--primary-text) !important;">
                     {{ $text['title'] }}

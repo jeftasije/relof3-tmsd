@@ -46,22 +46,9 @@ class EmployeeController extends Controller
         ]);
 
         if ($locale === 'en') {
-            $bio_en = $validated['biography'] ?? '';
-            $pos_en = $validated['position'];
-
-            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
-            $pos_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($pos_en));
-
-            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
-            $pos_cy = $lm->latin_to_cyrillic($pos_lat);
-
             $employee->update([
-                'biography_en' => $bio_en,
-                'position_en' => $pos_en,
-                'biography' => $bio_lat,
-                'position' => $pos_lat,
-                'biography_cy' => $bio_cy,
-                'position_cy' => $pos_cy,
+                'biography_en' => $validated['biography'] ?? '',
+                'position_en' => $validated['position'],
             ]);
         } elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
             $bio_cy = $validated['biography'] ?? '';
@@ -103,6 +90,7 @@ class EmployeeController extends Controller
 
         return response()->json(['message' => 'Updated']);
     }
+
 
     public function uploadImage(Request $request, Employee $employee)
     {
@@ -336,33 +324,11 @@ class EmployeeController extends Controller
             $exp_en = $validated['experience_translated'] ?? '';
             $skills_en_arr = !empty($validated['skills_translated']) ? array_map('trim', explode(',', $validated['skills_translated'])) : [];
 
-            $bio_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($bio_en));
-            $uni_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($uni_en));
-            $exp_lat = $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($exp_en));
-            $skills_lat = array_map(function($s) use ($translate, $lm) {
-                return $lm->cyrillic_to_latin($translate->setSource('en')->setTarget('sr')->translate($s));
-            }, $skills_en_arr);
-
-            $bio_cy = $lm->latin_to_cyrillic($bio_lat);
-            $uni_cy = $lm->latin_to_cyrillic($uni_lat);
-            $exp_cy = $lm->latin_to_cyrillic($exp_lat);
-            $skills_cy = array_map(fn($s) => $lm->latin_to_cyrillic($s), $skills_lat);
-
             $updateData = [
                 'biography_translated'  => $bio_en,
                 'university_translated' => $uni_en,
                 'experience_translated' => $exp_en,
                 'skills_translated'     => $skills_en_arr,
-
-                'biography'             => $bio_lat,
-                'university'            => $uni_lat,
-                'experience'            => $exp_lat,
-                'skills'                => $skills_lat,
-
-                'biography_cy'          => $bio_cy,
-                'university_cy'         => $uni_cy,
-                'experience_cy'         => $exp_cy,
-                'skills_cy'             => $skills_cy,
             ];
         }
         elseif ($locale === 'sr-Cyrl' || $locale === 'cy') {
@@ -453,4 +419,5 @@ class EmployeeController extends Controller
         return redirect()->route('employees.show', $employee->id)
             ->with('success', 'Extended biography updated successfully.');
     }
+
 }

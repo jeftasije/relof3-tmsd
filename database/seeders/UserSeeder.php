@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
         $userInfo = [
             [
                 'name' => 'Super Admin',
-                'email' => 'admin@exmaple.com',
+                'email' => 'admin@example.com',
                 'password' => Hash::make('pass1234'),
                 'role' => 'superAdmin'
             ],
             [
                 'name' => 'Editor',
-                'email' => 'editor@exmaple.com',
+                'email' => 'editor@example.com',
                 'password' => Hash::make('pass1234'),
                 'role' => 'editor'
             ]

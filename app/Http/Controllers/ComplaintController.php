@@ -288,67 +288,63 @@ class ComplaintController extends Controller
         $description = $validated['description'];
         $content = $validated['content'];
 
-        $localized = [
-            'sr'      => ['title' => $title, 'description' => $description, 'content' => $content],
-            'sr-Cyrl' => ['title' => $title, 'description' => $description, 'content' => $content],
-            'en'      => ['title' => $title, 'description' => $description, 'content' => $content],
-        ];
-
-        if ($src === 'sr') {
-            $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($title);
-            $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($description);
-            $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($content);
-
-            $translate->setSource('sr')->setTarget('en');
-            $localized['en']['title'] = $translate->translate($title);
-            $localized['en']['description'] = $translate->translate($description);
-            $localized['en']['content'] = $translate->translate($content);
-
-        } elseif ($src === 'sr-Cyrl') {
-            $localized['sr']['title'] = $lm->cyrillic_to_latin($title);
-            $localized['sr']['description'] = $lm->cyrillic_to_latin($description);
-            $localized['sr']['content'] = $lm->cyrillic_to_latin($content);
-
-            $translate->setSource('sr')->setTarget('en');
-            $localized['en']['title'] = $translate->translate($localized['sr']['title']);
-            $localized['en']['description'] = $translate->translate($localized['sr']['description']);
-            $localized['en']['content'] = $translate->translate($localized['sr']['content']);
-
-        } else { 
-            $translate->setSource('en')->setTarget('sr');
-            $sr_title = $translate->translate($title);
-            $sr_description = $translate->translate($description);
-            $sr_content = $translate->translate($content);
-
-            $localized['sr']['title'] = $lm->cyrillic_to_latin($sr_title);
-            $localized['sr']['description'] = $lm->cyrillic_to_latin($sr_description);
-            $localized['sr']['content'] = $lm->cyrillic_to_latin($sr_content);
-
-            $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($localized['sr']['title']);
-            $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($localized['sr']['description']);
-            $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($localized['sr']['content']);
-        }
-
         $langFiles = [
             'sr'      => resource_path('lang/sr.json'),
             'sr-Cyrl' => resource_path('lang/sr-Cyrl.json'),
             'en'      => resource_path('lang/en.json'),
         ];
 
-        foreach ($langFiles as $lang => $path) {
+        if ($src === 'en') {
+            $path = $langFiles['en'];
             $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
             if (!isset($json['complaints']) || !is_array($json['complaints'])) {
                 $json['complaints'] = [];
             }
-            $json['complaints']['title'] = $localized[$lang]['title'];
-            $json['complaints']['description'] = $localized[$lang]['description'];
-            $json['complaints']['content'] = $localized[$lang]['content'];
-
+            $json['complaints']['title'] = $title;
+            $json['complaints']['description'] = $description;
+            $json['complaints']['content'] = $content;
             file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        }
+        } else {
+            $localized = [
+                'sr'      => ['title' => $title, 'description' => $description, 'content' => $content],
+                'sr-Cyrl' => ['title' => $title, 'description' => $description, 'content' => $content],
+                'en'      => ['title' => $title, 'description' => $description, 'content' => $content],
+            ];
 
+            if ($src === 'sr') {
+                $localized['sr-Cyrl']['title'] = $lm->latin_to_cyrillic($title);
+                $localized['sr-Cyrl']['description'] = $lm->latin_to_cyrillic($description);
+                $localized['sr-Cyrl']['content'] = $lm->latin_to_cyrillic($content);
+
+                $translate->setSource('sr')->setTarget('en');
+                $localized['en']['title'] = $translate->translate($title);
+                $localized['en']['description'] = $translate->translate($description);
+                $localized['en']['content'] = $translate->translate($content);
+
+            } elseif ($src === 'sr-Cyrl') {
+                $localized['sr']['title'] = $lm->cyrillic_to_latin($title);
+                $localized['sr']['description'] = $lm->cyrillic_to_latin($description);
+                $localized['sr']['content'] = $lm->cyrillic_to_latin($content);
+
+                $translate->setSource('sr')->setTarget('en');
+                $localized['en']['title'] = $translate->translate($localized['sr']['title']);
+                $localized['en']['description'] = $translate->translate($localized['sr']['description']);
+                $localized['en']['content'] = $translate->translate($localized['sr']['content']);
+            }
+
+            foreach ($langFiles as $lang => $path) {
+                $json = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
+                if (!isset($json['complaints']) || !is_array($json['complaints'])) {
+                    $json['complaints'] = [];
+                }
+                $json['complaints']['title'] = $localized[$lang]['title'];
+                $json['complaints']['description'] = $localized[$lang]['description'];
+                $json['complaints']['content'] = $localized[$lang]['content'];
+
+                file_put_contents($path, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            }
+        }
 
         return response()->json(['success' => true, 'message' => 'Tekst uspešno sačuvan!']);
     }
-
 }
