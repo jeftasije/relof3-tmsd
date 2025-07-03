@@ -47,6 +47,7 @@
                     </template>
                     <span x-show="!editing" x-text="form.title"></span>
                 </h1>
+                
                 <div class="flex flex-row items-center gap-3 justify-center w-full">
                     <template x-if="editing">
                         <input type="text" x-model="form.description"
@@ -55,6 +56,7 @@
                     </template>
                     <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
                         style="color: var(--secondary-text);" x-text="form.description"></span>
+                    @auth
                     <button id="help-btn" onclick="toggleHelpModal()"
                         class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
                         style="color: var(--primary-text); margin-bottom: 0;" aria-label="Pomoć">
@@ -69,6 +71,7 @@
                             {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                         </span>
                     </button>
+                    @endauth
                 </div>
             </div>
 

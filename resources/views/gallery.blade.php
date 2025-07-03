@@ -62,7 +62,7 @@
                 @method('PATCH')
                 <div class="max-w-lg mx-auto">
                     <div id="valueDisplay" class="prose dark:prose-invert max-w-none text-center"
-                        style="color: var(--secondary-text); font-family: var(--font-body);">
+                        style="color: var(--secondary-text); font-family: var(--font-body); text-align: center;">
                         {!! __('gallery.description') !!}
                     </div>
                     
@@ -135,7 +135,7 @@
                 </div>
             </form>
         @else
-            <div class="prose dark:prose-invert max-w-none" style="color: var(--secondary-text); font-family: var(--font-body);">
+            <div class="prose dark:prose-invert max-w-none" style="color: var(--secondary-text); font-family: var(--font-body); text-align: center;">
                 {!! nl2br(e(__('gallery.description'))) !!}
             </div>
         @endauth
