@@ -126,8 +126,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
     Route::post('/homepage/team-visibility', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
 
-    Route::patch('/kontakt', [ContactController::class, 'update'])->name('contact.update');
-
+    Route::post('/kontakt/azuriraj-sadrzaj', [ContactController::class, 'update'])->name('contact.updateContent');
+    
     Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 
     Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
@@ -137,7 +137,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/uredi-stranicu/{slug}', [PageController::class, 'edit'])->name('page.edit');
     Route::delete('/stranica/{id}', [PageController::class, 'destroy'])->name('page.destroy');
     Route::patch('/stranica/{slug}', [PageController::class, 'update'])->name('page.update');
-
+    
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');

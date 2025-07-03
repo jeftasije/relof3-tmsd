@@ -10,7 +10,7 @@
             initialTitle: @js($text['title'] ?? ''),
             initialDescription: @js($text['description'] ?? ''),
             initialContent: @js($text['content'] ?? ''),
-            updateUrl: '{{ route('contact.update') }}',
+            updateUrl: '{{ route('contact.updateContent') }}', {{-- AŽURIRANO: Koristimo novu nazvanu rutu --}}
             locale: '{{ App::getLocale() }}',
             csrf: '{{ csrf_token() }}'
         })">
@@ -29,12 +29,12 @@
 
         <div class="max-w-3xl mx-auto px-4 py-12 relative"> {{-- Ovaj div je relativan za pozicioniranje dugmadi --}}
             @auth
-                {{-- PROMENJENO: Još veći negativni "right" za veći pomak udesno --}}
                 <div class="absolute right-[-100px] top-0 flex flex-col items-end z-10" style="gap:8px; padding-top: 50px;">
-                    
+
                     <button id="help-btn" onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 order-first" {{-- Uvek order-first --}}
-                        style="color: var(--primary-text); background:transparent;" aria-label="Pomoć">
+                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 order-first"
+                        style="color: var(--primary-text); background:transparent;"
+                        aria-label="Pomoć">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="9" stroke-width="2" />
@@ -46,11 +46,11 @@
                         </span>
                     </button>
 
-                    <button x-show="!editing" @click="startEdit()"
-                        class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px;">
+                    <button x-show="!editing" @click="startEdit()" class="accent font-semibold py-2 px-4 rounded text-base"
+                        style="width:100px;">
                         {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди' : 'Uredi') }}
                     </button>
-                    
+
                     <template x-if="editing">
                         <div class="flex gap-2 justify-end w-full"> {{-- Nema order klasa, default redosled --}}
                             <button @click="saveEdit()"
@@ -234,6 +234,7 @@
                     {!! App::getLocale() === 'en'
                         ? '
                                 
+                                
                                     By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the contact content.<br><br>
                                     You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
                                     If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the content will revert to its previous state without changes.<br><br>
@@ -243,6 +244,7 @@
                         : (App::getLocale() === 'sr-Cyrl'
                             ? '
                                 
+                                
                                         Кликом на дугме <strong>„Уреди“</strong> отворићеће се поље за уређивање текста за контактирање.<br><br>
                                         Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br>
                                         Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
@@ -250,6 +252,7 @@
                                         Бићете упитани за потврду пре него што се промене примене.
                                         '
                             : '
+                                
                                 
                                         Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta za kontaktiranje.<br><br>
                                         Sadržaj možete uneti na engleskom ili srpskom jeziku (ćiilicom ili latinicom), a biće preveden na jezik koji čitate. <br> <br>
@@ -319,6 +322,7 @@
 
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
+        // Alpine.js kod
         function contactEditor({
             initialTitle,
             initialDescription,
@@ -354,17 +358,17 @@
                     document.getElementById('submitEditModal').classList.remove('hidden');
                     document.getElementById('confirmSubmitEditBtn').onclick = () => {
                         fetch(updateUrl, {
-                                method: 'POST',
+                                method: 'POST', // VAŽNA IZMENA: Promenjeno iz 'PATCH' u 'POST'
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': csrf,
                                     'Accept': 'application/json'
                                 },
                                 body: JSON.stringify({
-                                    locale: locale,
                                     title: this.form.title,
                                     description: this.form.description,
-                                    content: this.form.content
+                                    content: this.form.content,
+                                    locale: locale
                                 })
                             })
                             .then(res => res.json())
