@@ -75,7 +75,8 @@
 
                     <div id="editButtons" class="flex justify-end gap-4 hidden">
                         <button type="button" id="cancelEditBtn"
-                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+                            style="background: #cbd5e1; color: var(--primary-text);">
                             @switch(App::getLocale())
                                 @case('en') Cancel @break
                                 @case('sr-Cyrl') Откажи @break
@@ -119,7 +120,7 @@
                                     </button>
                                     <button data-modal-hide="submitModal1" type="button"
                                         class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                        style="background: #cbd5e1; color: var(--primary-text);">>
+                                        style="background: #cbd5e1; color: var(--primary-text);">
                                         @switch(App::getLocale())
                                             @case('en') Cancel @break
                                             @case('sr-Cyrl') Откажи @break
