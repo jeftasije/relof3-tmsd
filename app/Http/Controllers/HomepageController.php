@@ -203,18 +203,9 @@ class HomepageController extends Controller
             $newsTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
             $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
-                $newsTitleLat = $originalTitle;
-                $newsTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            } else {
-                $newsTitleEn = $originalTitle;
-                $newsTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $newsTitleLat = $this->languageMapper->cyrillic_to_latin($newsTitleCyr);
-            }
+            $newsTitleLat = $originalTitle;
+            $newsTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         }
 
         $enJson['homepage_news_title'] = $newsTitleEn;
@@ -259,30 +250,13 @@ class HomepageController extends Controller
             $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+            $contactTitleLat = $originalTitle;
+            $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
-                $contactTitleLat = $originalTitle;
-                $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $contactSubtitleLat = $originalSubtitle;
-                $contactSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $contactTitleEn = $originalTitle;
-                $contactTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $contactTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $contactSubtitleEn = $originalSubtitle;
-                $contactSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $contactSubtitleLat = $this->languageMapper->cyrillic_to_latin($contactSubtitleCyr);
-            }
+            $contactSubtitleLat = $originalSubtitle;
+            $contactSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['homepage_contact_title'] = $contactTitleEn;
@@ -369,31 +343,14 @@ class HomepageController extends Controller
             $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
             $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+        } else {      
+            $cobissTitleLat = $originalTitle;
+            $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
-                $cobissTitleLat = $originalTitle;
-                $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $cobissSubtitleLat = $originalSubtitle;
-                $cobissSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $cobissTitleEn = $originalTitle;
-                $cobissTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $cobissTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $cobissSubtitleEn = $originalSubtitle;
-                $cobissSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($cobissSubtitleCyr);
-            }
+            $cobissSubtitleLat = $originalSubtitle;
+            $cobissSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['cobiss_title'] = $cobissTitleEn;
@@ -467,31 +424,14 @@ class HomepageController extends Controller
             $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
             $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+        } else {       
+            $ourTeamTitleLat = $originalTitle;
+            $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        
-                $ourTeamTitleLat = $originalTitle;
-                $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $ourTeamSubtitleLat = $originalSubtitle;
-                $ourTeamSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $ourTeamTitleEn = $originalTitle;
-                $ourTeamTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $ourTeamTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $ourTeamSubtitleEn = $originalSubtitle;
-                $ourTeamSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($ourTeamSubtitleCyr);
-            }
+            $ourTeamSubtitleLat = $originalSubtitle;
+            $ourTeamSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['our_team_title'] = $ourTeamTitleEn;
@@ -603,26 +543,14 @@ class HomepageController extends Controller
             $subtitleLat = $this->languageMapper->cyrillic_to_latin($subtitleCyr);
             $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($subtitleCyr);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+            $titleLat = $originalTitle;
+            $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
-                $titleLat = $originalTitle;
-                $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+            $subtitleLat = $originalSubtitle;
+            $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-                $subtitleLat = $originalSubtitle;
-                $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-            } else {
-                $titleEn = $originalTitle;
-                $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
-
-                $subtitleEn = $originalSubtitle;
-                $subtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $subtitleLat = $this->languageMapper->cyrillic_to_latin($subtitleCyr);
-            }
         }
 
         return [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn];

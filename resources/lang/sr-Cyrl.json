@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Контакт",
         "email": "bibl@gmail.com",
-        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
-        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
+        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
         "work_hours_formatted": [
             "Понедељак - Петак: 08:00 - 16:00",
             "Субота: 08:00 - 14:00",
             "Недеља: Нерадна"
         ],
         "work_hours_label": "Радно Време",
-        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images/nbnp-logo.png",
-        "logo_dark": "images/nbnp-logo-dark.png"
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
     },
     "services": {
         "hero_title": "Услуге за све потребе",
