@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Contact",
         "email": "bibl@gmail.com",
-        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
-        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
+        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
         "work_hours_formatted": [
             "Monday - Friday: 08:00 - 16:00",
             "Saturday: 08:00 - 14:00",
             "Sunday: Non-working"
         ],
         "work_hours_label": "Working hours",
-        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images/nbnp-logo.png",
-        "logo_dark": "images/nbnp-logo-dark.png"
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
     },
     "services": {
         "hero_title": "Services for all needs",
@@ -77,7 +77,7 @@
     "homepage_title": "Public Library \"Dositej Obradović\"",
     "homepage_subtitle": "Novi Pazar",
     "homepage_news_title": "News",
-    "homepage_contact_title": "Let's stay in touch",
+    "homepage_contact_title": "Let's keep in touch",
     "homepage_contact_subtitle": "Sign up to stay informed about the latest news.",
     "homepage_hero_image_path": "images/herosection.jpg",
     "cobiss_title": "Search for books on \"COBISS\"",
@@ -88,6 +88,7 @@
     "gallery.updateDescription_success": "Gallery description updated successfully.",
     "gallery.destroy_success": "File has been successfully deleted.",
     "gallery.upload_success": "File has been successfully uploaded.",
+    "gallery.title": "Gallery",
     "page_settings": "Page settings",
     "url_label": "Page URL",
     "name_label": "Page Name",
@@ -104,7 +105,8 @@
     "page_navigation_sub_exists": "The selected subsection is invalid.",
     "history.content": "At the beginning of the 20th century, Novi Pazar was a culturally and economically underdeveloped town. Cultural life was divided along religious lines: Muslims maintained private libraries in homes and mosques, while the Orthodox community organized church libraries and reading rooms. In 1912, the first printing press appeared, followed by the first local newspaper in 1921. <br></br> The first public library in Novi Pazar was officially established on June 30, 1921. During the interwar period, libraries mainly existed within schools. World War II brought devastation—most books were destroyed or lost. After the war, efforts were made to rebuild. The People’s Library was founded on December 23, 1944. Despite modest beginnings in poor facilities, by 1957 it became the “Dositej Obradović” City Library.<br></br> Over the next decades, it expanded its collection and services, becoming the municipal reference library in 1983. In 1996, it moved to its current building in the city park. Modernization began in 2006 with the introduction of the COBISS system and electronic lending. Today, the library has 25 employees, 10 departments, about 80,000 books, and around 5,000 active members yearly. It remains a key cultural institution in Novi Pazar..",
     "history.update_success": "History description updated successfully.",
-    "header_title": "Public library \"Dositej Obradović\"",
+    "history.title": "History",
+    "header_title": "Public Library \"Dositej Obradović\"",
     "header_subtitle": "Novi Pazar",
     "complaints": {
         "title": "Complaints, Suggestions and Comments",

@@ -106,14 +106,18 @@
             <label class="mr-5"><input type="radio" name="lang" value="sr_cyrl"> {{ App::getLocale() === 'en' ? 'cyrillic' : (App::getLocale() === 'sr-Cyrl' ? 'ћирилица' : 'ćirilica') }}</label>
             <label class="mr-5"><input type="radio" name="lang" value="en"> {{ App::getLocale() === 'en' ? 'English' : (App::getLocale() === 'sr-Cyrl' ? 'енглески' : 'engleski') }}</label>
         </div>
-        <div id="header-preview-container" class="mt-6 border rounded-lg shadow-sm">
+        <div id="header-preview-container" class="mt-6 border rounded-lg shadow-sm break-words">
             <nav class="py-5 px-10" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
                 <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <div class="flex items-center space-x-3">
                         <x-application-logo/>
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap" style="color: var(--primary-text)">
-                            <span id="preview-header-title">{{ $title_sr_lat }}</span><br />
-                            <span id="preview-header-subtitle">{{ $subtitle_sr_lat }}</span>
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap break-words" style="color: var(--primary-text)">
+                            <span id="preview-header-title" class="break-all whitespace-normal overflow-hidden">
+                                {{ $title_sr_lat }}
+                            </span><br />
+                            <span id="preview-header-subtitle" class="break-all whitespace-normal overflow-hidden">
+                                {{ $subtitle_sr_lat }}
+                            </span>
                         </span>
                     </div>
                 </div>
@@ -140,10 +144,16 @@
                 </h2>
                 <p class="text-gray-700 dark:text-gray-300 space-y-2">
                     {!! App::getLocale() === 'en'
-                        ? 'On this page, you can <strong>change the information</strong> displayed in <strong>the header</strong> of your page. </br> To change the content, you need to enter the information in <strong>the form</strong> and press <strong>the "Save"</strong> button. </br> You can fill out the form for the Serbian language in either of the <strong>two scripts</strong> (Latin or Cyrillic), and then the system will <strong>automatically translate</strong> the information into English. You can <strong>review</strong> the translated information and, if necessary, <strong>edit</strong> it in the form for the English language. </br> How the header with the new data will look can be seen below the form, in the preview.'
+                        ? 'On this page, you can <strong>change the information</strong> displayed in <strong>the header</strong> of your page.<br>
+                            To change the content, you need to enter the information in <strong>the form</strong> and press <strong>the "Save"</strong> button.<br>
+                            In the first form, you should enter the information in Serbian (Latin or Cyrillic), and then the system will <strong>automatically translate</strong> the information into English. You can <strong>review</strong> and, if necessary, <strong>edit</strong> it in the form for the English language.<br>
+                            How the header with the new data will look can be seen below the form, in the preview.'
                         : (App::getLocale() === 'sr-Cyrl'
-                            ? 'На овој страници можете <strong>променити податке</strong> који се приказују у <strong>заглављу</strong> ваше странице.</br> Да бисте променили садржај, потребно је да унесете податке у <strong>форму</strong> и притиснете дугме <strong>„Сачувај“</strong>. </br> Форму за српски језик можете попунити на било ком од <strong>два писма</strong> (латиница или ћирилица), а онда ће систем <strong>аутоматски превести</strong> податке на енглески језик, те податке можете <strong>проверити</strong> и, по потреби, <strong>изменити</strong> у форми за енглески језик. </br> Како би заглавље са новим подацима изгледало, можете видети испод форме, у приказу.' 
-                            : 'Na ovoj stranici možete <strong>promeniti podatke</strong> koji se prikazuju u <strong>zaglavlju</strong> Vaše stranice.</br> Da biste promenili sadržaj, potrebno je da unesete podatke u <strong>formu</strong> i pritisnete dugme <strong>"Sačuvaj"</strong>. </br> Formu za srpski jezik možete popuniti na bilo kom od <strong>2 pisma</strong> (latinica ili ćirilica), a onda će sistem <strong>automatski prevesti</strong> podatke na engleski jezik, te podatke možete <strong>proveriti</strong> i, po potrebi, <strong>izmeniti</strong> u formi za engleski jezik. </br> Kako bi zaglavlje sa novim podacima izgledalo, možete videti ispod forme, u prikazu.')
+                            ? 'На овој страници можете <strong>променити податке</strong> који се приказују у <strong>заглављу</strong> ваше странице.<br>
+                                Да бисте променили садржај, потребно је да унесете податке у <strong>форму</strong> и притиснете дугме <strong>„Сачувај“</strong>.<br>
+                                У прву форму треба да унесете податке на српском језику , на било ком писму, а онда ће систем <strong>аутоматски превести</strong> податке на енглески језик, те податке можете <strong>проверити</strong> и, по потреби, <strong>изменити</strong> у форми за енглески језик.<br>
+                                Како би заглавље са новим подацима изгледало, можете видети испод форме, у приказу.' 
+                            : 'Na ovoj stranici možete <strong>promeniti podatke</strong> koji se prikazuju u <strong>zaglavlju</strong> Vaše stranice.</br> Da biste promenili sadržaj, potrebno je da unesete podatke u <strong>formu</strong> i pritisnete dugme <strong>"Sačuvaj"</strong>. </br> U prvu formu treba da unesete podatke na srpskom jeziku, na bilo kom pismu, a onda će sistem <strong>automatski prevesti</strong> podatke na engleski jezik, te podatke možete <strong>proveriti</strong> i, po potrebi, <strong>izmeniti</strong> u formi za engleski jezik. </br> Kako bi zaglavlje sa novim podacima izgledalo, možete videti ispod forme, u prikazu.')
                     !!}
                 </p>
             </div>

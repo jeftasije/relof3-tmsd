@@ -4,3 +4,4 @@
 !documents/*.pdf
 !templates/
 !templates/*.png
+!homepageVisibility.json
