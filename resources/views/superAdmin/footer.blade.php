@@ -689,22 +689,22 @@
                     const data = lang === 'sr' ? srData : (lang === 'sr-Cyrl' ? srCyrData : enData);
                     document.getElementById('preview-name').textContent = data.name || '';
                     document.getElementById('preview-address').textContent = data.address || '';
-                    document.getElementById('preview-address_label').textContent = data.address_label || '{{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }}';
+                    document.getElementById('preview-address_label').textContent = data.address_label || `{{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }} `;
                     document.getElementById('preview-pib').textContent = data.pib || '';
-                    document.getElementById('preview-pib_label').textContent = data.pib_label || '{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}';
+                    document.getElementById('preview-pib_label').textContent = data.pib_label || `{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}`;
                     document.getElementById('preview-phone').textContent = data.phone || '';
-                    document.getElementById('preview-phone_label').textContent = data.phone_label || '{{ App::getLocale() === 'en' ? 'Contact' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт' : 'Kontakt') }}';
+                    document.getElementById('preview-phone_label').textContent = data.phone_label || `{{ App::getLocale() === 'en' ? 'Contact' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт' : 'Kontakt') }}`;
                     document.getElementById('preview-email').textContent = data.email || '';
                     document.getElementById('preview-email-link').href = `mailto:${data.email || 'dositejbib@gmail.com'}`;
                     document.getElementById('preview-facebook').href = data.facebook || '#';
                     document.getElementById('preview-twitter').href = data.twitter || '#';
-                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || '{{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}';
+                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || `{{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}`;
                     document.getElementById('preview-work_hours').innerHTML = (data.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
                     document.getElementById('preview-map_embed').src = data.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                     document.getElementById('preview-copyrights').textContent = data.copyrights || '';
                     document.getElementById('preview-name_footer').textContent = data.name || '';
-                    document.getElementById('preview-logo_light').src = data.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                    document.getElementById('preview-logo_dark').src = data.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                    document.getElementById('preview-logo_light').src = data.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                    document.getElementById('preview-logo_dark').src = data.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                 }
 
                 document.querySelectorAll('input[name="preview-lang"]').forEach(radio => {
@@ -787,8 +787,8 @@
                                 document.getElementById('preview-map_embed').src = srData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                                 document.getElementById('preview-copyrights').textContent = srData.copyrights || '';
                                 document.getElementById('preview-name_footer').textContent = srData.name || '';
-                                document.getElementById('preview-logo_light').src = srData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = srData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                                document.getElementById('preview-logo_light').src = srData.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                                document.getElementById('preview-logo_dark').src = srData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
                             console.error('Error:', data.message);
@@ -826,8 +826,8 @@
                                 document.getElementById('preview-map_embed').src = enData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                                 document.getElementById('preview-copyrights').textContent = enData.copyrights || '';
                                 document.getElementById('preview-name_footer').textContent = enData.name || '';
-                                document.getElementById('preview-logo_light').src = enData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = enData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                                document.getElementById('preview-logo_light').src = enData.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                                document.getElementById('preview-logo_dark').src = enData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
                             console.error('Error:', data.message);

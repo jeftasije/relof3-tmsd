@@ -253,7 +253,6 @@
                 @endauth
             </div>
 
-            {{-- Delete Modal --}}
             <div
                 id="deleteModal"
                 tabindex="-1"
@@ -301,7 +300,6 @@
                 </div>
             </div>
 
-            {{-- Rename Modal --}}
             <div
                 id="renameModal"
                 tabindex="-1"
@@ -361,7 +359,6 @@
                 </div>
             </div>
 
-            {{-- Help Modal --}}
             <div
                 id="helpModal"
                 class="fixed inset-0 z-50 hidden flex items-center justify-center"
