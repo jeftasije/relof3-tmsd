@@ -112,6 +112,7 @@ class HomepageController extends Controller
         $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
 
         $heroImage = $visibilityJson['hero_image'];
+        $contactImage = $visibilityJson['contact_image'];
 
         $order = $data['component_order'] ?? [];
         $newsVisible = $data['news_visible'] ?? true;
@@ -124,14 +125,14 @@ class HomepageController extends Controller
         $visibleEmployees = Employee::whereIn('id', $visibleEmployeeIds)->get();
 
         return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible',
-        'ourTeamVisible', 'visibleEmployees', 'heroImage'));
+        'ourTeamVisible', 'visibleEmployees', 'heroImage', 'contactImage'));
     }
 
 
     public function updateSr(Request $request)
     {
         $validated = $this->validateRequest($request);
-        $imagePath = $this->handleImageUpload($request->file('image'));
+        $imagePath = $this->handleImageUpload($request->file('image'));              
 
         $srPath = resource_path('lang/sr.json');
         $srCyrPath = resource_path('lang/sr-Cyrl.json');
@@ -145,7 +146,6 @@ class HomepageController extends Controller
             [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn] =
                 $this->generateLocalizedTexts($validated['title_sr'], $validated['subtitle_sr']);
 
-            // Ažuriraj tekstove bez slike
             $this->updateJsonContent($srLatJson, $titleLat, $subtitleLat);
             $this->updateJsonContent($srCyrJson, $titleCyr, $subtitleCyr);
             $this->updateJsonContent($enJson, $titleEn, $subtitleEn);
@@ -155,7 +155,6 @@ class HomepageController extends Controller
         $this->writeJson($srCyrPath, $srCyrJson);
         $this->writeJson($enPath, $enJson);
 
-        // NOVO: upis putanje slike u posebni fajl
         if ($imagePath) {
             $visibilityPath = storage_path('app/public/homepageVisibility.json');
             $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
@@ -236,7 +235,8 @@ class HomepageController extends Controller
     {
         $request->validate([
             'contact_title_sr' => 'nullable|string',
-            'contact_subtitle_sr' => 'nullable|string'
+            'contact_subtitle_sr' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $srPath = resource_path('lang/sr.json');
@@ -246,6 +246,8 @@ class HomepageController extends Controller
         $srLatJson = $this->readJson($srPath);
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
+
+        $imagePath = $this->handleContactImageUpload($request->file('imageContact'));
 
         $originalTitle = $request->input('contact_title_sr');               
         $originalSubtitle = $request->input('contact_subtitle_sr');
@@ -279,6 +281,15 @@ class HomepageController extends Controller
         $enJson['homepage_contact_subtitle'] = $contactSubtitleEn;
         $srCyrJson['homepage_contact_subtitle'] = $contactSubtitleCyr;
         $srLatJson['homepage_contact_subtitle'] = $contactSubtitleLat;
+
+        if ($imagePath) {
+            $visibilityPath = storage_path('app/public/homepageVisibility.json');
+            $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+            $visibilityJson['contact_image'] = $imagePath;
+
+            file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
@@ -512,6 +523,27 @@ class HomepageController extends Controller
         $imagePath = $imageDir . '/' . $imageName;
 
         foreach (glob($imageDir . '/herosection.*') as $existingFile) {
+            try {
+                unlink($existingFile);
+            } catch (\Exception $e) {
+                \Log::error("Could not delete old hero image {$existingFile}: " . $e->getMessage());
+            }
+        }
+
+        $image->move($imageDir, $imageName);
+
+        return 'images/' . $imageName;
+    }
+
+    private function handleContactImageUpload($image)
+    {
+        if (!$image) return null;
+
+        $imageName = 'contactHomepage.' . $image->getClientOriginalExtension();
+        $imageDir = public_path('images');
+        $imagePath = $imageDir . '/' . $imageName;
+
+        foreach (glob($imageDir . '/contactHomepage.*') as $existingFile) {
             try {
                 unlink($existingFile);
             } catch (\Exception $e) {

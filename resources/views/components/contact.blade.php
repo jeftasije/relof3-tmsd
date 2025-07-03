@@ -21,7 +21,7 @@
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
             <img
-                src="{{ asset('images/books.png') }}"
+                src="{{ asset($contactImage) }}"
                 alt="{{ App::getLocale() === 'en' ? 'Novi Pazar background' : (App::getLocale() === 'sr-Cyrl' ? 'Позадина Нови Пазар' : 'Pozadina Novi Pazar') }}" />
         </div>
     </div>
