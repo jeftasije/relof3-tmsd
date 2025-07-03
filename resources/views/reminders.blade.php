@@ -334,6 +334,12 @@
             modal.classList.toggle('hidden');
         }
 
+        document.getElementById('helpModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                toggleHelpModal();
+            }
+        });
+
         document.getElementById('confirmDeleteButtonReminder').addEventListener('click', async () => {
             if (confirmDeleteButtonReminder) {
                 if (selectedReminderId) {

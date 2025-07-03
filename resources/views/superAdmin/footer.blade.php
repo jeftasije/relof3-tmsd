@@ -676,6 +676,7 @@
                     toggleHelpModal();
                 }
             });
+            
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
                 let currentLang = 'sr'; 
