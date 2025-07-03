@@ -177,7 +177,7 @@
                         {{ App::getLocale() === 'en'
                             ? 'There is currently no available document.'
                             : (App::getLocale() === 'sr-Cyrl'
-                                ? 'Тренутно Тренутно нема доступног документа.'
+                                ? 'Тренутно нема доступног документа.'
                                 : 'Trenutno nema dostupnog dokumenta.') }}
                     </p>
                 @endforelse
