@@ -84,10 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/kontaktiranja/{id}/odgovor', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
-    Route::post('/pregled-zalbi', [ComplaintController::class, 'updateAllComplaints'])->name('complaints.updateAllTranslations');
     Route::post('/pregled-zalbi/{id}/odgovor', [ComplaintController::class, 'answer'])->name('complaints.answer');
-
-    Route::patch('/zalbe', [HistoryController::class, 'update'])->name('complaints.update');
 
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
 

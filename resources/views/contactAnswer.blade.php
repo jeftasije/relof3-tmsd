@@ -165,14 +165,14 @@
                         @case('sr-Cyrl') Мејл адреса: @break
                         @default Mejl adresa:
                         @endswitch
-                    </strong> {{ $contact->email ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
+                    </strong> {{ $contact->email ?? '-' }}</p>
                 <p><strong>
                         @switch(App::getLocale())
                         @case('en') Phone: @break
                         @case('sr-Cyrl') Телефон: @break
                         @default Telefon:
                         @endswitch
-                    </strong> {{ $contact->phone ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
+                    </strong> {{ $contact->phone ?? '-' }}</p>
                 <p><strong>
                         @switch(App::getLocale())
                         @case('en') Message: @break
