@@ -4,6 +4,16 @@
             Žalbe
         </h2>
     </x-slot>
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('complaint.' . session('success')) }}
+    </div>
+    @endif
     <div class="w-full min-h-screen" style="background: var(--primary-bg); color: var(--primary-text);"
         x-data="complaintsEditor({
             initialTitle: @js($text['title'] ?? ''),
@@ -37,6 +47,7 @@
                     </template>
                     <span x-show="!editing" x-text="form.title"></span>
                 </h1>
+                
                 <div class="flex flex-row items-center gap-3 justify-center w-full">
                     <template x-if="editing">
                         <input type="text" x-model="form.description"
@@ -45,6 +56,7 @@
                     </template>
                     <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
                         style="color: var(--secondary-text);" x-text="form.description"></span>
+                    @auth
                     @auth
                     <button id="help-btn" onclick="toggleHelpModal()"
                         class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -60,6 +72,7 @@
                             {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                         </span>
                     </button>
+                    @endauth
                     @endauth
                 </div>
             </div>
@@ -82,24 +95,24 @@
                 </h2>
 
                 @auth
-                <div class="ml-auto flex gap-2">
-                    <button x-show="!editing" @click="startEdit()"
-                        class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px">
-                        {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                    </button>
-                    <template x-if="editing">
-                        <div class="flex gap-2">
-                            <button @click="saveEdit()"
-                                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">
-                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                            </button>
-                            <button @click="cancelEdit()"
-                                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
-                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                            </button>
-                        </div>
-                    </template>
-                </div>
+                    <div class="ml-auto flex gap-2">
+                        <button x-show="!editing" @click="startEdit()"
+                            class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px background: var(--accent); color: #fff;">
+                            {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                        </button>
+                        <template x-if="editing">
+                            <div class="flex gap-2">
+                                <button @click="saveEdit()"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded" style="background: var(--accent); color: #fff;">
+                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                </button>
+                                <button @click="cancelEdit()"
+                                    class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded" style="background: #cbd5e1; color: var(--primary-text);">
+                                    {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                                </button>
+                            </div>
+                        </template>
+                    </div>
                 @endauth
             </div>
 
@@ -255,7 +268,7 @@
                         <div class="text-center">
                             <button id="openSubmitModal" type="button"
                                 class="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center"
-                                style="background: var(--accent)">
+                                style="background: var(--accent); color: #fff;">
                                 @switch(App::getLocale())
                                 @case('en')
                                 Send complaint
@@ -291,7 +304,8 @@
                                             @endswitch
                                         </h3>
                                         <button id="confirmSubmitBtn2" type="button"
-                                            class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                            class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+                                            style="background: var(--accent); color: #fff;">
                                             @switch(App::getLocale())
                                             @case('en')
                                             Send
@@ -306,7 +320,8 @@
                                             @endswitch
                                         </button>
                                         <button data-modal-hide="submitModal2" type="button"
-                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                                            style="background: #cbd5e1; color: var(--primary-text);">
                                             @switch(App::getLocale())
                                             @case('en')
                                             Cancel

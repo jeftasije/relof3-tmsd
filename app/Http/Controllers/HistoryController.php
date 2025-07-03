@@ -59,7 +59,7 @@ class HistoryController extends Controller
         $this->updateLangFile('sr-Cyrl', ['history.content' => $content_cy]);
         $this->updateLangFile('en', ['history.content' => $content_en]);
 
-        return back()->with('success', 'Opis istorije je uspešno ažuriran.');
+        return back()->with('success', 'update_success');
     }
 
     protected function updateLangFile($locale, array $data)
