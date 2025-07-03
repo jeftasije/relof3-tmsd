@@ -1,196 +1,288 @@
 <x-guest-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-center" style="color: var(--primary-text)">
-            Žalbe
-        </h2>
-    </x-slot>
-    <div class="w-full min-h-screen flex flex-col items-center justify-center px-2"
-        style="background: var(--primary-bg); color: var(--primary-text);"
-        x-data="complaintsEditor({
-            initialTitle: @js($text['title'] ?? ''),
-            initialDescription: @js($text['description'] ?? ''),
-            initialContent: @js($text['content'] ?? ''),
-            updateUrl: '{{ route('complaints.updateContent') }}',
+    <div class="w-full min-h-screen" style="background: var(--primary-bg); color: var(--primary-text);" x-data="servicesEditor({
+            initial: @js($text),
+            updateUrl: '{{ route('services.update') }}',
+            uploadImageUrl: '{{ route('services.uploadImage') }}',
             locale: '{{ App::getLocale() }}',
             csrf: '{{ csrf_token() }}'
-        })">
+        })" x-init="startCarousel()">
+        <div class="max-w-7xl mx-auto px-4 py-12">
 
-        <!-- ALERT -->
-        <div x-show="showEditAlert"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 scale-90 -translate-y-6"
-             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-             x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
-             class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
-             style="top: 10%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
-             x-init="$watch('showEditAlert', val => { if (val) { setTimeout(() => showEditAlert = false, 3200) } })">
-            <span x-text="msg"></span>
-        </div>
+            <div x-show="successMessage" x-transition @click="successMessage = ''"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg cursor-pointer"
+                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                x-text="successMessage"></div>
 
-        <!-- CARD CENTERED -->
-        <div class="w-full max-w-2xl bg-white/70 dark:bg-gray-900/80 rounded-2xl shadow-xl p-8 flex flex-col items-center relative">
-
-            <!-- Help dugme, potpuno apstraktno, iznad svega i centrirano -->
-            <button id="help-btn" type="button" onclick="toggleHelpModal()"
-                class="absolute left-1/2 -top-6 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent)] text-white font-semibold shadow transition hover:bg-green-700 focus:outline-none"
-                style="z-index:12;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M12 17l0 .01" />
-                    <path d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
-                </svg>
-                <span>
-                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                </span>
-            </button>
-
-            <!-- Naslov -->
-            <h1 class="font-extrabold text-3xl sm:text-4xl mb-3 text-center w-full" style="color: var(--primary-text); font-family: var(--font-title); margin-top: 2.5rem;">
-                <template x-if="editing">
-                    <input type="text" x-model="form.title"
-                        class="text-3xl sm:text-4xl font-extrabold w-full border px-2 py-1 rounded text-center"
-                        style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
-                </template>
-                <span x-show="!editing" x-text="form.title"></span>
-            </h1>
-            <!-- Opis -->
-            <div class="w-full flex flex-col items-center mb-2">
-                <template x-if="editing">
-                    <input type="text" x-model="form.description"
-                        class="text-lg w-full max-w-xl border px-2 py-1 rounded text-center"
-                        style="background: var(--primary-bg); color: var(--primary-text);" />
-                </template>
-                <span x-show="!editing"
-                    class="text-lg text-center block w-full max-w-2xl"
-                    style="color: var(--secondary-text);"
-                    x-html="window.marked.parse(form.description)">
-                </span>
+            <div class="relative mb-12 flex flex-col items-center">
+                @auth
+                    <div class="w-full absolute right-0 top-0 flex flex-col items-end"
+                        style="height: 90px; min-width:220px; max-width: 240px;">
+                        <!-- HELP dugme -->
+                        <button @click="$store.modals.openHelp()"
+                            class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none"
+                            style="background: transparent; color: var(--secondary-text);" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <circle cx="12" cy="12" r="9" stroke-width="2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17l0 .01" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
+                            </svg>
+                            <span>
+                                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                            </span>
+                        </button>
+                        <!-- EDIT dugme -->
+                        <div class="flex items-center gap-1">
+                            <button x-show="!editing" @click="startEdit()"
+                                class="px-5 py-2 rounded-2xl font-semibold text-base shadow bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white transition-all duration-200"
+                                type="button">
+                                {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                            </button>
+                            <template x-if="editing">
+                                <div class="flex gap-2">
+                                    <button @click="saveEdit()"
+                                        class="px-4 py-2 rounded-xl font-semibold text-base shadow bg-green-600 hover:bg-green-700 text-white transition-all duration-200"
+                                        type="button">
+                                        {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                    </button>
+                                    <button @click="cancelEdit()"
+                                        class="px-4 py-2 rounded-xl font-semibold text-base shadow bg-gray-400 hover:bg-gray-500 text-white transition-all duration-200"
+                                        type="button">
+                                        {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                @endauth
+                <div class="w-full flex flex-col items-center">
+                    <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-3"
+                        style="color: var(--primary-text); font-family: var(--font-title);">
+                        <template x-if="editing">
+                            <input type="text" x-model="form.hero_title"
+                                class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                        </template>
+                        <span x-show="!editing" x-text="form.hero_title"></span>
+                    </h1>
+                    <p style="white-space: nowrap;">
+                        <template x-if="editing">
+                            <input type="text" x-model="form.hero_subtitle" class="w-full border px-2 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text);" />
+                        </template>
+                        <span x-show="!editing" x-text="form.hero_subtitle"></span>
+                    </p>
+                </div>
             </div>
 
-            <!-- Edit dugme centriran -->
-            @auth
-                <div class="flex justify-center gap-3 mt-3 mb-1">
-                    <button x-show="!editing" @click="startEdit()"
-                        class="accent font-semibold py-2 px-8 rounded-full text-base shadow transition bg-[var(--accent)] text-white hover:bg-green-700"
-                        style="width:120px">
-                        {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                    </button>
+            <div
+                class="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[500px_1fr] gap-10 min-h-[calc(100vh-120px)]">
+                <div class="flex flex-col h-full">
+                    <template x-if="!editing">
+                        <div class="group h-full overflow-hidden rounded-2xl shadow-xl bg-white relative flex-1 flex">
+                            <template x-for="(img, idx) in form.images" :key="img">
+                                <img :src="img"
+                                    class="object-cover object-left w-full h-full absolute inset-0 transition-all duration-1000"
+                                    :class="currentImage === idx ? 'opacity-100 z-10' : 'opacity-0 z-0'" alt=""
+                                    style="transition-property: opacity;" />
+                            </template>
+                        </div>
+                    </template>
                     <template x-if="editing">
-                        <div class="flex gap-2">
-                            <button @click="saveEdit()"
-                                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full shadow">
-                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                            </button>
-                            <button @click="cancelEdit()"
-                                class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full shadow">
-                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                            </button>
+                        <div class="h-full">
+                            <div class="grid grid-cols-2 gap-5">
+                                <template x-for="(img, idx) in form.images" :key="img + idx">
+                                    <div class="relative">
+                                        <img :src="img" class="h-36 w-full object-cover rounded shadow" />
+                                        <button type="button"
+                                            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow"
+                                            @click="removeImage(idx)">
+                                            &times;
+                                        </button>
+                                    </div>
+                                </template>
+                                <label
+                                    class="h-36 w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded cursor-pointer hover:border-blue-500 transition"
+                                    title="Dodaj slike">
+                                    <svg class="w-10 h-10 text-gray-400 mb-1" fill="none" stroke="currentColor"
+                                        stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    <span class="text-xs text-gray-400">Dodaj slike</span>
+                                    <input type="file" class="hidden" multiple @change="onImageSelect" />
+                                </label>
+                            </div>
                         </div>
                     </template>
                 </div>
-            @endauth
 
-            <h2 class="text-2xl font-bold mt-6 mb-4 text-center w-full" style="color: var(--primary-text);">
-                @switch(App::getLocale())
-                    @case('en')
-                        Every question, suggestion or criticism is welcome!
-                    @break
-                    @case('sr-Cyrl')
-                        Свако Ваше питање, сугестија или критика је добродошла!
-                    @break
-                    @default
-                        Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
-                @endswitch
-            </h2>
-
-            <div class="w-full prose prose-lg dark:prose-invert text-center mb-4">
-                <template x-if="editing">
-                    <textarea x-model="form.content" rows="8" class="w-full border rounded-xl p-4 text-lg dark:bg-gray-800 text-center"
-                        style="background: var(--primary-bg); color: var(--primary-text); resize:vertical;"></textarea>
-                </template>
-                <div x-show="!editing" x-text="form.content.replace(/\n/g, '\n\n')" style="white-space:pre-line; color: var(--primary-text);"></div>
+                <div class="flex flex-col justify-start h-full">
+                    <template x-if="editing">
+                        <div class="flex flex-col h-full">
+                            <textarea x-ref="mainText" x-model="form.main_text"
+                                class="w-full min-h-[65vh] rounded-xl border px-4 py-3 text-base font-body"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body); resize:vertical;"></textarea>
+                        </div>
+                    </template>
+                    <div x-show="!editing" class="prose prose-lg max-w-none h-full"
+                        style="color: var(--primary-text); font-family: var(--font-body);" x-html="renderedText"></div>
+                </div>
             </div>
-
-            <a href="{{ asset('storage/documents/UPUTSTVO%20ZA%20ZALBE.pdf') }}" target="_blank"
-                class="block text-base font-semibold mt-4 mb-1 hover:underline text-[var(--accent)] text-center">
-                @switch(App::getLocale())
-                    @case('en')
-                        Download the instructions in PDF format
-                    @break
-                    @case('sr-Cyrl')
-                        Преузмите упутство у PDF формату
-                    @break
-                    @default
-                        Preuzmite uputstvo u PDF formatu
-                @endswitch
-            </a>
         </div>
 
-        <!-- HELP MODAL -->
-        <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
-                <button onclick="toggleHelpModal()"
-                    class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
-                    &times;
+        <div x-show="$store.modals.helpOpen" x-transition x-cloak
+            class="fixed inset-0 flex items-center justify-center z-50" style="background:rgba(0,0,0,0.5);" tabindex="0"
+            @click.self="$store.modals.closeAll()" @keydown.escape.window="$store.modals.closeAll()">
+            <div x-show="$store.modals.helpOpen" x-transition x-cloak
+                class="relative rounded-xl border-2 border-[var(--secondary-text)] shadow-2xl bg-white dark:bg-gray-900 flex flex-col items-stretch"
+                style="width:480px; height:500px; background: var(--primary-bg); color: var(--primary-text);"
+                @click.stop x-data="{ slide: 1, total: 2, enlarged: false, enlargedImg: '' }">
+                <button @click="$store.modals.closeAll()"
+                    class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                    style="color: var(--secondary-text);" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
-                <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text);">
-                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                </h2>
-                <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
-                    {!! App::getLocale() === 'en'
-                        ? '
-                            Clicking on the <strong>\"Edit\"</strong> button will open the field for editing the instructions on how a user can submit a complaint.
-                            You can enter content in English or Serbian (Cyrillic or Latin), and it will be translated into the selected language. <br><br>
-                            If you decide not to make changes or want to cancel, click the <strong>\"Cancel\"</strong> button and the content will revert to its previous state without changes.<br><br>
-                            To save your edits, click the <strong>\"Save\"</strong> button.<br>
-                            You will be asked to confirm before the changes are applied.
-                        '
-                        : (App::getLocale() === 'sr-Cyrl'
-                            ? '
-                                Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање упутства како корисник може да пошаље жалбу.<br><br>
-                                Садржај можете унети на енглеском или српском (ћирилицом или латиницом), а биће преведен на изабрани језик. <br><br>
-                                Ако не желите измене, кликните <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање.<br><br>
-                                Да сачувате измене, кликните <strong>„Сачувај“</strong>.<br>
-                                Бићете упитани за потврду пре примене.
-                            '
-                            : '
-                                Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje uputstva kako korisnik može da pošalje žalbu.
-                                Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na izabrani jezik. <br><br>
-                                Ako ne želite izmene, kliknite <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje.<br><br>
-                                Da sačuvate izmene, kliknite <strong>„Sačuvaj“</strong>.<br>
-                                Bićete upitani za potvrdu pre primene.
-                            ') !!}
-                </p>
+                <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
+                    <h3 class="text-lg font-bold text-center mb-2" style="color:var(--primary-text)">
+                        {{ App::getLocale() === 'en' ? 'How to use Services Section' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити секцију Услуге' : 'Kako koristiti sekciju Usluge') }}
+                    </h3>
+                    <div class="flex items-center justify-center w-full" style="min-height: 170px;">
+                        <button type="button" @click="slide = slide === 1 ? total : slide - 1"
+                            class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
+                            style="min-width:32px;">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <div class="flex-1 flex flex-col justify-center items-center min-h-[150px]">
+                            <template x-if="slide === 1">
+                                <img src="/images/services-help1.png"
+                                    class="rounded-xl max-h-40 mb-3 object-contain bg-transparent shadow cursor-zoom-in"
+                                    alt="Edit" @click="enlarged = true; enlargedImg='/images/services-help1.png'" />
+                            </template>
+                            <template x-if="slide === 2">
+                                <img src="/images/services-help2.png"
+                                    class="rounded-xl max-h-40 mb-3 object-contain bg-transparent shadow cursor-zoom-in"
+                                    alt="Images" @click="enlarged = true; enlargedImg='/images/services-help2.png'" />
+                            </template>
+                            <div class="flex justify-center mb-4 mt-1 space-x-1">
+                                <template x-for="i in total">
+                                    <div :class="slide === i ? 'bg-[var(--accent)]' : 'bg-gray-400'"
+                                        class="w-2 h-2 rounded-full transition-all duration-200"></div>
+                                </template>
+                            </div>
+                            <!-- Tekst -->
+                            <div class="text-base text-center px-1">
+                                <template x-if="slide === 1">
+                                    <div>
+                                        {{ App::getLocale() === 'en'
+    ? 'After clicking the "Edit" button, you can change the title, subtitle, and content below the form. All changes will be automatically synchronized across all languages.'
+    : (App::getLocale() === 'sr-Cyrl'
+        ? 'Након што кликнете на дугме "Измени", можете променити наслов, поднаслов и садржај испод форме. Све измене ће бити аутоматски примењене и на остале језике.'
+        : 'Nakon što kliknete na dugme "Izmeni", možete promeniti naslov, podnaslov i sadržaj ispod forme. Sve izmene će biti automatski primenjene i na ostale jezike.')
+                                }}
+                                    </div>
+                                </template>
+                                <template x-if="slide === 2">
+                                    <div>
+                                        {{ App::getLocale() === 'en'
+    ? 'Images are displayed in a loop (carousel). In edit mode, you can click the plus (+) button to add a new image or the X in the image corner to remove one. After saving, new images will rotate automatically.'
+    : (App::getLocale() === 'sr-Cyrl'
+        ? 'Слике се приказују у петљи (carousel). У режиму измене можете додати нову слику кликом на дугме плус (+), или обрисати слику кликом на X у углу слике. Након чувања, нове слике ће се аутоматски ротирати.'
+        : 'Slike se prikazuju u petlji (carousel). U režimu izmene možete dodati novu sliku klikom na dugme plus (+), ili obrisati sliku klikom na X u uglu slike. Nakon čuvanja, nove slike će se automatski vrteti u krug.')
+                                }}
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        <button type="button" @click="slide = slide === total ? 1 : slide + 1"
+                            class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
+                            style="min-width:32px;">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Overlay za uveličanu sliku -->
+                    <div x-show="enlarged" x-transition
+                        class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+                        style="backdrop-filter: blur(2px);" @click="enlarged = false">
+                        <img :src="enlargedImg"
+                            class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain"
+                            @click.stop />
+                        <button @click="enlarged = false"
+                            class="absolute top-5 right-8 bg-white/80 hover:bg-white p-2 rounded-full shadow"
+                            aria-label="Close" style="color: var(--primary-text);">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <script src="//unpkg.com/alpinejs" defer></script>
         <script>
-            function complaintsEditor({ initialTitle, initialDescription, initialContent, updateUrl, locale, csrf }) {
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('modals', {
+                    helpOpen: false,
+                    openHelp() { this.helpOpen = true },
+                    closeAll() { this.helpOpen = false }
+                });
+            });
+
+            window.marked.setOptions({ breaks: false });
+
+            function servicesEditor({ initial, updateUrl, uploadImageUrl, locale, csrf }) {
                 return {
+                    form: JSON.parse(JSON.stringify(initial)),
+                    original: JSON.parse(JSON.stringify(initial)),
                     editing: false,
-                    form: {
-                        title: initialTitle,
-                        description: initialDescription,
-                        content: initialContent
+                    currentImage: 0,
+                    intervalId: null,
+                    successMessage: '',
+
+                    get renderedText() {
+                        let text = this.form.main_text ?? "";
+                        text = text.replace(/\n(?=\n)/g, '\n ');
+                        text = text.replace(/\n+/g, '\n');
+                        text = text.replace(/\n/g, '<br>');
+                        return window.marked.parse(text);
                     },
-                    original: {
-                        title: initialTitle,
-                        description: initialDescription,
-                        content: initialContent
+
+                    startEdit() {
+                        this.editing = true;
+                        if (this.intervalId) clearInterval(this.intervalId);
                     },
-                    showEditAlert: false,
-                    msg: '',
-                    startEdit() { this.editing = true; },
+
                     cancelEdit() {
-                        this.form = { ...this.original };
+                        this.form = JSON.parse(JSON.stringify(this.original));
                         this.editing = false;
+                        this.currentImage = 0;
+                        this.startCarousel();
                     },
+
                     saveEdit() {
-                        fetch(updateUrl, {
+                        const files = this.newImages || [];
+                        const uploadPromises = Array.from(files).map(file => {
+                            const formData = new FormData();
+                            formData.append('image', file);
+                            formData.append('_token', csrf);
+                            return fetch(uploadImageUrl, { method: 'POST', body: formData })
+                                .then(resp => resp.json())
+                                .then(data => data.image_path ? data.image_path : null);
+                        });
+
+                        Promise.all(uploadPromises).then(newImagePaths => {
+                            this.form.images = this.form.images.filter(img => !img.startsWith('data:'));
+                            this.form.images = [...this.form.images, ...newImagePaths.filter(Boolean)];
+
+                            fetch(updateUrl, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -199,36 +291,85 @@
                                 },
                                 body: JSON.stringify({
                                     locale: locale,
-                                    title: this.form.title,
-                                    description: this.form.description,
-                                    content: this.form.content
+                                    hero_title: this.form.hero_title,
+                                    hero_subtitle: this.form.hero_subtitle,
+                                    main_text: this.form.main_text,
+                                    images: this.form.images,
                                 })
                             })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    this.showEditAlert = true;
-                                    if (locale === 'en') {
-                                        this.msg = "Changes saved successfully!";
-                                    } else if (locale === 'sr-Cyrl') {
-                                        this.msg = "Измене су успешно сачуване!";
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success || data.status === "success") {
+                                        this.original = JSON.parse(JSON.stringify(this.form));
+                                        this.editing = false;
+                                        this.currentImage = 0;
+                                        this.newImages = [];
+                                        this.startCarousel();
+                                        this.successMessage = 'Uspešno sačuvano!';
+                                        setTimeout(() => this.successMessage = '', 4000);
                                     } else {
-                                        this.msg = "Izmene su uspešno sačuvane!";
+                                        alert('Greška u čuvanju!');
                                     }
-                                    this.editing = false;
-                                    this.original = { ...this.form };
-                                } else {
-                                    alert(data.message || 'Greška pri čuvanju!');
-                                }
-                            })
-                            .catch(() => alert('Greška pri čuvanju!'));
+                                })
+                                .catch(() => alert('Greška!'));
+                        });
+                    },
+
+                    newImages: [],
+
+                    onImageSelect(e) {
+                        const files = Array.from(e.target.files);
+                        this.newImages = [...this.newImages, ...files];
+                        files.forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                                this.form.images.push(ev.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                        e.target.value = '';
+                    },
+
+                    removeImage(idx) {
+                        this.form.images.splice(idx, 1);
+                    },
+
+                    startCarousel() {
+                        if (this.intervalId) clearInterval(this.intervalId);
+                        if (!this.editing && this.form.images.length > 1) {
+                            this.intervalId = setInterval(() => {
+                                this.currentImage = (this.currentImage + 1) % this.form.images.length;
+                            }, 3500);
+                        }
                     }
                 }
             }
-            function toggleHelpModal() {
-                const modal = document.getElementById('helpModal');
-                modal.classList.toggle('hidden');
-            }
+
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('servicesEditor', servicesEditor);
+            });
         </script>
-    </div>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <style>
+            @keyframes fadein-img {
+                from {
+                    opacity: 0;
+                    transform: scale(0.95);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .animate-fadein-img {
+                animation: fadein-img 1s ease forwards;
+            }
+
+            .max-w-7xl {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+        </style>
 </x-guest-layout>

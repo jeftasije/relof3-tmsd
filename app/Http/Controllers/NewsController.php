@@ -120,7 +120,7 @@ class NewsController extends Controller
             $file->move(public_path('images'), $filename);
             $validated['image_path'] = 'images/' . $filename;
         } else {
-            $validated['image_path'] = 'images/news-default.png'; // <-- Ovo je dodato
+            $validated['image_path'] = 'images/news-default.png';
         }
 
 
