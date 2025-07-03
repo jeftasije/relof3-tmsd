@@ -16,28 +16,30 @@
                                 ? 'Јавне набавке'
                                 : 'Javne nabavke') }}
                     </h1>
-                    <div class="absolute right-0">
-                        <button
-                            id="help-btn"
-                            onclick="toggleHelpModal()"
-                            class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 group"
-                            style="color: var(--primary-text); background: var(--primary-bg);"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                <path d="M12 17l0 .01" />
-                                <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                            </svg>
-                            <span class="ml-3">
-                                {{ App::getLocale() === 'en'
-                                    ? 'Help'
-                                    : (App::getLocale() === 'sr-Cyrl'
-                                        ? 'Помоћ'
-                                        : 'Pomoć') }}
-                            </span>
-                        </button>
-                    </div>
+                    @auth
+                        <div class="absolute right-0">
+                            <button
+                                id="help-btn"
+                                onclick="toggleHelpModal()"
+                                class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 group"
+                                style="color: var(--primary-text); background: var(--primary-bg);"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                    <path d="M12 17l0 .01" />
+                                    <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                                </svg>
+                                <span class="ml-3">
+                                    {{ App::getLocale() === 'en'
+                                        ? 'Help'
+                                        : (App::getLocale() === 'sr-Cyrl'
+                                            ? 'Помоћ'
+                                            : 'Pomoć') }}
+                                </span>
+                            </button>
+                        </div>
+                    @endauth
                 </div>
                 <div class="my-10 flex justify-center items-center">
                     <div class="relative w-full max-w-md">
