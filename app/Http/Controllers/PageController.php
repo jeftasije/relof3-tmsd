@@ -131,7 +131,6 @@ class PageController extends Controller
         }
 
         $data = $request->input('content');
-
         if (
             !isset($request->file('content')['image']) &&
             isset($data['image_existing']) &&
@@ -168,7 +167,7 @@ class PageController extends Controller
         $plainTextForTranslation = isset($data['text']) ? strip_tags($data['text']) : '';
         $title = $data['title'];
         $detectedScript = $this->languageMapper->detectScript($title);
-        if (app()->getLocale() === 'sr') {
+        if (app()->getLocale() === 'sr' || app()->getLocale() === 'sr-Cyrl') {
             if ($detectedScript === 'cyrillic') {
                 if ($title !== null) {
                     $titleCy = $title;
@@ -195,15 +194,15 @@ class PageController extends Controller
             $content = $data;
             $content['title'] = $titleLat;
             $content['text'] = $textLat;
-
+            
             $content_en = $data;
             $content_en['title'] = $titleEn;
             $content_en['text'] = $textEn;
-
+            
             $content_cy = $data;
             $content_cy['title'] = $titleCy;
             $content_cy['text'] = $textCy;
-
+            
             if ($request->query('slug')) {
                 $page->update([
                     'title'     => $page_titleLat,
@@ -223,7 +222,7 @@ class PageController extends Controller
                 ]);
             }
         }
-
+        
         $oldSlug = null;
         if ($request->query('slug')) {
             $page = Page::where('slug', $request->query('slug'))->firstOrFail();

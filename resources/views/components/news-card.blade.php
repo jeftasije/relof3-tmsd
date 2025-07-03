@@ -94,7 +94,7 @@
     }
   }"
 >
-  <div style="background: rgba(0,0,0,0.13); border-radius: 0.5rem;" class="absolute inset-0 z-0 pointer-events-none"></div>
+  <div style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-radius: 0.5rem;" class="absolute inset-0 z-0 pointer-events-none"></div>
   <div class="relative z-10 flex flex-col h-full">
     @auth
       <div class="absolute bottom-2 right-2 z-10">

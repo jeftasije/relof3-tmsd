@@ -6,6 +6,7 @@
                     <h1 class="text-4xl font-bold text-center mb-4" style="color: var(--primary-text);">
                         {{ App::getLocale() === 'en' ? 'Organisational structure' : (App::getLocale() === 'sr-Cyrl' ? 'Организациона структура' : 'Organizaciona struktura') }}
                     </h1>
+                    @auth
                     <div class="absolute right-0">
                         <button 
                             id="help-btn" 
@@ -24,6 +25,7 @@
                             </span>
                         </button>
                     </div>
+                    @endauth
                 </div>
             </div>
         

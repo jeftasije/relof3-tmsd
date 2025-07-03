@@ -163,8 +163,7 @@
                                                     </button>
                                                 </li>
                                                 <li>
-                                                    <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2"
-                                                        style="color: var(--accent); background: var(--primary-bg);">
+                                                    <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 text-red-500">
                                                         {{ App::getLocale() === 'en'
                                                             ? 'Delete'
                                                             : (App::getLocale() === 'sr-Cyrl'
@@ -238,40 +237,21 @@
         </div>
 
         <!-- Delete Confirmation Modal -->
-        <div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative w-full max-w-md max-h-full">
-                <div class="relative rounded-lg shadow"
-                    style="background: var(--primary-bg); color: var(--primary-text);">
-                    <div class="p-6 text-center">
-                        <h3 class="mb-5 text-lg font-normal"
-                            style="color: var(--secondary-text);">
-                            {{ App::getLocale() === 'en'
-                                ? 'Are you sure you want to delete?'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Да ли сте сигурни да желите да обришете'
-                                    : 'Da li ste sigurni da želite da obrišete') }}
-                            "<span id="deleteModalTitle"></span>"?
-                        </h3>
-                        <button data-modal-hide="deleteModal" id="confirmDeleteButton" type="button"
-                            class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                            style="background: var(--accent); color: #fff;">
-                            {{ App::getLocale() === 'en'
-                                ? 'Confirm'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Потврди'
-                                    : 'Potvrdi') }}
-                        </button>
-                        <button data-modal-hide="deleteModal" type="button"
-                            class="text-sm font-medium px-5 py-2.5 rounded-lg border"
-                            style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
-                            {{ App::getLocale() === 'en'
-                                ? 'Cancel'
-                                : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Откажи'
-                                    : 'Otkaži') }}
-                        </button>
+        <div id="deleteModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-sm p-6 relative">
+                <button onclick="toggleDeleteModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
+                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Confirm Deletion</h2>
+                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">Are you sure you want to delete this question?</p>
+
+                <form id="deleteForm" method="POST" action="">
+                    @csrf
+                    @method('DELETE')
+
+                    <div class="flex justify-center gap-4">
+                        <button type="button" onclick="toggleDeleteModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Delete</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
