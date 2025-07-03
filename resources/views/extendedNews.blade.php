@@ -2,7 +2,7 @@
     @php $locale = App::getLocale(); @endphp
 
     @if(session('success'))
-        <div 
+        <div
             x-data="{ show: true }"
             x-show="show"
             x-transition:enter="transition ease-out duration-300"
@@ -13,25 +13,26 @@
             x-transition:leave-end="opacity-0 scale-90 -translate-y-6"
             class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
             style="
-                top: 14%; 
+                top: 14%;
                 transform: translateX(-50%);
-                background: #22c55e; 
-                color: #fff; 
-                font-weight: 600; 
+                background: #22c55e;
+                color: #fff;
+                font-weight: 600;
                 letter-spacing: 0.03em;
                 min-width: 240px;
                 text-align: center;"
             x-init="setTimeout(() => show = false, 2200)"
         >
-            {{ 
+            {{
                 $locale === 'en'
                     ? 'Changes saved successfully!'
                     : ($locale === 'sr-Cyrl'
                         ? 'Успешно сте сачували измене!'
-                        : 'Uspešno ste sačuvali izmene!') 
+                        : 'Uspešno ste sačuvali izmene!')
             }}
         </div>
     @endif
+
     <x-slot name="header">
         <div class="flex justify-between items-center w-full p-4" id="header" style="background: var(--primary-bg);">
             <div></div>
@@ -68,14 +69,14 @@
         $tagsValue = old($tagsField, implode(',', $rawTags));
     @endphp
 
-    <div 
+    <div
         x-data="{
-            editOpen: false, 
-            helpOpen: false, 
-            slide: 1, 
-            total: 2, 
-            enlarged: false 
-        }" 
+            editOpen: false,
+            helpOpen: false,
+            slide: 1,
+            total: 2,
+            enlarged: false
+        }"
         class="min-h-[90vh] w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-12"
         style="background: var(--primary-bg); color: var(--primary-text);"
     >
@@ -84,8 +85,40 @@
                 <div class="p-2 sm:p-4 lg:p-6"
                     style="color: var(--primary-text);">
 
+                    @auth
+                    <!-- HELP dugme iznad slike i edit dugmeta -->
+                    <div class="flex justify-end mb-3">
+                        <button
+                            @click="helpOpen = true"
+                            class="flex items-center gap-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none"
+                            style="background: transparent; color: var(--secondary-text);"
+                            type="button"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <circle cx="12" cy="12" r="9" stroke-width="2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17l0 .01" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
+                            </svg>
+                            <span>
+                                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                            </span>
+                        </button>
+                    </div>
+                    @endauth
+
                     @if($news->image_path)
                         <div class="relative w-full">
+                            @auth
+                                <!-- Edit Button unutar slike, gore desno -->
+                                <button
+                                    @click.stop="editOpen = true"
+                                    class="absolute top-4 right-6 font-semibold px-4 py-2 rounded z-20"
+                                    style="background: var(--accent); color: #fff;">
+                                    {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                                </button>
+                            @endauth
                             <img class="w-full max-w-[200vw] h-[18rem] object-cover"
                                 src="{{ asset($news->image_path) }}" alt="{{ $news->title }}"
                                 onerror="this.src='{{ asset('/images/default-news.jpg') }}';"
@@ -93,25 +126,17 @@
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <h1 class="text-3xl sm:text-4xl font-bold"
                                     style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
-                                    {{ $locale === 'en' 
-                                        ? ($news->title_en ?? $news->title) 
-                                        : ($locale === 'sr-Cyrl' 
-                                            ? ($news->title_cy ?? $news->title) 
-                                            : $news->title) 
+                                    {{ $locale === 'en'
+                                        ? ($news->title_en ?? $news->title)
+                                        : ($locale === 'sr-Cyrl'
+                                            ? ($news->title_cy ?? $news->title)
+                                            : $news->title)
                                     }}
                                 </h1>
-                                @auth
-                                    <button
-                                        @click.stop="editOpen = true"
-                                        class="absolute top-4 right-6 font-semibold px-4 py-2 rounded z-20"
-                                        style="background: var(--accent); color: #fff;">
-                                        {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                                    </button>
-                                @endauth
                             </div>
                             <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-sm text-white dark:text-white text-center"
                                 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">
-                                <span>👤 {{ $news->author ?? ($locale === 'en' ? 'Unknown' : ($locale === 'sr-Cyrl' ? 'Непознат' : 'Nepoznat')) }}</span> | 
+                                <span>👤 {{ $news->author ?? ($locale === 'en' ? 'Unknown' : ($locale === 'sr-Cyrl' ? 'Непознат' : 'Nepoznat')) }}</span> |
                                 <span>📅 {{ \Carbon\Carbon::parse($news->published_at)->format('d.m.Y') }}</span>
                             </div>
                         </div>
@@ -144,10 +169,11 @@
 
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
                         <a href="{{ route('news.index') }}"
-                           class="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium rounded-lg"
-                           style="background: var(--accent); color: #fff;">
+                           class="inline-flex items-center px-6 py-3 text-base font-semibold rounded-xl transition-all duration-300 ease-in-out
+                                  bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800
+                                  shadow-lg hover:shadow-xl text-white group">
                             {{ $locale === 'en' ? 'Back to news' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
-                            <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <svg class="rtl:rotate-180 w-5 h-5 ms-2 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4"/>
                             </svg>
                         </a>
@@ -156,7 +182,7 @@
             </div>
         </div>
 
-        <!-- Edit modal -->
+        <!-- EDIT MODAL -->
         <div
             x-show="editOpen"
             x-transition
@@ -301,7 +327,6 @@
                         </div>
                     </div>
 
-                    <!-- Enlarged image modal -->
                     <div x-show="enlarged" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
                         style="backdrop-filter: blur(2px);" @click="enlarged = false">
                         <img :src="enlarged" class="rounded-2xl shadow-2xl max-h-[80vh] max-w-[90vw] border-4 border-white object-contain" @click.stop />
@@ -312,10 +337,8 @@
                         </button>
                     </div>
 
-                    <!-- Tekstovi -->
                     <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
                         style="color: var(--secondary-text); min-height: 120px; max-height: 48%;">
-                        <!-- Slide 1 -->
                         <template x-if="slide === 1">
                             <div>
                                 <h4 class="font-semibold mb-2">
@@ -339,7 +362,6 @@
                                 </p>
                             </div>
                         </template>
-                        <!-- Slide 2 -->
                         <template x-if="slide === 2">
                             <div>
                                 <h4 class="font-semibold mb-2">
@@ -355,7 +377,7 @@
                                         After clicking "Edit", a dialog will open with all fields related to the extended news. Make your changes, then click "Save" to apply them. The changes will automatically be synchronized with all language versions of the news (see image 2).
                                     @break
                                     @case('sr-Cyrl')
-                                        Након што кликнете на „Измени“, отвориће се прозор са свим пољима за проширену вест. Након уноса измена, кликните „Сачувај“. Промене ће бити аутоматски примењене и на остале језике вести (слика 2).
+                                        Наkon što kliknete na „Izmeni“, otvoriće se prozor sa svim poljima za proširenu vest. Nakon unosa izmena, kliknite „Sačuvaj“. Promene će biti automatski primenjene i na ostale jezike vesti (slika 2).
                                     @break
                                     @default
                                         Nakon što kliknete na „Izmeni“, otvoriće se prozor sa svim podacima o proširenoj vesti. Nakon izmena, kliknite „Sačuvaj“. Promene će biti automatski primenjene i na ostale jezike vesti (slika 2).
@@ -367,27 +389,6 @@
                 </div>
             </div>
         </div>
-        @endauth
-
-        @auth
-            <button
-                @click="helpOpen = true"
-                class="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-full shadow-lg bg-[var(--accent)] text-white hover:bg-green-700 transition"
-                style="background: var(--accent);"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="M12 17l0 .01" />
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                </svg>
-                <span>
-                    {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                </span>
-            </button>
         @endauth
 
     </div>
