@@ -87,7 +87,7 @@
     "gallery.description": "Galerija trenutaka iz naše biblioteke – mesta znanja, druženja i inspiracije.",
     "gallery.updateDescription_success":"Opis galerije je uspešno ažuriran.",
     "gallery.destroy_success": "Fajl je uspešno obrisan.",
-    "gallery.upload_success": "Fajl je uspešno dodat!",
+    "gallery.upload_success": "Fajl je uspešno dodat.",
     "page_settings": "Podešavanja stranice",
     "url_label": "URL stranice",
     "name_label": "Naziv stranice",
@@ -115,5 +115,11 @@
         "content": "Naš tim je ovde da odgovori na sva vaša pitanja i pruži vam najbolju moguću uslugu!",
         "title": "Kontaktirajte nas",
         "description": "Vaša pitanja, sugestije ili pohvale su dobrodošle!"
-    }
+    },
+    "comment.store_success": "Komentar je uspešno kreiran.",
+    "contact.store_success": "Poruka je uspešno poslata.",
+    "contact.answer_success": "Odgovor uspešno sačuvan.",
+    "complaint.store_success": "Žalba uspešno poslata.",
+    "complaint.answer_success": "Odgovor uspešno sačuvan."
+    
 }

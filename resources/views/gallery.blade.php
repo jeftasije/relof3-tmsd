@@ -1,4 +1,14 @@
 <x-guest-layout>
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('gallery.' . session('success')) }}
+    </div>
+    @endif
     <div class="max-w-4xl mx-auto py-10 px-6 text-gray-900 dark:text-white">
         <div class="flex items-center justify-center relative mb-6 mt-8">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
@@ -45,22 +55,6 @@
                 </button>
             </div>
         @endauth
-
-        @if(session('success'))
-                <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                    {{ __('gallery.' . session('success')) }}
-                </div>
-
-                <script>
-                    setTimeout(() => {
-                        const el = document.getElementById('successMessage');
-                        if (el) {
-                            el.style.opacity = '0';
-                            setTimeout(() => el.style.display = 'none', 500);
-                        }
-                    }, 3000);
-                </script>
-            @endif
         
         @auth
             <form action="{{ route('gallery.updateDescription') }}" method="POST" id="galleryForm" class="space-y-4 ">
