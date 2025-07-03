@@ -1,6 +1,6 @@
-<div class="max-w-sm rounded-lg shadow-sm border" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text);">
-    <div>
-        <img class="rounded-t-lg" src="{{ asset('storage' . $template->thumbnail) }}" alt="{{ $template->title }}" />
+<div class="max-w-sm rounded-lg shadow-sm border transition duration-300 hover:-translate-y-1 hover:scale-105 group overflow-hidden" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text);">
+    <div class="group">
+        <img class="rounded-t-lg transform transition-transform duration-300 group-hover:scale-105" src="{{ asset('storage' . $template->thumbnail) }}" alt="{{ $template->title }}" />
     </div>
     <div class="p-5">
         <div>
