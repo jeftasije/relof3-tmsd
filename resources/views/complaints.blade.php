@@ -97,7 +97,8 @@
                 @auth
                     <div class="ml-auto flex gap-2">
                         <button x-show="!editing" @click="startEdit()"
-                            class="accent font-semibold py-2 px-4 rounded text-base" style="width:100px background: var(--accent); color: #fff;">
+                            class="accent font-semibold py-2 px-4 rounded text-base" 
+                            style="width:100px; background: var(--accent); color: #fff;">
                             {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                         </button>
                         <template x-if="editing">
