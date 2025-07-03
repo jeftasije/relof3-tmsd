@@ -113,5 +113,12 @@
         "content": "Our team is here to answer all your questions and give you the best possible service!",
         "title": "Contact us",
         "description": "Your questions, suggestions or praise are welcome!"
-    }
+    },
+    "question.description": "On this page you can find frequently asked questions and their answers. If you don't find what you are looking for, feel free to contact us ..",
+    "question.update_success": "Question updated successfully.",
+    "question.destroy_success": "Question deleted successfully.",
+    "question.store_success": "Question created successfully.",
+    "question.updateDescription_success": "Description has been successfully updated.",
+    "question.default_success": "The changes were successfully made."
+
 }
