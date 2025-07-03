@@ -74,24 +74,21 @@ class ReminderController extends Controller
             return redirect()->back()->with('success', 'Reminder created successfully.');
         }
 
-        $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-        $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-        if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {                              //input in serbian latin
+        elseif (app()->getLocale() === 'sr') {                                                          //input in serbian latin
             $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
             $titleLat = $originalTitle;
             $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
             $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
             return redirect()->back()->with('success', 'Reminder created successfully.');
+        } else {
+            $titleEn = $originalTitle;
+            $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
+
+            $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
+            return redirect()->back()->with('success', 'Reminder created successfully.');
         }
-
-        $titleEn = $originalTitle;
-        $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-        $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
-
-        $this->create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime);
-        return redirect()->back()->with('success', 'Reminder created successfully.');
     }
 
     protected function create_reminder($titleEn, $titleLat, $titleCyr, $parsedTime)
@@ -125,19 +122,14 @@ class ReminderController extends Controller
             $titleCyr = $originalTitle;
             $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
             $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+        } elseif(app()->getLocale() === 'sr') {
+            $titleLat = $originalTitle;
+            $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
-                $titleLat = $originalTitle;
-                $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            } else {
-                $titleEn = $originalTitle;
-                $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
-            }
+            $titleEn = $originalTitle;
+            $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
         }
 
         $reminder->update([
