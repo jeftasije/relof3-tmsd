@@ -1004,7 +1004,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link> <!--todo: add :href and :active when finished-->
+                    <x-nav-link :href="route('contact.answerPage')" :active="request()->routeIs('contact.answerPage')">
                         @switch(App::getLocale())
                         @case('en') Contacting overview @break
                         @case('sr-Cyrl') Контактирања @break

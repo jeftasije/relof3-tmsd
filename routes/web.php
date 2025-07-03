@@ -81,7 +81,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
 
     Route::get('/kontaktiranja', [ContactController::class, 'answerPage'])->name('contact.answerPage');
-    Route::post('/kontaktiranja', [ContactController::class, 'updateAllContacts'])->name('contact.updateAllTranslations');
     Route::post('/kontaktiranja/{id}/odgovor', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
