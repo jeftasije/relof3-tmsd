@@ -145,38 +145,6 @@
                             </div>
                         </li>
                     </ul>
-                    @php
-                    $isEnglish = request()->query('en') === 'true';
-                    @endphp
-                    <label for="id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @switch(App::getLocale())
-                        @case('en') Page language @break
-                        @case('sr-Cyrl') Језик странице @break
-                        @default Jezik stranice
-                        @endswitch
-                    </label>
-                    <div id="languages" class="flex flex-col">
-                        <div class="flex items-center mb-4">
-                            <input {{ $isEnglish ? '' : 'checked' }} id="language-radio-button-sr" type="radio" form="page-form" value="sr" name="language-radio-button" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="language-radio-button-sr" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                @switch(App::getLocale())
-                                @case('en') Serbian @break
-                                @case('sr-Cyrl') српски @break
-                                @default srpski
-                                @endswitch
-                            </label>
-                        </div>
-                        <div class="flex items-center">
-                            <input {{ $isEnglish ? 'checked' : '' }} id="language-radio-button-en" type="radio" form="page-form" value="en" name="language-radio-button" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="language-radio-button-en" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                @switch(App::getLocale())
-                                @case('en') English @break
-                                @case('sr-Cyrl') енглески @break
-                                @default engleski
-                                @endswitch
-                            </label>
-                        </div>
-                    </div>
                     <div class="flex flex-col mt-auto">
                         <button
                             @click="helpOpen = true"
@@ -505,13 +473,13 @@
                                 <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
-                                    This section manages <strong>automatic translation.</strong> When you enter text and select "Serbian," clicking the <strong>"Save Changes"</strong> button will automatically save and translate the text into the opposite script and English. Click the "English" button to review the translation, correct any errors if present, and save again by clicking "Save Changes."
+                                    If Serbian is set as the default site language, the text you enter in Serbian will be automatically saved and translated into the opposite script and English. When you switch the default site language to English, you can review the translation, correct any errors if needed, and save again by clicking <strong>"Save Changes"</strong>. These changes will only be saved for the English version.
                                     @break
                                     @case('sr-Cyrl')
-                                    Ова секција управља <strong>аутоматским преводом.</strong> Када унесете текст и одаберете "српски", кликом на дугме <strong>"Сачувај промене"</strong> текст ће се аутоматски сачувати и превести у супротно писмо и на енглески. Кликните на дугме "енглески" да проверите превод, исправите грешке ако их има, и сачувајте поново кликом на дугме "Сачувај промене".
+                                    Ако је српски постављен као подразумевани језик сајта, унети текст на српском ће се аутоматски сачувати и превести у супротно писмо и на енглески језик. Када промените подразумевани језик сајта на енглески, моћи ћете да проверите превод, исправите грешке, ако их има, и поново сачувате кликом на дугме <strong>"Сачувај промене"</strong>. Ове промене ће бити сачуване само за енглеску верзију.
                                     @break
                                     @default
-                                    Ova sekcija upravlja <strong>automatskim prevodom.</strong> Kada unesete tekst i izaberete "srpski", klikom na dugme <strong>"Sačuvaj promene"</strong>, tekst će se automatski sačuvati i prevesti u suprotno pismo i na engleski. Kliknite na dugme "engleski" da proverite prevod, ispravite greške ako ih ima, i sačuvajte ponovo klikom na dugme "Sačuvaj promene".
+                                    Ako je srpski postavljen kao podrazumevani jezik sajta, uneti tekst na srpskom će se automatski sačuvati i prevesti u suprotno pismo i na engleski jezik. Kada podrazumevani jezik sajta promenite na engleski, moći ćete da proverite prevod, ispravite greške, ako ih ima, i ponovo sačuvate klikom na dugme <strong>"Sačuvaj promene"</strong>. Ove promene se čuvaju samo za englesku verziju.
                                     @endswitch
                                 </p>
                             </div>
@@ -542,13 +510,3 @@
         </div>
     </div>
 </x-app-layout>
-
-<script>
-    document.getElementById('language-radio-button-en').addEventListener('change', function() {
-        if (this.checked) {
-            const slug = @json($slug);
-            const url = `/uredi-stranicu/${slug}?en=true`;
-            window.location.href = url;
-        }
-    });
-</script>

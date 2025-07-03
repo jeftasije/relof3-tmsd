@@ -29,7 +29,7 @@ class GalleryController extends Controller
     {
         $images = GalleryItem::where('type', 'image')->get();
         $videos = GalleryItem::where('type', 'video')->get();
-        
+
         $locale = app()->getLocale();
         $galleryDescription = __('gallery.description', [], $locale);
 
@@ -39,7 +39,7 @@ class GalleryController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:2048', 
+            'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:2048',
         ], [
             'file.required' => 'Morate izabrati fajl za upload.',
             'file.mimes' => 'Dozvoljeni formati su: jpeg, jpg, png, gif, mp4, mov, avi.',
@@ -47,20 +47,19 @@ class GalleryController extends Controller
         ]);
 
         $file = $request->file('file');
-        if ($file->getSize() > 2097152) { 
+        if ($file->getSize() > 2097152) {
             return back()->with('error', 'Vaš fajl ne sme biti veći od 2 MB.');
         }
 
         $file = $request->file('file');
-        $filePath = $file->store('gallery', 'public'); 
+        $filePath = $file->store('gallery', 'public');
         $mime = $file->getMimeType();
-        if(strstr($mime, "video/")){
+        if (strstr($mime, "video/")) {
             $type = 'video';
-        }else if(strstr($mime, "image/")){
+        } else if (strstr($mime, "image/")) {
             $type = 'image';
-
         }
-        
+
 
         GalleryItem::create([
             'path' => $filePath,
@@ -85,34 +84,20 @@ class GalleryController extends Controller
         ]);
 
         $originalText = trim($request->input('value'));
-
         $detectedScript = $this->languageMapper->detectScript($originalText);
 
-        $value_cy = '';
-        $value_lat = '';
-        $value_en = '';
-
         if ($detectedScript === 'cyrillic') {
-            // Uneto je ćirilica
             $value_cy = $originalText;
             $value_lat = $this->languageMapper->cyrillic_to_latin($value_cy);
             $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
+        } elseif (app()->getLocale() === 'sr') {
+            $value_lat = $originalText;
+            $value_cy = $this->languageMapper->latin_to_cyrillic($value_lat);
+            $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
         } else {
-            // Pretpostavljamo da je latinični ili engleski tekst
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
-                // Tekst je srpska latinica
-                $value_lat = $originalText;
-                $value_cy = $this->languageMapper->latin_to_cyrillic($value_lat);
-                $value_en = $this->translate->setSource('sr')->setTarget('en')->translate($value_lat);
-            } else {
-                // Tekst je engleski
-                $value_en = $originalText;
-                $value_cy = $this->translate->setSource('en')->setTarget('sr')->translate($value_en);
-                $value_lat = $this->languageMapper->cyrillic_to_latin($value_cy);
-            }
+            $value_en = $originalText;
+            $this->updateLangFile('en', ['gallery.description' => $value_en]);
+            return back()->with('success', 'Opis galerije je uspešno ažuriran.');
         }
 
         $this->updateLangFile('sr', ['gallery.description' => $value_lat]);
@@ -136,10 +121,4 @@ class GalleryController extends Controller
 
         File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
-
-
-
-
-
-
 }

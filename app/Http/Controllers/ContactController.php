@@ -33,7 +33,7 @@ class ContactController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            'email'      => 'nullable|email|max:255',
+            'email'      => 'required|email|max:255',
             'phone'      => 'nullable|string|max:20',
             'message'    => 'required|string',
         ]);
@@ -57,56 +57,18 @@ class ContactController extends Controller
             $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
         }
 
-        $contact = Contact::create([
+        Contact::create([
             'first_name'   => $validated['first_name'],
             'last_name'    => $validated['last_name'],
             'email'        => $validated['email'],
             'phone'        => $validated['phone'] ?? null,
-            'message'      => $message_lat,
-            'message_en'   => $message_en,
+            'message'      => $message_src,
+            'message_lat'   => $message_lat,
             'message_cy'   => $message_cy,
+            'message_en'   => $message_en,
         ]);
 
         return redirect()->back()->with('success', 'Poruka uspešno poslata!');
-    }
-
-    public function updateContacts(Contact $contact)
-    {
-        $locale = app()->getLocale();
-
-        if ($locale === 'en') {
-            $message_en = $contact->message_en;
-            $message_lat = $this->translate->setSource('en')->setTarget('sr')->translate($message_en);
-            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
-
-        } elseif ($locale === 'sr-Cyrl') {
-            $message_cy = $contact->message_cy;
-            $message_lat = $this->languageMapper->cyrillic_to_latin($message_cy);
-            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
-
-        } else {
-            $message_lat = $contact->message;
-            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
-            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
-        }
-
-        $contact->update([
-            'message'    => $message_lat,
-            'message_en' => $message_en,
-            'message_cy' => $message_cy,
-        ]);
-
-        return redirect()->back()->with('success', 'Prevod poruke je uspešno ažuriran.');
-    }
-
-
-    public function updateAllContacts()
-    {
-        Contact::all()->each(function($contact) {
-            $this->updateContacts($contact);
-        });
-
-        return redirect()->back()->with('success', 'Svi prevodi su uspešno ažurirani.');
     }
 
     public function answer(Request $request, $id)
@@ -143,7 +105,8 @@ class ContactController extends Controller
         }
 
         $contact = Contact::findOrFail($id);
-        $contact->answer     = $answerLat;  
+        $contact->answer     = $originalText;  
+        $contact->answer_lat  = $answerLat;
         $contact->answer_cy  = $answerCy;
         $contact->answer_en  = $answerEn;
         $contact->save();

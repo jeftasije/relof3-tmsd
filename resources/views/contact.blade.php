@@ -10,7 +10,7 @@
             initialTitle: @js($text['title'] ?? ''),
             initialDescription: @js($text['description'] ?? ''),
             initialContent: @js($text['content'] ?? ''),
-            updateUrl: '{{ route('contact.updateContent') }}', {{-- AŽURIRANO: Koristimo novu nazvanu rutu --}}
+            updateUrl: '{{ route('contact.updateContent') }}',
             locale: '{{ App::getLocale() }}',
             csrf: '{{ csrf_token() }}'
         })">
@@ -27,7 +27,7 @@
             <span x-text="msg"></span>
         </div>
 
-        <div class="max-w-3xl mx-auto px-4 py-12 relative"> {{-- Ovaj div je relativan za pozicioniranje dugmadi --}}
+        <div class="max-w-3xl mx-auto px-4 py-12 relative">
             @auth
                 <div class="absolute right-[-100px] top-0 flex flex-col items-end z-10" style="gap:8px; padding-top: 50px;">
 
@@ -157,8 +157,9 @@
                                 @default
                                     Mejl adresa:
                             @endswitch
+                            <span class="text-red-500">*</span>
                         </label>
-                        <input type="email" name="email" value="{{ old('email') }}"
+                        <input type="email" name="email" required value="{{ old('email') }}"
                             class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
                     </div>
                     <div>
@@ -322,7 +323,6 @@
 
     <script src="//unpkg.com/alpinejs" defer></script>
     <script>
-        // Alpine.js kod
         function contactEditor({
             initialTitle,
             initialDescription,
@@ -358,7 +358,7 @@
                     document.getElementById('submitEditModal').classList.remove('hidden');
                     document.getElementById('confirmSubmitEditBtn').onclick = () => {
                         fetch(updateUrl, {
-                                method: 'POST', // VAŽNA IZMENA: Promenjeno iz 'PATCH' u 'POST'
+                                method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': csrf,
