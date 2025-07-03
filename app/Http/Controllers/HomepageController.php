@@ -108,6 +108,11 @@ class HomepageController extends Controller
         $jsonPath = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
+        $visibilityPath = storage_path('app/public/homepageVisibility.json');
+        $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+        $heroImage = $visibilityJson['hero_image'];
+
         $order = $data['component_order'] ?? [];
         $newsVisible = $data['news_visible'] ?? true;
         $contactVisible = $data['contact_visible'] ?? true;
@@ -119,14 +124,13 @@ class HomepageController extends Controller
         $visibleEmployees = Employee::whereIn('id', $visibleEmployeeIds)->get();
 
         return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible',
-        'ourTeamVisible', 'visibleEmployees'));
+        'ourTeamVisible', 'visibleEmployees', 'heroImage'));
     }
 
 
     public function updateSr(Request $request)
     {
         $validated = $this->validateRequest($request);
-
         $imagePath = $this->handleImageUpload($request->file('image'));
 
         $srPath = resource_path('lang/sr.json');
@@ -141,20 +145,29 @@ class HomepageController extends Controller
             [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn] =
                 $this->generateLocalizedTexts($validated['title_sr'], $validated['subtitle_sr']);
 
-            $this->updateJsonContent($srLatJson, $titleLat, $subtitleLat, $imagePath);
-            $this->updateJsonContent($srCyrJson, $titleCyr, $subtitleCyr, $imagePath);
-            $this->updateJsonContent($enJson, $titleEn, $subtitleEn, $imagePath);
+            // Ažuriraj tekstove bez slike
+            $this->updateJsonContent($srLatJson, $titleLat, $subtitleLat);
+            $this->updateJsonContent($srCyrJson, $titleCyr, $subtitleCyr);
+            $this->updateJsonContent($enJson, $titleEn, $subtitleEn);
         }
 
         $this->writeJson($srPath, $srLatJson);
         $this->writeJson($srCyrPath, $srCyrJson);
         $this->writeJson($enPath, $enJson);
 
-        $title_en = $enJson['homepage_title'] ?? '';
-        $subtitle_en = $enJson['homepage_subtitle'] ?? '';
+        // NOVO: upis putanje slike u posebni fajl
+        if ($imagePath) {
+            $visibilityPath = storage_path('app/public/homepageVisibility.json');
+            $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+            $visibilityJson['hero_image'] = $imagePath;
+
+            file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
 
         return response()->json(['success' => true]);
     }
+
 
     public function updateEn(Request $request)
     {
@@ -495,20 +508,22 @@ class HomepageController extends Controller
         if (!$image) return null;
 
         $imageName = 'herosection.' . $image->getClientOriginalExtension();
-        $imagePath = public_path('images/' . $imageName);
+        $imageDir = public_path('images');
+        $imagePath = $imageDir . '/' . $imageName;
 
-        if (file_exists($imagePath)) {
+        foreach (glob($imageDir . '/herosection.*') as $existingFile) {
             try {
-                unlink($imagePath);
+                unlink($existingFile);
             } catch (\Exception $e) {
-                \Log::error("could not delete photo $imageName: " . $e->getMessage());
+                \Log::error("Could not delete old hero image {$existingFile}: " . $e->getMessage());
             }
         }
 
-        $image->move(public_path('images'), $imageName);
+        $image->move($imageDir, $imageName);
 
         return 'images/' . $imageName;
     }
+
 
     private function readJson($path)
     {
@@ -520,14 +535,10 @@ class HomepageController extends Controller
         file_put_contents($path, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
-    private function updateJsonContent(&$json, $title, $subtitle, $imagePath)
+    private function updateJsonContent(&$json, $title, $subtitle)
     {
         $json['homepage_title'] = $title;
         $json['homepage_subtitle'] = $subtitle;
-
-        if ($imagePath) {
-            $json['homepage_hero_image_path'] = $imagePath;
-        }
     }
 
     private function generateLocalizedTexts($originalTitle, $originalSubtitle)

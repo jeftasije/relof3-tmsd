@@ -1,6 +1,6 @@
 <section class="relative h-screen w-full">
     <img
-        src="{{ asset(__('homepage_hero_image_path')) }}"
+        src="{{ asset($heroImage) }}"
         alt="{{ App::getLocale() === 'en' ? 'Novi Pazar background' : (App::getLocale() === 'sr-Cyrl' ? 'Позадина Нови Пазар' : 'Pozadina Novi Pazar') }}"
         class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
