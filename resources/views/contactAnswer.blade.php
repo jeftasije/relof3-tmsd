@@ -362,7 +362,6 @@
             });
         });
 
-        // Date picker sync
         const dateFrom = document.getElementById('date_from');
         const dateTo = document.getElementById('date_to');
 

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Contact;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use App\Http\Controllers\LanguageMapperController;
-use Illuminate\Support\Facades\File;
 
 class ContactController extends Controller
 {   
@@ -23,11 +24,9 @@ class ContactController extends Controller
 
     public function index()
     {
-        $locale = app()->getLocale();
-        $contactContent = __('contact.content', [], $locale);
-        return view('contact', compact('contactContent'));
+        $text = Lang::get('contact');
+        return view('contact', compact('text'));
     }
-
 
     public function store(Request $request)
     {
@@ -173,7 +172,7 @@ class ContactController extends Controller
             }
         }
 
-        $contacts = $query->orderBy('created_at', 'desc')->paginate(10);
+        $contacts = $query->orderBy('created_at', 'desc')->paginate(3);
         $contacts->appends(request()->all());
 
         return view('contactAnswer', compact('contacts'));
@@ -182,42 +181,86 @@ class ContactController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'content' => 'required|string',
+        $translate = $this->translate;
+        $lm        = $this->languageMapper;
+
+        $validated = $request->validate([
+            'title'       => 'string',
+            'description' => 'string',
+            'content'     => 'string',
         ]);
 
-        $originalText = trim($request->input('content'));
+        $title       = trim($validated['title']);
+        $description = trim($validated['description']);
+        $content     = trim($validated['content']);
 
-        $detectedScript = $this->languageMapper->detectScript($originalText);
+        if ($validated['locale'] === 'en') {
+            $this->updateLangFile('en', [
+                'contact.title'       => $title,
+                'contact.description' => $description,
+                'contact.content'     => $content,
+            ]);
+        }
+        elseif ($validated['locale'] === 'sr-Cyrl' || $validated['locale'] === 'cy') {
+            $title_cy       = $title;
+            $description_cy = $description;
+            $content_cy     = $content;
 
-        $content_cy = '';
-        $content_lat = '';
-        $content_en = '';
+            $title_lat       = $lm->cyrillic_to_latin($title_cy);
+            $description_lat = $lm->cyrillic_to_latin($description_cy);
+            $content_lat     = $lm->cyrillic_to_latin($content_cy);
 
-        if ($detectedScript === 'cyrillic') {
-            $content_cy = $originalText;
-            $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+            $title_en       = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $description_en = $translate->setSource('sr')->setTarget('en')->translate($description_lat);
+            $content_en     = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
-                $content_lat = $originalText;
-                $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
-                $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-            } else {
-                $content_en = $originalText;
-                $content_cy = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
-                $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            }
+            $this->updateLangFile('sr-Cyrl', [
+                'contact.title'       => $title_cy,
+                'contact.description' => $description_cy,
+                'contact.content'     => $content_cy,
+            ]);
+            $this->updateLangFile('sr', [
+                'contact.title'       => $title_lat,
+                'contact.description' => $description_lat,
+                'contact.content'     => $content_lat,
+            ]);
+            $this->updateLangFile('en', [
+                'contact.title'       => $title_en,
+                'contact.description' => $description_en,
+                'contact.content'     => $content_en,
+            ]);
+        }
+        else {
+            $title_lat       = $title;
+            $description_lat = $description;
+            $content_lat     = $content;
+
+            $title_cy       = $lm->latin_to_cyrillic($title_lat);
+            $description_cy = $lm->latin_to_cyrillic($description_lat);
+            $content_cy     = $lm->latin_to_cyrillic($content_lat);
+
+            $title_en       = $translate->setSource('sr')->setTarget('en')->translate($title_lat);
+            $description_en = $translate->setSource('sr')->setTarget('en')->translate($description_lat);
+            $content_en     = $translate->setSource('sr')->setTarget('en')->translate($content_lat);
+
+            $this->updateLangFile('sr', [
+                'contact.title'       => $title_lat,
+                'contact.description' => $description_lat,
+                'contact.content'     => $content_lat,
+            ]);
+            $this->updateLangFile('sr-Cyrl', [
+                'contact.title'       => $title_cy,
+                'contact.description' => $description_cy,
+                'contact.content'     => $content_cy,
+            ]);
+            $this->updateLangFile('en', [
+                'contact.title'       => $title_en,
+                'contact.description' => $description_en,
+                'contact.content'     => $content_en,
+            ]);
         }
 
-        $this->updateLangFile('sr', ['contact.content' => $content_lat]);
-        $this->updateLangFile('sr-Cyrl', ['contact.content' => $content_cy]);
-        $this->updateLangFile('en', ['contact.content' => $content_en]);
-
-        return back()->with('success', 'Opis iznad kontakta je uspešno ažuriran.');
+        return back()->with('success', 'Naslov, opis i sadržaj su uspešno ažurirani.');
     }
 
     protected function updateLangFile($locale, array $data)
