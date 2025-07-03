@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -75,76 +74,21 @@ class ComplaintController extends Controller
             $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
         }
 
-        $complaint = Complaint::create([
+        Complaint::create([
             'name'         => $name,
             'email'        => $validated['email'],
             'phone'        => $validated['phone'] ?? null,
-            'subject'      => $subject_lat,
+            'subject'      => $subject_src,
+            'subject_lat'  => $subject_lat,
             'subject_en'   => $subject_en,
             'subject_cy'   => $subject_cy,
-            'message'      => $message_lat,
+            'message'      => $message_src,
+            'message_lat'  => $message_lat,
             'message_en'   => $message_en,
             'message_cy'   => $message_cy,
         ]);
 
         return redirect()->back()->with('success', 'Žalba uspešno poslata!');
-    }
-
-    public function updateComplaints(Complaint $complaint)
-    {
-        $locale = app()->getLocale();
-
-        if ($locale === 'en') {
-            $subject_en = $complaint->subject_en;
-            $message_en = $complaint->message_en;
-
-            $subject_lat = $this->translate->setSource('en')->setTarget('sr')->translate($subject_en);
-            $message_lat = $this->translate->setSource('en')->setTarget('sr')->translate($message_en);
-
-            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
-            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
-
-        } elseif ($locale === 'sr-Cyrl') {
-            $subject_cy = $complaint->subject_cy;
-            $message_cy = $complaint->message_cy;
-
-            $subject_lat = $this->languageMapper->cyrillic_to_latin($subject_cy);
-            $message_lat = $this->languageMapper->cyrillic_to_latin($message_cy);
-
-            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
-            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
-
-        } else {
-            $subject_lat = $complaint->subject;
-            $message_lat = $complaint->message;
-
-            $subject_cy = $this->languageMapper->latin_to_cyrillic($subject_lat);
-            $message_cy = $this->languageMapper->latin_to_cyrillic($message_lat);
-
-            $subject_en = $this->translate->setSource('sr')->setTarget('en')->translate($subject_lat);
-            $message_en = $this->translate->setSource('sr')->setTarget('en')->translate($message_lat);
-        }
-
-        $complaint->update([
-            'subject'    => $subject_lat,
-            'subject_en' => $subject_en,
-            'subject_cy' => $subject_cy,
-            'message'    => $message_lat,
-            'message_en' => $message_en,
-            'message_cy' => $message_cy,
-        ]);
-
-        return redirect()->back()->with('success', 'Prevod žalbe je uspešno ažuriran.');
-    }
-
-
-    public function updateAllComplaints()
-    {
-        Complaint::all()->each(function($complaint) {
-            $this->updateComplaints($complaint);
-        });
-
-        return redirect()->back()->with('success', 'Svi prevodi su uspešno ažurirani.');
     }
 
     public function answer(Request $request, $id)
@@ -165,30 +109,25 @@ class ComplaintController extends Controller
             $answerCy  = $originalText;
             $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
             $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
+        } elseif (app()->getLocale() === 'sr') {
+            $answerLat = $originalText;
+            $answerCy  = $this->languageMapper->latin_to_cyrillic($answerLat);
+            $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLat = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLat) === mb_strtolower($originalText)) {
-                $answerLat = $originalText;
-                $answerCy  = $this->languageMapper->latin_to_cyrillic($answerLat);
-                $answerEn  = $this->translate->setSource('sr')->setTarget('en')->translate($answerLat);
-            } else {
-                $answerEn  = $originalText;
-                $answerCy  = $this->translate->setSource('en')->setTarget('sr')->translate($answerEn);
-                $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
-            }
+            $answerEn  = $originalText;
+            $answerCy  = $this->translate->setSource('en')->setTarget('sr')->translate($answerEn);
+            $answerLat = $this->languageMapper->cyrillic_to_latin($answerCy);
         }
 
         $complaint = Complaint::findOrFail($id);
-        $complaint->answer     = $answerLat;  
+        $complaint->answer     = $originalText;
+        $complaint->answer_lat = $answerLat;
         $complaint->answer_cy  = $answerCy;
         $complaint->answer_en  = $answerEn;
         $complaint->save();
 
         return redirect()->back()->with('success', 'Odgovor uspešno sačuvan.');
     }
-
 
     public function answerPage()
     {
@@ -214,61 +153,6 @@ class ComplaintController extends Controller
         $complaints->appends(request()->all());
 
         return view('complaintAnswer', compact('complaints'));
-    }
-
-    public function update(Request $request)
-    {
-        $request->validate([
-            'content' => 'required|string',
-        ]);
-
-        $originalText = trim($request->input('content'));
-
-        $detectedScript = $this->languageMapper->detectScript($originalText);
-
-        $content_cy = '';
-        $content_lat = '';
-        $content_en = '';
-
-        if ($detectedScript === 'cyrillic') {
-            $content_cy = $originalText;
-            $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalText);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalText)) {
-                $content_lat = $originalText;
-                $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
-                $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
-            } else {
-                $content_en = $originalText;
-                $content_cy = $this->translate->setSource('en')->setTarget('sr')->translate($content_en);
-                $content_lat = $this->languageMapper->cyrillic_to_latin($content_cy);
-            }
-        }
-
-        $this->updateLangFile('sr', [' complaints.content' => $content_lat]);
-        $this->updateLangFile('sr-Cyrl', [' complaints.content' => $content_cy]);
-        $this->updateLangFile('en', [' complaints.content' => $content_en]);
-
-        return back()->with('success', 'Opis istorije je uspešno ažuriran.');
-    }
-
-    protected function updateLangFile($locale, array $data)
-    {
-        $path = resource_path("lang/{$locale}.json");
-
-        if (!File::exists($path)) {
-            File::put($path, '{}');
-        }
-
-        $translations = json_decode(File::get($path), true) ?? [];
-
-        $translations = array_merge($translations, $data);
-
-        File::put($path, json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 
     public function updateContent(Request $request)
@@ -320,7 +204,6 @@ class ComplaintController extends Controller
                 $localized['en']['title'] = $translate->translate($title);
                 $localized['en']['description'] = $translate->translate($description);
                 $localized['en']['content'] = $translate->translate($content);
-
             } elseif ($src === 'sr-Cyrl') {
                 $localized['sr']['title'] = $lm->cyrillic_to_latin($title);
                 $localized['sr']['description'] = $lm->cyrillic_to_latin($description);

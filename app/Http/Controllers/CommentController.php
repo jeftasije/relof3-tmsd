@@ -38,19 +38,14 @@ class CommentController extends Controller
             $comment_cy = $comment;
             $comment_lat = $this->languageMapper->cyrillic_to_latin($comment);
             $comment_en = $this->translate->setSource('sr')->setTarget('en')->translate($comment);
+        } elseif (app()->getLocale() === 'sr') {
+            $comment_cy = $this->languageMapper->latin_to_cyrillic($comment);
+            $comment_lat = $comment;
+            $comment_en = $this->translate->setSource('sr')->setTarget('en')->translate($comment);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($comment);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($comment)) {                              //input in serbian latin
-                $comment_cy = $this->languageMapper->latin_to_cyrillic($comment);
-                $comment_lat = $comment;
-                $comment_en = $this->translate->setSource('sr')->setTarget('en')->translate($comment);
-            } else {
-                $comment_en = $comment;
-                $comment_cy = $this->translate->setSource('en')->setTarget('sr')->translate($comment);
-                $comment_lat = $this->languageMapper->cyrillic_to_latin($comment_cy);
-            }
+            $comment_en = $comment;
+            $comment_cy = $this->translate->setSource('en')->setTarget('sr')->translate($comment);
+            $comment_lat = $this->languageMapper->cyrillic_to_latin($comment_cy);
         }
 
         Comment::create([
