@@ -145,38 +145,6 @@
                             </div>
                         </li>
                     </ul>
-                    @php
-                    $isEnglish = request()->query('en') === 'true';
-                    @endphp
-                    <label for="id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        @switch(App::getLocale())
-                        @case('en') Page language @break
-                        @case('sr-Cyrl') Језик странице @break
-                        @default Jezik stranice
-                        @endswitch
-                    </label>
-                    <div id="languages" class="flex flex-col">
-                        <div class="flex items-center mb-4">
-                            <input {{ $isEnglish ? '' : 'checked' }} id="language-radio-button-sr" type="radio" form="page-form" value="sr" name="language-radio-button" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="language-radio-button-sr" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                @switch(App::getLocale())
-                                @case('en') Serbian @break
-                                @case('sr-Cyrl') српски @break
-                                @default srpski
-                                @endswitch
-                            </label>
-                        </div>
-                        <div class="flex items-center">
-                            <input {{ $isEnglish ? 'checked' : '' }} id="language-radio-button-en" type="radio" form="page-form" value="en" name="language-radio-button" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="language-radio-button-en" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                @switch(App::getLocale())
-                                @case('en') English @break
-                                @case('sr-Cyrl') енглески @break
-                                @default engleski
-                                @endswitch
-                            </label>
-                        </div>
-                    </div>
                     <div class="flex flex-col mt-auto">
                         <button
                             @click="helpOpen = true"
@@ -206,6 +174,26 @@
                             @default Sačuvaj promene
                             @endswitch
                         </button>
+                        @if(isset($page) && $page->is_active)
+                        <button
+                            type="submit"
+                            name="action"
+                            value="turnOff"
+                            form="page-form"
+                            @click="
+                            loading = true;
+                            $refs.actionInput.value = 'turnOff';
+                            $refs.form.submit();"
+                            class="focus:outline-none text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800
+                            disabled:bg-gray-400 dark:disabled:bg-gray-400  disabled:cursor-not-allowed"
+                            @if( isset($page) && !$page->is_deletable) disabled @endif>
+                            @switch(App::getLocale())
+                            @case('en') Turn off the page @break
+                            @case('sr-Cyrl') Искључи страницу @break
+                            @default Isključi stranicu
+                            @endswitch
+                        </button>
+                        @else
                         <button
                             type="submit"
                             name="action"
@@ -223,6 +211,7 @@
                             @default Objavi
                             @endswitch
                         </button>
+                        @endif
                     </div>
                 </div>
             </aside>
@@ -315,25 +304,25 @@
                             </button>
                             <div class="flex-1 flex justify-center items-center min-h-[150px] cursor-zoom-in">
                                 <template x-if="slide === 1">
-                                    <img @click="enlarged = '/images/pages-help1.png'" src="/images/pages-help1.png" alt="Edit or Delete News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help1.png'" src="/images/pages-help1.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 2">
-                                    <img @click="enlarged = '/images/pages-help2.gif'" src="/images/pages-help2.gif" alt="Edit Form" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help2.gif'" src="/images/pages-help2.gif" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 3">
-                                    <img @click="enlarged = '/images/pages-help3.gif'" src="/images/pages-help3.gif" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help3.gif'" src="/images/pages-help3.gif" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 4">
-                                    <img @click="enlarged = '/images/pages-help4.jpg'" src="/images/pages-help4.jpg" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help4.jpg'" src="/images/pages-help4.jpg" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 5">
-                                    <img @click="enlarged = '/images/pages-help5.png'" src="/images/pages-help5.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help5.png'" src="/images/pages-help5.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 6">
-                                    <img @click="enlarged = '/images/pages-help6.png'" src="/images/pages-help6.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help6.png'" src="/images/pages-help6.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                                 <template x-if="slide === 7">
-                                    <img @click="enlarged = '/images/pages-help7.png'" src="/images/pages-help7.png" alt="Add News" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
+                                    <img @click="enlarged = '/images/pages-help7.png'" src="/images/pages-help7.png" class="rounded-xl max-h-52 object-contain bg-transparent transition-all duration-300 shadow hover:scale-105" />
                                 </template>
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"
@@ -484,13 +473,13 @@
                                 <p style="font-family: var(--font-body);">
                                     @switch(App::getLocale())
                                     @case('en')
-                                    This section manages <strong>automatic translation.</strong> When you enter text and select "Serbian," clicking the <strong>"Save Changes"</strong> button will automatically save and translate the text into the opposite script and English. Click the "English" button to review the translation, correct any errors if present, and save again by clicking "Save Changes."
+                                    If Serbian is set as the default site language, the text you enter in Serbian will be automatically saved and translated into the opposite script and English. When you switch the default site language to English, you can review the translation, correct any errors if needed, and save again by clicking <strong>"Save Changes"</strong>. These changes will only be saved for the English version.
                                     @break
                                     @case('sr-Cyrl')
-                                    Ова секција управља <strong>аутоматским преводом.</strong> Када унесете текст и одаберете "српски", кликом на дугме <strong>"Сачувај промене"</strong> текст ће се аутоматски сачувати и превести у супротно писмо и на енглески. Кликните на дугме "енглески" да проверите превод, исправите грешке ако их има, и сачувајте поново кликом на дугме "Сачувај промене".
+                                    Ако је српски постављен као подразумевани језик сајта, унети текст на српском ће се аутоматски сачувати и превести у супротно писмо и на енглески језик. Када промените подразумевани језик сајта на енглески, моћи ћете да проверите превод, исправите грешке, ако их има, и поново сачувате кликом на дугме <strong>"Сачувај промене"</strong>. Ове промене ће бити сачуване само за енглеску верзију.
                                     @break
                                     @default
-                                    Ova sekcija upravlja <strong>automatskim prevodom.</strong> Kada unesete tekst i izaberete "srpski", klikom na dugme <strong>"Sačuvaj promene"</strong>, tekst će se automatski sačuvati i prevesti u suprotno pismo i na engleski. Kliknite na dugme "engleski" da proverite prevod, ispravite greške ako ih ima, i sačuvajte ponovo klikom na dugme "Sačuvaj promene".
+                                    Ako je srpski postavljen kao podrazumevani jezik sajta, uneti tekst na srpskom će se automatski sačuvati i prevesti u suprotno pismo i na engleski jezik. Kada podrazumevani jezik sajta promenite na engleski, moći ćete da proverite prevod, ispravite greške, ako ih ima, i ponovo sačuvate klikom na dugme <strong>"Sačuvaj promene"</strong>. Ove promene se čuvaju samo za englesku verziju.
                                     @endswitch
                                 </p>
                             </div>
@@ -521,13 +510,3 @@
         </div>
     </div>
 </x-app-layout>
-
-<script>
-    document.getElementById('language-radio-button-en').addEventListener('change', function() {
-        if (this.checked) {
-            const slug = @json($slug);
-            const url = `/uredi-stranicu/${slug}?en=true`;
-            window.location.href = url;
-        }
-    });
-</script>

@@ -99,6 +99,13 @@ class PageController extends Controller
             'navigation.1.exists' => __('page_navigation_sub_exists'),
         ]);
 
+        if ($request->action === 'turnOff') {
+            $page = Page::where('slug', $request->query('slug'))->firstOrFail();
+            $page->update([
+                'is_active'     => false,
+            ]);
+            return redirect()->back()->with('success', 'Page saved');
+        }
         if ($request->has('navigation')) {
             $navigationIds = $request->navigation;
             $mainSectionId = $navigationIds[0];
@@ -140,31 +147,28 @@ class PageController extends Controller
 
         $originalTitle = $request->title;
         $detectedScript = $this->languageMapper->detectScript($originalTitle);
-        if ($detectedScript === 'cyrillic') {                                                            //input in serbian cyrillic
-            $page_titleCyr = $originalTitle;
-            $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
-            $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {                              //input in serbian latin
+        if (app()->getLocale() === 'sr') {
+            if ($detectedScript === 'cyrillic') {
+                $page_titleCyr = $originalTitle;
+                $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
+                $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+            } else {
                 $page_titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
                 $page_titleLat = $originalTitle;
                 $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            } else {
-                $page_titleEn = $originalTitle;
-                $page_titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
             }
+        } else {
+            $page_titleEn = $originalTitle;
+            $page_titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+            $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
         }
+
         if ($request->query('slug'))
             $page = Page::where('slug', $request->query('slug'))->firstOrFail();
         $plainTextForTranslation = isset($data['text']) ? strip_tags($data['text']) : '';
         $title = $data['title'];
-        $language = $request->get('language-radio-button');
         $detectedScript = $this->languageMapper->detectScript($title);
-        if ($language === 'sr') {
+        if (app()->getLocale() === 'sr') {
             if ($detectedScript === 'cyrillic') {
                 if ($title !== null) {
                     $titleCy = $title;
@@ -419,8 +423,8 @@ class PageController extends Controller
                 'isDraft'        => true,
             ]);
         }
-        $isEnglish = $request->query('en') === 'true';
-        if ($isEnglish) {
+        
+        if (app()->getLocale() === 'en') {
             $viewData = [
                 'templateId'     => $page->template_id,
                 'mainSections'   => $mainSections,
@@ -428,7 +432,7 @@ class PageController extends Controller
                 'currentSection' => $currentSection,
                 'parentSection'  => $parentSection,
                 'page'           => $page,
-                'content'        => $page->content_en, true,
+                'content'        => $page->content_en,
                 'title'          => $page->title_en,
                 'slug'           => $page->slug,
                 'isDraft'        => true,

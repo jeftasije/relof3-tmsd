@@ -79,20 +79,18 @@ Route::middleware('auth')->group(function () {
 
   
     Route::get('/relof-indeks', function() {return view('superAdmin.relofIndex');})->name('relofIndex');
-    Route::get('/kontaktiranja', [ContactController::class, 'answer'])->name('contact.answer');
+
+    Route::get('/kontaktiranja', [ContactController::class, 'answerPage'])->name('contact.answerPage');
+    Route::post('/kontaktiranja/{id}/odgovor', [ContactController::class, 'answer'])->name('contact.answer');
 
     Route::get('/pregled-zalbi', [ComplaintController::class, 'answerPage'])->name('complaints.answer');
-    Route::post('/pregled-zalbi', [ComplaintController::class, 'updateAllComplaints'])->name('complaints.updateAllTranslations');
     Route::post('/pregled-zalbi/{id}/odgovor', [ComplaintController::class, 'answer'])->name('complaints.answer');
-
-    Route::patch('/zalbe', [HistoryController::class, 'update'])->name('complaints.update');
 
     Route::post('/galerija/upload', [GalleryController::class, 'upload'])->name('gallery.upload');
 
   
     Route::post('/galerija', [GalleryController::class, 'upload'])->name('gallery.upload');
     Route::delete('/galerija/{item}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-
     Route::patch('/galerija', [GalleryController::class, 'updateDescription'])->name('gallery.updateDescription');
     
     Route::get('/relof-indeks', function() {return view('relofIndex');})->name('relofIndex');
@@ -124,6 +122,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pocetna/redosled', [HomepageController::class, 'updateComponentOrder'])->name('homepage.updateComponentOrder');
     Route::post('/homepage/team-visibility', [HomepageController::class, 'saveTeamVisibility'])->name('homepage.saveTeamVisibility');
 
+    Route::post('/kontakt/azuriraj-sadrzaj', [ContactController::class, 'update'])->name('contact.updateContent');
+    
     Route::get('/urednici', function() {return view('superAdmin.editors');})->name('editors.index');
 
     Route::get('/sabloni', [TemplateController::class, 'index'])->name('templates.index');
@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/uredi-stranicu/{slug}', [PageController::class, 'edit'])->name('page.edit');
     Route::delete('/stranica/{id}', [PageController::class, 'destroy'])->name('page.destroy');
     Route::patch('/stranica/{slug}', [PageController::class, 'update'])->name('page.update');
-
+    
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
@@ -141,6 +141,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/zalbe/izmeni-sadrzaj', [ComplaintController::class, 'updateContent'])->name('complaints.updateContent');
     
     Route::delete('/komentari/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
+    
+    Route::patch('/istorijat', [HistoryController::class, 'update'])->name('history.update');
 });
 
 Route::get('/stranica/{slug}', [PageController::class, 'show'])->name('page.show');

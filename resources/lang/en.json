@@ -34,10 +34,10 @@
         "hero_title": "Services for all needs",
         "hero_subtitle": "Fast, high quality and accessible - see our offer.",
         "images": [
-            "\/images\/fotokopirnica.png",
-            "\/images\/knjigoveznica.jpg"
+            "/images/fotokopirnica.png",
+            "/images/knjigoveznica.jpg"
         ],
-        "main_text": "Our institution offers love love: \n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduates (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices."
+        "main_text": "Our institution offers you:\n\n- Photocopying and printing: \nCopy and print documents in black and white or color, different formats (A4 and A3). Copy the price: A4 one-sided from 1.8 to 5 dinars per page, A3 from 5 to 12 dinars per page. \n\n- Color printing: \nfrom 10 to 25 dinars per page. Scan documents: 15 dinars per page.\n\n- Bookkeeping services: \nProfessional binding and production of crankshaft for diplomatic theses, doctoral dissertations and other documents. Price for binding graduates (hard cover): 354 dinars per work.\n\n- Connecting the script: \nfrom 118 to 236 dinars per scenario.\n\n- Creating a cover:\n from 354 to 708 dinars per piece.\n\n- Recover old books: \nPrice negotiable. Our expert team is available for all questions and additional information. \n\nVisit us or contact us for more detailed information on all services and current prices."
     },
     "header.search_placeholder": "Search the site...",
     "header.search_button": "Search",
@@ -79,6 +79,7 @@
     "homepage_news_title": "News",
     "homepage_contact_title": "Let's keep in touch",
     "homepage_contact_subtitle": "Sign up to stay informed about the latest news.",
+    "homepage_hero_image_path": "images/herosection.jpg",
     "cobiss_title": "Search for books on \"COBISS\"",
     "cobiss_subtitle": "Enter the title of the book, author, or ISBN, and you will be redirected to \"COBISS\"",
     "our_team_title": "Our team",
@@ -104,8 +105,13 @@
     "header_title": "Public Library \"Dositej Obradović\"",
     "header_subtitle": "Novi Pazar",
     "complaints": {
-        "title": "Submission of complaints, suggestions and comments",
-        "description": "We are committed to providing top-quality service and continuously improving our work. Every complaint, suggestion, or comment you share helps us become even better. Feel free to contact us – we guarantee that every piece of feedback will be carefully considered and appreciated.",
-        "content": "Your opinion matters to us. If you have any complaint, question, suggestion, or remark, please fill out the form below. We carefully review every request and try to respond as quickly as possible. Please fill in all required fields and describe your issue or suggestion so we can help you effectively."
+        "title": "Complaints, Suggestions and Comments",
+        "description": "We are committed to providing superior service and we are constantly improving our work. Every complaint, suggestion or comment, help us become even better. Feel free to contact us!",
+        "content": "Your opinion is important to us. If you have any complaint, question, proposal or objection, please fill out the form below. We carefully consider each request and try to answer as soon as possible. Complete all required fields and describe your problem or suggestion until we can help you effectively."
+    },
+    "contact": {
+        "content": "Our team is here to answer all your questions and give you the best possible service!",
+        "title": "Contact us",
+        "description": "Your questions, suggestions or praise are welcome!"
     }
 }
