@@ -39,62 +39,51 @@
                         </button>
                     </div>
                 </div>
-                <div class="my-10 flex justify-center">
-                    <form action="{{ route('procurements.index') }}" method="GET">
+                <div class="my-10 flex justify-center items-center">
+                    <div class="relative w-full max-w-md">
                         <input
                             type="text"
-                            name="search"
-                            value="{{ request('search') }}"
+                            id="searchInput"
                             placeholder="{{ App::getLocale() === 'en'
                                 ? 'Search document...'
                                 : (App::getLocale() === 'sr-Cyrl'
                                     ? 'Претражи документ...'
                                     : 'Pretraži dokument...') }}"
-                            class="flex-grow px-4 py-2 mr-3 rounded-lg shadow-sm focus:outline-none focus:ring-2"
+                            class="w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2"
                             style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
                         >
-                        <select
-                            name="sort"
-                            class="rounded p-2"
-                            style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
-                        >
-                            <option
-                                value="asc"
-                                {{ (request('sort', $sort ?? '') === 'asc') ? 'selected' : '' }}
-                            >
-                                {{ App::getLocale() === 'en'
-                                    ? 'Oldest first'
-                                    : (App::getLocale() === 'sr-Cyrl'
-                                        ? 'Први старији'
-                                        : 'Prvi stariji') }}
-                            </option>
-                            <option
-                                value="desc"
-                                {{ (request('sort', $sort ?? '') === 'desc') ? 'selected' : '' }}
-                            >
-                                {{ App::getLocale() === 'en'
-                                    ? 'Newest first'
-                                    : (App::getLocale() === 'sr-Cyrl'
-                                        ? 'Први новији'
-                                        : 'Prvi noviji') }}
-                            </option>
-                        </select>
-                        <button
-                            type="submit"
-                            class="px-6 py-2 ml-3 font-semibold rounded-lg transition"
-                            style="background: var(--accent); color: #fff;"
-                        >
+                        <div id="searchDropdown" class="absolute z-10 w-full rounded-lg mt-1 hidden"
+                            style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);">
+                            <ul id="searchResults" class="max-h-40 overflow-y-auto"></ul>
+                        </div>
+                    </div>
+                    <select
+                        id="globalSort"
+                        class="ml-3 rounded p-2"
+                        style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
+                    >
+                        <option value="title_asc">A-Z</option>
+                        <option value="title_desc">Z-A</option>
+                        <option value="date_desc">
                             {{ App::getLocale() === 'en'
-                                ? 'Search'
+                                ? 'Newest first'
                                 : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Претражи'
-                                    : 'Pretraži') }}
-                        </button>
-                    </form>
+                                    ? 'Новије прво'
+                                    : 'Novije prvo') }}
+                        </option>
+                        <option value="date_asc">
+                            {{ App::getLocale() === 'en'
+                                ? 'Oldest first'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Старије прво'
+                                    : 'Starije prvo') }}
+                        </option>
+                    </select>
                 </div>
             </div>
 
             <div
+                id="procurementsList"
                 class="rounded-lg shadow p-6 space-y-6"
                 style="background: var(--primary-bg); color: var(--primary-text);"
             >
@@ -102,6 +91,7 @@
                     <div
                         class="border-b pb-4 flex justify-between items-start"
                         data-proc-id="{{ $procurement->id }}"
+                        data-updated="{{ $procurement->updated_at }}"
                         style="border-color: var(--secondary-text);"
                     >
                         <div>
@@ -181,11 +171,11 @@
                         @endauth
                     </div>
                 @empty
-                    <p style="color: var(--secondary-text);">
+                    <p id="emptyMessage" style="color: var(--secondary-text);">
                         {{ App::getLocale() === 'en'
                             ? 'There is currently no available document.'
                             : (App::getLocale() === 'sr-Cyrl'
-                                ? 'Тренутно нема доступног документа.'
+                                ? 'Тренутно Тренутно нема доступног документа.'
                                 : 'Trenutno nema dostupnog dokumenta.') }}
                     </p>
                 @endforelse
@@ -245,8 +235,8 @@
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
-                                <path d="M100 50.5908C100 78.2051 77.6142 100.591…Z" fill="currentColor"/>
-                                <path d="M93.9676 39.0409C96.393…Z" fill="currentFill"/>
+                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
                             <span class="sr-only">
                                 {{ App::getLocale() === 'en'
@@ -281,7 +271,7 @@
                             </h3>
                             <button
                                 data-modal-hide="deleteModal"
-                                id="confirmDeleteButton"
+                                id="confirmDeleteButtonProc"
                                 type="button"
                                 class="px-5 py-2.5 rounded-lg font-medium"
                                 style="background: var(--accent); color: #fff;"
@@ -369,39 +359,38 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    {{-- Help Modal --}}
-    <div
-        id="helpModal"
-        class="fixed inset-0 z-50 hidden flex items-center justify-center"
-        style="background: rgba(0,0,0,0.5);"
-    >
-        <div class="relative w-full max-w-md p-6 rounded-lg shadow-lg"
-             style="background: var(--primary-bg); color: var(--primary-text);">
-            <button
-                onclick="toggleHelpModal()"
-                class="absolute top-2 right-2 text-2xl font-bold"
-                style="color: var(--secondary-text);"
-            >&times;</button>
-            <h2 class="mb-4 text-xl font-bold text-center"
-                style="color: var(--primary-text);"
+            {{-- Help Modal --}}
+            <div
+                id="helpModal"
+                class="fixed inset-0 z-50 hidden flex items-center justify-center"
+                style="background: rgba(0,0,0,0.5);"
             >
-                {{ App::getLocale() === 'en'
-                    ? 'Help'
-                    : (App::getLocale() === 'sr-Cyrl'
-                        ? 'Помоћ'
-                        : 'Pomoć') }}
-            </h2>
-            <p class="space-y-2 text-center"
-               style="color: var(--secondary-text);">
-                {!! App::getLocale() === 'en'
-                    ? 'On this page, you can <strong>delete, rename, and upload</strong> a document related to public procurement.<br><br>If you wish to rename or delete a document, click on <strong>the three dots</strong> next to its name and select the desired option.<br><br>To upload a new document, click on the <strong>"choose file" section</strong> and select the document from your computer.'
-                    : (App::getLocale() === 'sr-Cyrl'
-                        ? 'На овој страници можете <strong>обрисати, преименовати и отпремити</strong> документ о јавним набавкама.<br><br>Уколико желите да преименујете или обришете документ, притисните <strong>3 тачкице</strong> поред његовог назива и одаберите жељену опцију.<br><br>Да отпремите нови документ, кликните на <strong>секцију "choose file"</strong> и изаберите документ на Вашем рачунару.'
-                        : 'Na ovoj stranici možete <strong>obrisati, preimenovati i otpremiti</strong> dokument o javnim nabavkama.<br><br>Ukoliko želite da preimenujete ili obrišete dokument, pritisnite <strong>3 tačkice</strong> pored njegovog naziva i odaberite željenu opciju.<br><br>Da otpremite novi dokument, kliknite na <strong>sekciju "choose file"</strong> i izaberite dokument na Vašem računaru.') !!}
-            </p>
+                <div class="relative w-full max-w-md p-6 rounded-lg shadow-lg"
+                     style="background: var(--primary-bg); color: var(--primary-text);">
+                    <button
+                        onclick="toggleHelpModal()"
+                        class="absolute top-2 right-2 text-2xl font-bold"
+                        style="color: var(--secondary-text);"
+                    >×</button>
+                    <h2 class="mb-4 text-xl font-bold text-center"
+                        style="color: var(--primary-text);"
+                    >
+                        {{ App::getLocale() === 'en'
+                            ? 'Help'
+                            : (App::getLocale() === 'sr-Cyrl'
+                                ? 'Помоћ'
+                                : 'Pomoć') }}
+                    </h2>
+                    <p class="space-y-2 text-center"
+                       style="color: var(--secondary-text);">
+                        {!! App::getLocale() === 'en'
+                            ? 'On this page, you can <strong>delete, rename, and upload</strong> a document related to public procurement.<br><br>If you wish to rename or delete a document, click on <strong>the three dots</strong> next to its name and select the desired option.<br><br>To upload a new document, click on the <strong>"choose file" section</strong> and select the document from your computer.'
+                            : (App::getLocale() === 'sr-Cyrl'
+                                ? 'На овој страници можете <strong>обрисати, преименовати и отпремити</strong> документ о јавним набавкама.<br><br>Уколико желите да преименујете или обришете документ, притисните <strong>3 тачкице</strong> поред његовог назива и одаберите жељену опцију.<br><br>Да отпремите нови документ, кликните на <strong>секцију "choose file"</strong> и изаберите документ на Вашем рачунару.'
+                                : 'Na ovoj stranici možete <strong>obrisati, preimenovati i otpremiti</strong> dokument o javnim nabavkama.<br><br>Ukoliko želite da preimenujete ili obrišete dokument, pritisnite <strong>3 tačkice</strong> pored njegovog naziva i odaberite željenu opciju.<br><br>Da otpremite novi dokument, kliknite na <strong>sekciju "choose file"</strong> i izaberite dokument na Vašem računaru.') !!}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -411,41 +400,113 @@
             modal.classList.toggle('hidden');
         }
 
-        const helpModal = document.getElementById('helpModal');
-
-        if (helpModal) {
-            helpModal.addEventListener('click', (event) => {
-                if (event.target === helpModal) {
-                    toggleHelpModal();
-                }
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const locale = '{{ App::getLocale() }}';
+            const searchInput = document.getElementById('searchInput');
+            const searchDropdown = document.getElementById('searchDropdown');
+            const searchResults = document.getElementById('searchResults');
+            const globalSort = document.getElementById('globalSort');
+            const procurementsList = document.getElementById('procurementsList');
             const deleteModal = document.getElementById('deleteModal');
             const renameModal = document.getElementById('renameModal');
             const deleteModalTitle = document.getElementById('deleteModalTitle');
             const renameInput = document.getElementById('renameInput');
-            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            const confirmDeleteButton = document.getElementById('confirmDeleteButtonProc');
             const confirmRenameButton = document.getElementById('confirmRenameButton');
+            let selectedIndex = -1;
             let currentProcId = null;
 
             if (typeof initFlowbite === 'function') {
                 initFlowbite();
             }
 
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+                searchResults.innerHTML = '';
+                searchDropdown.classList.toggle('hidden', !query);
+                selectedIndex = -1;
+
+                if (query) {
+                    const allProcurements = Array.from(document.querySelectorAll('div[data-proc-id]'));
+                    const matchingProcs = allProcurements.filter(proc => 
+                        proc.querySelector('a').textContent.toLowerCase().includes(query)
+                    );
+
+                    matchingProcs.forEach(proc => {
+                        const li = document.createElement('li');
+                        li.className = 'p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer';
+                        li.textContent = proc.querySelector('a').textContent;
+                        li.dataset.procId = proc.dataset.procId;
+                        li.addEventListener('click', () => {
+                            const targetProc = document.querySelector(`div[data-proc-id="${proc.dataset.procId}"]`);
+                            if (targetProc) {
+                                targetProc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                searchDropdown.classList.add('hidden');
+                                searchInput.value = '';
+                                selectedIndex = -1;
+                            }
+                        });
+                        searchResults.appendChild(li);
+                    });
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target) && 
+                    !e.target.closest('[data-dropdown-toggle]') && !e.target.closest('[data-modal-toggle]')) {
+                    searchDropdown.classList.add('hidden');
+                    selectedIndex = -1;
+                }
+            });
+
+            function applySort(sortType) {
+                const items = Array.from(procurementsList.querySelectorAll('div[data-proc-id]'));
+                const emptyMessage = document.getElementById('emptyMessage');
+
+                items.forEach(item => item.remove());
+
+                items.sort((a, b) => {
+                    const linkA = a.querySelector('a');
+                    const linkB = b.querySelector('a');
+                    if (!linkA || !linkB) return 0;
+
+                    const titleA = linkA.textContent.trim().toLowerCase();
+                    const titleB = linkB.textContent.trim().toLowerCase();
+                    const dateA = new Date(a.getAttribute('data-updated'));
+                    const dateB = new Date(b.getAttribute('data-updated'));
+
+                    switch (sortType) {
+                        case 'title_asc':
+                            return titleA.localeCompare(titleB);
+                        case 'title_desc':
+                            return titleB.localeCompare(titleA);
+                        case 'date_asc':
+                            return dateA - dateB;
+                        case 'date_desc':
+                            return dateB - dateA;
+                        default:
+                            return 0;
+                    }
+                });
+
+                const uploadForm = procurementsList.querySelector('#uploadForm');
+                items.forEach(item => procurementsList.insertBefore(item, uploadForm || procurementsList.lastChild));
+
+                if (emptyMessage) {
+                    emptyMessage.style.display = items.length === 0 ? 'block' : 'none';
+                }
+            }
+
+            globalSort.addEventListener('change', (e) => {
+                applySort(e.target.value);
+            });
+
+            applySort(globalSort.value);
+
             document.querySelectorAll('[data-modal-toggle="deleteModal"]').forEach(button => {
                 button.addEventListener('click', () => {
                     currentProcId = button.dataset.procId;
                     deleteModalTitle.textContent = button.dataset.procTitle;
-                });
-            });
-
-            document.querySelectorAll('[data-modal-toggle="renameModal"]').forEach(button => {
-                button.addEventListener('click', () => {
-                    currentProcId = button.dataset.procId;
-                    renameInput.value = button.dataset.procTitle;
                 });
             });
 
@@ -468,6 +529,12 @@
                         const procElement = document.querySelector(`div[data-proc-id="${currentProcId}"]`);
                         if (procElement) procElement.remove();
                         deleteModal.classList.add('hidden');
+
+                        const items = procurementsList.querySelectorAll('div[data-proc-id]');
+                        const emptyMessage = document.getElementById('emptyMessage');
+                        if (emptyMessage) {
+                            emptyMessage.style.display = items.length === 0 ? 'block' : 'none';
+                        }
                     }
                 })
                 .catch(error => {
@@ -479,6 +546,13 @@
                             : 'Greška prilikom brisanja dokumenta: ' + error.message
                         )
                     );
+                });
+            });
+
+            document.querySelectorAll('[data-modal-toggle="renameModal"]').forEach(button => {
+                button.addEventListener('click', () => {
+                    currentProcId = button.dataset.procId;
+                    renameInput.value = button.dataset.procTitle;
                 });
             });
 
@@ -522,6 +596,7 @@
                             if (deleteButton) deleteButton.dataset.procTitle = data.title;
                         }
                         renameModal.classList.add('hidden');
+                        applySort(globalSort.value);
                     }
                 })
                 .catch(error => {
@@ -536,7 +611,7 @@
                 });
             });
 
-            const uploadForm = document.getElementById('uploadForm');
+        const uploadForm = document.getElementById('uploadForm');
             if (uploadForm) {
                 uploadForm.addEventListener('submit', (e) => {
                     e.preventDefault();
@@ -582,7 +657,7 @@
                     .then(data => {
                         if (data.message) {
                             spinner.classList.add('hidden');
-                            window.location.reload();
+                            window.location.href = `{{ route('procurements.index') }}`;
                         } else {
                             alert(
                                 locale === 'en'
