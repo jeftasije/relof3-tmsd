@@ -240,8 +240,13 @@
         <div id="deleteModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-sm p-6 relative">
                 <button onclick="toggleDeleteModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
-                <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">Confirm Deletion</h2>
-                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">Are you sure you want to delete this question?</p>
+                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">
+                    {{ App::getLocale() === 'en'
+                                ? 'Are you sure you want to delete?'
+                                : (App::getLocale() === 'sr-Cyrl'
+                                    ? 'Да ли сте сигурни да желите да обришете'
+                                    : 'Da li ste sigurni da želite da obrišete') }}
+                </p>
 
                 <form id="deleteForm" method="POST" action="">
                     @csrf
