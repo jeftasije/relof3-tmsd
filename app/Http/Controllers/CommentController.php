@@ -58,7 +58,7 @@ class CommentController extends Controller
             'is_official' => Auth::check(),
         ]);
 
-        return redirect()->back()->with('success', 'Komentar je uspešno dodat!');
+        return redirect()->back()->with('success', 'store_success');
     }
 
     public function index()

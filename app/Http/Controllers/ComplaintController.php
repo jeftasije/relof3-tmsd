@@ -88,7 +88,7 @@ class ComplaintController extends Controller
             'message_cy'   => $message_cy,
         ]);
 
-        return redirect()->back()->with('success', 'Žalba uspešno poslata!');
+        return redirect()->back()->with('success', 'store_success');
     }
 
     public function answer(Request $request, $id)
@@ -126,7 +126,7 @@ class ComplaintController extends Controller
         $complaint->answer_en  = $answerEn;
         $complaint->save();
 
-        return redirect()->back()->with('success', 'Odgovor uspešno sačuvan.');
+        return redirect()->back()->with('success', 'answer_success');
     }
 
     public function answerPage()

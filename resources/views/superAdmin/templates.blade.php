@@ -22,9 +22,9 @@
 
                         <!--OVAJ DEO JE SAMO ZA MVP I TREBA GA OBRISATI KASNIJE-->
 
-                        <div class="max-w-sm rounded-lg shadow-sm border" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text); min-height: 300px; display: flex; flex-direction: column;">
+                        <div class="max-w-sm rounded-lg shadow-sm border transition duration-300 hover:-translate-y-1 hover:scale-105 group overflow-hidden" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text); min-height: 300px; display: flex; flex-direction: column;">
                             <div>
-                                <img class="rounded-t-lg" src="{{ asset('storage/templates/template2.png') }}" />
+                                <img class="rounded-t-lg transform transition-transform duration-300 group-hover:scale-105" src="{{ asset('storage/templates/template2.png') }}" />
                             </div>
                             <div class="p-5 flex flex-col justify-between flex-grow">
                                 <div>
@@ -45,9 +45,9 @@
                             </div>
                         </div>
 
-                        <div class="max-w-sm rounded-lg shadow-sm border" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text); display: flex; flex-direction: column;">
+                        <div class="max-w-sm rounded-lg shadow-sm border transition duration-300 hover:-translate-y-1 hover:scale-105 group overflow-hidden" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%); border-color: var(--secondary-text); display: flex; flex-direction: column;">
                             <div>
-                                <img class="rounded-t-lg" src="{{ asset('storage/templates/template3.png') }}" />
+                                <img class="rounded-t-lg transform transition-transform duration-300 group-hover:scale-105" src="{{ asset('storage/templates/template3.png') }}" />
                             </div>
                             <div class="p-5 flex flex-col justify-between flex-grow">
                                 <div>

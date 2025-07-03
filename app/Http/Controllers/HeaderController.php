@@ -69,7 +69,7 @@ class HeaderController extends Controller
         $detectedScriptTitle = $this->languageMapper->detectScript($originalTitle);
         $detectedScriptSubtitle = $this->languageMapper->detectScript($originalSubtitle); 
 
-        if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {
+        if ($detectedScriptTitle === 'cyrillic' || $detectedScriptSubtitle === 'cyrillic') {                                //cyrillic input
             $titleCyr = $originalTitle;
             $titleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
             $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
@@ -78,31 +78,14 @@ class HeaderController extends Controller
             $subtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
             $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+        } else {                                                                                                            //latin input     
+            $titleLat = $originalTitle;
+            $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
-                $titleLat = $originalTitle;
-                $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $subtitleLat = $originalSubtitle;
-                $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $titleEn = $originalTitle;
-                $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
-
-                $subtitleEn = $originalSubtitle;
-                $subtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $subtitleLat = $this->languageMapper->cyrillic_to_latin($subtitleCyr);
-            }
+            $subtitleLat = $originalSubtitle;
+            $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['header_title'] = $titleEn;

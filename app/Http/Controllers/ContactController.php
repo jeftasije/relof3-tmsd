@@ -38,7 +38,6 @@ class ContactController extends Controller
             'message'    => 'required|string',
         ]);
 
-        //$name = $validated['first_name'] . ' ' . $validated['last_name'];
         $message_src = $validated['message'];
 
         $is_cyrillic = preg_match('/[\p{Cyrillic}]/u', $message_src);
@@ -68,7 +67,7 @@ class ContactController extends Controller
             'message_en'   => $message_en,
         ]);
 
-        return redirect()->back()->with('success', 'Poruka uspešno poslata!');
+        return redirect()->back()->with('success', 'store_success');
     }
 
     public function answer(Request $request, $id)
@@ -111,7 +110,7 @@ class ContactController extends Controller
         $contact->answer_en  = $answerEn;
         $contact->save();
 
-        return redirect()->back()->with('success', 'Odgovor uspešno sačuvan.');
+        return redirect()->back()->with('success', 'answer_success');
     }
 
 

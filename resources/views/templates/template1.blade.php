@@ -163,6 +163,7 @@
             {!! $content['text'] !!}
         </div>
 
+        @auth
         <button id="open-modal" type="button" class="ml-4 font-semibold py-2 px-4 rounded-lg shadow"
                 style="background: var(--accent); color: #fff;">
             @switch(App::getLocale())
@@ -171,7 +172,8 @@
             @default Uredi
             @endswitch
         </button>
-
+        @endauth
+        
         <!-- Modal -->
         <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background: rgba(0,0,0,0.5);">
             <form id="edit-form" method="POST" action="{{ route('page.update', $page->slug) }}" enctype="multipart/form-data"

@@ -656,10 +656,10 @@
                         </h2>
                         <p class="text-gray-700 dark:text-gray-300 space-y-2">
                             {!! App::getLocale() === 'en'
-                                ? 'To change the <strong>footer data</strong>, please fill out the form below with the data you want to update. Fields you do not change will remain the same. </br> The data will be saved by clicking the <strong>Save button</strong>.  </br> In the second form (the one below the one you previously filled out), you will be able to review the data that has been <strong>automatically translated</strong> into <strong>English</strong> based on the data you previously entered. <strong>Review</strong> the data and <strong>edit</strong> it if necessary.  </br> If you change the data in English, save it by clicking the <strong>Save button</strong>. To see how the footer will look with the new data, you can check at the bottom of the page.'
+                                ? 'To change the <strong>footer data</strong>, please fill out the form below with the data you want to update, in Serbian (Latin or Cyrillic). Fields you do not change will remain the same. </br> The data will be saved by clicking the <strong>Save button</strong>.  </br> In the second form (the one below the one you previously filled out), you will be able to review the data that has been <strong>automatically translated</strong> into <strong>English</strong> based on the data you previously entered. <strong>Review</strong> the data and <strong>edit</strong> it if necessary.  </br> If you change the data in English, save it by clicking the <strong>Save button</strong>. To see how the footer will look with the new data, you can check at the bottom of the page.'
                                 : (App::getLocale() === 'sr-Cyrl'
-                                    ? 'Да бисте променили <strong>податке у подножју</strong>, потребно је да попуните форму испод подацима које желите да промените. Поља која не промените остаће иста. </br> Подaци ће се сачувати кликом на дугме <strong>сачувај</strong>.  </br> У другој форми (форма испод оне коју сте претходно попунили), моћи ћете да прегледате податке који су <strong>аутоматски преведени на енглески језик</strong>, на основу оних које сте претходно унели. Податке <strong>прегледајте</strong> и, по потреби, <strong>измените</strong>.  </br> Уколико промените податке на енглеском језику, сачувајте их кликом на <strong>дугме сачувај</strong>. Како би подножје изгледало са новим подацима, можете погледати на дну странице.' 
-                                    : 'Da biste promenili <strong>podatke u podnožju</strong>, potrebno je da popunite formu ispod podacima koje želite promeniti. Polja koja ne promenite će ostati ista. </br> Podaci će se sačuvati klikom na dugme <strong>sačuvaj</strong>.  </br> U drugoj formi (forma ispod one koju ste prethodno popunili), moći ćete da pregledate podatke koji su <strong>automatski prevedeni na engleski jezik</strong>, na osnovu onih koje ste prethodno uneli. Podatke <strong>pregledajte</strong> i, po potrebi, <strong>izmenite</strong>. </br> Ukoliko promenite podatke na engleskom jeziku, sačuvajte ih klikom na <strong>dugme sačuvaj</strong>. Kako bi podnožje izgledalo sa novim podacima možete pogledati na dnu stranice.')
+                                    ? 'Да бисте променили <strong>податке у подножју</strong>, потребно је да попуните форму испод подацима на српском језику (на било ком писму) које желите да промените. Поља која не промените остаће иста. </br> Подaци ће се сачувати кликом на дугме <strong>сачувај</strong>.  </br> У другој форми (форма испод оне коју сте претходно попунили), моћи ћете да прегледате податке који су <strong>аутоматски преведени на енглески језик</strong>, на основу оних које сте претходно унели. Податке <strong>прегледајте</strong> и, по потреби, <strong>измените</strong>.  </br> Уколико промените податке на енглеском језику, сачувајте их кликом на <strong>дугме сачувај</strong>. Како би подножје изгледало са новим подацима, можете погледати на дну странице.' 
+                                    : 'Da biste promenili <strong>podatke u podnožju</strong>, potrebno je da popunite formu ispod podacima na srpskom jeziku (na bilo kom pismu) koje želite promeniti. Polja koja ne promenite će ostati ista. </br> Podaci će se sačuvati klikom na dugme <strong>sačuvaj</strong>.  </br> U drugoj formi (forma ispod one koju ste prethodno popunili), moći ćete da pregledate podatke koji su <strong>automatski prevedeni na engleski jezik</strong>, na osnovu onih koje ste prethodno uneli. Podatke <strong>pregledajte</strong> i, po potrebi, <strong>izmenite</strong>. </br> Ukoliko promenite podatke na engleskom jeziku, sačuvajte ih klikom na <strong>dugme sačuvaj</strong>. Kako bi podnožje izgledalo sa novim podacima možete pogledati na dnu stranice.')
                             !!}
                         </p>
                     </div>
@@ -676,6 +676,7 @@
                     toggleHelpModal();
                 }
             });
+            
             document.addEventListener('DOMContentLoaded', () => {
                 const inputs = document.querySelectorAll('[data-preview-target]');
                 let currentLang = 'sr'; 
@@ -688,22 +689,22 @@
                     const data = lang === 'sr' ? srData : (lang === 'sr-Cyrl' ? srCyrData : enData);
                     document.getElementById('preview-name').textContent = data.name || '';
                     document.getElementById('preview-address').textContent = data.address || '';
-                    document.getElementById('preview-address_label').textContent = data.address_label || '{{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }}';
+                    document.getElementById('preview-address_label').textContent = data.address_label || `{{ App::getLocale() === 'en' ? 'Address' : (App::getLocale() === 'sr-Cyrl' ? 'Адреса' : 'Adresa') }} `;
                     document.getElementById('preview-pib').textContent = data.pib || '';
-                    document.getElementById('preview-pib_label').textContent = data.pib_label || '{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}';
+                    document.getElementById('preview-pib_label').textContent = data.pib_label || `{{ App::getLocale() === 'en' ? 'Tax ID (PIB)' : (App::getLocale() === 'sr-Cyrl' ? 'ПИБ' : 'PIB') }}`;
                     document.getElementById('preview-phone').textContent = data.phone || '';
-                    document.getElementById('preview-phone_label').textContent = data.phone_label || '{{ App::getLocale() === 'en' ? 'Contact' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт' : 'Kontakt') }}';
+                    document.getElementById('preview-phone_label').textContent = data.phone_label || `{{ App::getLocale() === 'en' ? 'Contact' : (App::getLocale() === 'sr-Cyrl' ? 'Контакт' : 'Kontakt') }}`;
                     document.getElementById('preview-email').textContent = data.email || '';
                     document.getElementById('preview-email-link').href = `mailto:${data.email || 'dositejbib@gmail.com'}`;
                     document.getElementById('preview-facebook').href = data.facebook || '#';
                     document.getElementById('preview-twitter').href = data.twitter || '#';
-                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || '{{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}';
+                    document.getElementById('preview-work_hours_label').textContent = data.work_hours_label || `{{ App::getLocale() === 'en' ? 'Working Hours' : (App::getLocale() === 'sr-Cyrl' ? 'Радно Време' : 'Radno Vreme') }}`;
                     document.getElementById('preview-work_hours').innerHTML = (data.work_hours_formatted || []).map(line => `<li>${line}</li>`).join('');
                     document.getElementById('preview-map_embed').src = data.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                     document.getElementById('preview-copyrights').textContent = data.copyrights || '';
                     document.getElementById('preview-name_footer').textContent = data.name || '';
-                    document.getElementById('preview-logo_light').src = data.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                    document.getElementById('preview-logo_dark').src = data.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                    document.getElementById('preview-logo_light').src = data.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                    document.getElementById('preview-logo_dark').src = data.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                 }
 
                 document.querySelectorAll('input[name="preview-lang"]').forEach(radio => {
@@ -786,8 +787,8 @@
                                 document.getElementById('preview-map_embed').src = srData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                                 document.getElementById('preview-copyrights').textContent = srData.copyrights || '';
                                 document.getElementById('preview-name_footer').textContent = srData.name || '';
-                                document.getElementById('preview-logo_light').src = srData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = srData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                                document.getElementById('preview-logo_light').src = srData.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                                document.getElementById('preview-logo_dark').src = srData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
                             console.error('Error:', data.message);
@@ -825,8 +826,8 @@
                                 document.getElementById('preview-map_embed').src = enData.map_embed || 'https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed';
                                 document.getElementById('preview-copyrights').textContent = enData.copyrights || '';
                                 document.getElementById('preview-name_footer').textContent = enData.name || '';
-                                document.getElementById('preview-logo_light').src = enData.logo_light || '{{ asset('images/nbnp-logo.png') }}';
-                                document.getElementById('preview-logo_dark').src = enData.logo_dark || '{{ asset('images/nbnp-logo-dark.png') }}';
+                                document.getElementById('preview-logo_light').src = enData.logo_light || `{{ asset('images/nbnp-logo.png') }}`;
+                                document.getElementById('preview-logo_dark').src = enData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
                             console.error('Error:', data.message);

@@ -151,7 +151,7 @@
           </div>
         </template>
     </div>
-    <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset; background: var(--primary-bg) !important; filter: brightness(0.89);">
+    <div class="p-5 flex flex-col flex-grow justify-between" style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1) inset; background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%) !important; filter: brightness(0.89);">
         <div>
             <a href="{{ route('employees.show', $employee->id) }}">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight"

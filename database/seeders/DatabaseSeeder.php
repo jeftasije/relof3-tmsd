@@ -45,7 +45,9 @@ class DatabaseSeeder extends Seeder
             TemplateSeeder::class,
             PageSeeder::class,
             ReminderSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            QuestionSeeder::class
+
         ]);
     }
 }

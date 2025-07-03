@@ -66,7 +66,7 @@ class GalleryController extends Controller
             'type' => $type,
         ]);
 
-        return back()->with('success', 'Fajl dodat.');
+        return back()->with('success', 'upload_success');
     }
 
     public function destroy(GalleryItem $item)
@@ -74,7 +74,7 @@ class GalleryController extends Controller
         Storage::delete($item->path);
         $item->delete();
 
-        return back()->with('success', 'Fajl obrisan.');
+        return back()->with('success', 'destroy_success');
     }
 
     public function updateDescription(Request $request)
@@ -104,7 +104,7 @@ class GalleryController extends Controller
         $this->updateLangFile('sr-Cyrl', ['gallery.description' => $value_cy]);
         $this->updateLangFile('en', ['gallery.description' => $value_en]);
 
-        return back()->with('success', 'Opis galerije je uspešno ažuriran.');
+        return back()->with('success', 'updateDescription_success');
     }
 
     protected function updateLangFile($locale, array $data)

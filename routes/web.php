@@ -20,6 +20,8 @@ use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrganisationalStructureController;
+use App\Http\Controllers\QuestionController;
+
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\HeaderController;
 use App\Models\News;
@@ -137,6 +139,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/usluge/izmeni', [ServicesController::class, 'update'])->name('services.update');
     Route::post('/usluge/dodaj-sliku', [ServicesController::class, 'uploadImage'])->name('services.uploadImage');
     Route::delete('/usluge/obrisi-sliku/{index}', [ServicesController::class, 'deleteImage'])->name('services.deleteImage');
+
+    Route::post('/pitanja', [QuestionController::class, 'store'])->name('questions.store');
+    Route::patch('/pitanja/{question}', [QuestionController::class, 'update'])->name('questions.update');
+    Route::delete('/pitanja/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+    Route::patch('/pitanja', [QuestionController::class, 'updateDescription'])->name('questions.updateDescription');
+    
+
     
     Route::post('/zalbe/izmeni-sadrzaj', [ComplaintController::class, 'updateContent'])->name('complaints.updateContent');
     
@@ -177,8 +186,8 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::get('/organizaciona-struktura', [OrganisationalStructureController::class, 'index'])->name('organisationalStructures.index');
 
-Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-Route::get('/search-results', [SearchController::class, 'search'])->name('search.results');
+Route::get('/pretraga', [SearchController::class, 'index'])->name('search.index');
+Route::get('/pretraga-rezultati', [SearchController::class, 'search'])->name('search.results');
 
 Route::get('/galerija', [GalleryController::class, 'index'])->name('gallery.index');
 
@@ -189,5 +198,6 @@ Route::get('/usluge', [ServicesController::class, 'show'])->name('services.show'
 Route::get('/blog', [CommentController::class, 'index'])->name('comments.index');
 Route::post('/komentari', [CommentController::class, 'store'])->name('comments.store');
 
+Route::get('/pitanja', [QuestionController::class, 'index'])->name('questions.index');
 
 require __DIR__.'/auth.php';

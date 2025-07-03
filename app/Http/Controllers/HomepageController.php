@@ -108,6 +108,12 @@ class HomepageController extends Controller
         $jsonPath = storage_path('app/public/homepageVisibility.json');
         $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : [];
 
+        $visibilityPath = storage_path('app/public/homepageVisibility.json');
+        $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+        $heroImage = $visibilityJson['hero_image'];
+        $contactImage = $visibilityJson['contact_image'];
+
         $order = $data['component_order'] ?? [];
         $newsVisible = $data['news_visible'] ?? true;
         $contactVisible = $data['contact_visible'] ?? true;
@@ -119,15 +125,14 @@ class HomepageController extends Controller
         $visibleEmployees = Employee::whereIn('id', $visibleEmployeeIds)->get();
 
         return view('welcome', compact('order', 'news', 'newsVisible', 'contactVisible', 'cobissVisible',
-        'ourTeamVisible', 'visibleEmployees'));
+        'ourTeamVisible', 'visibleEmployees', 'heroImage', 'contactImage'));
     }
 
 
     public function updateSr(Request $request)
     {
         $validated = $this->validateRequest($request);
-
-        $imagePath = $this->handleImageUpload($request->file('image'));
+        $imagePath = $this->handleImageUpload($request->file('image'));              
 
         $srPath = resource_path('lang/sr.json');
         $srCyrPath = resource_path('lang/sr-Cyrl.json');
@@ -141,20 +146,27 @@ class HomepageController extends Controller
             [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn] =
                 $this->generateLocalizedTexts($validated['title_sr'], $validated['subtitle_sr']);
 
-            $this->updateJsonContent($srLatJson, $titleLat, $subtitleLat, $imagePath);
-            $this->updateJsonContent($srCyrJson, $titleCyr, $subtitleCyr, $imagePath);
-            $this->updateJsonContent($enJson, $titleEn, $subtitleEn, $imagePath);
+            $this->updateJsonContent($srLatJson, $titleLat, $subtitleLat);
+            $this->updateJsonContent($srCyrJson, $titleCyr, $subtitleCyr);
+            $this->updateJsonContent($enJson, $titleEn, $subtitleEn);
         }
 
         $this->writeJson($srPath, $srLatJson);
         $this->writeJson($srCyrPath, $srCyrJson);
         $this->writeJson($enPath, $enJson);
 
-        $title_en = $enJson['homepage_title'] ?? '';
-        $subtitle_en = $enJson['homepage_subtitle'] ?? '';
+        if ($imagePath) {
+            $visibilityPath = storage_path('app/public/homepageVisibility.json');
+            $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+            $visibilityJson['hero_image'] = $imagePath;
+
+            file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
 
         return response()->json(['success' => true]);
     }
+
 
     public function updateEn(Request $request)
     {
@@ -203,18 +215,9 @@ class HomepageController extends Controller
             $newsTitleLat = $this->languageMapper->cyrillic_to_latin($originalTitle);
             $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
-                $newsTitleLat = $originalTitle;
-                $newsTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            } else {
-                $newsTitleEn = $originalTitle;
-                $newsTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $newsTitleLat = $this->languageMapper->cyrillic_to_latin($newsTitleCyr);
-            }
+            $newsTitleLat = $originalTitle;
+            $newsTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $newsTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         }
 
         $enJson['homepage_news_title'] = $newsTitleEn;
@@ -232,7 +235,8 @@ class HomepageController extends Controller
     {
         $request->validate([
             'contact_title_sr' => 'nullable|string',
-            'contact_subtitle_sr' => 'nullable|string'
+            'contact_subtitle_sr' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $srPath = resource_path('lang/sr.json');
@@ -242,6 +246,8 @@ class HomepageController extends Controller
         $srLatJson = $this->readJson($srPath);
         $srCyrJson = $this->readJson($srCyrPath);
         $enJson = $this->readJson($enPath);
+
+        $imagePath = $this->handleContactImageUpload($request->file('imageContact'));
 
         $originalTitle = $request->input('contact_title_sr');               
         $originalSubtitle = $request->input('contact_subtitle_sr');
@@ -259,30 +265,13 @@ class HomepageController extends Controller
             $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+            $contactTitleLat = $originalTitle;
+            $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
-                $contactTitleLat = $originalTitle;
-                $contactTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $contactTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $contactSubtitleLat = $originalSubtitle;
-                $contactSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $contactTitleEn = $originalTitle;
-                $contactTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $contactTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $contactSubtitleEn = $originalSubtitle;
-                $contactSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $contactSubtitleLat = $this->languageMapper->cyrillic_to_latin($contactSubtitleCyr);
-            }
+            $contactSubtitleLat = $originalSubtitle;
+            $contactSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $contactSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['homepage_contact_title'] = $contactTitleEn;
@@ -292,6 +281,15 @@ class HomepageController extends Controller
         $enJson['homepage_contact_subtitle'] = $contactSubtitleEn;
         $srCyrJson['homepage_contact_subtitle'] = $contactSubtitleCyr;
         $srLatJson['homepage_contact_subtitle'] = $contactSubtitleLat;
+
+        if ($imagePath) {
+            $visibilityPath = storage_path('app/public/homepageVisibility.json');
+            $visibilityJson = file_exists($visibilityPath) ? json_decode(file_get_contents($visibilityPath), true) : [];
+
+            $visibilityJson['contact_image'] = $imagePath;
+
+            file_put_contents($visibilityPath, json_encode($visibilityJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
 
         file_put_contents($enPath, json_encode($enJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         file_put_contents($srPath, json_encode($srLatJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
@@ -369,31 +367,14 @@ class HomepageController extends Controller
             $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
             $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+        } else {      
+            $cobissTitleLat = $originalTitle;
+            $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {       
-                $cobissTitleLat = $originalTitle;
-                $cobissTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $cobissTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $cobissSubtitleLat = $originalSubtitle;
-                $cobissSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $cobissTitleEn = $originalTitle;
-                $cobissTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $cobissTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $cobissSubtitleEn = $originalSubtitle;
-                $cobissSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $cobissSubtitleLat = $this->languageMapper->cyrillic_to_latin($cobissSubtitleCyr);
-            }
+            $cobissSubtitleLat = $originalSubtitle;
+            $cobissSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $cobissSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['cobiss_title'] = $cobissTitleEn;
@@ -467,31 +448,14 @@ class HomepageController extends Controller
             $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($originalSubtitle);
             $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-        } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+        } else {       
+            $ourTeamTitleLat = $originalTitle;
+            $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            $toSrSubtitle = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-            $toSrLatinSubtitle = $this->languageMapper->cyrillic_to_latin($toSrSubtitle);
-
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle) || mb_strtolower($toSrSubtitle) === mb_strtolower($toSrLatinSubtitle)) {        
-                $ourTeamTitleLat = $originalTitle;
-                $ourTeamTitleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $ourTeamTitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-
-                $ourTeamSubtitleLat = $originalSubtitle;
-                $ourTeamSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-
-            } else {
-                $ourTeamTitleEn = $originalTitle;
-                $ourTeamTitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $ourTeamTitleLat = $this->languageMapper->cyrillic_to_latin($contactTitleCyr);
-
-                $ourTeamSubtitleEn = $originalSubtitle;
-                $ourTeamSubtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $ourTeamSubtitleLat = $this->languageMapper->cyrillic_to_latin($ourTeamSubtitleCyr);
-            }
+            $ourTeamSubtitleLat = $originalSubtitle;
+            $ourTeamSubtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $ourTeamSubtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
         }
 
         $enJson['our_team_title'] = $ourTeamTitleEn;
@@ -555,20 +519,43 @@ class HomepageController extends Controller
         if (!$image) return null;
 
         $imageName = 'herosection.' . $image->getClientOriginalExtension();
-        $imagePath = public_path('images/' . $imageName);
+        $imageDir = public_path('images');
+        $imagePath = $imageDir . '/' . $imageName;
 
-        if (file_exists($imagePath)) {
+        foreach (glob($imageDir . '/herosection.*') as $existingFile) {
             try {
-                unlink($imagePath);
+                unlink($existingFile);
             } catch (\Exception $e) {
-                \Log::error("could not delete photo $imageName: " . $e->getMessage());
+                \Log::error("Could not delete old hero image {$existingFile}: " . $e->getMessage());
             }
         }
 
-        $image->move(public_path('images'), $imageName);
+        $image->move($imageDir, $imageName);
 
         return 'images/' . $imageName;
     }
+
+    private function handleContactImageUpload($image)
+    {
+        if (!$image) return null;
+
+        $imageName = 'contactHomepage.' . $image->getClientOriginalExtension();
+        $imageDir = public_path('images');
+        $imagePath = $imageDir . '/' . $imageName;
+
+        foreach (glob($imageDir . '/contactHomepage.*') as $existingFile) {
+            try {
+                unlink($existingFile);
+            } catch (\Exception $e) {
+                \Log::error("Could not delete old hero image {$existingFile}: " . $e->getMessage());
+            }
+        }
+
+        $image->move($imageDir, $imageName);
+
+        return 'images/' . $imageName;
+    }
+
 
     private function readJson($path)
     {
@@ -580,14 +567,10 @@ class HomepageController extends Controller
         file_put_contents($path, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
-    private function updateJsonContent(&$json, $title, $subtitle, $imagePath)
+    private function updateJsonContent(&$json, $title, $subtitle)
     {
         $json['homepage_title'] = $title;
         $json['homepage_subtitle'] = $subtitle;
-
-        if ($imagePath) {
-            $json['homepage_hero_image_path'] = $imagePath;
-        }
     }
 
     private function generateLocalizedTexts($originalTitle, $originalSubtitle)
@@ -603,26 +586,14 @@ class HomepageController extends Controller
             $subtitleLat = $this->languageMapper->cyrillic_to_latin($subtitleCyr);
             $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($subtitleCyr);
         } else {
-            $toSr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $toSrLatin = $this->languageMapper->cyrillic_to_latin($toSr);
+            $titleLat = $originalTitle;
+            $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
 
-            if (mb_strtolower($toSrLatin) === mb_strtolower($originalTitle)) {
-                $titleLat = $originalTitle;
-                $titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+            $subtitleLat = $originalSubtitle;
+            $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
+            $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
 
-                $subtitleLat = $originalSubtitle;
-                $subtitleCyr = $this->languageMapper->latin_to_cyrillic($originalSubtitle);
-                $subtitleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalSubtitle);
-            } else {
-                $titleEn = $originalTitle;
-                $titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-                $titleLat = $this->languageMapper->cyrillic_to_latin($titleCyr);
-
-                $subtitleEn = $originalSubtitle;
-                $subtitleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalSubtitle);
-                $subtitleLat = $this->languageMapper->cyrillic_to_latin($subtitleCyr);
-            }
         }
 
         return [$titleLat, $titleCyr, $titleEn, $subtitleLat, $subtitleCyr, $subtitleEn];
