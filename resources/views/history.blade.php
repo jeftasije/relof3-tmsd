@@ -1,36 +1,42 @@
 <x-guest-layout>
     <div class="max-w-4xl mx-auto py-10 px-6 text-gray-900 dark:text-white">
-        @auth
-            <div class="flex justify-end mb-2">
-                <button 
-                    id="help-btn" 
-                    onclick="toggleHelpModal()"
-                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                        <path d="M12 17l0 .01" />
-                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                    </svg>
-                    <span class="ml-3">
-                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                    </span>
-                </button>
-            </div>
-        @endauth
-        <h1 class="text-center text-5xl font-extrabold mb-6 flex items-center justify-center gap-4">
-            @switch(App::getLocale())
-                @case('en') History @break
-                @case('sr-Cyrl') Историјат @break
-                @default Istorijat
-            @endswitch
-        </h1>
+        <div class="flex items-center justify-center relative mb-4
+         mt-8">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
+                style="color: var(--primary-text); font-family: var(--font-title);">
+                @switch(App::getLocale())
+                    @case('en') History @break
+                    @case('sr-Cyrl') Историјат @break
+                    @default Istorijat
+                @endswitch
+            </h1>
+            @auth
+                <div class="flex justify-end mb-2">
+                    <button 
+                        id="help-btn" 
+                        onclick="toggleHelpModal()"
+                        class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
+                        style="top: 35%; transform: translateY(-50%)"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                        </svg>
+                        <span class="ml-3">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
+                </div>
+            @endauth
+        </div>
 
         @auth
-            <div class="text-right mb-6">
+            <div class="text-right mb-4">
                 <button id="editBtn" 
                     class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
+                    style="background: var(--accent); color: #fff;"
                     type="button">
                     @switch(App::getLocale())
                         @case('en') Edit @break
@@ -43,7 +49,7 @@
 
         @if(session('success'))
             <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                {{ session('success') }}
+                {{ __('history.' . session('success')) }}
             </div>
 
             <script>
@@ -53,7 +59,7 @@
                         el.style.opacity = '0';
                         setTimeout(() => el.style.display = 'none', 500);
                     }
-                }, 3000); // 3000ms = 3s
+                }, 3000);
             </script>
         @endif
 
@@ -62,16 +68,18 @@
             <form action="{{ route('history.update') }}" method="POST" id="historyForm" class="space-y-4">
                 @csrf
                 @method('PATCH')
-                <div id="contentDisplay" class="prose dark:prose-invert max-w-none">
-                    {{ __('history.content') }}
+                <div id="contentDisplay" class="prose dark:prose-invert max-w-none"
+                    style="color: var(--secondary-text); font-family: var(--font-body);">
+                    {!! __('history.content') !!}
                 </div>
 
-                <textarea name="content" id="contentEdit" rows="15" 
+                <textarea name="content" id="contentEdit" rows="15" style="text-align: center;"
                     class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('history.content')) }}</textarea>
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelBtn"
-                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">
+                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+                        style="background: #cbd5e1; color: var(--primary-text);">
                         @switch(App::getLocale())
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
@@ -80,7 +88,8 @@
                     </button>
 
                     <button type="button" id="saveBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                        style="background: var(--accent); color: #fff;">
                         @switch(App::getLocale())
                             @case('en') Save changes @break
                             @case('sr-Cyrl') Сачувај промене @break
@@ -95,7 +104,8 @@
                     <div class="relative w-full max-w-md max-h-full mx-auto">
                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                             <div class="p-6 text-center">
-                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
+                                    style="color: var(--secondary-text);">
                                     @switch(App::getLocale())
                                         @case('en') Are you sure you want to save the changes? @break
                                         @case('sr-Cyrl') Да ли сте сигурни да желите да сачувате измене? @break
@@ -103,7 +113,8 @@
                                     @endswitch
                                 </h3>
                                 <button id="confirmSubmitBtn" type="button"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+                                    style="background: var(--accent); color: #fff;">
                                     @switch(App::getLocale())
                                         @case('en') Save @break
                                         @case('sr-Cyrl') Сачувај @break
@@ -111,7 +122,8 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal" type="button"
-                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                                    style="background: #cbd5e1; color: var(--primary-text);">
                                     @switch(App::getLocale())
                                         @case('en') Cancel @break
                                         @case('sr-Cyrl') Откажи @break
@@ -125,7 +137,7 @@
 
             </form>
         @else
-            <div class="prose dark:prose-invert max-w-none">
+            <div class="prose dark:prose-invert max-w-none"  style="color: var(--secondary-text); font-family: var(--font-body);">
                 {!! nl2br(e(__('history.content'))) !!}
             </div>
         @endauth
@@ -150,7 +162,9 @@
                     You can enter content in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
                     If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the content will revert to its previous state without changes.<br><br>
                     To save your edits, click the <strong>"Save"</strong> button.<br>
-                    You will be asked to confirm before the changes are applied.
+                    You will be asked to confirm before the changes are applied.<br><br>
+                    The text you enter in Serbian is automatically converted into another Serbian script and translated into English.
+                    We recommend that you first enter the content in Serbian, save the changes, and then switch to English to check and possibly edit the translation.
                     '
                     : (App::getLocale() === 'sr-Cyrl' 
                     ? '
@@ -158,14 +172,17 @@
                         Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br> 
                         Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
                         Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
-                        Бићете упитани за потврду пре него што се промене примене.
+                        Бићете упитани за потврду пре него што се промене примене.<br><br>
+                        Текст који унесете на српском се аутоматски конвертује у друго српско писмо и преводи на енглески језик.
+                        Препоручујемо да најпре унесете садржај на српском, сачувате измене, а затим се пребаците на енглески како бисте проверили и евентуално изменили превод.
                     '
                     : '
                         Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta istorije.<br><br>
-                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br>  <br>                
                         Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
                         Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
-                        Bićete upitani za potvrdu pre nego što se promene primene.
+                        Bićete upitani za potvrdu pre nego što se promene primene.<br><br>
+                        Tekst koji unesete na srpskom se automatski konvertuje u drugo srpsko pismo i prevodi na engleski jezik.
+                        Preporučujemo da najpre unesete sadržaj na srpskom, sačuvate izmene, a zatim se prebacite na engleski kako biste proverili i eventualno izmenili prevod.
                     '
                     )
                 !!}
