@@ -148,6 +148,8 @@ class EmployeeController extends Controller
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['image_path'] = 'images/' . $filename;
+        } else {
+            $validated['image_path'] = 'images/employee-default.jpg'; 
         }
 
         $name_src = $validated['name'];
