@@ -141,7 +141,7 @@
                         </h3>
                         <button
                             data-modal-hide="deleteModal"
-                            id="confirmDeleteButton"
+                            id="confirmDeleteButtonReminder"
                             type="button"
                             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
                         >
@@ -290,29 +290,6 @@
             });
         });
 
-        document.getElementById('confirmDeleteButton').addEventListener('click', async () => {
-            if (selectedReminderId) {
-                const response = await fetch(`/podsetnici/${selectedReminderId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                });
-
-                if (response.ok) {
-                    alert(deleteConfirmationMessage);
-                    document.querySelector(`[data-reminder-id="${selectedReminderId}"]`).remove();
-                    if (typeof fetchReminders === 'function') 
-                        fetchReminders();
-                    
-                    if (typeof fetchRemindersCount === 'function') 
-                        fetchRemindersCount();           
-                }
-                else
-                    alert(deleteErrorMessage);
-            }
-        });
-
         document.querySelectorAll('button[data-modal-target="renameModal"]').forEach(button => {
             button.addEventListener('click', () => {
                 selectedReminderId = button.getAttribute('data-id');
@@ -356,5 +333,33 @@
             const modal = document.getElementById('helpModal');
             modal.classList.toggle('hidden');
         }
+
+        document.getElementById('confirmDeleteButtonReminder').addEventListener('click', async () => {
+            if (confirmDeleteButtonReminder) {
+                if (selectedReminderId) {
+                    const response = await fetch(`/podsetnici/${selectedReminderId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    if (response.ok) {
+                        alert(deleteConfirmationMessage);
+                        document.querySelector(`[data-reminder-id="${selectedReminderId}"]`).remove();
+                        if (typeof fetchReminders === 'function') 
+                            fetchReminders();
+                        
+                        if (typeof fetchRemindersCount === 'function') 
+                            fetchRemindersCount();           
+                    }
+                    else
+                        alert(deleteErrorMessage);
+                }
+            }
+            else{
+                console.log('bravo majmune');
+            }
+        });
     </script>
 </x-app-layout>
