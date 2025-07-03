@@ -2,20 +2,21 @@
     <div class="max-w-4xl mx-auto p-4">
         <div class="flex flex-col">
             <div class="flex items-center justify-center relative mb-6 mt-8">
-                <h2 class="text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white flex-grow">
+                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
+                    style="color: var(--primary-text); font-family: var(--font-title);">
                     @switch(App::getLocale())
                         @case('en') Questions and answers @break
                         @case('sr-Cyrl') Питања и одговори @break
                         @default Pitanja i odgovori
                     @endswitch
-                </h2>
+                </h1>
 
                 @auth
                     <button 
                         id="help-btn" 
                         onclick="toggleHelpModal()"
                         class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
-                        style="top: 50%; transform: translateY(-50%)"
+                        style="top: 35%; transform: translateY(-50%)"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -30,9 +31,10 @@
                 @endauth
             </div>
             @auth
-                <div class="text-right mb-10 mt-6">
+                <div class="text-right mb-4 mt-4">
                     <button id="editBtn" 
                         class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
+                        style="background: var(--accent); color: #fff;"
                         type="button">
                         @switch(App::getLocale())
                             @case('en') Edit @break
@@ -42,9 +44,10 @@
                     </button>
                 </div>
             @endauth
+
             @if(session('success'))
                 <div id="successMessage" class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded transition-opacity duration-500">
-                    {{ session('success') }}
+                    {{ __('question.' . session('success')) }}
                 </div>
 
                 <script>
@@ -54,7 +57,7 @@
                             el.style.opacity = '0';
                             setTimeout(() => el.style.display = 'none', 500);
                         }
-                    }, 3000); // 3000ms = 3s
+                    }, 3000);
                 </script>
             @endif
             
@@ -62,7 +65,8 @@
                 <form action="{{ route('questions.updateDescription') }}" method="POST" id="editForm" class="space-y-4">
                     @csrf
                     @method('PATCH')
-                    <div id="contentDisplay" class="prose dark:prose-invert max-w-none mb-8 text-center">
+                    <div id="contentDisplay" class="mb-2 sm:mb-4 md:mb-6 text-sm sm:text-base md:text-lg text-center max-w-2xl sm:max-w-3xl md:max-w-4xl mx-auto"
+                        style="color: var(--secondary-text); font-family: var(--font-body);">
                         {{ __('question.description') }}
                     </div>
 
@@ -80,7 +84,8 @@
                         </button>
 
                         <button type="button" id="saveEditBtn" data-modal-target="submitModal1" data-modal-toggle="submitModal1"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                            style="background: var(--accent); color: #fff;">
                             @switch(App::getLocale())
                                 @case('en') Save changes @break
                                 @case('sr-Cyrl') Сачувај промене @break
@@ -95,7 +100,8 @@
                         <div class="relative w-full max-w-md max-h-full mx-auto">
                             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                 <div class="p-6 text-center">
-                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
+                                        style="color: var(--secondary-text);">
                                         @switch(App::getLocale())
                                             @case('en') Are you sure you want to save the changes? @break
                                             @case('sr-Cyrl') Да ли сте сигурни да желите да сачувате измене? @break
@@ -103,7 +109,8 @@
                                         @endswitch
                                     </h3>
                                     <button id="confirmSubmitBtn1" type="submit"
-                                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+                                        style="background: var(--accent); color: #fff;">
                                         @switch(App::getLocale())
                                             @case('en') Save @break
                                             @case('sr-Cyrl') Сачувај @break
@@ -111,7 +118,8 @@
                                         @endswitch
                                     </button>
                                     <button data-modal-hide="submitModal1" type="button"
-                                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                                        style="background: #cbd5e1; color: var(--primary-text);">>
                                         @switch(App::getLocale())
                                             @case('en') Cancel @break
                                             @case('sr-Cyrl') Откажи @break
@@ -125,7 +133,7 @@
 
                 </form>
             @else
-                <div class="prose dark:prose-invert max-w-none text-center">
+                <div class="prose dark:prose-invert max-w-none text-center" style="color: var(--secondary-text); font-family: var(--font-body);">
                     {!! nl2br(e(__('question.description'))) !!}
                 </div>
             @endauth
@@ -134,9 +142,8 @@
 
         </div> 
 
-        <!-- Forma za pretragu i sortiranje -->
         <form method="GET" action="{{ route('questions.index') }}">
-            <div class="relative mb-24 mt-5">
+            <div class="relative mb-24 mt-5" style="color: var(--secondary-text);">
                 <label for="searchInput">
                     @switch(App::getLocale())
                     @case('en') Search questions @break
@@ -189,9 +196,10 @@
                     type="button"
                     class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-base"
                     onclick="toggleCreateQuestionModal()"
+                    style="background: var(--accent); color: #fff;"
                 >
                     @switch(App::getLocale())
-                        @case('en') Create Question @break
+                        @case('en') Create question @break
                         @case('sr-Cyrl') Креирај питање @break
                         @default Kreiraj pitanje
                     @endswitch
@@ -233,7 +241,8 @@
                 <div id="accordion-body-{{ $question->id }}" 
                     class="px-4 pb-4 text-gray-700 dark:text-gray-300 {{ $isOpen ? '' : 'hidden' }} relative">
 
-                    <div class="answer-text p-1 break-words max-w-[90%]">
+                    <div class="answer-text p-1 break-words max-w-[90%]"
+                        style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
                         {!! nl2br(e($question->answer)) !!}
                     </div>
 
@@ -255,9 +264,10 @@
                             <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                         </svg>
                     </button>    
-                    <div class="dropdown-menu hidden absolute top-10 right-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-md z-20">
+                    <div class="dropdown-menu hidden absolute top-10 right-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-md z-20 text-left">
                         <button 
-                            class="dropdown-item px-4 py-1 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left" 
+                            class="dropdown-item px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left" 
+                            style="color: var(--primary-text); background: var(--primary-bg);"
                             data-action="rename"
                             data-id="{{ $question->id }}"
                             data-question="{{ $question->question }}"
@@ -272,6 +282,7 @@
 
                         <button 
                             class="dropdown-item px-4 py-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-700 w-full text-left" 
+                            style="color: var(--accent); background: var(--primary-bg);"
                             data-action="delete"
                             data-id="{{ $question->id }}"
                             onclick="openDeleteModal({{ $question->id }})"
@@ -305,26 +316,37 @@
             <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
                 {!! App::getLocale() === 'en' 
                     ? '
-                    By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the question description.<br><br>
-                    You can enter description in English or Serbian (in Cyrillic or Latin script), and it will be translated into the language you have selected. <br> <br>
-                    If you decide not to make changes or want to cancel, click the <strong>"Cancel"</strong> button and the description will revert to its previous state without changes.<br><br>
-                    To save your edits, click the <strong>"Save"</strong> button.<br>
-                    You will be asked to confirm before the changes are applied.
+                    By clicking the <strong>“Edit”</strong> button, a text editing field will open on the page with the most frequently asked questions and answers.<br><br>
+                    If you decide not to make changes or want to cancel, click the <strong>“Cancel”</strong> button, and the content will revert to its previous state without changes.<br><br>
+                    To save the changes, click the <strong>“Save changes”</strong> button.<br>
+                    You will be asked to confirm before the changes are applied.<br><br>
+                    By clicking the <strong>“Create question”</strong> button, a form for creating a question and its answer will open.<br>
+                    When you click the <strong>“Create question”</strong> button in the form, the question will be created. You can cancel the question creation by clicking the <strong>“Cancel”</strong> button.<br><br>
+                    The text you enter in Serbian is automatically converted into another Serbian script and translated into English.
+                    We recommend that you first enter the content in Serbian, save the changes, and then switch to English to check and possibly edit the translation.
+
                     '
                     : (App::getLocale() === 'sr-Cyrl' 
                     ? '
-                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста за контактирање.<br><br>
-                        Садржај можете унети на енглеском или српском језику (ћирилицом или латиницом), а биће преведен на језик који сте изабрали. <br><br> 
-                        Ако одлучите да не направите промене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
-                        Да бисте сачували измене, кликните на дугме <strong>„Сачувај“</strong>.<br>
-                        Бићете упитани за потврду пре него што се промене примене.
+                        Кликом на дугме <strong>„Уреди“</strong> отвориће се поље за уређивање текста на страници где су најчешћа питања и одговори.<br><br>
+                        Ако одлучите да не направите измене или желите да откажете, кликните на дугме <strong>„Откажи“</strong> и садржај ће се вратити на претходно стање без измена.<br><br>
+                        Да бисте сачували измене, кликните на дугме <strong>„Сачувај промене“</strong>.<br>
+                        Бићете упитани за потврду пре него што се промене примене.<br><br>
+                        Кликом на дугме <strong>„Креирај питање“</strong> отвориће се форма за креирање питања и одговора на то питање.<br>
+                        Када у форми кликнете на дугме <strong>„Креирај питање“</strong>, питање ће се креирати. На дугме <strong>„Откажи“</strong> можете отказати креирање питања.<br><br>
+                        Текст који унесете на српском се аутоматски конвертује у друго српско писмо и преводи на енглески језик.
+                        Препоручујемо да најпре унесете садржај на српском, сачувате измене, а затим се пребаците на енглески како бисте проверили и евентуално изменили превод.
+
                     '
                     : '
-                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta za kontaktiranje.<br><br>
-                        Sadržaj možete uneti na engleskom ili srpskom jeziku (ćirilicom ili latinicom), a biće preveden na jezik koji čitate. <br>  <br>                
-                        Ako odlučite da ne napravite promene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
-                        Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj“</strong>.<br>
-                        Bićete upitani za potvrdu pre nego što se promene primene.
+                        Klikom na dugme <strong>„Uredi“</strong> otvoriće se polje za uređivanje teksta na stranici gde su najčešća pitanja i odgovori.<br><br>
+                        Ako odlučite da ne napravite izmene ili želite da otkažete, kliknite na dugme <strong>„Otkaži“</strong> i sadržaj će se vratiti na prethodno stanje bez izmena.<br><br>
+                        Da biste sačuvali izmene, kliknite na dugme <strong>„Sačuvaj promene“</strong>.<br>
+                        Bićete upitani za potvrdu pre nego što se promene primene.<br><br>
+                        Klikom na dugme <strong>„Kreiraj pitanje“</strong> otvoriće se forma za kreiranje pitanja i odgovora na to pitanje.<br>
+                        Kada u formi kliknete na dugme <strong>„Kreiraj pitanje“</strong>, pitanje će se kreirati. Na dugme <strong>„Otkaži“</strong> možete otkazati kreiranje pitanja.<br><br>   
+                        Tekst koji unesete na srpskom se automatski konvertuje u drugo srpsko pismo i prevodi na engleski jezik.
+                        Preporučujemo da najpre unesete sadržaj na srpskom, sačuvate izmene, a zatim se prebacite na engleski kako biste proverili i eventualno izmenili prevod.
                     '
                     )
                 !!}
@@ -390,6 +412,7 @@
                         type="button" 
                         onclick="toggleCreateQuestionModal()" 
                         class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
+                        style="background: #cbd5e1; color: var(--primary-text);">
                     >
                         @switch(App::getLocale())
                             @case('en') Cancel @break
@@ -403,7 +426,7 @@
                         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
                     >
                         @switch(App::getLocale())
-                            @case('en') Create Question @break
+                            @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break
                             @default Kreiraj pitanje
                         @endswitch
@@ -472,10 +495,8 @@
             const description = document.getElementById(targetId);
             const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-            // Toggle aria-expanded
             button.setAttribute('aria-expanded', !isExpanded);
 
-            // Toggle visibility
             if (description) {
                 if (isExpanded) {
                     description.style.display = 'none';
@@ -484,7 +505,6 @@
                 }
             }
 
-            // Optionally toggle arrow rotation
             const svgIcon = button.querySelector('svg[data-accordion-icon]');
             if(svgIcon) {
                 if(isExpanded) {
@@ -520,7 +540,6 @@
 
         let originalContent = contentEdit.value;
 
-        // Klik na "Uredi"
         editBtn.addEventListener('click', () => {
             contentDisplay.classList.add('hidden');
             contentEdit.classList.remove('hidden');
@@ -528,7 +547,6 @@
             contentEdit.value = originalContent;
         });
 
-        // Klik na "Otkaži"
         cancelEditBtn.addEventListener('click', () => {
             contentEdit.classList.add('hidden');
             contentDisplay.classList.remove('hidden');
@@ -536,19 +554,16 @@
             contentEdit.value = originalContent;
         });
 
-        // Klik na "Sačuvaj" (otvara modal)
         saveEditBtn.addEventListener('click', () => {
             submitModal.classList.remove('hidden');
         });
 
-        // Klik na "Potvrdi - Sačuvaj" u modalu (submituje formu)
         confirmSubmitBtn.addEventListener('click', () => {
             console.log("Submited!");
             submitModal.classList.add('hidden');
             editForm.submit();
         });
 
-        // Modal close dugme (otkazuje modal)
         document.querySelectorAll('[data-modal-hide="submitModal1"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 submitModal.classList.add('hidden');
@@ -567,14 +582,12 @@
         button.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            // Sakrij sve ostale menije prvo
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 if(menu !== button.nextElementSibling) {
                     menu.classList.add('hidden');
                 }
             });
 
-            // Pronađi sledeći sibling dropdown meni i toggle prikaz
             const dropdownMenu = button.nextElementSibling;
             if (dropdownMenu) {
                 dropdownMenu.classList.toggle('hidden');
@@ -582,7 +595,6 @@
         });
     });
 
-    // Klik van menija zatvara sve menije
     document.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
             menu.classList.add('hidden');
@@ -593,12 +605,11 @@
         document.getElementById('renameModal').classList.toggle('hidden');
     }
 
-    // Pozivaš ovaj kod kada klikneš na dugme "Rename"
     function openRenameModal(questionId, questionText, answerText) {
         toggleRenameModal();
 
         const form = document.getElementById('renameForm');
-        form.action = `/pitanja/${questionId}`;  // Postavi PATCH URL sa ID-em pitanja
+        form.action = `/pitanja/${questionId}`;  
 
         document.getElementById('renameQuestionId').value = questionId;
         document.getElementById('renameQuestion').value = questionText;
@@ -618,7 +629,6 @@
         document.getElementById('deleteModal').classList.toggle('hidden');
     }
 
-    // Otvara modal i postavlja formu za delete sa pravim ID-em pitanja
     function openDeleteModal(questionId) {
         toggleDeleteModal();
 

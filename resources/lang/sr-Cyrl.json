@@ -17,18 +17,18 @@
         "phone": "+381 (0)20 331 010",
         "phone_label": "Контакт",
         "email": "bibl@gmail.com",
-        "facebook": "https://www.facebook.com/nbsrb/?locale=sr_RS",
-        "twitter": "https://x.com/bibliotekamj/with_replies",
+        "facebook": "https:\/\/www.facebook.com\/nbsrb\/?locale=sr_RS",
+        "twitter": "https:\/\/x.com\/bibliotekamj\/with_replies",
         "work_hours_formatted": [
             "Понедељак - Петак: 08:00 - 16:00",
             "Субота: 08:00 - 14:00",
             "Недеља: Нерадна"
         ],
         "work_hours_label": "Радно Време",
-        "map_embed": "https://www.google.com/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
+        "map_embed": "https:\/\/www.google.com\/maps?q=Stevana+Nemanje+2,+Novi+Pazar&output=embed",
         "copyrights": "© 2023",
-        "logo_light": "images/nbnp-logo.png",
-        "logo_dark": "images/nbnp-logo-dark.png"
+        "logo_light": "images\/nbnp-logo.png",
+        "logo_dark": "images\/nbnp-logo-dark.png"
     },
     "services": {
         "hero_title": "Услуге за све потребе",
@@ -107,5 +107,10 @@
         "description": "Посвећени смо пружању врхунске услуге и сталном унапређењу нашег рада. Свака ваша жалба, сугестија или коментар нам помажу да постанемо још бољи. Слободно нас контактирајте – гарантујемо да ће свака повратна информација бити пажљиво размотрена и уважена.",
         "content": "Ваше мишљење нам је важно. Ако имате било какву жалбу, питање, предлог или приговор, молимо вас да попуните доњи образац. Пажљиво разматрамо сваки захтев и трудимо се да одговоримо што је пре могуће. Попуните сва обавезна поља и опишите свој проблем или предлог како бисмо могли ефикасно да вам помогнемо."
     },
-    "question.description": "На овој страници можете пронаћи често постављана питања и њихове одговоре. Ако не пронађете оно што тражите, слободно нас контактирајте ...."
+    "question.description": "На овој страници можете пронаћи често постављана питања и њихове одговоре. Ако не пронађете оно што тражите, слободно нас контактирајте..",
+    "question.update_success": "Питање је успешно ажурирано!",
+    "question.destroy_success": "Питање је успешно обрисано!",
+    "question.store_success": "Питање је успешно креирано!",
+    "question.updateDescription_success": "Опис је успешно ажуриран.",
+    "question.default_success": "Измене су успешно сачуване."
 }

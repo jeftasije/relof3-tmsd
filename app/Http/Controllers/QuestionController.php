@@ -48,7 +48,6 @@ class QuestionController extends Controller
     {
         $query = Question::query();
 
-        // Pretraga po tekstu
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -58,7 +57,6 @@ class QuestionController extends Controller
             });
         }
 
-        // Sortiranje po odabiru
         $sort = $request->input('sort');
         switch ($sort) {
             case 'title_desc':
@@ -71,18 +69,14 @@ class QuestionController extends Controller
 
         $questions = $query->paginate(10)->withQueryString();
 
-        // Uhvati ID pitanja koje treba da bude otvoreno (ako postoji)
-        $activeQuestionId = $request->input('open'); // npr. /pitanja?open=5
+        $activeQuestionId = $request->input('open'); 
 
-        // Prosledi i activeQuestionId u view
         return view('questions', compact('questions', 'activeQuestionId'));
     }
 
 
-    // Dodavanje novog pitanja sa automatskim prevodom
     public function store(Request $request)
     {
-        // Validacija ulaznih podataka
         $validated = $request->validate([
             'question' => 'required|string|max:255',
             'answer'   => 'required|string',
@@ -91,25 +85,21 @@ class QuestionController extends Controller
         $questionSrc = $validated['question'];
         $answerSrc = $validated['answer'];
 
-        // Dobijamo prevode za pitanje i odgovor
         $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
         $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
 
-        // Kreiramo novo pitanje sa svim prevodima
         $question = Question::create([
-            'question'    => $questionTranslations['lat'],  // Latinica ili default
-            'question_en' => $questionTranslations['en'],   // Engleski prevod
-            'question_cy' => $questionTranslations['cy'],   // Ćirilica
+            'question'    => $questionTranslations['lat'], 
+            'question_en' => $questionTranslations['en'],   
+            'question_cy' => $questionTranslations['cy'],   
             'answer'      => $answerTranslations['lat'],
             'answer_en'   => $answerTranslations['en'],
             'answer_cy'   => $answerTranslations['cy'],
         ]);
 
-        // Preusmeravamo nazad sa porukom o uspehu
-        return redirect()->back()->with('success', __('Question created successfully!'));
+        return redirect()->back()->with('success', 'store_success');
     }
 
-    // Update pitanja sa prevodom
     public function update(Request $request, Question $question)
     {
         $validated = $request->validate([
@@ -129,7 +119,7 @@ class QuestionController extends Controller
                 'answer_en'   => $answerTranslations['en']
             ]);
 
-            return back()->with('success', 'Question updated successfully!');
+            return back()->with('success', 'update_success');
         } else {
             $questionTranslations = $this->translateQuestionAndAnswer($questionSrc);
             $answerTranslations = $this->translateQuestionAndAnswer($answerSrc);
@@ -144,19 +134,17 @@ class QuestionController extends Controller
             'answer_cy'   => $answerTranslations['cy'],
         ]);
 
-        return back()->with('success', 'Question updated successfully!');
+        return back()->with('success', 'update_success');
     }
 
-    // Brisanje pitanja
     public function destroy(Question $question)
     {
         $question->delete();
-        return redirect()->back()->with('success', 'Pitanje uspešno obrisano.');
+        return redirect()->back()->with('success', 'destroy_success');
     }
 
     public function edit(Question $question)
     {
-        // Možeš dodati autorizaciju ako je potrebno
         return view('questions.edit', compact('question'));
     }
 
@@ -194,14 +182,13 @@ class QuestionController extends Controller
             $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
         } else {
             if (app()->getLocale() === 'sr') {
-                dd('SrLatin');
                 $content_lat = $originalText;
                 $content_cy = $this->languageMapper->latin_to_cyrillic($content_lat);
                 $content_en = $this->translate->setSource('sr')->setTarget('en')->translate($content_lat);
             } else {
                 $content_en = $originalText;
                 $this->updateLangFile('en', ['question.description' => $content_en]);
-                return redirect()->back()->with('success', 'Prevod poruke je uspešno ažuriran.');
+                return redirect()->back()->with('success', 'updateDescription_success');
             }
         }
 
@@ -209,7 +196,7 @@ class QuestionController extends Controller
         $this->updateLangFile('sr-Cyrl', ['question.description' => $content_cy]);
         $this->updateLangFile('en', ['question.description' => $content_en]);
 
-        return redirect()->back()->with('success', 'Prevod poruke je uspešno ažuriran.');
+        return redirect()->back()->with('success', 'updateDescription_success');
     }
 
     protected function updateLangFile($locale, array $data)
