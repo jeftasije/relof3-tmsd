@@ -385,7 +385,7 @@
                 class="absolute top-2 right-2 text-2xl font-bold"
                 style="color: var(--secondary-text);"
             >&times;</button>
-            <h2 class="mb-4 text-xl font-bold"
+            <h2 class="mb-4 text-xl font-bold text-center"
                 style="color: var(--primary-text);"
             >
                 {{ App::getLocale() === 'en'
@@ -394,7 +394,7 @@
                         ? 'Помоћ'
                         : 'Pomoć') }}
             </h2>
-            <p class="space-y-2"
+            <p class="space-y-2 text-center"
                style="color: var(--secondary-text);">
                 {!! App::getLocale() === 'en'
                     ? 'On this page, you can <strong>delete, rename, and upload</strong> a document related to public procurement.<br><br>If you wish to rename or delete a document, click on <strong>the three dots</strong> next to its name and select the desired option.<br><br>To upload a new document, click on the <strong>"choose file" section</strong> and select the document from your computer.'
