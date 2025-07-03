@@ -400,6 +400,12 @@
             modal.classList.toggle('hidden');
         }
 
+        document.getElementById('helpModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                toggleHelpModal();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const locale = '{{ App::getLocale() }}';
             const searchInput = document.getElementById('searchInput');
@@ -440,12 +446,16 @@
                         li.addEventListener('click', () => {
                             const targetProc = document.querySelector(`div[data-proc-id="${proc.dataset.procId}"]`);
                             if (targetProc) {
-                                targetProc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                const link = targetProc.querySelector('a');
+                                if (link && link.href) {
+                                    window.open(link.href, '_blank'); 
+                                }
                                 searchDropdown.classList.add('hidden');
                                 searchInput.value = '';
                                 selectedIndex = -1;
                             }
                         });
+
                         searchResults.appendChild(li);
                     });
                 }
@@ -481,9 +491,9 @@
                         case 'title_desc':
                             return titleB.localeCompare(titleA);
                         case 'date_asc':
-                            return dateA - dateB;
-                        case 'date_desc':
                             return dateB - dateA;
+                        case 'date_desc':
+                            return dateA - dateB;
                         default:
                             return 0;
                     }
