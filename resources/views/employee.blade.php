@@ -70,11 +70,11 @@
                     {{ $text['title'] }}
                 </h1>
                 @auth
-                <button
-                    @click="$store.modals.openHelp()"
-                    class="flex items-center gap-2 ml-4 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none"
-                    style="background: transparent; color: var(--secondary-text);"
-                >
+<button
+    @click="$store.modals.openHelp()"
+    class="flex items-center gap-2 ml-4 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]"
+>
+
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,11 +96,10 @@
 
             <div class="flex justify-end mb-6">
                 @auth
-                <button
-                    @click="$store.modals.openAddEmployee()"
-                    class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow"
-                    style="background: var(--accent); color: #fff;"
-                >
+<button
+    @click="$store.modals.openAddEmployee()"
+    class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white"
+>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -215,7 +214,8 @@
                                     style="background: #cbd5e1; color: var(--primary-text);">
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
-                            <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                            <button type="submit" class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
                         </div>
@@ -243,12 +243,8 @@
                     @click.stop
                     x-data="{ slide: 1, total: 3, enlarged: false }"
                 >
-                    <button
-                        @click="$store.modals.closeAll()"
-                        class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-                        style="color: var(--secondary-text);"
-                        aria-label="Close"
-                    >
+<button type="button" @click="$store.modals.closeAll()" class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
