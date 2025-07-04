@@ -58,7 +58,7 @@ class ProcurementController extends Controller
 
         try {
             $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = $file->getClientOriginalName();
             $filePath = $file->storeAs('procurements', $fileName, 'public');
 
             $procurement = Procurement::create([
