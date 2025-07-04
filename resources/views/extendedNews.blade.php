@@ -155,16 +155,16 @@
                     </div>
 
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
-<a href="{{ route('news.index') }}"
-    class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition
+                        <a href="{{ route('news.index') }}"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition
         bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
-    {{ $locale === 'en' ? 'Back to News' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
-    <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M13 5H1m0 0l4-4m-4 4l4 4" />
-    </svg>
-</a>
+                            {{ $locale === 'en' ? 'Back to News' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
+                            <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4" />
+                            </svg>
+                        </a>
 
                     </div>
                 </div>
@@ -213,16 +213,17 @@
 
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" @click="editOpen = false"
-                            class="px-4 py-2 rounded bg-[var(--secondary-text)] text-white hover:bg-[color-mix(in_srgb,_var(--secondary-text)_80%,_black_20%)]">
-
+                            class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] transition
+            hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
                             {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                         <button type="submit"
-                            class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
-
+                            class="px-4 py-2 rounded bg-[var(--accent)] text-white transition
+            hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                             {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>

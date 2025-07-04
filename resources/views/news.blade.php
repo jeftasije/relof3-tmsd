@@ -193,17 +193,17 @@
                         </div>
                         <div class="flex justify-end gap-2 mt-8">
                             <button type="button" @click="$store.modals.closeAll()"
-                                class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
-
+                                class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] transition
+            hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
                             <button type="submit"
-                                class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white">
+                                class="px-4 py-2 rounded bg-[var(--accent)] text-white transition
+            hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
 
