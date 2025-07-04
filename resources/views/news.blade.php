@@ -93,7 +93,6 @@
                 @auth
                     <button @click="$store.modals.openAddNews()"
                         class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)">
-
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -121,7 +120,8 @@
                 style="display: none;" @click.self="$store.modals.closeAll()"
                 @keydown.escape.window="$store.modals.closeAll()">
                 <div x-show="$store.modals.addNewsOpen" x-transition
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-4xl w-full p-8 relative" @click.stop>
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-4xl w-full p-8 relative" @click.stop
+                    style="background: var(--primary-bg); color: var(--primary-text);">
                     <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -136,16 +136,14 @@
                                     {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
                                 </label>
                                 <input type="text" name="title" id="title" required
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" />
 
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
                                     for="summary">
                                     {{ App::getLocale() === 'en' ? 'Summary' : (App::getLocale() === 'sr-Cyrl' ? 'Кратак опис' : 'Kratak opis') }}
                                 </label>
                                 <textarea name="summary" id="summary" rows="2" required
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"></textarea>
 
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
                                     for="image">
@@ -158,16 +156,14 @@
                                     {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
                                 </label>
                                 <input type="text" name="author" id="author" required
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" />
 
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
                                     for="published_at">
                                     {{ App::getLocale() === 'en' ? 'Publish Date' : (App::getLocale() === 'sr-Cyrl' ? 'Датум објаве' : 'Datum objave') }}
                                 </label>
                                 <input type="date" name="published_at" id="published_at" required
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"/>
                             </div>
                             <div>
                                 <div class="flex items-center mb-6 border-b border-gray-300 dark:border-gray-600 pb-2">
@@ -179,16 +175,14 @@
                                     for="content">
                                     {{ App::getLocale() === 'en' ? 'Full Content' : (App::getLocale() === 'sr-Cyrl' ? 'Цео садржај' : 'Ceo sadržaj') }}
                                 </label>
-                                <textarea name="content" id="content" rows="6" class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);"></textarea>
+                                <textarea name="content" id="content" rows="6" class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"></textarea>
 
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
                                     for="tags">
                                     {{ App::getLocale() === 'en' ? 'Tags (comma separated)' : (App::getLocale() === 'sr-Cyrl' ? 'Тагови (раздвојени зарезом)' : 'Tagovi (zarez)') }}
                                 </label>
                                 <input type="text" name="tags" id="tags"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
+                                    class="w-full p-2 mb-4 border border-gray-300 rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" />
                             </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-8">

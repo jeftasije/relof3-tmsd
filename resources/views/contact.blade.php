@@ -68,7 +68,7 @@
                             {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>
                         <button @click="cancelEdit()"
-                            class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded">
+                            class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded">
                             {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                     </div>
@@ -80,12 +80,12 @@
                 <div class="w-full flex flex-col items-center mb-2">
                     <template x-if="editing">
                         <input type="text" x-model="form.title"
-                            class="text-3xl sm:text-4xl md:text-5xl font-extrabold border px-2 rounded text-center w-full"
-                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                            class="text-2xl sm:text-3xl md:text-4xl font-extrabold border px-2 rounded text-center w-full"
+                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title) !important;" />
                     </template>
-                    <span x-show="!editing" x-text="form.title"
-                        class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center w-full"
-                        style="color: var(--primary-text); font-family: var(--font-title);"></span>
+                    <h1 x-show="!editing" x-text="form.title"
+                        class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center w-full"
+                        style="color: var(--primary-text); font-family: var(--font-title) !important;"></h1>
                 </div>
 
                 <div class="w-full flex flex-col items-center mb-2">
@@ -237,7 +237,7 @@
         </div>
 
         <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
+            <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative text-center" style="background: var(--primary-bg); color: var(--primary-text);">
                 <button data-modal-hide="helpModal"
                     class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                     &times;
@@ -315,7 +315,7 @@
                             @endswitch
                         </button>
                         <button data-modal-hide="submitEditModal" type="button"
-                            class="focus:ring-4 focus:outline-none rounded text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-500 hover:bg-gray-600">
+                            class="focus:ring-4 focus:outline-none rounded text-sm font-medium px-5 py-2.5 focus:z-10 bg-gray-400 hover:bg-gray-500">
                             @switch(App::getLocale())
                             @case('en')
                             Cancel

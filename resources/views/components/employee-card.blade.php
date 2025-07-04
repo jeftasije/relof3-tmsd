@@ -195,7 +195,7 @@
               <button 
                 @click.prevent="cancel()" 
                 :disabled="saving"
-                class="px-3 py-1 rounded hover:bg-gray-600 disabled:opacity-50 bg-gray-500"
+                class="px-3 py-1 rounded hover:bg-gray-500 disabled:opacity-50 bg-gray-400"
                 style="color: var(--primary-text) !important;"
               >
                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
@@ -226,7 +226,7 @@
                 {{ App::getLocale() === 'en' ? 'Are you sure you want to delete this employee?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете овог запосленог?' : 'Da li ste sigurni da želite da obrišete ovog zaposlenog?') }}
             </p>
             <div class="flex justify-end gap-2">
-                <button @click="closeDeleteModal()" class="px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50 bg-gray-500"
+                <button @click="closeDeleteModal()" class="px-4 py-2 rounded hover:bg-gray-500 disabled:opacity-50 bg-gray-400"
                   style="color: var(--primary-text) !important;">
                     {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                 </button>

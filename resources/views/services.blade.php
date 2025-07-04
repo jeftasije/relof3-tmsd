@@ -16,70 +16,71 @@
 
             <div class="relative mb-12 flex flex-col items-center">
                 @auth
-                    <div class="w-full absolute right-0 top-0 flex flex-col items-end"
-                        style="height: 90px; min-width:220px; max-width: 240px;">
-                        <!-- HELP dugme -->
-                        <button @click="$store.modals.openHelp()"
-                            class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-medium transition duration-150 ease-in-out
+                <div class="w-full absolute right-0 top-0 flex flex-col items-end"
+                    style="height: 90px; min-width:220px; max-width: 240px;">
+                    <!-- HELP dugme -->
+                    <button @click="$store.modals.openHelp()"
+                        class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-medium transition duration-150 ease-in-out
                                 rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
                                 bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
-                                style="color: var(--primary-text);"
-                            type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="9" stroke-width="2" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17l0 .01" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
-                            </svg>
-                            <span>
-                                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                            </span>
-                        </button>
-                        <!-- EDIT dugme -->
-                        <div class="flex items-center gap-1">
-                            <button x-show="!editing" @click="startEdit()"
-                                class="px-5 py-2 rounded text-base shadow
+                        style="color: var(--primary-text);"
+                        type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <circle cx="12" cy="12" r="9" stroke-width="2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17l0 .01" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 13.5a1.5 1.5 0 0 1 1-1.5a2.6 2.6 0 1 0-3-4" />
+                        </svg>
+                        <span>
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
+                    <!-- EDIT dugme -->
+                    <div class="flex items-center gap-1">
+                        <button x-show="!editing" @click="startEdit()"
+                            class="px-5 py-2 rounded text-base shadow
                                         bg-[var(--accent)]
                                         hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]
                                         transition-all duration-200"
-                                type="button">
-                                {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                            </button>
-                            <template x-if="editing">
-                                <div class="flex gap-2">
-                                    <button @click="saveEdit()"
-                                        class="px-4 py-2 rounded font-semibold text-base shadow
+                            type="button">
+                            {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                        </button>
+                        <template x-if="editing">
+                            <div class="flex gap-2">
+                                <button @click="saveEdit()"
+                                    class="px-4 py-2 rounded text-base shadow
                 bg-[var(--accent)]
                 hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]
                 transition-all duration-200"
-                                        type="button">
-                                        {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                                    </button>
-                                    <button @click="cancelEdit()"
-                                        class="px-4 py-2 rounded font-semibold text-base shadow
+                                    type="button">
+                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                                </button>
+                                <button @click="cancelEdit()"
+                                    class="px-4 py-2 rounded text-base shadow
                 bg-gray-400
                 hover:bg-gray-500
                 transition-all duration-200"
-                                        type="button">
-                                        {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                                    </button>
-                                </div>
-                            </template>
-
-                        </div>
+                                    type="button">
+                                    {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                                </button>
+                            </div>
+                        </template>
 
                     </div>
+
+                </div>
                 @endauth
                 <div class="w-full flex flex-col items-center">
-                    <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-3"
+                    <h1 class="font-extrabold text-2xl sm:text-3xl md:text-4xl mb-3"
                         style="color: var(--primary-text); font-family: var(--font-title);">
                         <template x-if="editing">
                             <input type="text" x-model="form.hero_title"
-                                class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded"
-                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                                class="text-2xl sm:text-3xl md:text-4xl font-extrabold w-full border px-2 rounded"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title) !important;" />
                         </template>
-                        <span x-show="!editing" x-text="form.hero_title"></span>
+                        <h1 x-show="!editing" x-text="form.hero_title" class="font-extrabold text-2xl sm:text-3xl md:text-4xl mb-3"
+                            style="color: var(--primary-text); font-family: var(--font-title);"></h1>
                     </h1>
                     <p style="white-space: nowrap;">
                         <template x-if="editing">
@@ -139,8 +140,8 @@
                     <template x-if="editing">
                         <div class="flex flex-col h-full">
                             <textarea x-ref="mainText" x-model="form.main_text"
-                                class="w-full min-h-[65vh] rounded-xl border px-4 py-3 text-base font-body"
-                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-body); resize:vertical;"></textarea>
+                                class="w-full min-h-[65vh] rounded-xl border px-4 py-3 text-base font-body bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+                                style="font-family: var(--font-body); resize:vertical;"></textarea>
                         </div>
                     </template>
                     <div x-show="!editing" class="prose prose-lg max-w-none h-full"

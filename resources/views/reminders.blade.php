@@ -45,7 +45,7 @@
                 </div>
                 <div class="text-right">
                     <button type="submit"
-                        class=" bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 font-semibold text-lg py-3 px-8 rounded-lg shadow-md transition">
+                        class=" bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-lg py-3 px-8 rounded-lg shadow-md transition">
                         {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>
                 </div>
@@ -68,7 +68,7 @@
                 </option>
             </select>
                 <button type="submit"
-                    class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 font-semibold text-lg py-2 px-6 rounded-lg shadow-md transition">
+                    class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 text-lg py-2 px-6 rounded-lg shadow-md transition">
                 {{ App::getLocale() === 'en' ? 'Apply' : (App::getLocale() === 'sr-Cyrl' ? 'Примени' : 'Primeni') }}
             </button>
         </form>

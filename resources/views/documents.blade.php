@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="max-w-4xl mx-auto p-4">
         <div class="flex flex-col">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full" style="color: var(--primary-text);">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full mb-5" style="color: var(--primary-text);">
                 @switch(App::getLocale())
                 @case('en') Documents @break
                 @case('sr-Cyrl') Документa @break
@@ -246,14 +246,14 @@
                                     ? 'Да ли сте сигурни да желите да обришете'
                                     : 'Da li ste sigurni da želite da obrišete') }}
                 </p>
-                <p id="deleteModalTitle" class="mb-4 text-center font-semibold text-[var(--secondary-text)]" style="color: var(--secondary-text); font-family: var(--font-body)"></p>
+                <p id="deleteModalTitle" class="mb-4 text-center text-[var(--secondary-text)]" style="color: var(--secondary-text); font-family: var(--font-body)"></p>
                 <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
 
                     <div class="flex justify-center gap-4">
-                        <button type="button" data-modal-hide="deleteModal" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Delete</button>
+                        <button type="button" data-modal-hide="deleteModal" class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded">Cancel</button>
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 py-2 px-4 rounded">Delete</button>
                     </div>
                 </form>
             </div>
@@ -286,7 +286,7 @@
                                         : 'Sačuvaj') }}
                             </button>
                             <button data-modal-hide="renameModal" type="button"
-                                class="text-sm font-medium px-5 py-2.5 rounded-lg bg-gray-500 hover:bg-gray-600 text-white">
+                                class="text-sm font-medium px-5 py-2.5 rounded-lg bg-gray-400 hover:bg-gray-500">
                                 {{ App::getLocale() === 'en'
                                     ? 'Cancel'
                                     : (App::getLocale() === 'sr-Cyrl'

@@ -81,7 +81,10 @@
                         <!-- HELP dugme iznad slike i edit dugmeta -->
                         <div class="flex justify-end mb-3">
                             <button @click="helpOpen = true"
-                                class="flex items-center gap-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]"
+                                class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                                style="color: var(--primary-text);"
                                 type="button">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -103,7 +106,7 @@
                         <div class="relative w-full">
                             @auth
                                 <button @click.stop="editOpen = true"
-                                    class="absolute top-4 right-6 font-semibold px-4 py-2 rounded z-20 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+                                    class="absolute top-4 right-6 px-4 py-2 rounded z-20 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                     {{ $locale === 'en' ? 'Edit' : ($locale === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                                 </button>
                             @endauth
@@ -146,7 +149,7 @@
                                 @foreach ($rawTags as $tag)
                                     @if ($tag)
                                         <span
-                                            class="inline-block rounded-full px-3 py-1 text-base font-semibold mb-2 border"
+                                            class="inline-block rounded-full px-3 py-1 text-base mb-2 border"
                                             style="background: var(--secondary-text); color: #fff; border-color: var(--primary-bg);">{{ $tag }}</span>
                                     @endif
                                 @endforeach
@@ -157,7 +160,7 @@
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
                         <a href="{{ route('news.index') }}"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition
-        bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+        bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                             {{ $locale === 'en' ? 'Back to News' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
                             <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -213,12 +216,11 @@
 
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" @click="editOpen = false"
-                            class="px-4 py-2 rounded bg-[#cbd5e1] text-[var(--primary-text)] transition
-            hover:bg-[color-mix(in_srgb,_#cbd5e1_80%,_black_20%)]">
+                            class="px-4 py-2 rounded bg-gray-400 hover:bg-gray-500 transition">
                             {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                         </button>
                         <button type="submit"
-                            class="px-4 py-2 rounded bg-[var(--accent)] text-white transition
+                            class="px-4 py-2 rounded bg-[var(--accent)] transition
             hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                             {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                         </button>

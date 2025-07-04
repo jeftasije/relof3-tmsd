@@ -160,8 +160,7 @@
               style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0,0,0,0.1);"></h5>
         </template>
         <template x-if="editing">
-          <input x-model="title" type="text" class="mb-2 w-full p-2 border rounded" 
-                 style="background: var(--primary-bg) !important; color: var(--primary-text) !important;" />
+          <input x-model="title" type="text" class="mb-2 w-full p-2 border rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"/>
         </template>
 
         <p class="mb-2 text-sm font-medium" style="color: var(--secondary-text) !important;">
@@ -173,8 +172,7 @@
              style="color: var(--primary-text) !important; text-shadow: 1px 1px 3px rgba(0,0,0,0.1);"></p>
         </template>
         <template x-if="editing">
-          <textarea x-model="summary" rows="3" class="w-full p-2 border rounded"
-                    style="background: var(--primary-bg) !important; color: var(--primary-text) !important;"></textarea>
+          <textarea x-model="summary" rows="3" class="w-full p-2 border rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"></textarea>
         </template>
       </div>
 
@@ -184,14 +182,13 @@
             <button 
               @click.prevent="save()" 
               :disabled="saving"
-              class="px-3 py-1 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] disabled:opacity-50"
-              style="color: #fff !important;">
+              class="px-3 py-1 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] disabled:opacity-50">
               {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
             </button>
             <button 
               @click.prevent="cancel()" 
               :disabled="saving"
-              class="px-3 py-1 rounded hover:bg-gray-600 bg-gray-500 disabled:opacity-50"
+              class="px-3 py-1 rounded hover:bg-gray-500 bg-gray-400 disabled:opacity-50"
               style="color: var(--primary-text) !important;">
               {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Одустани' : 'Otkaži') }}
             </button>
@@ -220,15 +217,14 @@
           {{ App::getLocale() === 'en' ? 'Are you sure you want to delete this news?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете ову вест?' : 'Da li ste sigurni da želite da obrišete ovu vest?') }}
         </p>
         <div class="flex justify-end gap-2">
-          <button @click="closeDeleteModal()" class="px-4 py-2 rounded hover:bg-gray-600 bg-gray-500 disabled:opacity-50"
+          <button @click="closeDeleteModal()" class="px-4 py-2 rounded hover:bg-gray-500 bg-gray-400 disabled:opacity-50"
             style="color: var(--primary-text) !important;">
             {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
           </button>
           <form :action="confirmDeleteUrl" method="POST" x-ref="deleteForm">
             @csrf
             @method('DELETE')
-            <button type="submit" class="px-4 py-2 rounded hover:bg-red-600  bg-red-500"
-              style="color: #fff !important;">
+            <button type="submit" class="px-4 py-2 rounded hover:bg-red-600  bg-red-500">
               {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
             </button>
           </form>
