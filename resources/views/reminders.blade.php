@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="max-w-3xl mx-auto py-12 px-4">
         <div class="relative flex items-center justify-center mb-8">
-            <h1 class="text-4xl font-bold text-center text-gray-900 dark:text-white">{{ App::getLocale() === 'en' ? 'Reminders' : (App::getLocale() === 'sr-Cyrl' ? 'Подсетници' : 'Podsetnici') }}</h1>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full">{{ App::getLocale() === 'en' ? 'Reminders' : (App::getLocale() === 'sr-Cyrl' ? 'Подсетници' : 'Podsetnici') }}</h1>
             <div class="absolute right-0">
                 <button 
                     id="help-btn" 
@@ -45,7 +45,7 @@
                 </div>
                 <div class="text-right">
                     <button type="submit"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg py-3 px-8 rounded-lg shadow-md transition">
+                        class=" bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 font-semibold text-lg py-3 px-8 rounded-lg shadow-md transition">
                         {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>
                 </div>
@@ -68,7 +68,7 @@
                 </option>
             </select>
                 <button type="submit"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg py-2 px-6 rounded-lg shadow-md transition">
+                    class="bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 font-semibold text-lg py-2 px-6 rounded-lg shadow-md transition">
                 {{ App::getLocale() === 'en' ? 'Apply' : (App::getLocale() === 'sr-Cyrl' ? 'Примени' : 'Primeni') }}
             </button>
         </form>
