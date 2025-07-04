@@ -46,7 +46,7 @@
     <div x-data="{helpOpen: false}" class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div>
             <div class="relative flex items-center justify-center mb-8">
-                <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full">
                     {{ App::getLocale() === 'en' ? 'Edit homepage' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди почетну страницу' : 'Uredi početnu stranicu') }}
                 </h1>
 
@@ -624,14 +624,13 @@
             <div
                 x-show="helpOpen"
                 x-transition
-                class="relative rounded-xl border-2 shadow-2xl flex flex-col items-stretch"
-                style="width:480px; height:560px; background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"
+                class="relative rounded-xl shadow-2xl flex flex-col items-stretch bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+                style="width:480px; height:560px;"
                 @keydown.escape.window="helpOpen = false"
                 x-data="{ slide: 1, total: 4, enlarged: false }">
                 <button
                     @click="helpOpen = false"
                     class="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-                    style="color: var(--secondary-text);"
                     aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -647,7 +646,7 @@
                         <div class="flex items-center justify-center w-full" style="min-height: 170px;">
                             <button type="button" @click="slide = slide === 1 ? total : slide - 1"
                                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition mr-3 flex items-center justify-center"
-                                style="min-width:32px; color: var(--secondary-text);">
+                                style="min-width:32px">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -669,7 +668,7 @@
                             </div>
                             <button type="button" @click="slide = slide === total ? 1 : slide + 1"
                                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition ml-3 flex items-center justify-center"
-                                style="min-width:32px; color: var(--secondary-text);">
+                                style="min-width:32px">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -695,14 +694,14 @@
                     </div>
 
                     <div class="flex-1 overflow-y-auto px-1 py-1 mt-2"
-                        style="color: var(--secondary-text); min-height: 160px; max-height: 48%;">
+                        style=" min-height: 160px; max-height: 48%;">
                         <!-- Slide 1 -->
                         <template x-if="slide === 1">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                <h4 class="font-semibold mb-2">
                                     {{ App::getLocale() === 'en' ? 'Components visibility' : (App::getLocale() === 'sr-Cyrl' ? 'Видљивост компонената' : 'Vidljivost komponenata') }}
                                 </h4>
-                                <p style="font-family: var(--font-body);">
+                                <p class="text-gray-700 dark:text-gray-300 space-y-2">
                                     @switch(App::getLocale())
                                     @case('en')
                                     On this page, you can edit your homepage by <strong>selecting the components</strong> you want to appear on it and editing their content. </br>
@@ -728,7 +727,7 @@
                                 <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Changing section data' : (App::getLocale() === 'sr-Cyrl' ? 'Промена података секције' : 'Promena podataka sekcije') }}
                                 </h4>
-                                <p style="font-family: var(--font-body);">
+                                <p class="text-gray-700 dark:text-gray-300 space-y-2">
                                     @switch(App::getLocale())
                                     @case('en')
                                     You can change the content of the components in the forms on this page.</br> In the forms for the Serbian language, you can write in <strong>both scripts</strong> (Latin or Cyrillic), and the <strong>system will translate</strong> the data into English, which you can then <strong>review</strong> and, if necessary, <strong>correct</strong> in the adjacent forms.</br>
@@ -754,7 +753,7 @@
                                 <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Adding new section' : (App::getLocale() === 'sr-Cyrl' ? 'Додавање нове секције' : 'Dodavanje nove sekcije') }}
                                 </h4>
-                                <p style="font-family: var(--font-body);">
+                                <p class="text-gray-700 dark:text-gray-300 space-y-2">
                                     @switch(App::getLocale())
                                     @case('en')
                                     To add a new section to the homepage, you need to press the "Add New Section" button and then select the section you want to add. If you are sure you want to add the section, press the "Save" button.
@@ -777,7 +776,7 @@
                                 <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
                                     {{ App::getLocale() === 'en' ? 'Reordering sections' : (App::getLocale() === 'sr-Cyrl' ? 'Промена редоследа секција' : 'Promena redosleda sekcija') }}
                                 </h4>
-                                <p style="font-family: var(--font-body);">
+                                <p class="text-gray-700 dark:text-gray-300 space-y-2">
                                     @switch(App::getLocale())
                                     @case('en')
                                     Since the header section is the only <strong>mandatory component</strong>, it is always <strong>displayed first</strong> on the page. </br>

@@ -19,14 +19,13 @@
             type="search"
             name="q"
             id="default-search"
-            style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
-            class="block w-full p-4 ps-10 text-sm rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--accent)]"
+            style="color: var(--primary-text); border: 1px solid var(--secondary-text);"
+            class="block w-full p-4 ps-10 text-sm rounded-lg focus:ring-2 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
             placeholder="{{ __('header.search_placeholder') }}"
             required />
           <button
             type="submit"
-            style="background: var(--accent); color: #fff;"
-            class="absolute end-2.5 bottom-2.5 md:bottom-2 font-medium rounded-lg text-sm px-3 py-1 md:px-4 md:py-2">
+            class="absolute end-2.5 bottom-2.5 md:bottom-2 font-medium rounded-lg text-sm px-3 py-1 md:px-4 md:py-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
             {{ __('header.search_button') }}
           </button>
         </div>
@@ -49,8 +48,8 @@
         @endphp
 
         <button type="button" data-dropdown-toggle="language-dropdown-menu"
-          class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm rounded-lg cursor-pointer md:px-4 md:py-2"
-          style="color: var(--primary-text); background: var(--primary-bg); border-color: var(--secondary-text);">
+          class="inline-flex items-center font-medium justify-center px-2 py-1 text-sm rounded-lg cursor-pointer md:px-4 md:py-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+          style=" border-color: var(--secondary-text);">
           <span class="{{ $flags[$localeKey] ?? 'fi fi-rs' }} w-4 h-4 md:w-5 md:h-5 rounded-full me-1 md:me-3"></span>
           {{ $languages[$localeKey] ?? 'Srpski' }}
         </button>
@@ -59,7 +58,7 @@
           <ul class="py-1 font-medium" role="none">
             <li>
               <a href="{{ route('lang.switch', ['locale' => 'sr']) }}"
-                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded"
+                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                 style="color: var(--secondary-text);"
                 role="menuitem">
                 <div class="inline-flex items-center">
@@ -70,7 +69,7 @@
             </li>
             <li>
               <a href="{{ route('lang.switch', ['locale' => 'sr-Cyrl']) }}"
-                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded"
+                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                 style="color: var(--secondary-text);"
                 role="menuitem">
                 <div class="inline-flex items-center">
@@ -81,7 +80,7 @@
             </li>
             <li>
               <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
-                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded"
+                class="block px-2 py-1 text-sm md:px-4 md:py-2 rounded bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                 style="color: var(--secondary-text);"
                 role="menuitem">
                 <div class="inline-flex items-center">
@@ -94,8 +93,8 @@
         </div>
       </div>
 
-      <button data-collapse-toggle="mega-menu-full" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden mx-1 md:mx-6"
-        style="color: var(--secondary-text); background: var(--primary-bg); border-color: var(--secondary-text);">
+      <button data-collapse-toggle="mega-menu-full" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden mx-1 md:mx-6 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+        style="color: var(--secondary-text); border-color: var(--secondary-text);">
         <span class="sr-only">Open main menu</span>
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14" style="color: var(--secondary-text);">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
@@ -103,8 +102,8 @@
       </button>
 
       <button id="theme-toggle" type="button"
-        class="rounded-lg text-sm p-1.5 md:p-2.5 mx-1 md:mx-6"
-        style="color: var(--secondary-text); background: var(--primary-bg); border-color: var(--secondary-text);">
+        class="rounded-lg text-sm p-1.5 md:p-2.5 mx-1 md:mx-6 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+        style="color: var(--secondary-text); border-color: var(--secondary-text);">
         <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
         </svg>
@@ -123,7 +122,7 @@
         @if ($subSections->has($section->id) || !$subSections->has($section->id))
         <li>
           @if ($subSections->has($section->id))
-          <button id="mega-menu-full-dropdown-button-{{ $section->id }}" data-collapse-toggle="mega-menu-full-dropdown-{{ $section->id }}" class="flex items-center justify-between w-full py-1 px-2 text-sm md:text-lg rounded-sm md:w-auto md:p-0"
+          <button id="mega-menu-full-dropdown-button-{{ $section->id }}" data-collapse-toggle="mega-menu-full-dropdown-{{ $section->id }}" class="flex items-center justify-between w-full py-1 px-2 text-sm md:text-lg rounded-sm md:w-auto md:p-0 hover:underline"
             style="color: var(--primary-text); background: var(--primary-bg); border-color: var(--secondary-text);">
             {{ $section->translate('name') }}
             <svg class="w-2 h-2 md:w-2.5 md:h-2.5 ms-1 md:ms-2.5 transition-transform duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6" style="color: var(--secondary-text);">
@@ -131,7 +130,7 @@
             </svg>
           </button>
           @else
-          <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg rounded-sm md:p-0"
+          <a href="{{ $section->redirect_url}}" class="block py-1 px-2 text-sm md:text-lg rounded-sm md:p-0 hover:underline"
             style="color: var(--primary-text); background: var(--primary-bg); border-color: var(--secondary-text);">
             {{ $section->translate('name') }}
           </a>
@@ -158,9 +157,9 @@
             @php
             $isPdf = substr($child->redirect_url, -4) === '.pdf';
             @endphp
-            <a href="{{ $child->redirect_url }}" {{ $isPdf ? 'target="_blank"' : '' }} class="block p-1 md:p-1 rounded-lg"
-              style="color: var(--secondary-text); background: var(--primary-bg);">
-              <div class="font-semibold" style="color: var(--primary-text);">{{ $child->translate('name') }}</div>
+            <a href="{{ $child->redirect_url }}" {{ $isPdf ? 'target="_blank"' : '' }} class="block p-1 md:p-1 rounded-lg bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+              style="color: var(--secondary-text);">
+              <div class="font-semibold" style="color: var(--secondary-text);">{{ $child->translate('name') }}</div>
             </a>
           </li>
           @endif

@@ -6,7 +6,7 @@
     </style>
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div class="relative flex items-center justify-center mb-8">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full">
                 {{ App::getLocale() === 'en' ? 'Edit Footer' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди подножје' : 'Uredi podnožje') }}
             </h1>
 
@@ -289,7 +289,7 @@
                 <div class="flex justify-end mt-4">
                     <button
                         type="submit"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="px-4 py-2  bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2""
                     >
                         {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>
@@ -522,7 +522,7 @@
                 <div class="flex justify-end mt-4">
                     <button
                         type="submit"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class="px-4 py-2  bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2""
                     >
                         {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                     </button>

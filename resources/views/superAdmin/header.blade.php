@@ -13,10 +13,10 @@
         }
 
     @endphp
-    <div x-data="{helpOpen: false}" class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+    <div x-data="{helpOpen: false}" class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 mid-h-screen">
         <div>
             <div class="relative flex items-center justify-center mb-8">
-                <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full">
                     {{ App::getLocale() === 'en' ? 'Edit header' : (App::getLocale() === 'sr-Cyrl' ? 'Уреди заглавље' : 'Uredi zaglavlje') }}
                 </h1>
 

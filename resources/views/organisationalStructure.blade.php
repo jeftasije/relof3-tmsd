@@ -3,7 +3,7 @@
         <div class="w-full max-w-4xl">
             <div class="flex-col justify-center items-start">
                 <div class="relative flex items-center justify-center mb-12">
-                    <h1 class="text-4xl font-bold text-center mb-4" style="color: var(--primary-text);">
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full" style="color: var(--primary-text);">
                         {{ App::getLocale() === 'en' ? 'Organisational structure' : (App::getLocale() === 'sr-Cyrl' ? 'Организациона структура' : 'Organizaciona struktura') }}
                     </h1>
                     @auth
@@ -11,7 +11,9 @@
                         <button 
                             id="help-btn" 
                             onclick="toggleHelpModal()"
-                            class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-[var(--hover-bg)] group"
+                            class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
                             style="color: var(--primary-text);"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -71,7 +73,7 @@
                                             data-modal-toggle="renameModal" 
                                             data-struct-id="{{ $structure->id }}" 
                                             data-struct-title="{{ $structure->title }}" 
-                                            class="block w-full text-left px-4 py-2 hover:bg-[var(--hover-bg)]"
+                                            class="block w-full text-left px-4 py-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                         >
                                             {{ App::getLocale() === 'en' ? 'Rename' : (App::getLocale() === 'sr-Cyrl' ? 'Преименуј' : 'Preimenuj') }}
                                         </button>
@@ -82,8 +84,7 @@
                                             data-modal-toggle="deleteModal" 
                                             data-struct-id="{{ $structure->id }}" 
                                             data-struct-title="{{ $structure->title }}" 
-                                            class="block w-full text-left px-4 py-2 hover:bg-[var(--hover-bg)]"
-                                            style="color: var(--error);"
+                                            class="block w-full text-left px-4 py-2 text-red-500 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                         >
                                             {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
                                         </button>
@@ -105,8 +106,7 @@
                             {{ App::getLocale() === 'en' ? 'Upload a new document' : (App::getLocale() === 'sr-Cyrl' ? 'Постави нови документ' : 'Otpremite novi документ') }}
                         </label>
                         <input 
-                            class="block w-full text-sm border rounded-lg cursor-pointer focus:outline-none" 
-                            style="background-color: var(--input-bg); color: var(--primary-text); border-color: var(--border);"
+                            class="block w-full text-sm border rounded-lg cursor-pointer focus:outline-none bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" 
                             aria-describedby="file_input_help"
                             id="file_input"
                             name="file"
@@ -118,8 +118,8 @@
                             {{ App::getLocale() === 'en' ? 'Supported extensions: (.pdf, .doc, .docx, .xlsx) Maximum size: 2 MB' : (App::getLocale() === 'sr-Cyrl' ? 'Подржане екстензије: (.pdf, .doc, .docx, .xlsx) Максимална величина: 2 MB' : 'Podržane ekstenzije: (.pdf, .doc, .docx, .xlsx) Maksimalna veličina: 2 MB') }}
                         </p>
                         <div class="flex items-center mt-2">
-                            <button type="submit" class="px-4 py-2 rounded-lg focus:ring-4 focus:outline-none" style="background-color: var(--accent); color: var(--accent-text);">
-                                {{ App::getLocale() === 'en' ? 'Upload' : (App::getLocale() === 'sr-Cyrl' ? 'Постави' : 'Objavi') }}
+                            <button type="submit" class="px-4 py-2 rounded-lg focus:ring-4 focus:outline-none bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
+                                {{ App::getLocale() === 'en' ? 'Upload' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми' : 'Otpremi') }}
                             </button>
                             <div role="status" class="ml-5">
                                 <svg id="spinner" aria-hidden="true" class="hidden w-8 h-8 animate-spin fill-[var(--accent)]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,15 +137,15 @@
 
             <div id="deleteModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative rounded-lg" style="background: var(--primary-bg); color: var(--primary-text);">
                         <div class="p-6 text-center">
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            <h3 class="mb-5 text-lg font-normal">
                                 {{ App::getLocale() === 'en' ? 'Are you sure you want to delete?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете?' : 'Da li ste sigurni da želite da obrišete?') }} "<span id="deleteModalTitle"></span>"?
                             </h3>
                             <button data-modal-hide="deleteModal" id="confirmDeleteButton" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                 {{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}
                             </button>
-                            <button data-modal-hide="deleteModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
+                            <button data-modal-hide="deleteModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
                         </div>
@@ -155,37 +155,37 @@
 
             <div id="renameModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative rounded-lg" style="background: var(--primary-bg); color: var(--primary-text);">
                         <div class="p-6">
-                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            <h3 class="mb-5 text-lg font-normal">
                                 {{ App::getLocale() === 'en' ? 'Rename the document' : (App::getLocale() === 'sr-Cyrl' ? 'Преименуј документ' : 'Preimenuj документ') }}
                             </h3>
                             <input 
                                 type="text" 
                                 id="renameInput" 
-                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400" 
+                                class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" 
                                 placeholder="{{ App::getLocale() === 'en' ? 'Enter a new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}"
                             >
                             <div class="mt-4 text-center">
-                                <button data-modal-hide="renameModal" id="confirmRenameButton" type="button" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                <button data-modal-hide="renameModal" id="confirmRenameButton" type="button" class="focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                     {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                                 </button>
-                                <button data-modal-hide="renameModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600">
+                                <button data-modal-hide="renameModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
                                     {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>      
             </div>
 
-            <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center">
+            <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center" style="color: var(--secondary-text)">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative text-center" style="background: var(--primary-bg); color: var(--primary-text);">
                     <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
-                    <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+                    <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text);">
                         {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                     </h2>
-                    <p class="text-gray-700 dark:text-gray-300 space-y-2">
+                    <p class="space-y-2" style="color: var(--secondary-text);">
                         {!! App::getLocale() === 'en'
                             ? 'On this page, you can <strong>delete, rename, and upload</strong> a document related to organisational structure. </br></br> If you wish to rename or delete a document, click on <strong>the three dots</strong> next to its name and select the desired option. </br></br> To upload a new document, click on the <strong>"choose file" section</strong> and select the document from your computer.'
                             : (App::getLocale() === 'sr-Cyrl'

@@ -2,7 +2,7 @@
     "news_visible": true,
     "contact_visible": true,
     "cobiss_visible": true,
-    "our_team_visible": false,
+    "our_team_visible": true,
     "component_order": [
         "hero",
         "our_team",
