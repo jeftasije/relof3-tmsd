@@ -48,8 +48,7 @@
             @auth
             <div class="text-right mb-4 mt-4">
                 <button id="editBtn"
-                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
-                    style="background: var(--accent); color: #fff;"
+                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded text-base"
                     type="button">
                     @switch(App::getLocale())
                     @case('en') Edit @break
@@ -75,9 +74,8 @@
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelEditBtn"
-                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
-                        style="background: #cbd5e1; color: var(--primary-text);">
-                        @switch(App::getLocale())
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
+                    @switch(App::getLocale())
                         @case('en') Cancel @break
                         @case('sr-Cyrl') Откажи @break
                         @default Otkaži
@@ -85,8 +83,7 @@
                     </button>
 
                     <button type="button" id="saveEditBtn" data-modal-target="submitModal1" data-modal-toggle="submitModal1"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                        style="background: var(--accent); color: #fff;">
+                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">
                         @switch(App::getLocale())
                         @case('en') Save changes @break
                         @case('sr-Cyrl') Сачувај промене @break
@@ -109,8 +106,7 @@
                                     @endswitch
                                 </h3>
                                 <button id="confirmSubmitBtn1" type="submit"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
-                                    style="background: var(--accent); color: #fff;">
+                                    class="text-white bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 text-center mr-2">
                                     @switch(App::getLocale())
                                     @case('en') Save @break
                                     @case('sr-Cyrl') Сачувај @break
@@ -118,8 +114,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal1" type="button"
-                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                    style="background: #cbd5e1; color: var(--primary-text);">
+                                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
@@ -159,8 +154,7 @@
                         : (App::getLocale() === 'sr-Cyrl'
                             ? 'Унесите питање'
                             : 'Unesite pitanje') }}"
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2"
-                    style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                 <div id="searchDropdown" class="absolute z-10 w-full rounded-lg mt-1 hidden"
                     style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);">
                     <ul id="searchResults" class="max-h-40 overflow-y-auto"></ul>
@@ -179,8 +173,7 @@
                     <select
                         id="globalSort"
                         name="sort"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        style="color: var(--secondary-text); border: 1px solid var(--secondary-text); border-radius: 4px;">
+                        class="bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>A-Z</option>
                         <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>Z-A</option>
                     </select>
@@ -189,8 +182,7 @@
                 <button 
                     id="createQuestionBtn"
                     type="button"
-                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded text-base"
-                    style="background: var(--accent); color: #fff;">
+                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded text-base">
                     @switch(App::getLocale())
                     @case('en') Create question @break
                     @case('sr-Cyrl') Креирај питање @break
@@ -260,8 +252,7 @@
                     </button>
                     <div class="dropdown-menu hidden absolute top-10 right-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-md z-20 text-left">
                         <button
-                            class="dropdown-item px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left"
-                            style="color: var(--primary-text); background: var(--primary-bg);"
+                            class="dropdown-item px-4 py-2 text-gray-800 dark:text-gray-200 w-full text-left bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                             data-action="rename"
                             data-id="{{ $question->id }}"
                             data-question="{{ $question->question }}"
@@ -274,8 +265,7 @@
                         </button>
 
                         <button
-                            class="dropdown-item px-4 py-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-700 w-full text-left"
-                            style="background: var(--primary-bg);"
+                            class="dropdown-item px-4 py-2 text-red-700 dark:text-red-700 w-full text-left bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                             data-action="delete"
                             data-id="{{ $question->id }}"
                             onclick="openDeleteModal({{ $question->id }})">
@@ -355,7 +345,7 @@
         </div>
         <div
             id="createQuestionModal"
-            class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
+            class="fixed inset-0 z-50 hidden bg-opacity-50 flex items-center justify-center background: var(--primary-bg)">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg p-6 relative">
                 <button id="closeCreateQuestionModalBtn" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">×</button>
                 <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
@@ -380,7 +370,7 @@
                             name="question"
                             id="newQuestion"
                             required
-                            class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" />
+                            class="w-full p-2 border border-gray-300 bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_white_20%)] rounded" />
                     </div>
                     <div class="mb-4">
                         <label for="newAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -395,14 +385,13 @@
                             id="newAnswer"
                             rows="5"
                             required
-                            class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded"></textarea>
+                            class="w-full p-2 border border-gray-300 bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_white_20%)] rounded"></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
                         <button
                             type="button"
                             id="cancelCreateQuestionBtn"
-                            class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
-                            style="background: #cbd5e1; color: var(--primary-text);">
+                            class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
                             @switch(App::getLocale())
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
@@ -412,8 +401,7 @@
 
                     <button 
                         type="submit" 
-                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
-                        style="background: var(--accent); color: #fff;">
+                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">
                         @switch(App::getLocale())
                             @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break
@@ -443,8 +431,8 @@
                         <textarea id="renameAnswer" name="answer" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="5" required></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" id="cancelRenameBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
+                        <button type="button" id="cancelRenameBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="submit" class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
                     </div>
                 </form>
             </div>
@@ -458,7 +446,7 @@
                     @csrf
                     @method('DELETE')
                     <div class="flex justify-center gap-4">
-                        <button type="button" id="cancelDeleteBtn" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="button" id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
                         <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}</button>
                     </div>
                 </form>

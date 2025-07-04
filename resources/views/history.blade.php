@@ -45,8 +45,7 @@
         @auth
             <div class="text-right mb-4">
                 <button id="editBtn" 
-                    class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
-                    style="background: var(--accent); color: #fff;"
+                    class="text-white font-semibold py-2 px-4 rounded text-base bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]"
                     type="button">
                     @switch(App::getLocale())
                         @case('en') Edit @break
@@ -74,8 +73,7 @@
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelBtn"
-                        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded"
-                        style="background: #cbd5e1; color: var(--primary-text);">
+                        class=" text-white font-semibold py-2 px-4 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                         @switch(App::getLocale())
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
@@ -84,8 +82,7 @@
                     </button>
 
                     <button type="button" id="saveBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-                        style="background: var(--accent); color: #fff;">
+                        class="text-white font-semibold py-2 px-4 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                         @switch(App::getLocale())
                             @case('en') Save changes @break
                             @case('sr-Cyrl') Сачувај промене @break
@@ -109,8 +106,7 @@
                                     @endswitch
                                 </h3>
                                 <button id="confirmSubmitBtn" type="button"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
-                                    style="background: var(--accent); color: #fff;">
+                                    class="text-white bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">   
                                     @switch(App::getLocale())
                                         @case('en') Save @break
                                         @case('sr-Cyrl') Сачувај @break
@@ -118,8 +114,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal" type="button"
-                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                    style="background: #cbd5e1; color: var(--primary-text);">
+                                    class="text-gray-500 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                     @switch(App::getLocale())
                                         @case('en') Cancel @break
                                         @case('sr-Cyrl') Откажи @break
