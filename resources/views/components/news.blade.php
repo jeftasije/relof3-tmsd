@@ -1,7 +1,6 @@
-<section class="bg-gray-900 py-12"
-    style="background: var(--primary-bg)">
+<section style="background: var(--primary-bg)">
     <div class="max-w-screen-xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-white mb-6">{{ __('homepage_news_title') }}</h2>
+        <h2 class="text-3xl font-bold mb-6" style="color: var(--primary-text) !important;">{{ __('homepage_news_title') }}</h2>
         <div class="relative flex items-center">
             <button id="scrollLeft" class="z-10 p-2 rounded-full bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed">
                 <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

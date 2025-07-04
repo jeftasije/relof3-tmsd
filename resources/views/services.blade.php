@@ -19,7 +19,6 @@
                     <div class="w-full absolute right-0 top-0 flex flex-col items-end"
                         style="height: 90px; min-width:220px; max-width: 240px;">
                         <!-- HELP dugme -->
-                        <!-- HELP dugme -->
                         <button @click="$store.modals.openHelp()"
                             class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-semibold rounded transition
         text-[var(--secondary-text)] bg-transparent border-none hover:text-[var(--accent)] focus:outline-none shadow-none"

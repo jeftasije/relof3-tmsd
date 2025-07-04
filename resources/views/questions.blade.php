@@ -15,9 +15,9 @@
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
                     style="color: var(--primary-text); font-family: var(--font-title);">
                     @switch(App::getLocale())
-                    @case('en') Questions and answers @break
-                    @case('sr-Cyrl') Питања и одговори @break
-                    @default Pitanja i odgovori
+                    @case('en') FAQ @break
+                    @case('sr-Cyrl') Често постављена питања @break
+                    @default Često postavljena pitanja
                     @endswitch
                 </h1>
 
