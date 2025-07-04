@@ -17,54 +17,48 @@
         </h2>
     </x-slot>
 
-    @if(session('success'))
-    <div
-        x-data="{ show: true }"
-        x-show="show"
-        x-transition
-        x-init="setTimeout(() => show = false, 4000)"
-        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
-        {{ __('complaint.' . session('success')) }}
-    </div>
-    @endif
-    
-    @auth
     <div class="py-12 bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            
-            <div class="flex items-center justify-center relative mb-6 mt-8">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
-                    style="color: var(--primary-text); font-family: var(--font-title);">
-                    @switch(App::getLocale())
-                    @case('en') Complaints overview @break
-                    @case('sr-Cyrl') Преглед жалби @break
-                    @default Pregled žalbi
-                    @endswitch
-                </h2>
-                <div class="flex justify-end">
-                    <button
-                        id="help-btn"
-                        onclick="toggleHelpModal()"
-                        class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
-                        style="top: 35%; transform: translateY(-50%)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M12 17l0 .01" />
-                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                        </svg>
-                        <span class="ml-3">
-                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                        </span>
-                    </button>
-                </div>
 
-                
+            @if(session('success'))
+            <div
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                @click="show = false"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                x-init="setTimeout(() => show = false, 4000)">
+                {{ session('success') }}
             </div>
-            
+            @endif
 
-            <p class="mb-6 font-light text-center text-gray-600 dark:text-gray-300 sm:text-lg max-w-3xl mx-auto" 
-                style="color: var(--secondary-text); font-family: var(--font-body);">
+            <div class="flex justify-end">
+                <button
+                    id="help-btn"
+                    onclick="toggleHelpModal()"
+                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                    <span class="ml-3">
+                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                    </span>
+                </button>
+            </div>
+
+            <h2 class="text-4xl font-bold text-gray-800 dark:text-white text-center mb-2 mt-8">
+                @switch(App::getLocale())
+                @case('en') Complaints overview @break
+                @case('sr-Cyrl') Преглед жалби @break
+                @default Pregled žalbi
+                @endswitch
+            </h2>
+
+            <p class="mb-6 font-light text-center text-gray-600 dark:text-gray-300 sm:text-lg max-w-3xl mx-auto">
                 @switch(App::getLocale())
                 @case('en')
                 Here you can review all complaints and suggestions submitted by users. Use this section to better understand their needs and improve your services through meaningful feedback.
@@ -126,16 +120,14 @@
                         </select>
                     </div>
                     <div class="flex items-end space-x-2">
-                        <button type="submit" class="bg-blue-600 text-white py-4 mt-2 mb-2 rounded hover:bg-blue-700 w-full text-lg"
-                            style="background: var(--accent); color: #fff;">
+                        <button type="submit" class="bg-blue-600 text-white py-4 mt-2 mb-2 rounded hover:bg-blue-700 w-full text-lg">
                             @switch(App::getLocale())
                             @case('en') Filter @break
                             @case('sr-Cyrl') Филтрирај @break
                             @default Filtriraj
                             @endswitch
                         </button>
-                        <button type="reset" id="reset-filter-btn" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center"
-                            style="background: #cbd5e1; color: var(--primary-text);">
+                        <button type="reset" id="reset-filter-btn" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
                             @switch(App::getLocale())
                             @case('en') Reset @break
                             @case('sr-Cyrl') Ресетуј @break
@@ -238,11 +230,11 @@
                     </strong>
                 </p>
                 <div x-data="{ showTranslatedMessage: false }">
-                    <div class="max-w-[90%] flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
-                        <p x-show="!showTranslatedMessage" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]" style="color: var(--primary-text);">
+                    <div class="max-w-[90%] flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2">
+                        <p x-show="!showTranslatedMessage" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]">
                             {{ $complaint->message }}
                         </p>
-                        <p x-show="showTranslatedMessage" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]" style="color: var(--primary-text);">
+                        <p x-show="showTranslatedMessage" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]">
                             {{ $complaint->translate('message') }}
                         </p>
                     </div>
@@ -279,16 +271,14 @@
                             <textarea name="answer" rows="3" class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white p-2" required></textarea>
 
                             <div class="mt-2 flex space-x-2 justify-end">
-                                <button type="reset" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                                    style="background: #cbd5e1; color: var(--primary-text);">
+                                <button type="reset" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
                                     @default Otkaži
                                     @endswitch
                                 </button>
-                                <button type="button" class="sendAnswerBtn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-complaint-id="{{ $complaint->id }}"
-                                    style="background: var(--accent); color: #fff;">
+                                <button type="button" class="sendAnswerBtn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-complaint-id="{{ $complaint->id }}">
                                     @switch(App::getLocale())
                                     @case('en') Send answer @break
                                     @case('sr-Cyrl') Пошаљи одговор @break
@@ -308,16 +298,14 @@
                                     @endswitch
                                 </h3>
                                 <div class="flex justify-center gap-4">
-                                    <button type="button" class="confirmSendBtn text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5"
-                                        style="background: var(--accent); color: #fff;">
+                                    <button type="button" class="confirmSendBtn text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
                                         @switch(App::getLocale())
                                         @case('en') Send @break
                                         @case('sr-Cyrl') Пошаљи @break
                                         @default Pošalji
                                         @endswitch
                                     </button>
-                                    <button type="button" data-modal-hide="submitAnswerModal-{{ $complaint->id }}" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 cancelBtn"
-                                        style="background: #cbd5e1; color: var(--primary-text);">
+                                    <button type="button" data-modal-hide="submitAnswerModal-{{ $complaint->id }}" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 cancelBtn">
                                         @switch(App::getLocale())
                                         @case('en') Cancel @break
                                         @case('sr-Cyrl') Откажи @break
@@ -373,7 +361,6 @@
             </div>
         </div>
     </div>
-    @endauth
 
     <div
         id="helpModal"
