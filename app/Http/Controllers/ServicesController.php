@@ -58,6 +58,16 @@ class ServicesController extends Controller
             $json = file_exists($langFiles['en']) ? json_decode(file_get_contents($langFiles['en']), true) : [];
             $json['services'] = $servicesData;
             file_put_contents($langFiles['en'], json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            
+            if (isset($servicesData['images'])) {
+                $jsonSr = file_exists($langFiles['sr']) ? json_decode(file_get_contents($langFiles['sr']), true) : [];
+                $jsonCyr = file_exists($langFiles['sr-Cyrl']) ? json_decode(file_get_contents($langFiles['sr-Cyrl']), true) : [];
+                $jsonSr['services']['images'] = $servicesData['images'];
+                $jsonCyr['services']['images'] = $servicesData['images'];
+
+                file_put_contents($langFiles['sr'], json_encode($jsonSr, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                file_put_contents($langFiles['sr-Cyrl'], json_encode($jsonCyr, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            }
         } else {
             $localized = [
                 'sr'      => $servicesData,
@@ -171,5 +181,4 @@ class ServicesController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Slika uspešno obrisana.']);
     }
-
 }

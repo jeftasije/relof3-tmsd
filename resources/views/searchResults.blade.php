@@ -28,10 +28,10 @@
                     @else
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
                             @foreach ($searchResults as $result)
-                                <div class="border rounded-lg p-4 shadow hover:shadow-lg transition duration-300 hover:-translate-y-1 hover:scale-105 flex flex-col" style="background: var(--primary-bg) !important; color: var(--primary-text) !important; min-height: 200px; box-shadow: 5px 5px 15px rgba(0,0,0,0.25); border: 1px solid var(--secondary-text) !important;">
+                                <div class="border rounded-lg p-4 shadow hover:shadow-lg transition duration-300 hover:-translate-y-1 hover:scale-105 flex flex-col" style="background: color-mix(in srgb, var(--primary-bg) 75%, #000 25%) !important; color: var(--primary-text) !important; min-height: 200px; box-shadow: 5px 5px 15px rgba(0,0,0,0.25); border: 1px solid var(--secondary-text) !important;">
                                     <h2 class="text-xl font-semibold mb-2" style="color: var(--primary-text) !important;">{{ $result['title'] }}</h2>
                                     <p class="mb-4 text-sm sm:text-base md:text-lg flex-grow" style="color: var(--secondary-text) !important;">{{ $result['description'] }}</p>
-                                    <a href="{{ $result['route'] }}" target="_blank" class="w-fit px-4 py-2 rounded-lg font-semibold transition hover:shadow mt-auto" style="background: var(--accent) !important; color: #fff !important;">
+                                    <a href="{{ $result['route'] }}" target="_blank" class="w-fit px-4 py-2 rounded-lg font-semibold transition hover:shadow mt-auto bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                         {{ App::getLocale() === 'en' ? 'Show' : (App::getLocale() === 'sr-Cyrl' ? 'Погледај' : 'Pogledaj') }}
                                     </a>
                                 </div>

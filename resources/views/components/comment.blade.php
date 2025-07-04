@@ -39,7 +39,7 @@
                 {{ $comment->translate('comment') }}
             </p>
             @auth
-            <button class="delete-comment-btn text-red-500" title="
+            <button class="delete-comment-btn text-red-500 transition duration-300 hover:-translate-y-1 hover:scale-105" title="
                 @switch(App::getLocale())
                 @case('en') Delete @break
                 @case('sr-Cyrl') Обриши @break
@@ -59,7 +59,7 @@
         </div>
         <button
             @click="showTranslated = !showTranslated"
-            class="text-sm text-blue-600 hover:underline mb-2" style="color: var(--accent);">
+            class="text-sm hover:underline mb-2" style="color: var(--accent);">
             <template x-if="!showTranslated">
                 <span>{{ $languageLabel }}</span>
             </template>
@@ -78,9 +78,9 @@
     @if (is_null($comment->parent_id))
     <button
         @click="openReply = !openReply"
-        class="text-blue-600 text-sm mt-2 hover:underline">
+        class="color-[var(--secondary-text)] text-sm mt-2 hover:underline">
         <template x-if="!openReply">
-            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" style="background: var(--accent); color: #fff;">
+            <button class="px-3 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                 @switch(App::getLocale())
                 @case('en') Reply @break
                 @case('sr-Cyrl') Одговори @break
@@ -89,7 +89,7 @@
             </button>
         </template>
         <template x-if="openReply">
-            <button class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" style="background: var(--secondary-text); color: #fff;">
+            <button class="px-3 py-2 rounded bg-[var(--secondary-text)] hover:bg-[color-mix(in_srgb,_var(--secondary-text)_80%,_black_20%)]"">
                 @switch(App::getLocale())
                 @case('en') Cancel @break
                 @case('sr-Cyrl') Откажи @break
@@ -143,8 +143,7 @@
             </div>
             <div>
                 <button type="submit"
-                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    style="background: var(--accent); color: #fff;">
+                    class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                     @switch(App::getLocale())
                     @case('en') Send reply @break
                     @case('sr-Cyrl') Пошаљи одговор @break

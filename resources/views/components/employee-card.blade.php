@@ -117,14 +117,12 @@
                 style="background: var(--primary-bg) !important; border: 1px solid var(--secondary-text) !important;">
                 <button 
                   @click.prevent="editing = true; open = false" 
-                  class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                  style="color: var(--primary-text) !important;"
-                >
+                  class="block w-full text-left px-4 py-2 text-sm bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                     {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                 </button>
                 <button 
                   @click.prevent="openDeleteModal('{{ route('employees.destroy', $employee->id) }}'); open = false"
-                  class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  class="w-full text-left px-4 py-2 text-sm bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                   style="color: #dc2626 !important;"
                 >
                     {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
@@ -189,16 +187,16 @@
               <button 
                 @click.prevent="save()" 
                 :disabled="saving"
-                class="px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50"
-                style="background: #2563eb !important; color: #fff !important;"
+                class="px-3 py-1 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] disabled:opacity-50"
+                style="color: #fff !important;"
               >
                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
               </button>
               <button 
                 @click.prevent="cancel()" 
                 :disabled="saving"
-                class="px-3 py-1 rounded hover:bg-gray-500 disabled:opacity-50"
-                style="background: #cbd5e1 !important; color: var(--primary-text) !important;"
+                class="px-3 py-1 rounded hover:bg-gray-600 disabled:opacity-50 bg-gray-500"
+                style="color: var(--primary-text) !important;"
               >
                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
               </button>
@@ -206,8 +204,8 @@
           </template>
 
           <a href="{{ route('employees.show', $employee->id) }}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg focus:ring-4 focus:outline-none"
-             style="background: var(--accent); color: #fff; box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
+             class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg focus:ring-4 focus:outline-none bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]"
+             style="box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);">
               {{ App::getLocale() === 'en' ? 'Show more' : (App::getLocale() === 'sr-Cyrl' ? 'Прикажи више' : 'Prikaži više') }}
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                    fill="none" viewBox="0 0 14 10">
@@ -228,15 +226,15 @@
                 {{ App::getLocale() === 'en' ? 'Are you sure you want to delete this employee?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете овог запосленог?' : 'Da li ste sigurni da želite da obrišete ovog zaposlenog?') }}
             </p>
             <div class="flex justify-end gap-2">
-                <button @click="closeDeleteModal()" class="px-4 py-2 rounded"
-                  style="background: #cbd5e1 !important; color: var(--primary-text) !important;">
+                <button @click="closeDeleteModal()" class="px-4 py-2 rounded hover:bg-gray-600 disabled:opacity-50 bg-gray-500"
+                  style="color: var(--primary-text) !important;">
                     {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                 </button>
                 <form :action="confirmDeleteUrl" method="POST" x-ref="deleteForm">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="px-4 py-2 rounded"
-                            style="background: #dc2626 !important; color: #fff !important;">
+                    <button type="submit" class="px-4 py-2 rounded bg-red-500 hover:bg-red-600"
+                            style="color: #fff !important;">
                         {{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}
                     </button>
                 </form>
