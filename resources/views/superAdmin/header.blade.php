@@ -44,24 +44,74 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                     <div class="p-6 bg-white dark:bg-gray-800 rounded-lg">
                         <div class="mb-4">
-                            <label for="title_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}</label>
-                                <input type="text" id="title_sr" name="title_sr" value="{{ $titleValue }}" data-lang="sr"
-                                    class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            <label for="title_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ App::getLocale() === 'en' ? 'Title' : (App::getLocale() === 'sr-Cyrl' ? 'Наслов' : 'Naslov') }}
+                            </label>
+                            <input type="text" id="title_sr" name="title_sr" value="{{ $titleValue }}" data-lang="sr"
+                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            @error('title_sr') 
+                                <span id="error-title_sr" class="text-red-500 text-sm">{{ $message }}</span> 
+                            @enderror
+                            @unless($errors->has('title_sr')) 
+                                <span id="error-title_sr" class="text-red-500 text-sm"></span> 
+                            @endunless
                         </div>
                         <div class="mb-4">
                             <label for="subtitle_sr" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Subtitle' : (App::getLocale() === 'sr-Cyrl' ? 'Поднаслов' : 'Podnaslov') }}</label>
                             <input type="text" id="subtitle_sr" name="subtitle_sr" value="{{ $subtitleValue }}" data-lang="sr"
                                 class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            @error('subtitle_sr') 
+                                <span id="error-subtitle_sr" class="text-red-500 text-sm">{{ $message }}</span> 
+                            @enderror
+                            @unless($errors->has('subtitle_sr')) 
+                                <span id="error-subtitle_sr" class="text-red-500 text-sm"></span> 
+                            @endunless
                         </div>
                         <div class="mb-4">
                             <label for="logo_light" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Upload logo (light theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми лого (светла тема)' : 'Otpremite logo (svetla tema)') }}</label>
                             <input type="file" id="logo_light" name="logo_light" accept="image/*"
                                 class="mt-1 block w-full text-sm text-gray-900 dark:text-white bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"></input>
+                               <p>
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    Your file can be up to 2 MB.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    Ваш фајл може бити до 2 МБ.
+                                    @break
+                                    @default
+                                    Vaš fajl može biti do 2 MB.
+                                    @endswitch
+                                </p>
+                                @error('logo_light') 
+                                    <span id="error-logo_light" class="text-red-500 text-sm">{{ $message }}</span> 
+                                @enderror
+                                @unless($errors->has('logo_light')) 
+                                    <span id="error-logo_light" class="text-red-500 text-sm"></span> 
+                                @endunless
                         </div>
                         <div class="mb-4">
                             <label for="logo_dark" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Upload logo (dark theme)' : (App::getLocale() === 'sr-Cyrl' ? 'Отпреми лого (тамна тема)' : 'Otpremite logo (tamna tema)') }}</label>
                             <input type="file" id="logo_dark" name="logo_dark" accept="image/*"
                                 class="mt-1 block w-full text-sm text-gray-900 dark:text-white bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"></input>
+                                <p>
+                                    @switch(App::getLocale())
+                                    @case('en')
+                                    Your file can be up to 2 MB.
+                                    @break
+                                    @case('sr-Cyrl')
+                                    Ваш фајл може бити до 2 МБ.
+                                    @break
+                                    @default
+                                    Vaš fajl može biti do 2 MB.
+                                    @endswitch
+                                </p>
+                                @error('logo_dark') 
+                                    <span id="error-logo_dark" class="text-red-500 text-sm">{{ $message }}</span> 
+                                @enderror
+                                @unless($errors->has('logo_dark')) 
+                                    <span id="error-logo_dark" class="text-red-500 text-sm"></span> 
+                                @endunless
                         </div>
                         <div class="flex justify-end mt-6">
                             <button type="submit"
@@ -84,6 +134,12 @@
                         </label> 
                         <input type="text" id="title_en" name="title_en" value="{{ old('title_en', $title_en ?? '') }}" data-lang="en"
                             class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            @error('title_en') 
+                                <span id="error-title_en" class="text-red-500 text-sm">{{ $message }}</span> 
+                            @enderror
+                            @unless($errors->has('title_en')) 
+                                <span id="error-title_en" class="text-red-500 text-sm"></span> 
+                            @endunless
                     </div>
                     <div class="mb-4">
                         <label for="subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -91,6 +147,12 @@
                         </label>
                         <input type="text" id="subtitle_en" name="subtitle_en" value="{{ old('subtitle_en', $subtitle_en ?? '') }}" data-lang="en"
                             class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm">
+                            @error('subtitle_en') 
+                                <span id="error-subtitle_en" class="text-red-500 text-sm">{{ $message }}</span> 
+                            @enderror
+                            @unless($errors->has('subtitle_en')) 
+                                <span id="error-subtitle_en" class="text-red-500 text-sm"></span> 
+                            @endunless
                     </div>
                     <div class="mt-auto flex justify-end">
                         <button type="submit"
@@ -257,7 +319,25 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            showModal(); } 
+                            showModal(); 
+                        } 
+                        else {
+                            if (data.errors.title_sr) {
+                                document.getElementById('error-title_sr').innerText = data.errors.title_sr[0];
+                            }
+
+                            if (data.errors.subtitle_sr) {
+                                document.getElementById('error-subtitle_sr').innerText = data.errors.subtitle_sr[0];
+                            }
+
+                            if (data.errors.logo_light) {
+                                document.getElementById('error-logo_light').innerText = data.errors.logo_light[0];
+                            }
+
+                            if (data.errors.logo_dark) {
+                                document.getElementById('error-logo_dark').innerText = data.errors.logo_dark[0];
+                            }
+                        }
                     })
                     .catch(error => console.error('Error:', error));
                 });
@@ -275,11 +355,50 @@
                         }
                     })
                     .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showModal(); 
+                        } 
+                        else {
+                            if (data.errors.title_en) {
+                                document.getElementById('error-title_en').innerText = data.errors.title_en[0];
+                            }
+
+                            if (data.errors.subtitle_en) {
+                                document.getElementById('error-subtitle_en').innerText = data.errors.subtitle_en[0];
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
 
                 updateModal.addEventListener('click', (event) => {
                     if (event.target === updateModal) {
                         hideModal();
+                    }
+                });
+
+                const form = document.getElementById('serbian-form');
+                const fileInput = document.getElementById('logo_light');
+                const fileInputDark = document.getElementById('logo_dark');
+
+                form.addEventListener('submit', (e) => {
+                    const file = fileInput.files[0];
+                    const fileDark = fileInputDark.files[0];
+                    const maxFileSize = 2 * 1024 * 1024; // 2MB
+
+                    if (file && file.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    if (fileDark && fileDark.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInputDark.value = '';
+                        return;
                     }
                 });
             });

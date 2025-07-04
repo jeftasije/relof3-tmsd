@@ -26,8 +26,10 @@
                     <button
                         id="help-btn"
                         onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 group"
-                        style="color: var(--primary-text); background: var(--primary-bg);">
+                            class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style="color: var(--primary-text);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />

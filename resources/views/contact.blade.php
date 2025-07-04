@@ -41,8 +41,10 @@
                 <div class="absolute right-[-100px] top-0 flex flex-col items-end z-10" style="gap:8px; padding-top: 50px;">
 
                     <button id="help-btn" onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 order-first"
-                        style="color: var(--primary-text); background:transparent;"
+                        class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                            rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                            bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style="color: var(--primary-text);"
                         aria-label="Pomoć">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -237,7 +239,7 @@
         </div>
 
         <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+            <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
                 <button onclick="toggleHelpModal()"
                     class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                     &times;
@@ -245,7 +247,7 @@
                 <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text); text-align:center;">
                     {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
                 </h2>
-                <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
+                <p class="space-y-2 text-sm leading-relaxed" style="color: var(--secondary-text);">
                     {!! App::getLocale() === 'en'
                         ? '
                                 
