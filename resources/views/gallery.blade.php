@@ -138,7 +138,7 @@
 
     @auth
     <div class="max-w-xl mx-auto mt-6 mb-10">
-        <form method="POST" action="{{ route('gallery.upload') }}" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <form id="uploadForm" method="POST" action="{{ route('gallery.upload') }}" enctype="multipart/form-data" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             @csrf
             <label for="file" class="block text-base font-medium text-gray-700 dark:text-white mb-2">
                 @switch(App::getLocale())
@@ -347,7 +347,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.querySelector(`form[action="{{ route('gallery.upload') }}"]`);
+        const form = document.getElementById('uploadForm');
         const fileInput = form.querySelector('input[type="file"]');
         const submitButton = form.querySelector('button[type="submit"]');
         const resetButton = form.querySelector('button[type="reset"]');

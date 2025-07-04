@@ -191,13 +191,13 @@ class FooterController extends Controller
         ];
 
         $request->validate([
-            'name_en' => 'nullable|string|max:255',
-            'address_en' => 'nullable|string|max:255',
-            'work_hours_en' => 'nullable|string',
-            'copyrights_en' => 'nullable|string|max:255',
-            'pib' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:50',
-            'email' => 'nullable|email|max:255',
+            'name_en' => 'required|string|max:255',
+            'address_en' => 'required|string|max:255',
+            'work_hours_en' => 'required|string',
+            'copyrights_en' => 'required|string|max:255',
+            'pib' => ['required', 'regex:/^\d{8,9}$/'],
+            'phone' => ['required', 'regex:/^\+?[0-9\s\-\(\)]+$/', 'max:50'],
+            'email' => 'required|email|max:255',
             'facebook' => 'nullable|url|max:255',
             'twitter' => 'nullable|url|max:255',
             'map_embed' => 'nullable|url|max:255',

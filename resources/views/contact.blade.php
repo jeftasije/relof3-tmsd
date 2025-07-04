@@ -107,12 +107,12 @@
             </div>
 
             @php
-            $isEditor = auth()->check() && auth()->user()->isEditor();
+            $isLogged = auth()->check();
             @endphp
 
             <form action="{{ route('contact.store') }}" method="POST" id="contactForm"
-                class="space-y-6 w-full max-w-3xl mx-auto mt-12 {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
-                {{ $isEditor ? 'onsubmit=return false;' : '' }}>
+                class="space-y-6 w-full max-w-3xl mx-auto mt-12 {{ $isLogged ? 'opacity-50 pointer-events-none' : '' }}"
+                {{ $isLogged ? 'onsubmit=return false;' : '' }}>
                 @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -216,7 +216,7 @@
                 </div>
                 <div class="text-center">
                     <button type="submit" id="sendBtn"
-                        class="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
+                        class="rounded-lg text-base px-5 py-2.5 text-center bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                         @switch(App::getLocale())
                         @case('en')
                         Send message

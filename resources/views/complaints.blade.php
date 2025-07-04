@@ -119,12 +119,12 @@
             <div class="mb-16">
                 <div>
                     @php
-                    $isEditor = auth()->check() && auth()->user()->isEditor();
+                    $isLogged = auth()->check();
                     @endphp
 
                     <form action="{{ route('complaints.store') }}" method="POST" id="complaintsForm"
-                        class="space-y-6 w-full max-w-3xl mx-auto {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
-                        {{ $isEditor ? 'onsubmit=return false;' : '' }}>
+                        class="space-y-6 w-full max-w-3xl mx-auto {{ $isLogged ? 'opacity-50 pointer-events-none' : '' }}"
+                        {{ $isLogged ? 'onsubmit=return false;' : '' }}>
                         @csrf
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
