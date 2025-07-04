@@ -51,6 +51,7 @@ class HeaderController extends Controller
     public function updateSr(Request $request)
     {
         $validated = $this->validateRequest($request);
+        
 
         $this->handleLogoUpload($request, 'logo_light', 'nbnp-logo-dark.png');
         $this->handleLogoUpload($request, 'logo_dark', 'nbnp-logo.png');
@@ -105,10 +106,7 @@ class HeaderController extends Controller
 
     public function updateEn(Request $request)
     {
-        $request->validate([
-            'title_en' => 'nullable|string',
-            'subtitle_en' => 'nullable|string'
-        ]);
+        $validated = $this->validateRequestEn($request);
 
         $enPath = resource_path('lang/en.json');
 
@@ -126,13 +124,37 @@ class HeaderController extends Controller
     }
 
     private function validateRequest(Request $request)
-    {
+    {   
+        $messages = [
+            'title_sr.required' => __('validation.header_title_required'),
+            'subtitle_sr.required' => __('validation.header_subtitle_required'),
+            'logo_light.image' => __('validation.logo_light_image'),
+            'logo_light.max' => __('validation.logo_light_max'),
+            'logo_dark.image' => __('validation.logo_dark_image'),
+            'logo_dark.max' => __('validation.logo_dark_max')
+        ];
+
         return $request->validate([
-            'title_sr' => 'nullable|string',
-            'subtitle_sr' => 'nullable|string',
+            'title_sr' => 'required|string',
+            'subtitle_sr' => 'required|string',
             'logo_light' => 'nullable|image|max:2048',
             'logo_dark' => 'nullable|image|max:2048'
-        ]);
+        ], $messages);
+    }
+
+    private function validateRequestEn(Request $request)
+    {   
+        $messages = [
+            'title_en.required' => __('validation.header_title_required'),
+            'subtitle_en.required' => __('validation.header_subtitle_required'),
+        ];
+
+        return $request->validate([
+            'title_en' => 'required|string',
+            'subtitle_en' => 'required|string',
+            'logo_light' => 'nullable|image|max:2048',
+            'logo_dark' => 'nullable|image|max:2048'
+        ], $messages);
     }
 
     private function handleLogoUpload(Request $request, $inputName, $fileName)

@@ -24,8 +24,10 @@
                 <button
                     id="help-btn"
                     data-modal-target="helpModal" data-modal-toggle="helpModal"
-                    class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
-                    style="top: 35%; transform: translateY(-50%)">
+                        class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                        rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                        bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                        style="color: var(--primary-text);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -301,14 +303,14 @@
     <div
         id="helpModal"
         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
             <button data-modal-hide="helpModal" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
             </button>
             <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
-            <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed">
+            <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed" style="color: var(--secondary-text);">
                 {!! App::getLocale() === 'en'
                 ? '
                 By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the gallery content.<br><br>

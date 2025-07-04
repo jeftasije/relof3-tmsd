@@ -20,8 +20,10 @@
                         style="height: 90px; min-width:220px; max-width: 240px;">
                         <!-- HELP dugme -->
                         <button @click="$store.modals.openHelp()"
-                            class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-semibold rounded transition
-        text-[var(--secondary-text)] bg-transparent border-none hover:text-[var(--accent)] focus:outline-none shadow-none"
+                            class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                                style="color: var(--primary-text);"
                             type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -37,26 +39,26 @@
                         <!-- EDIT dugme -->
                         <div class="flex items-center gap-1">
                             <button x-show="!editing" @click="startEdit()"
-                                class="px-5 py-2 rounded-2xl font-semibold text-base shadow
-            bg-[var(--accent)] text-white
-            hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]
-            transition-all duration-200"
+                                class="px-5 py-2 rounded text-base shadow
+                                        bg-[var(--accent)]
+                                        hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]
+                                        transition-all duration-200"
                                 type="button">
                                 {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
                             </button>
                             <template x-if="editing">
                                 <div class="flex gap-2">
                                     <button @click="saveEdit()"
-                                        class="px-4 py-2 rounded-xl font-semibold text-base shadow
-                bg-[var(--accent)] text-white
+                                        class="px-4 py-2 rounded font-semibold text-base shadow
+                bg-[var(--accent)]
                 hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]
                 transition-all duration-200"
                                         type="button">
                                         {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                                     </button>
                                     <button @click="cancelEdit()"
-                                        class="px-4 py-2 rounded-xl font-semibold text-base shadow
-                bg-gray-400 text-white
+                                        class="px-4 py-2 rounded font-semibold text-base shadow
+                bg-gray-400
                 hover:bg-gray-500
                 transition-all duration-200"
                                         type="button">

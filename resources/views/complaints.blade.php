@@ -73,7 +73,17 @@
                     </button>
                     @endauth
                 </div>
+                <div class="flex flex-row items-center justify-center w-full">
+                    <template x-if="editing">
+                        <input type="text" x-model="form.description"
+                            class="text-lg w-full max-w-xl border px-2 rounded text-center"
+                            style="background: var(--primary-bg); color: var(--primary-text);" />
+                    </template>
+                    <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
+                        style="color: var(--secondary-text);" x-text="form.description"></span>
+                </div>
             </div>
+
 
             <div class="mb-8"></div>
             <div class="relative flex flex-col sm:flex-row sm:items-center mb-6 sm:justify-between">
@@ -371,7 +381,7 @@
     </div>
 
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
             <button data-modal-hide="helpModal"
                 class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
@@ -379,7 +389,7 @@
             <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text); text-align:center;">
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
-            <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
+            <p class="space-y-2 text-sm leading-relaxed" style="color: var(--secondary-text);">
                 {!! App::getLocale() === 'en'
                 ? '
                 Clicking on the button <strong>\"Edit\"</strong> will open a field for editing instructions on how the user can submit a complaint.
