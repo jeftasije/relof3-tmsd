@@ -74,6 +74,18 @@ class PageController extends Controller
         ]);
     }
 
+    private function updatePageTitleAndContent(Page $page)
+    {
+        $page->update([
+            'title'     => $page_titleLat,
+            'title_cy'     => $page_titleCyr,
+            'title_en'     => $page_titleEn,
+            'content'   => $content,
+            'content_en'   => $content_en,
+            'content_cy'   => $content_cy,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $slugRule = 'required|alpha_dash|unique:pages,slug';
@@ -146,63 +158,62 @@ class PageController extends Controller
 
         $originalTitle = $request->title;
         $detectedScript = $this->languageMapper->detectScript($originalTitle);
-        if (app()->getLocale() === 'sr') {
-            if ($detectedScript === 'cyrillic') {
-                $page_titleCyr = $originalTitle;
-                $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
-                $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            } else {
-                $page_titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
-                $page_titleLat = $originalTitle;
-                $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
-            }
+        if ($detectedScript === 'cyrillic') {
+            $page_titleCyr = $originalTitle;
+            $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
+            $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
+        } elseif (app()->getLocale() === 'sr') {
+            $page_titleCyr = $this->languageMapper->latin_to_cyrillic($originalTitle);
+            $page_titleLat = $originalTitle;
+            $page_titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($originalTitle);
         } else {
             $page_titleEn = $originalTitle;
-            $page_titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
-            $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
+            if ($request->query('slug')) {
+                $page->update([
+                    'title_en'     => $page_titleEn,
+                ]);
+            } else {
+                $page_titleCyr = $this->translate->setSource('en')->setTarget('sr')->translate($originalTitle);
+                $page_titleLat = $this->languageMapper->cyrillic_to_latin($page_titleCyr);
+            }
         }
 
         if ($request->query('slug'))
             $page = Page::where('slug', $request->query('slug'))->firstOrFail();
+
         $plainTextForTranslation = isset($data['text']) ? strip_tags($data['text']) : '';
         $title = $data['title'];
         $detectedScript = $this->languageMapper->detectScript($title);
-        if (app()->getLocale() === 'sr' || app()->getLocale() === 'sr-Cyrl') {
-            if ($detectedScript === 'cyrillic') {
-                if ($title !== null) {
-                    $titleCy = $title;
-                    $titleLat = $this->languageMapper->cyrillic_to_latin($title);
-                    $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($title);
-                }
-                if ($plainTextForTranslation !== null) {
-                    $textCy = $plainTextForTranslation;
-                    $textLat = $this->translateWithHtmlPreserved($data['text'], 'sr-cyr', 'sr-lat');
-                    $textEn = $this->translateWithHtmlPreserved($data['text'], 'sr', 'en');
-                }
-            } else {
-                if ($title !== null) {
-                    $titleLat = $title;
-                    $titleCy = $this->languageMapper->latin_to_cyrillic($title);
-                    $titleEn = $this->translate->setSource('sr')->setTarget('en')->translate($title);
-                }
-                if ($plainTextForTranslation !== null) {
-                    $textLat = $plainTextForTranslation;
-                    $textEn = $this->translateWithHtmlPreserved($data['text'], 'sr', 'en');
-                    $textCy = $this->translateWithHtmlPreserved($data['text'], 'sr-lat', 'sr-cyr');
-                }
-            }
-            $content = $data;
-            $content['title'] = $titleLat;
-            $content['text'] = $textLat;
-            
-            $content_en = $data;
-            $content_en['title'] = $titleEn;
-            $content_en['text'] = $textEn;
-            
+        if ($detectedScript === 'cyrillic') {
             $content_cy = $data;
-            $content_cy['title'] = $titleCy;
-            $content_cy['text'] = $textCy;
-            
+            if ($title !== null) {
+                $content['title'] = $this->languageMapper->cyrillic_to_latin($title);
+                $content_en['title'] = $this->translate->setSource('sr-cyrl')->setTarget('en')->translate($title);
+            }
+            if ($plainTextForTranslation !== null) {
+                $content['text'] = $this->translateWithHtmlPreserved($data['text'], 'sr-cyr', 'sr-lat');
+                $content_en['text'] = $this->translateWithHtmlPreserved($data['text'], 'sr-cyrl', 'en');
+            }
+            if ($request->query('slug')) {
+                $page->update([
+                    'title'     => $page_titleLat,
+                    'title_cy'     => $page_titleCyr,
+                    'title_en'     => $page_titleEn,
+                    'content'   => $content,
+                    'content_en'   => $content_en,
+                    'content_cy'   => $content_cy,
+                ]);
+            }
+        } elseif (app()->getLocale() === 'sr') {
+            $content = $data;
+            if ($title !== null) {
+                $content_cy['title'] = $this->languageMapper->latin_to_cyrillic($title);
+                $content_en['title'] = $this->translate->setSource('sr')->setTarget('en')->translate($title);
+            }
+            if ($plainTextForTranslation !== null) {
+                $content_cy['text'] = $this->translateWithHtmlPreserved($data['text'], 'sr-lat', 'sr-cyr');
+                $content_en['text'] = $this->translateWithHtmlPreserved($data['text'], 'sr', 'en');
+            }
             if ($request->query('slug')) {
                 $page->update([
                     'title'     => $page_titleLat,
@@ -220,9 +231,25 @@ class PageController extends Controller
                     'title_en'     => $request->title,
                     'content_en'   => $content_en
                 ]);
+            } else {
+                $content_cy['title'] = $this->translate->setSource('en')->setTarget('sr-Cyrl')->translate($content_en['title']);
+                $content_cy['text'] = $this->translateWithHtmlPreserved($content_en['text'], 'en', 'sr-cyr');
+                $content['title'] = $this->translate->setSource('en')->setTarget('sr-lat')->translate($content_en['title']);
+                $content['text'] = $this->translateWithHtmlPreserved($content_en['text'], 'en', 'sr-lat');
+
+                if ($request->query('slug')) {
+                    $page->update([
+                        'title'     => $page_titleLat,
+                        'title_cy'     => $page_titleCyr,
+                        'title_en'     => $page_titleEn,
+                        'content'   => $content,
+                        'content_en'   => $content_en,
+                        'content_cy'   => $content_cy,
+                    ]);
+                }
             }
         }
-        
+
         $oldSlug = null;
         if ($request->query('slug')) {
             $page = Page::where('slug', $request->query('slug'))->firstOrFail();
@@ -422,7 +449,7 @@ class PageController extends Controller
                 'isDraft'        => true,
             ]);
         }
-        
+
         if (app()->getLocale() === 'en') {
             $viewData = [
                 'templateId'     => $page->template_id,

@@ -31,10 +31,10 @@
                 : (App::getLocale() === 'sr-Cyrl'
                     ? 'Унесите назив документа'
                     : 'Unesite naziv dokumenta') }}"
-                class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2"
-                style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
-            <div id="searchDropdown" class="absolute z-10 w-full rounded-lg mt-1 hidden"
-                style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);">
+                class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+                style="color: var(--primary-text); border-color: var(--secondary-text);">
+            <div id="searchDropdown" class="absolute z-10 w-full rounded-lg mt-1 hidden bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+                style="color: var(--secondary-text); border: 1px solid var(--secondary-text);">
                 <ul id="searchResults" class="max-h-40 overflow-y-auto"></ul>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 @default Sortiraj po:
                 @endswitch
             </label>
-            <select id="globalSort" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            <select id="globalSort" class="text-sm rounded-lg w-fit p-2.5 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                 style="color: var(--secondary-text); border: 1px solid var(--secondary-text); border-radius: 4px;">
                 <option value="title_asc">A-Z</option>
                 <option value="title_desc">Z-A</option>
@@ -153,8 +153,8 @@
                                             style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
                                             <ul class="py-2 text-sm" aria-labelledby="dropdownMenuIconButton">
                                                 <li>
-                                                    <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2"
-                                                        style="color: var(--primary-text); background: var(--primary-bg);">
+                                                    <button data-modal-target="renameModal" data-modal-toggle="renameModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
+                                                        style="color: var(--primary-text);">
                                                         {{ App::getLocale() === 'en'
                                                             ? 'Rename'
                                                             : (App::getLocale() === 'sr-Cyrl'
@@ -163,7 +163,7 @@
                                                     </button>
                                                 </li>
                                                 <li>
-                                                    <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 text-red-500">
+                                                    <button data-modal-target="deleteModal" data-modal-toggle="deleteModal" data-doc-id="{{ $doc->id }}" data-doc-title="{{ $doc->title }}" class="block w-full text-left px-4 py-2 text-red-500 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                                                         {{ App::getLocale() === 'en'
                                                             ? 'Delete'
                                                             : (App::getLocale() === 'sr-Cyrl'
@@ -190,14 +190,14 @@
                                         ? 'Постави нови документ'
                                         : 'Otpremite novi dokument') }}
                             </label>
-                            <input class="block w-full text-sm border rounded-lg cursor-pointer"
+                            <input class="block w-full text-sm border rounded-lg cursor-pointer  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                 aria-describedby="file_input_help-{{ $category->id }}"
                                 id="file_input-{{ $category->id }}"
                                 name="file"
                                 type="file"
                                 accept=".pdf,.doc,.docx,.xlsx,.xls"
                                 required
-                                style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+                                style=" color: var(--primary-text); border-color: var(--secondary-text);">
                             <p class="mt-1 text-sm"
                                 id="file_input_help-{{ $category->id }}"
                                 style="color: var(--secondary-text);">
@@ -210,8 +210,7 @@
                             <input type="hidden" name="category_id" value="{{ $category->id }}">
                             <input type="hidden" name="category_name" value="{{ $category->name }}">
                             <div class="flex items-center mt-2">
-                                <button type="submit" class="px-4 py-2 rounded-lg"
-                                    style="background: var(--accent); color: #fff;">
+                                <button type="submit" class="px-4 py-2 rounded-lg bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                     {{ App::getLocale() === 'en'
                                         ? 'Upload'
                                         : (App::getLocale() === 'sr-Cyrl'
@@ -239,22 +238,23 @@
         <!-- Delete Confirmation Modal -->
         <div id="deleteModal" class="fixed inset-0 hidden bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-sm p-6 relative">
-                <button onclick="toggleDeleteModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
-                <p class="mb-6 text-center text-gray-700 dark:text-gray-300">
+                <button data-modal-hide="deleteModal" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">&times;</button>
+                <p class="mb-6 text-center"
+                    style="color: var(--primary-text); font-family: var(--font-title)">
                     {{ App::getLocale() === 'en'
                                 ? 'Are you sure you want to delete?'
                                 : (App::getLocale() === 'sr-Cyrl'
                                     ? 'Да ли сте сигурни да желите да обришете'
                                     : 'Da li ste sigurni da želite da obrišete') }}
                 </p>
-
+                <p id="deleteModalTitle" class="mb-4 text-center font-semibold text-[var(--secondary-text)]" style="color: var(--secondary-text); font-family: var(--font-body)"></p>
                 <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
 
                     <div class="flex justify-center gap-4">
-                        <button type="button" onclick="toggleDeleteModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Cancel</button>
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Delete</button>
+                        <button type="button" data-modal-hide="deleteModal" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">Cancel</button>
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Delete</button>
                     </div>
                 </form>
             </div>
@@ -267,20 +267,19 @@
                     style="background: var(--primary-bg); color: var(--primary-text);">
                     <div class="p-6">
                         <h3 class="mb-5 text-lg font-normal"
-                            style="color: var(--secondary-text);">
+                            style="color: var(--primary-text);">
                             {{ App::getLocale() === 'en'
                                 ? 'Rename document'
                                 : (App::getLocale() === 'sr-Cyrl'
                                     ? 'Преименуј документ'
                                     : 'Preimenuj dokument') }}
                         </h3>
-                        <input type="text" id="renameInput" class="w-full p-2 border rounded-lg focus:outline-none"
+                        <input type="text" id="renameInput" class="w-full p-2 border rounded-lg focus:outline-none  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                             placeholder="{{ App::getLocale() === 'en' ? 'Enter new name' : (App::getLocale() === 'sr-Cyrl' ? 'Унесите нови назив' : 'Unesite novi naziv') }}"
-                            style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+                            style="border-color: var(--secondary-text);">
                         <div class="mt-4 text-center">
                             <button data-modal-hide="renameModal" id="confirmRenameButton" type="button"
-                                class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                style="background: var(--accent); color: #fff;">
+                                class="font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                 {{ App::getLocale() === 'en'
                                     ? 'Save'
                                     : (App::getLocale() === 'sr-Cyrl'
@@ -288,8 +287,7 @@
                                         : 'Sačuvaj') }}
                             </button>
                             <button data-modal-hide="renameModal" type="button"
-                                class="text-sm font-medium px-5 py-2.5 rounded-lg border"
-                                style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
+                                class="text-sm font-medium px-5 py-2.5 rounded-lg bg-gray-500 hover:bg-gray-600 text-white">
                                 {{ App::getLocale() === 'en'
                                     ? 'Cancel'
                                     : (App::getLocale() === 'sr-Cyrl'
@@ -331,7 +329,7 @@
 
                     matchingDocs.forEach(doc => {
                         const li = document.createElement('li');
-                        li.className = 'p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer';
+                        li.className = 'p-2 cursor-pointer bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]';
 
                         const link = doc.querySelector('a');
                         li.textContent = link ? link.textContent : 'Neimenovan dokument';

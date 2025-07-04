@@ -164,8 +164,7 @@
         </div>
 
         @auth
-        <button id="open-modal" type="button" class="ml-4 font-semibold py-2 px-4 rounded-lg shadow"
-                style="background: var(--accent); color: #fff;">
+        <button id="open-modal" type="button" class="ml-4 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
             @switch(App::getLocale())
             @case('en') Edit @break
             @case('sr-Cyrl') Уреди @break

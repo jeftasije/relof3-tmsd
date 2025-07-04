@@ -523,7 +523,7 @@
                                 </div>
                             </div>
                             <button id="font-save-btn"
-                                class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
+                                class="px-4 py-2 mb-10 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow w-full"
                                 disabled>
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
