@@ -127,7 +127,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                     </svg>
                                     <span class="text-xs text-gray-400">Dodaj slike</span>
-                                    <input type="file" class="hidden" multiple @change="onImageSelect" />
+                                    <input id="imageUpload" type="file" class="hidden" multiple @change="onImageSelect" />
                                 </label>
                             </div>
                         </div>
@@ -356,7 +356,14 @@
                     onImageSelect(e) {
                         const files = Array.from(e.target.files);
                         this.newImages = [...this.newImages, ...files];
+                        const fileInput = document.getElementById('imageUpload');
                         files.forEach(file => {
+                            const maxFileSize = 2 * 1024 * 1024;
+                            if (file && file.size > maxFileSize) {
+                                alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                                fileInput.value = '';
+                                return;
+                            }
                             const reader = new FileReader();
                             reader.onload = (ev) => {
                                 this.form.images.push(ev.target.result);
