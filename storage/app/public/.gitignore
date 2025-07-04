@@ -5,3 +5,7 @@
 !templates/
 !templates/*.png
 !homepageVisibility.json
+!procurements/
+!procurements/*.pdf
+!structures/
+!structures/*.pdf

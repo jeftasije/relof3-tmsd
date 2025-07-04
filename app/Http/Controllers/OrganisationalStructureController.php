@@ -54,7 +54,7 @@ class OrganisationalStructureController extends Controller
 
         try {
             $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = $file->getClientOriginalName();
             $filePath = $file->storeAs('structures', $fileName, 'public');
 
             $structure = OrganisationalStructure::create([
