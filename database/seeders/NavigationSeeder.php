@@ -13,8 +13,8 @@ class NavigationSeeder extends Seeder
             'name' => 'O nama',
             'name_en' => 'About us',
             'name_cy' => 'О нама',
-            'is_deletable' => false, 
-            'order'=>1,
+            'is_deletable' => false,
+            'order' => 1,
             'is_active' => 1
         ]);
         Navigation::create([
@@ -23,7 +23,7 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Вести',
             'is_deletable' => false,
             'redirect_url' => '/vesti',
-            'order'=>2,
+            'order' => 2,
             'is_active' => 1
         ]);
         $dokumenta = Navigation::create([
@@ -32,7 +32,7 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Документа',
             'is_deletable' => false,
             'redirect_url' => '/dokumenti',
-            'order'=>3,
+            'order' => 3,
             'is_active' => 1
         ]);
         Navigation::create([
@@ -41,7 +41,7 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Услуге',
             'is_deletable' => false,
             'redirect_url' => '/usluge',
-            'order'=>4,
+            'order' => 4,
             'is_active' => 1
         ]);
         Navigation::create([
@@ -50,7 +50,7 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Јавне набавке',
             'is_deletable' => false,
             'redirect_url' => '/nabavke',
-            'order'=>5,
+            'order' => 5,
             'is_active' => 1
         ]);
         Navigation::create([
@@ -59,7 +59,25 @@ class NavigationSeeder extends Seeder
             'name_cy' => 'Жалбе',
             'is_deletable' => false,
             'redirect_url' => '/zalbe',
-            'order'=>6,
+            'order' => 6,
+            'is_active' => 1
+        ]);
+        $kontakt = Navigation::create([
+            'name' => 'Kontakt',
+            'name_en' => 'Contact',
+            'name_cy' => 'Контакт',
+            'is_deletable' => false,
+            'redirect_url' => '/kontakt',
+            'order' => 7,
+            'is_active' => 1
+        ]);
+        $kontaktSub = Navigation::create([
+            'name' => 'Kontakt',
+            'name_en' => 'Contact',
+            'name_cy' => 'Контакт',
+            'is_deletable' => false,
+            'parent_id' => $kontakt->id,
+            'redirect_url' => '/kontakt',
             'is_active' => 1
         ]);
         Navigation::create([
@@ -67,11 +85,28 @@ class NavigationSeeder extends Seeder
             'name_en' => 'Contact',
             'name_cy' => 'Контакт',
             'is_deletable' => false,
+            'parent_id' => $kontaktSub->id,
             'redirect_url' => '/kontakt',
-            'order'=>7,
             'is_active' => 1
         ]);
-
+        Navigation::create([
+            'name' => 'Blog',
+            'name_en' => 'Blog',
+            'name_cy' => 'Блог',
+            'is_deletable' => false,
+            'parent_id' => $kontaktSub->id,
+            'redirect_url' => '/blog',
+            'is_active' => 1
+        ]);
+        Navigation::create([
+            'name' => 'Česta pitanja',
+            'name_en' => 'FAQ',
+            'name_cy' => 'Честа питања',
+            'is_deletable' => false,
+            'parent_id' => $kontaktSub->id,
+            'redirect_url' => '/pitanja',
+            'is_active' => 1
+        ]);
         $pravnaDokumentacija = Navigation::create([
             'name' => 'Poslovodstvo',
             'name_en' => 'Management',
@@ -171,13 +206,38 @@ class NavigationSeeder extends Seeder
             'redirect_url' => '/dokumenti?category=Procedura o izboru direktora',
             'is_active' => 1
         ]);
-
         $organizacija = Navigation::create([
             'name' => 'Organizacija',
             'name_en' => 'Organization',
             'name_cy' => 'Организација',
             'parent_id' => $oNama->id,
             'is_deletable' => false,
+            'is_active' => 1
+        ]);
+        $oBiblioteci = Navigation::create([
+            'name' => 'O bibioteci',
+            'name_en' => 'About library',
+            'name_cy' => 'О библотеци',
+            'parent_id' => $oNama->id,
+            'is_deletable' => false,
+            'is_active' => 1
+        ]);
+        Navigation::create([
+            'name' => 'Istorijat',
+            'name_en' => 'History',
+            'name_cy' => 'Историјат',
+            'parent_id' => $oBiblioteci->id,
+            'is_deletable' => false,
+            'redirect_url' => '/istorijat',
+            'is_active' => 1
+        ]);
+        Navigation::create([
+            'name' => 'Galerija',
+            'name_en' => 'Gallery',
+            'name_cy' => 'Галерија',
+            'parent_id' => $oBiblioteci->id,
+            'is_deletable' => false,
+            'redirect_url' => '/galerija',
             'is_active' => 1
         ]);
         Navigation::create([

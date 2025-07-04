@@ -38,35 +38,39 @@
 
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col items-center w-full mb-12 gap-2">
-                <div class="relative flex items-center justify-center w-full">
-                    <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl text-center"
-                        style="color: var(--primary-text); font-family: var(--font-title);">
-                        <template x-if="editing">
-                            <input type="text" x-model="form.title"
-                                class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
-                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
-                        </template>
-                        <span x-show="!editing" x-text="form.title"></span>
-                    </h1>
+                <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center"
+                    style="color: var(--primary-text); font-family: var(--font-title);">
+                    <template x-if="editing">
+                        <input type="text" x-model="form.title"
+                            class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
+                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                    </template>
+                    <span x-show="!editing" x-text="form.title"></span>
+                </h1>
+
+                <div class="flex flex-row items-center gap-3 justify-center w-full">
+                    <template x-if="editing">
+                        <input type="text" x-model="form.description"
+                            class="text-lg w-full max-w-xl border px-2 rounded text-center"
+                            style="background: var(--primary-bg); color: var(--primary-text);" />
+                    </template>
+                    <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
+                        style="color: var(--secondary-text);" x-text="form.description"></span>
                     @auth
-                    <div class="absolute right-0">
-                        <button id="help-btn" onclick="toggleHelpModal()"
-                            class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
-                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
-                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
-                            style="color: var(--primary-text);" aria-label="Pomoć">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                <path d="M12 17l0 .01" />
-                                <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                            </svg>
-                            <span class="ml-3 hidden sm:inline">
-                                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                            </span>
-                        </button>
-                    </div>
+                    <button id="help-btn" data-modal-target="helpModal" data-modal-toggle="helpModal"
+                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        style="color: var(--primary-text); margin-bottom: 0;" aria-label="Pomoć">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 17l0 .01" />
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                        </svg>
+                        <span class="ml-3 hidden sm:inline">
+                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                        </span>
+                    </button>
                     @endauth
                 </div>
                 <div class="flex flex-row items-center justify-center w-full">
@@ -83,7 +87,7 @@
 
             <div class="mb-8"></div>
             <div class="relative flex flex-col sm:flex-row sm:items-center mb-6 sm:justify-between">
-                <h2 class="text-2xl sm:text-3xl font-bold text-center w-full break-words" style="color: var(--primary-text);">
+                <p class="text-lg font-bold text-center w-full break-words" style="color: var(--primary-text);">
                     @switch(App::getLocale())
                     @case('en')
                     Every question, suggestion or criticism is welcome!
@@ -96,28 +100,27 @@
                     @default
                     Svako Vaše pitanje, sugestija ili kritika je dobrodošla!
                     @endswitch
-                </h2>
+                </p>
 
                 @auth
-                    <div class="ml-auto flex gap-2">
-                        <button x-show="!editing" @click="startEdit()"
-                            class="accent font-semibold py-2 px-4 rounded text-base" 
-                            style="width:100px; background: var(--accent); color: #fff;">
-                            {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
-                        </button>
-                        <template x-if="editing">
-                            <div class="flex gap-2">
-                                <button @click="saveEdit()"
-                                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded" style="background: var(--accent); color: #fff;">
-                                    {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                                </button>
-                                <button @click="cancelEdit()"
-                                    class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded" style="background: #cbd5e1; color: var(--primary-text);">
-                                    {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                                </button>
-                            </div>
-                        </template>
-                    </div>
+                <div class="ml-auto flex items-center relative">
+                    <button x-show="!editing" @click="startEdit()"
+                        class="py-2 px-4 rounded text-base bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
+                        {{ App::getLocale() === 'en' ? 'Edit' : (App::getLocale() === 'sr-Cyrl' ? 'Измени' : 'Izmeni') }}
+                    </button>
+                    <template x-if="editing" class="absolute right-0">
+                        <div class="flex gap-2">
+                            <button @click="saveEdit()"
+                                class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+                            </button>
+                            <button @click="cancelEdit()"
+                                class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded">
+                                {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+                            </button>
+                        </div>
+                    </template>
+                </div>
                 @endauth
             </div>
 
@@ -126,12 +129,12 @@
             <div class="mb-16">
                 <div>
                     @php
-                    $isEditor = auth()->check() && auth()->user()->isEditor();
+                    $isLogged = auth()->check();
                     @endphp
 
                     <form action="{{ route('complaints.store') }}" method="POST" id="complaintsForm"
-                        class="space-y-6 w-full max-w-3xl mx-auto {{ $isEditor ? 'opacity-50 pointer-events-none' : '' }}"
-                        {{ $isEditor ? 'onsubmit=return false;' : '' }}>
+                        class="space-y-6 w-full max-w-3xl mx-auto {{ $isLogged ? 'opacity-50 pointer-events-none' : '' }}"
+                        {{ $isLogged ? 'onsubmit=return false;' : '' }}>
                         @csrf
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -152,7 +155,7 @@
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="first_name" required value="{{ old('first_name') }}"
-                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                    class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                                 @error('first_name')
                                 <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -174,7 +177,7 @@
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="last_name" required value="{{ old('last_name') }}"
-                                    class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                    class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                                 @error('last_name')
                                 <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
@@ -198,7 +201,7 @@
                             </label>
                             <input type="tel" name="phone" pattern="\d*" inputmode="numeric" maxlength="20"
                                 value="{{ old('phone') }}"
-                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                             @error('phone')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
@@ -221,7 +224,7 @@
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="email" name="email" required value="{{ old('email') }}"
-                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                             @error('email')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
@@ -243,7 +246,7 @@
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="subject" required value="{{ old('subject') }}"
-                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">
+                                class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
                             @error('subject')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
@@ -265,15 +268,16 @@
                                 <span class="text-red-500">*</span>
                             </label>
                             <textarea name="message" required rows="6"
-                                class="shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200 block w-full p-2.5">{{ old('message') }}</textarea>
+                                class="shadow-sm border text-sm rounded-lg focus:border-grey-200 block w-full p-2.5 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
+                            {{ old('message') }}
+                            </textarea>
                             @error('message')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="text-center">
                             <button id="openSubmitModal" type="button"
-                                class="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center"
-                                style="background: var(--accent); color: #fff;">
+                                class="font-medium rounded-lg text-base px-5 py-2.5 text-center bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                 @switch(App::getLocale())
                                 @case('en')
                                 Send complaint
@@ -294,7 +298,7 @@
                             <div class="relative w-full max-w-md max-h-full">
                                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                     <div class="p-6 text-center">
-                                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                        <h3 class="mb-5 text-lg font-normal color-[var(--primary-text)]">
                                             @switch(App::getLocale())
                                             @case('en')
                                             Are you sure you want to send the complaint?
@@ -309,8 +313,7 @@
                                             @endswitch
                                         </h3>
                                         <button id="confirmSubmitBtn2" type="button"
-                                            class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
-                                            style="background: var(--accent); color: #fff;">
+                                            class="focus:ring-4 focus:outline-none font-medium rounded text-sm px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                             @switch(App::getLocale())
                                             @case('en')
                                             Send
@@ -325,8 +328,8 @@
                                             @endswitch
                                         </button>
                                         <button data-modal-hide="submitModal2" type="button"
-                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                            style="background: #cbd5e1; color: var(--primary-text);">
+                                            class="hover:bg-gray-600 bg-slate-500 focus:ring-4 focus:outline-non rounded text-sm font-medium px-5 py-2.5"
+                                            style="color: var(--primary-text);">
                                             @switch(App::getLocale())
                                             @case('en')
                                             Cancel
@@ -358,7 +361,7 @@
             </div>
         </div>
 
-        <div class="text-center my-5">
+        <div class="text-center my-5 hover:underline">
             <a href="{{ asset('storage/documents/UPUTSTVO%20ZA%20ZALBE.pdf') }}" target="_blank"
                 style="color: var(--accent);">
                 @switch(App::getLocale())
@@ -379,7 +382,7 @@
 
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
         <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
-            <button onclick="toggleHelpModal()"
+            <button data-modal-hide="helpModal"
                 class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
             </button>
@@ -486,10 +489,6 @@
             }
         }
 
-        function toggleHelpModal() {
-            const modal = document.getElementById('helpModal');
-            modal.classList.toggle('hidden');
-        }
         document.addEventListener('DOMContentLoaded', function() {
             const submitModal2 = document.getElementById('submitModal2');
             const confirmComplaintSubmitBtn = document.getElementById('confirmSubmitBtn2');

@@ -8,48 +8,49 @@
             @endswitch
         </h2>
     </x-slot>
-    @if(session('success'))
-    <div
-        x-data="{ show: true }"
-        x-show="show"
-        x-transition
-        x-init="setTimeout(() => show = false, 4000)"
-        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
-        {{ __('contact.' . session('success')) }}
-    </div>
-    @endif
-    @auth
-    <div class="py-12 bg-gray-100 dark:bg-gray-900">
+
+    <div class="py-12 bg-gray-100 dark:bg-gray-900 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="flex items-center justify-center relative mb-6 mt-8">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full sm:mb-4 md:mb-6"
-                    style="color: var(--primary-text); font-family: var(--font-title);">
-                    @switch(App::getLocale())
-                    @case('en') Contacting overview @break
-                    @case('sr-Cyrl') Преглед контактирања @break
-                    @default Pregled kontaktiranja
-                    @endswitch
-                </h2>
-                <div class="flex justify-end">
-                    <button
-                        id="help-btn"
-                        onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
-                        style="top: 35%; transform: translateY(-50%)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M12 17l0 .01" />
-                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                        </svg>
-                        <span class="ml-3">
-                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                        </span>
-                    </button>
-                </div>
+
+            @if(session('success'))
+            <div
+                x-data="{ show: true }"
+                x-show="show"
+                x-transition
+                @click="show = false"
+                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
+                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
+                x-init="setTimeout(() => show = false, 4000)">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            <div class="flex justify-end">
+                <button
+                    id="help-btn"
+                    onclick="toggleHelpModal()"
+                    class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 17l0 .01" />
+                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                    </svg>
+                    <span class="ml-3">
+                        {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                    </span>
+                </button>
             </div>
 
-            <p class="mb-6 font-light text-center text-gray-600 dark:text-gray-300 sm:text-lg max-w-3xl mx-auto" style="color: var(--secondary-text); font-family: var(--font-body);">
+            <h2 class="text-4xl font-bold text-gray-800 dark:text-white text-center mb-2 mt-8">
+                @switch(App::getLocale())
+                @case('en') Contacting overview @break
+                @case('sr-Cyrl') Преглед контактирања @break
+                @default Pregled kontaktiranja
+                @endswitch
+            </h2>
+
+            <p class="mb-6 font-light text-center text-gray-600 dark:text-gray-300 sm:text-lg max-w-3xl mx-auto">
                 @switch(App::getLocale())
                 @case('en')
                 View and manage all user contacts, questions, and requests in one place. Respond promptly to provide the best support.
@@ -111,16 +112,14 @@
                         </select>
                     </div>
                     <div class="flex items-end space-x-2">
-                        <button type="submit" class="bg-blue-600 text-white py-4 mt-2 mb-2 rounded hover:bg-blue-700 w-full text-lg"
-                            style="background: var(--accent); color: #fff;">
+                        <button type="submit" class="bg-blue-600 text-white py-4 mt-2 mb-2 rounded hover:bg-blue-700 w-full text-lg">
                             @switch(App::getLocale())
                             @case('en') Filter @break
                             @case('sr-Cyrl') Филтрирај @break
                             @default Filtriraj
                             @endswitch
                         </button>
-                        <a href="{{ route('contact.answerPage') }}" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center"
-                            style="background: #cbd5e1; color: var(--primary-text);">
+                        <a href="{{ route('contact.answerPage') }}" class="bg-gray-400 text-white py-4 mt-2 mb-2 text-lg rounded hover:bg-gray-500 w-full text-center">
                             @switch(App::getLocale())
                             @case('en') Reset @break
                             @case('sr-Cyrl') Ресетуј @break
@@ -165,14 +164,14 @@
                         @case('sr-Cyrl') Мејл адреса: @break
                         @default Mejl adresa:
                         @endswitch
-                    </strong> {{ $contact->email ?? '-' }}</p>
+                    </strong> {{ $contact->email ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
                 <p><strong>
                         @switch(App::getLocale())
                         @case('en') Phone: @break
                         @case('sr-Cyrl') Телефон: @break
                         @default Telefon:
                         @endswitch
-                    </strong> {{ $contact->phone ?? '-' }}</p>
+                    </strong> {{ $contact->phone ?? (App::getLocale() === 'en' ? 'Not entered' : (App::getLocale() === 'sr-Cyrl' ? 'Није унет' : 'Nije unet')) }}</p>
                 <p><strong>
                         @switch(App::getLocale())
                         @case('en') Message: @break
@@ -238,8 +237,7 @@
                                     @default Otkaži
                                     @endswitch
                                 </button>
-                                <button type="button" class="sendAnswerBtn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-contact-id="{{ $contact->id }}"
-                                    style="background: var(--accent); color: #fff;">
+                                <button type="button" class="sendAnswerBtn bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-contact-id="{{ $contact->id }}">
                                     @switch(App::getLocale())
                                     @case('en') Send answer @break
                                     @case('sr-Cyrl') Пошаљи одговор @break
@@ -259,16 +257,14 @@
                                     @endswitch
                                 </h3>
                                 <div class="flex justify-center gap-4">
-                                    <button type="button" class="confirmSendBtn text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5"
-                                        style="background: var(--accent); color: #fff;">
+                                    <button type="button" class="confirmSendBtn text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5">
                                         @switch(App::getLocale())
                                         @case('en') Send @break
                                         @case('sr-Cyrl') Пошаљи @break
                                         @default Pošalji
                                         @endswitch
                                     </button>
-                                    <button type="button" data-modal-hide="submitAnswerModal-{{ $contact->id }}" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 cancelBtn"
-                                        style="background: #cbd5e1; color: var(--primary-text);">
+                                    <button type="button" data-modal-hide="submitAnswerModal-{{ $contact->id }}" class="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 cancelBtn">
                                         @switch(App::getLocale())
                                         @case('en') Cancel @break
                                         @case('sr-Cyrl') Откажи @break
@@ -327,7 +323,6 @@
             </div>
         </div>
     </div>
-    @endauth
 
     <div
         id="helpModal"

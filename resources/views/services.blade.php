@@ -19,7 +19,6 @@
                     <div class="w-full absolute right-0 top-0 flex flex-col items-end"
                         style="height: 90px; min-width:220px; max-width: 240px;">
                         <!-- HELP dugme -->
-                        <!-- HELP dugme -->
                         <button @click="$store.modals.openHelp()"
                             class="flex items-center gap-2 mb-2 px-2 py-1 text-base font-medium transition duration-150 ease-in-out
                                 rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
@@ -129,7 +128,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                     </svg>
                                     <span class="text-xs text-gray-400">Dodaj slike</span>
-                                    <input type="file" class="hidden" multiple @change="onImageSelect" />
+                                    <input id="imageUpload" type="file" class="hidden" multiple @change="onImageSelect" />
                                 </label>
                             </div>
                         </div>
@@ -358,7 +357,14 @@
                     onImageSelect(e) {
                         const files = Array.from(e.target.files);
                         this.newImages = [...this.newImages, ...files];
+                        const fileInput = document.getElementById('imageUpload');
                         files.forEach(file => {
+                            const maxFileSize = 2 * 1024 * 1024;
+                            if (file && file.size > maxFileSize) {
+                                alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                                fileInput.value = '';
+                                return;
+                            }
                             const reader = new FileReader();
                             reader.onload = (ev) => {
                                 this.form.images.push(ev.target.result);

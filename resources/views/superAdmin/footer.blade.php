@@ -83,7 +83,9 @@
                                 data-preview-target="name"
                                 data-lang="sr"
                             >{{ app()->getLocale() === 'sr-Cyrl' ? $libraryDataSrCyr['name'] : $libraryDataSr['name'] }}</textarea>
-                            @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('name') <span id="error-name" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('name')) <span id="error-name" class="text-red-500 text-sm"></span> @endunless
+
                         </div>
 
                         <div class="mb-4">
@@ -98,7 +100,8 @@
                                 data-preview-target="address"
                                 data-lang="sr"
                             >{{ old('address', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['address'] ?? '') : ($libraryDataSr['address'] ?? '') ) }}</textarea>
-                            @error('address') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('address') <span id="error-address" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('address')) <span id="error-address" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -114,7 +117,8 @@
                                 data-preview-target="pib"
                                 data-lang="sr"
                             >
-                            @error('pib') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('pib') <span id="error-pib" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('pib')) <span id="error-pib" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -130,7 +134,20 @@
                                 data-preview-target="logo_light"
                                 data-lang="sr"
                             >
-                            @error('logo_light') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            <p>
+                                @switch(App::getLocale())
+                                @case('en')
+                                Your file can be up to 2 MB.
+                                @break
+                                @case('sr-Cyrl')
+                                Ваш фајл може бити до 2 МБ.
+                                @break
+                                @default
+                                Vaš fajl može biti do 2 MB.
+                                @endswitch
+                            </p>
+                            @error('logo_light') <span id="error-logo_light" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('logo_light')) <span id="error-logo_light" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -146,7 +163,20 @@
                                 data-preview-target="logo_dark"
                                 data-lang="sr"
                             >
-                            @error('logo_dark') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            <p>
+                                @switch(App::getLocale())
+                                @case('en')
+                                Your file can be up to 2 MB.
+                                @break
+                                @case('sr-Cyrl')
+                                Ваш фајл може бити до 2 МБ.
+                                @break
+                                @default
+                                Vaš fajl može biti do 2 MB.
+                                @endswitch
+                            </p>
+                            @error('logo_dark') <span id="error-logo_dark" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('logo_dark')) <span id="error-logo_dark" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -168,7 +198,8 @@
                                 data-preview-target="phone"
                                 data-lang="sr"
                             >
-                            @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('phone') <span id="error-phone" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('phone')) <span id="error-phone" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -184,7 +215,8 @@
                                 data-preview-target="email"
                                 data-lang="sr"
                             >
-                            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('email') <span id="error-email" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('email')) <span id="error-email" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -200,7 +232,8 @@
                                 data-preview-target="facebook"
                                 data-lang="sr"
                             >
-                            @error('facebook') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('facebook') <span id="error-facebook" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('facebook')) <span id="error-facebook" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -216,7 +249,8 @@
                                 data-preview-target="twitter"
                                 data-lang="sr"
                             >
-                            @error('twitter') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('twitter') <span id="error-twitter" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('twitter')) <span id="error-twitter" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -244,7 +278,8 @@
                                     )
                             ) }}
                             </textarea>
-                            @error('work_hours') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('work_hours') <span id="error-work_hours" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('work_hours')) <span id="error-work_hours" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -266,7 +301,8 @@
                                 data-preview-target="map_embed"
                                 data-lang="sr"
                             >
-                            @error('map_embed') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('map_embed') <span id="error-map_embed" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('map_embed')) <span id="error-map_embed" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -281,7 +317,8 @@
                                 data-preview-target="copyrights"
                                 data-lang="sr"
                             >{{ old('phone', app()->getLocale() === 'sr-Cyrl' ? ($libraryDataSrCyr['copyrights'] ?? '') : ($libraryDataSr['copyrights'] ?? '') ) }}</textarea>
-                            @error('copyrights') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('copyrights') <span id="error-copyrights" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('copyrights')) <span id="error-copyrights" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
                 </div>
@@ -323,7 +360,8 @@
                                 data-preview-target="name"
                                 data-lang="en"
                             >{{ old('name_en', $libraryDataEn['name'] ?? '') }}</textarea>
-                            @error('name_en') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('name_en') <span id="error-name_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('name_en')) <span id="error-name_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -338,7 +376,8 @@
                                 data-preview-target="address"
                                 data-lang="en"
                             >{{ old('address_en', $libraryDataEn['address'] ?? '') }}</textarea>
-                            @error('address_en') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('address_en') <span id="error-address_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('address_en')) <span id="error-address_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -354,7 +393,8 @@
                                 data-preview-target="pib"
                                 data-lang="en"
                             >
-                            @error('pib') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('pib') <span id="error-pib_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('pib')) <span id="error-pib_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -370,7 +410,20 @@
                                 data-preview-target="logo_light"
                                 data-lang="en"
                             >
-                            @error('logo_light') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            <p>
+                                @switch(App::getLocale())
+                                @case('en')
+                                Your file can be up to 2 MB.
+                                @break
+                                @case('sr-Cyrl')
+                                Ваш фајл може бити до 2 МБ.
+                                @break
+                                @default
+                                Vaš fajl može biti do 2 MB.
+                                @endswitch
+                            </p>
+                            @error('logo_light') <span id="error-logo_light_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('logo_light')) <span id="error-logo_light_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -386,7 +439,20 @@
                                 data-preview-target="logo_dark"
                                 data-lang="en"
                             >
-                            @error('logo_dark') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            <p>
+                                @switch(App::getLocale())
+                                @case('en')
+                                Your file can be up to 2 MB.
+                                @break
+                                @case('sr-Cyrl')
+                                Ваш фајл може бити до 2 МБ.
+                                @break
+                                @default
+                                Vaš fajl može biti do 2 MB.
+                                @endswitch
+                            </p>
+                            @error('logo_dark') <span id="error-logo_dark_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('logo_dark')) <span id="error-logo_dark_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -408,7 +474,8 @@
                                 data-preview-target="phone"
                                 data-lang="en"
                             >
-                            @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('phone') <span id="error-phone_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('phone')) <span id="error-phone_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -424,7 +491,8 @@
                                 data-preview-target="email"
                                 data-lang="en"
                             >
-                            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('email') <span id="error-email_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('email')) <span id="error-email_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -440,9 +508,9 @@
                                 data-preview-target="facebook"
                                 data-lang="en"
                             >
-                            @error('facebook') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('facebook') <span id="error-facebook_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('facebook')) <span id="error-facebook_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
-
                         <div class="mb-4">
                             <label for="twitter_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ App::getLocale() === 'en' ? 'Twitter URL' : (App::getLocale() === 'sr-Cyrl' ? 'Twitter URL' : 'Twitter URL') }}
@@ -456,7 +524,8 @@
                                 data-preview-target="twitter"
                                 data-lang="en"
                             >
-                            @error('twitter') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('twitter') <span id="error-twitter_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('twitter')) <span id="error-twitter_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -477,7 +546,8 @@
                                 data-preview-target="work_hours"
                                 data-lang="en"
                             >{{ old('work_hours_en', implode("\n", $libraryDataEn['work_hours_formatted'] ?? [])) }}</textarea>
-                            @error('work_hours_en') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('work_hours_en') <span id="error-work_hours_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('work_hours_en')) <span id="error-work_hours_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
 
@@ -499,7 +569,8 @@
                                 data-preview-target="map_embed"
                                 data-lang="en"
                             >
-                            @error('map_embed') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('map_embed') <span id="error-map_embed_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('map_embed')) <span id="error-map_embed_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
 
                         <div class="mb-4">
@@ -514,7 +585,8 @@
                                 data-preview-target="copyrights"
                                 data-lang="en"
                             >{{ old('copyrights_en', $libraryDataEn['copyrights'] ?? '') }}</textarea>
-                            @error('copyrights_en') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @error('copyrights_en') <span id="error-copyrights_en" class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            @unless($errors->has('copyrights_en')) <span id="error-copyrights_en" class="text-red-500 text-sm"></span> @endunless
                         </div>
                     </div>
                 </div>
@@ -791,7 +863,42 @@
                                 document.getElementById('preview-logo_dark').src = srData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
-                            console.error('Error:', data.message);
+                            if (data.errors.name) {
+                                document.getElementById('error-name').innerText = data.errors.name[0];
+                            }
+                            if (data.errors.address) {
+                                document.getElementById('error-address').innerText = data.errors.address[0];
+                            }
+                            if (data.errors.pib) {
+                                document.getElementById('error-pib').innerText = data.errors.pib[0];
+                            }
+                            if (data.errors.phone) {
+                                document.getElementById('error-phone').innerText = data.errors.phone[0];
+                            }
+                            if (data.errors.email) {
+                                document.getElementById('error-email').innerText = data.errors.email[0];
+                            }
+                            if (data.errors.facebook) {
+                                document.getElementById('error-facebook').innerText = data.errors.facebook[0];
+                            }
+                            if (data.errors.twitter) {
+                                document.getElementById('error-twitter').innerText = data.errors.twitter[0];
+                            }
+                            if (data.errors.work_hours) {
+                                document.getElementById('error-work_hours').innerText = data.errors.work_hours[0];
+                            }
+                            if (data.errors.map_embed) {
+                                document.getElementById('error-map_embed').innerText = data.errors.map_embed[0];
+                            }
+                            if (data.errors.copyrights) {
+                                document.getElementById('error-copyrights').innerText = data.errors.copyrights[0];
+                            }
+                            if (data.errors.logo_light) {
+                                document.getElementById('error-logo_light').innerText = data.errors.logo_light[0];
+                            }
+                            if (data.errors.logo_dark) {
+                                document.getElementById('error-logo_dark').innerText = data.errors.logo_dark[0];
+                            }
                         }
                     })
                     .catch(error => console.error('Error:', error));
@@ -830,7 +937,42 @@
                                 document.getElementById('preview-logo_dark').src = enData.logo_dark || `{{ asset('images/nbnp-logo-dark.png') }}`;
                             }
                         } else {
-                            console.error('Error:', data.message);
+                            if (data.errors.name_en) {
+                                document.getElementById('error-name_en').innerText = data.errors.name_en[0];
+                            }
+                            if (data.errors.address_en) {
+                                document.getElementById('error-address_en').innerText = data.errors.address_en[0];
+                            }
+                            if (data.errors.copyrights_en) {
+                                document.getElementById('error-copyrights_en').innerText = data.errors.copyrights_en[0];
+                            }
+                            if (data.errors.work_hours_en) {
+                                document.getElementById('error-work_hours_en').innerText = data.errors.work_hours_en[0];
+                            }
+                            if (data.errors.pib) {
+                                document.getElementById('error-pib_en').innerText = data.errors.pib[0];
+                            }
+                            if (data.errors.phone) {
+                                document.getElementById('error-phone_en').innerText = data.errors.phone[0];
+                            }
+                            if (data.errors.email) {
+                                document.getElementById('error-email_en').innerText = data.errors.email[0];
+                            }
+                            if (data.errors.facebook) {
+                                document.getElementById('error-facebook_en').innerText = data.errors.facebook[0];
+                            }
+                            if (data.errors.twitter) {
+                                document.getElementById('error-twitter_en').innerText = data.errors.twitter[0];
+                            }
+                            if (data.errors.map_embed) {
+                                document.getElementById('error-map_embed_en').innerText = data.errors.map_embed[0];
+                            }
+                            if (data.errors.logo_light) {
+                                document.getElementById('error-logo_light_en').innerText = data.errors.logo_light[0];
+                            }
+                            if (data.errors.logo_dark) {
+                                document.getElementById('error-logo_dark_en').innerText = data.errors.logo_dark[0];
+                            }
                         }
                     })
                     .catch(error => console.error('Error:', error));
@@ -839,6 +981,55 @@
                 updateModal.addEventListener('click', (event) => {
                     if (event.target === updateModal) {
                         hideModal();
+                    }
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const form_sr = document.getElementById('serbian-form');
+                const form_en = document.getElementById('english-form');
+                const fileInputLogoLightSr = document.getElementById('logo_light');
+                const fileInputLogoDarkSr = document.getElementById('logo_dark');
+                const fileInputLogoLightEn = document.getElementById('logo_light_en');
+                const fileInputLogoDarkEn = document.getElementById('logo_dark_en');
+
+                const maxFileSize = 2 * 1024 * 1024; // 2MB
+
+                form_sr.addEventListener('submit', (e) => {
+                    const file_light = fileInputLogoLightSr.files[0];
+                    const file_dark = fileInputLogoDarkSr.files[0];
+
+                    if (file_light && file_light.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInputLogoLightSr.value = '';
+                        return;
+                    }
+
+                    if (file_dark && file_dark.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInputLogoDarkSr.value = '';
+                        return;
+                    }
+                });
+
+                form_en.addEventListener('submit', (e) => {
+                    const file_light = fileInputLogoLightEn.files[0];
+                    const file_dark = fileInputLogoDarkEn.files[0];
+
+                    if (file_light && file_light.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInputLogoLightEn.value = '';
+                        return;
+                    }
+
+                    if (file_dark && file_dark.size > maxFileSize) {
+                        e.preventDefault();
+                        alert("{{ App::getLocale() === 'en' ? 'Your file exceeds the 2MB limit.' : (App::getLocale() === 'sr-Cyrl' ? 'Ваш фајл прелази дозвољену величину од 2МБ.' : 'Vaš fajl prelazi dozvoljenu veličinu od 2MB.') }}");
+                        fileInputLogoDarkEn.value = '';
+                        return;
                     }
                 });
             });
