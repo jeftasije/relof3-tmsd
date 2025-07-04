@@ -155,17 +155,17 @@
                     </div>
 
                     <div class="px-4 py-2 sm:px-6 sm:py-4">
-                        <a href="{{ route('news.index') }}"
-                            class="inline-flex items-center px-6 py-3 text-base font-semibold rounded-xl transition-all duration-300 ease-in-out
-                             bg-blue-600 hover:bg-[color-mix(in_srgb,_#2563eb_80%,_black_20%)] text-white shadow-lg">
-                            {{ $locale === 'en' ? 'Back to news' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
-                            <svg class="rtl:rotate-180 w-5 h-5 ms-2 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M13 5H1m0 0l4-4m-4 4l4 4" />
-                            </svg>
-                        </a>
+<a href="{{ route('news.index') }}"
+    class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition
+        bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+    {{ $locale === 'en' ? 'Back to News' : ($locale === 'sr-Cyrl' ? 'Назад на вести' : 'Nazad na vesti') }}
+    <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 5H1m0 0l4-4m-4 4l4 4" />
+    </svg>
+</a>
+
                     </div>
                 </div>
             </div>
