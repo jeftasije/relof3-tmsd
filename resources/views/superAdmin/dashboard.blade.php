@@ -162,7 +162,6 @@
                         <li class="text-sm text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'Complaint filed by Jovan M.' : (App::getLocale() === 'sr-Cyrl' ? 'Жалба поднета од стране Јована М.' : 'Žalba podneta od strane Jovana M.') }} <span class="text-gray-500 dark:text-gray-400 text-xs">{{ App::getLocale() === 'en' ? '(3 days ago)' : (App::getLocale() === 'sr-Cyrl' ? '(пре 3 дана)' : '(pre 3 dana)') }}</span></li>
                         <li class="text-sm text-gray-700 dark:text-gray-300">{{ App::getLocale() === 'en' ? 'New user registered: Marko R.' : (App::getLocale() === 'sr-Cyrl' ? 'Нови корисник регистрован: Марко Р.' : 'Novi korisnik registrovan: Marko R.') }} <span class="text-gray-500 dark:text-gray-400 text-xs">{{ App::getLocale() === 'en' ? '(4 days ago)' : (App::getLocale() === 'sr-Cyrl' ? '(пре 4 дана)' : '(pre 4 dana)') }}</span></li>
                     </ul>
-                    <a href="#" class="text-blue-400 text-primary text-sm font-medium hover:underline mt-4 inline-block">{{ App::getLocale() === 'en' ? 'View All' : (App::getLocale() === 'sr-Cyrl' ? 'Погледај све' : 'Pogledaj sve') }}</a>
                 </section>
             </div>
 

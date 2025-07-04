@@ -22,11 +22,6 @@ class ReminderController extends Controller
         $this->languageMapper = $languageMapper;
     }
 
-    private function detectLang($text): string
-    {
-        return $this->translate->detect($text);
-    }
-
     public function index(Request $request) {
         $search = $request->input('search');
         $sort = $request->input('sort', 'asc'); 

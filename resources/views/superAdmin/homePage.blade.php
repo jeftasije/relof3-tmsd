@@ -618,7 +618,7 @@
         <div
             x-show="helpOpen"
             x-transition
-            class="fixed inset-0 flex items-center justify-center z-50"
+            class="fixed inset-0 flex items-center justify-center z-50 text-center"
             style="background:rgba(0,0,0,0.5);"
             @click.self="helpOpen = false">
             <div
@@ -639,8 +639,8 @@
                 </button>
                 <div class="flex flex-col flex-1 px-4 py-3 overflow-hidden h-full">
 
-                    <div class="flex flex-col items-center justify-start" style="height: 48%;">
-                        <h3 class="text-lg font-bold text-center mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                    <div class="flex flex-col items-center" style="height: 48%;">
+                        <h3 class="text-lg font-bold text-center mb-2">
                             {{ App::getLocale() === 'en' ? 'How to use homepage edit' : (App::getLocale() === 'sr-Cyrl' ? 'Како користити уређивање почетне странице' : 'Kako koristiti uređivanje početne stranice') }}
                         </h3>
                         <div class="flex items-center justify-center w-full" style="min-height: 170px;">
@@ -724,7 +724,7 @@
                         <!-- Slide 2 -->
                         <template x-if="slide === 2">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                <h4 class="font-semibold mb-2">
                                     {{ App::getLocale() === 'en' ? 'Changing section data' : (App::getLocale() === 'sr-Cyrl' ? 'Промена података секције' : 'Promena podataka sekcije') }}
                                 </h4>
                                 <p class="text-gray-700 dark:text-gray-300 space-y-2">
@@ -750,7 +750,7 @@
                         <!-- Slide 3 -->
                         <template x-if="slide === 3">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                <h4 class="font-semibold mb-2">
                                     {{ App::getLocale() === 'en' ? 'Adding new section' : (App::getLocale() === 'sr-Cyrl' ? 'Додавање нове секције' : 'Dodavanje nove sekcije') }}
                                 </h4>
                                 <p class="text-gray-700 dark:text-gray-300 space-y-2">
@@ -773,7 +773,7 @@
                         <!-- Slide 4 -->
                         <template x-if="slide === 4">
                             <div>
-                                <h4 class="font-semibold mb-2" style="color: var(--primary-text); font-family: var(--font-title);">
+                                <h4 class="font-semibold mb-2">
                                     {{ App::getLocale() === 'en' ? 'Reordering sections' : (App::getLocale() === 'sr-Cyrl' ? 'Промена редоследа секција' : 'Promena redosleda sekcija') }}
                                 </h4>
                                 <p class="text-gray-700 dark:text-gray-300 space-y-2">
