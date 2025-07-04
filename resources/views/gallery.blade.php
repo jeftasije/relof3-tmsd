@@ -23,7 +23,7 @@
             <div class="flex justify-end mb-2">
                 <button
                     id="help-btn"
-                    onclick="toggleHelpModal()"
+                    data-modal-target="helpModal" data-modal-toggle="helpModal"
                     class="flex items-center text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group absolute right-0"
                     style="top: 35%; transform: translateY(-50%)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,8 +43,7 @@
         @auth
         <div class="text-right mb-6">
             <button id="editBtn"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded text-base"
-                style="background: var(--accent); color: #fff;"
+                class="py-2 px-4 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]"
                 type="button">
                 @switch(App::getLocale())
                 @case('en') Edit @break
@@ -66,11 +65,11 @@
                 </div>
 
                 <textarea name="value" id="valueEdit" rows="15" style="text-align: center;"
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('gallery.description')) }}</textarea>
+                    class="w-full p-4 border rounded shadow-sm focus:ring focus:outline-none hidden  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">{{ old('value', __('gallery.description')) }}</textarea>
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelBtn"
-                        class="bg-gray-400 hover:bg-gray-500 text-white  py-2 px-4 rounded"
+                        class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded"
                         style="background: #cbd5e1; color: var(--primary-text);">
                         @switch(App::getLocale())
                         @case('en') Cancel @break
@@ -80,8 +79,7 @@
                     </button>
 
                     <button type="button" id="saveBtn" data-modal-target="submitModal" data-modal-toggle="submitModal"
-                        class="bg-blue-600 hover:bg-blue-700 text-white  py-2 px-4 rounded"
-                        style="background: var(--accent); color: #fff;">
+                        class="py-2 px-4 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                         @switch(App::getLocale())
                         @case('en') Save changes @break
                         @case('sr-Cyrl') Сачувај промене @break
@@ -110,8 +108,7 @@
                                     @endswitch
                                 </h3>
                                 <button id="confirmSubmitBtn" type="button"
-                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
-                                    style="background: var(--accent); color: #fff;">
+                                    class="focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                     @switch(App::getLocale())
                                     @case('en') Save @break
                                     @case('sr-Cyrl') Сачувај @break
@@ -119,8 +116,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal" type="button"
-                                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                                    style="background: #cbd5e1; color: var(--primary-text);">
+                                    class="bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none rounded text-sm font-medium px-5 py-2.5 focus:z-10">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
@@ -179,23 +175,21 @@
                     @endswitch
                 </div>
                 <button type="reset"
-                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                    style="background: #cbd5e1; color: var(--primary-text);">
+                    class="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600">
                     @switch(App::getLocale())
                     @case('en') Cancel @break
                     @case('sr-Cyrl') Откажи @break
                     @default Otkaži
                     @endswitch
-                    </buttonS>
-                    <button type="submit" id="add-button"
-                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                        style="background: var(--accent); color: #fff;">
-                        @switch(App::getLocale())
-                        @case('en') Add @break
-                        @case('sr-Cyrl') Додај @break
-                        @default Dodaj
-                        @endswitch
-                    </button>
+                </button>
+                <button type="submit" id="add-button"
+                    class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
+                    @switch(App::getLocale())
+                    @case('en') Add @break
+                    @case('sr-Cyrl') Додај @break
+                    @default Dodaj
+                    @endswitch
+                </button>
             </div>
         </form>
         @if(session('error'))
@@ -217,7 +211,8 @@
     </div>
     @endauth
 
-    <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-white">
+    <h2 class="text-2xl font-bold text-center mb-4"
+        style="color: var(--secondary-text); font-family: var(--font-body);">
         @switch(App::getLocale())
         @case('en') Photo gallery @break
         @case('sr-Cyrl') Фото галерија @break
@@ -228,12 +223,18 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-7xl mx-auto mb-12">
         @foreach ($images as $image)
         <div class="relative group">
-            <img src="{{ asset('storage/' . $image->path) }}" class="rounded-lg w-full h-48 object-cover" alt="Image" />
+            <img src="{{ asset('storage/' . $image->path) }}" class="rounded-lg w-full h-48 object-cover transition duration-300 hover:-translate-y-1 hover:scale-105" alt="Image" />
             @auth
             <form method="POST" action="{{ route('gallery.destroy', $image->id) }}" class="absolute top-2 right-2 hidden group-hover:block delete-form">
                 @csrf
                 @method('DELETE')
-                <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">🗑</button>
+                <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M18 6l-12 12" />
+                        <path d="M6 6l12 12" />
+                    </svg>
+                </button>
             </form>
             @endauth
         </div>
@@ -241,7 +242,8 @@
     </div>
 
 
-    <h2 class="text-2xl font-bold text-center mb-4 text-gray-800 dark:text-white">
+    <h2 class="text-2xl font-bold text-center mb-4"
+        style="color: var(--secondary-text); font-family: var(--font-body);">
         @switch(App::getLocale())
         @case('en') Video gallery @break
         @case('sr-Cyrl') Видео галерија @break
@@ -265,7 +267,13 @@
             <form method="POST" action="{{ route('gallery.destroy', $video->id) }}" class="absolute top-2 right-2 hidden group-hover:block delete-form">
                 @csrf
                 @method('DELETE')
-                <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">🗑</button>
+                <button type="button" class="bg-red-600 text-white rounded-full px-2 py-1 text-xs delete-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M18 6l-12 12" />
+                        <path d="M6 6l12 12" />
+                    </svg>
+                </button>
             </form>
             @endauth
         </div>
@@ -279,10 +287,10 @@
                     <h3 class="mb-5 text-lg font-normal" style="color: var(--secondary-text);">
                         {{ App::getLocale() === 'en' ? 'Are you sure you want to delete this item?' : (App::getLocale() === 'sr-Cyrl' ? 'Да ли сте сигурни да желите да обришете ову ставку' : 'Da li ste sigurni da želite da obrišete ovu stavku') }}
                     </h3>
-                    <button data-modal-hide="deleteGalleryModal" id="confirmDeleteGalleryBtn" type="button" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+                    <button data-modal-hide="deleteGalleryModal" id="confirmDeleteGalleryBtn" type="button" class="bg-red-500 hover:bg-red-600 py-2 px-4 rounded">
                         {{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}
                     </button>
-                    <button data-modal-hide="deleteGalleryModal" id="cancelDeleteGalleryBtn" type="button" class="text-sm font-medium px-5 py-2.5 rounded-lg border" style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);">
+                    <button data-modal-hide="deleteGalleryModal" id="cancelDeleteGalleryBtn" type="button" class="px-4 py-2 bg-gray-500 hover:gray-600 rounded">
                         {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                     </button>
                 </div>
@@ -294,7 +302,7 @@
         id="helpModal"
         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
-            <button onclick="toggleHelpModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
+            <button data-modal-hide="helpModal" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
             </button>
             <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
@@ -412,11 +420,6 @@
             });
         });
     });
-
-    function toggleHelpModal() {
-        const modal = document.getElementById('helpModal');
-        modal.classList.toggle('hidden');
-    }
 
     document.getElementById('add-button').addEventListener('click', function(e) {
         const fileInput = document.getElementById('file');

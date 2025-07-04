@@ -48,7 +48,7 @@
             @auth
             <div class="text-right mb-4 mt-4">
                 <button id="editBtn"
-                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded text-base"
+                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded text-base"
                     type="button">
                     @switch(App::getLocale())
                     @case('en') Edit @break
@@ -70,11 +70,11 @@
                 </div>
 
                 <textarea name="description" id="contentEdit" rows="15" style="text-align: center;"
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none dark:text-white hidden">{{ old('value', __('question.description')) }}</textarea>
+                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none hidden">{{ old('value', __('question.description')) }}</textarea>
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelEditBtn"
-                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
+                    class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded disabled:opacity-50">
                     @switch(App::getLocale())
                         @case('en') Cancel @break
                         @case('sr-Cyrl') Откажи @break
@@ -83,7 +83,7 @@
                     </button>
 
                     <button type="button" id="saveEditBtn" data-modal-target="submitModal1" data-modal-toggle="submitModal1"
-                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">
+                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded">
                         @switch(App::getLocale())
                         @case('en') Save changes @break
                         @case('sr-Cyrl') Сачувај промене @break
@@ -114,7 +114,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal1" type="button"
-                                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
+                                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
@@ -173,7 +173,7 @@
                     <select
                         id="globalSort"
                         name="sort"
-                        class="bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-fit p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] border text-sm rounded-lg block w-fit p-2.5">
                         <option value="title_asc" {{ request('sort') == 'title_asc' ? 'selected' : '' }}>A-Z</option>
                         <option value="title_desc" {{ request('sort') == 'title_desc' ? 'selected' : '' }}>Z-A</option>
                     </select>
@@ -182,7 +182,7 @@
                 <button 
                     id="createQuestionBtn"
                     type="button"
-                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded text-base">
+                    class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded text-base">
                     @switch(App::getLocale())
                     @case('en') Create question @break
                     @case('sr-Cyrl') Креирај питање @break
@@ -391,7 +391,7 @@
                         <button
                             type="button"
                             id="cancelCreateQuestionBtn"
-                            class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">
+                            class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">
                             @switch(App::getLocale())
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
@@ -401,7 +401,7 @@
 
                     <button 
                         type="submit" 
-                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">
+                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white py-2 px-4 rounded">
                         @switch(App::getLocale())
                             @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break
@@ -431,8 +431,8 @@
                         <textarea id="renameAnswer" name="answer" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="5" required></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" id="cancelRenameBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
-                        <button type="submit" class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
+                        <button type="button" id="cancelRenameBtn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="submit" class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
                     </div>
                 </form>
             </div>
@@ -446,8 +446,8 @@
                     @csrf
                     @method('DELETE')
                     <div class="flex justify-center gap-4">
-                        <button type="button" id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}</button>
+                        <button type="button" id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}</button>
                     </div>
                 </form>
             </div>
