@@ -89,7 +89,7 @@
             </button>
         </template>
         <template x-if="openReply">
-            <button class="px-3 py-2 rounded bg-[var(--secondary-text)] hover:bg-[color-mix(in_srgb,_var(--secondary-text)_80%,_black_20%)]"">
+            <button class="px-3 py-2 rounded bg-gray-400 hover:bg-gray-500">
                 @switch(App::getLocale())
                 @case('en') Cancel @break
                 @case('sr-Cyrl') Откажи @break
@@ -113,8 +113,7 @@
                     name="name"
                     value="{{ $libary_name }}"
                     readonly
-                    class="w-full p-3 shadow-sm bg-gray-100 dark:bg-gray-700 dark:text-gray-400 text-gray-500 border border-gray-300 dark:border-gray-600 text-sm rounded-lg cursor-not-allowed"
-                    style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);"
+                    class="w-full p-3 shadow-sm text-sm rounded-lg cursor-not-allowed  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                     aria-describedby="name-tooltip">
 
                 <div id="name-tooltip"
@@ -131,15 +130,13 @@
             @else
             <input type="text" name="name" placeholder="{{ App::getLocale() === 'en' ? 'First and Last name' : 'Ime i prezime' }}"
                 value="{{ old('name') }}" required
-                class="w-full p-3 shadow-sm bg-white dark:text-white dark:bg-gray-800 dark:border-gray-700 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-grey-200"
-                style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
+                class="w-full p-3 shadow-sm text-sm rounded-lg focus:border-grey-200  bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">
             @error('name') <p class="text-red-500 text-sm col-span-2" style="color: var(--accent);">{{ $message }}</p> @enderror
             @endif
             <div>
                 <textarea name="comment" rows="2" required
                     placeholder="{{ App::getLocale() === 'en' ? 'Write a reply...' : 'Napiši odgovor...' }}"
-                    class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
-                    style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);"></textarea>
+                    class="w-full p-2 border rounded bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"></textarea>
             </div>
             <div>
                 <button type="submit"

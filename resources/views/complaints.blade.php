@@ -38,14 +38,16 @@
 
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col items-center w-full mb-12 gap-2">
-                <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center"
-                    style="color: var(--primary-text); font-family: var(--font-title);">
+                <h1 class="font-extrabold text-2xl sm:text-3xl md:text-4xl mb-2 text-center"
+                    style="color: var(--primary-text); font-family: var(--font-title) !important;">
                     <template x-if="editing">
                         <input type="text" x-model="form.title"
-                            class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
-                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                            class="text-2xl sm:text-3xl md:text-4xl font-extrabold w-full border px-2 rounded text-center"
+                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title) !important;" />
                     </template>
-                    <span x-show="!editing" x-text="form.title"></span>
+                    <h1 x-show="!editing" x-text="form.title"
+                        class="font-extrabold text-2xl sm:text-3xl md:text-4xl mb-3"
+                        style="color: var(--primary-text); font-family: var(--font-title);"></h1>
                 </h1>
 
                 <div class="flex flex-row items-center gap-3 justify-center w-full">
@@ -58,8 +60,10 @@
                         style="color: var(--secondary-text);" x-text="form.description"></span>
                     @auth
                     <button id="help-btn" data-modal-target="helpModal" data-modal-toggle="helpModal"
-                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        style="color: var(--primary-text); margin-bottom: 0;" aria-label="Pomoć">
+                        class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                        style="color: var(--primary-text);" aria-label="Pomoć">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -72,15 +76,6 @@
                         </span>
                     </button>
                     @endauth
-                </div>
-                <div class="flex flex-row items-center justify-center w-full">
-                    <template x-if="editing">
-                        <input type="text" x-model="form.description"
-                            class="text-lg w-full max-w-xl border px-2 rounded text-center"
-                            style="background: var(--primary-bg); color: var(--primary-text);" />
-                    </template>
-                    <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
-                        style="color: var(--secondary-text);" x-text="form.description"></span>
                 </div>
             </div>
 
@@ -115,7 +110,7 @@
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
                             <button @click="cancelEdit()"
-                                class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded">
+                                class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded">
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
                         </div>
@@ -381,7 +376,7 @@
     </div>
 
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
+        <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative text-center" style="background: var(--primary-bg); color: var(--primary-text);">
             <button data-modal-hide="helpModal"
                 class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;

@@ -281,7 +281,7 @@
                             <button
                                 data-modal-hide="deleteModal"
                                 type="button"
-                                class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500"
+                                class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-500  bg-gray-400"
                             >
                                 {{ App::getLocale() === 'en'
                                     ? 'Cancel'
@@ -336,7 +336,7 @@
                                 <button
                                     data-modal-hide="renameModal"
                                     type="button"
-                                    class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
+                                    class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-500  bg-gray-400">
                                     {{ App::getLocale() === 'en'
                                         ? 'Cancel'
                                         : (App::getLocale() === 'sr-Cyrl'

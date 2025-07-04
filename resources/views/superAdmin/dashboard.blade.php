@@ -110,12 +110,12 @@
                     </div>
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-3">{{ App::getLocale() === 'en' ? 'Most Visited Employee' : (App::getLocale() === 'sr-Cyrl' ? 'Најпосећенији запослени' : 'Najposećeniji zaposleni') }}</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-white">Ана Петровић</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white">{{ App::getLocale() === 'en' ? 'Ana Petrović' : (App::getLocale() === 'sr-Cyrl' ? 'Ана Петровић' : 'Ana Petrović') }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ App::getLocale() === 'en' ? '8,230 profile views' : (App::getLocale() === 'sr-Cyrl' ? '8,230 посета профилу' : '8,230 poseta profilu') }}</p>
                     </div>
                     <div class="glass p-6 rounded-2xl shadow-xl">
                         <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-3">{{ App::getLocale() === 'en' ? 'Most Visited Page' : (App::getLocale() === 'sr-Cyrl' ? 'Најпосећенија страница' : 'Najposećenija stranica') }}</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-white">{{ App::getLocale() === 'en' ? '/news' : (App::getLocale() === 'sr-Cyrl' ? '/вести' : '/vesti') }}</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white">/vesti</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ App::getLocale() === 'en' ? '15,678 visits' : (App::getLocale() === 'sr-Cyrl' ? '15,678 посета' : '15,678 poseta') }}</p>
                     </div>
                 </section>

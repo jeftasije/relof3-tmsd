@@ -71,8 +71,8 @@
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelBtn"
-                        class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded"
-                        style="background: #cbd5e1; color: var(--primary-text);">
+                        class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded"
+                        style="color: var(--primary-text);">
                         @switch(App::getLocale())
                         @case('en') Cancel @break
                         @case('sr-Cyrl') Откажи @break
@@ -118,7 +118,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal" type="button"
-                                    class="bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none rounded text-sm font-medium px-5 py-2.5 focus:z-10">
+                                    class="bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none rounded text-sm font-medium px-5 py-2.5 focus:z-10">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
@@ -177,7 +177,7 @@
                     @endswitch
                 </div>
                 <button type="reset"
-                    class="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600">
+                    class="bg-gray-400 px-4 py-2 rounded hover:bg-gray-500">
                     @switch(App::getLocale())
                     @case('en') Cancel @break
                     @case('sr-Cyrl') Откажи @break
@@ -292,7 +292,7 @@
                     <button data-modal-hide="deleteGalleryModal" id="confirmDeleteGalleryBtn" type="button" class="bg-red-500 hover:bg-red-600 py-2 px-4 rounded">
                         {{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}
                     </button>
-                    <button data-modal-hide="deleteGalleryModal" id="cancelDeleteGalleryBtn" type="button" class="px-4 py-2 bg-gray-500 hover:gray-600 rounded">
+                    <button data-modal-hide="deleteGalleryModal" id="cancelDeleteGalleryBtn" type="button" class="px-4 py-2 bg-gray-400 hover:gray-500 rounded">
                         {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                     </button>
                 </div>
@@ -307,10 +307,10 @@
             <button data-modal-hide="helpModal" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
             </button>
-            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
+            <h2 class="text-xl font-bold mb-4 text-center" style="color: var(--primary-text);">
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
-            <p class="text-gray-700 dark:text-gray-300 space-y-2 text-sm leading-relaxed" style="color: var(--secondary-text);">
+            <p class="space-y-2 text-sm leading-relaxed text-center" style="color: var(--secondary-text);">
                 {!! App::getLocale() === 'en'
                 ? '
                 By clicking the <strong>"Edit"</strong> button, a text area will open allowing you to edit the gallery content.<br><br>

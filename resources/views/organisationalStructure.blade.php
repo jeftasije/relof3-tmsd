@@ -145,7 +145,7 @@
                             <button data-modal-hide="deleteModal" id="confirmDeleteButton" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                 {{ App::getLocale() === 'en' ? 'Confirm' : (App::getLocale() === 'sr-Cyrl' ? 'Потврди' : 'Potvrdi') }}
                             </button>
-                            <button data-modal-hide="deleteModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
+                            <button data-modal-hide="deleteModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-500  bg-gray-400">
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
                         </div>
@@ -170,7 +170,7 @@
                                 <button data-modal-hide="renameModal" id="confirmRenameButton" type="button" class="focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                     {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                                 </button>
-                                <button data-modal-hide="renameModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
+                                <button data-modal-hide="renameModal" type="button" class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-500  bg-gray-400">
                                     {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                                 </button>
                             </div>

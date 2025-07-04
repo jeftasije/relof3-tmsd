@@ -26,10 +26,10 @@
                     <button
                         id="help-btn"
                         onclick="toggleHelpModal()"
-                            class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                        class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
                                 rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
                                 bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
-                            style="color: var(--primary-text);">
+                        style="color: var(--primary-text);">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -61,7 +61,7 @@
             </div>
             @endauth
 
-            
+
             @auth
             <form action="{{ route('questions.updateDescription') }}" method="POST" id="editForm" class="space-y-4">
                 @csrf
@@ -71,13 +71,13 @@
                     {{ __('question.description') }}
                 </div>
 
-                <textarea name="description" id="contentEdit" rows="15" style="text-align: center;"
-                    class="w-full p-4 bg-white dark:bg-gray-800 border rounded shadow-sm focus:ring focus:outline-none hidden">{{ old('value', __('question.description')) }}</textarea>
+                <textarea name="description" id="contentEdit" rows="15"
+                    class="w-full p-4 border rounded shadow-sm focus:ring text-center focus:outline-none hidden bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]">{{ old('value', __('question.description')) }}</textarea>
 
                 <div id="editButtons" class="flex justify-end gap-4 hidden">
                     <button type="button" id="cancelEditBtn"
-                    class="bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded disabled:opacity-50">
-                    @switch(App::getLocale())
+                        class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded disabled:opacity-50">
+                        @switch(App::getLocale())
                         @case('en') Cancel @break
                         @case('sr-Cyrl') Откажи @break
                         @default Otkaži
@@ -116,7 +116,7 @@
                                     @endswitch
                                 </button>
                                 <button data-modal-hide="submitModal1" type="button"
-                                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">
+                                    class="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:opacity-50">
                                     @switch(App::getLocale())
                                     @case('en') Cancel @break
                                     @case('sr-Cyrl') Откажи @break
@@ -181,7 +181,7 @@
                     </select>
                 </div>
                 @auth
-                <button 
+                <button
                     id="createQuestionBtn"
                     type="button"
                     class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded text-base">
@@ -291,11 +291,11 @@
             class="fixed inset-0 z-50 hidden flex items-center justify-center"
             style="background: rgba(0,0,0,0.5);">
             <div class="relative w-full max-w-md p-6 rounded-lg shadow-lg"
-                style="background: var(--primary-bg); color: var(--primary-text);">
+                style="background: var(--primary-bg); color: var(--primary-text);"">
                 <button
-                    onclick="toggleHelpModal()"
-                    class="absolute top-2 right-2 text-2xl font-bold"
-                    style="color: var(--secondary-text);">×</button>
+                    onclick=" toggleHelpModal()"
+                class="absolute top-2 right-2 text-2xl font-bold"
+                style="color: var(--secondary-text);">×</button>
                 <h2 class="mb-4 text-xl font-bold text-center"
                     style="color: var(--primary-text);">
                     {{ App::getLocale() === 'en'
@@ -348,7 +348,8 @@
         <div
             id="createQuestionModal"
             class="fixed inset-0 z-50 hidden bg-opacity-50 flex items-center justify-center background: var(--primary-bg)">
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-lg p-6 relative">
+            <div class="relative w-full max-w-md p-6 rounded-lg shadow-lg"
+                style="background: var(--primary-bg); color: var(--primary-text);">
                 <button id="closeCreateQuestionModalBtn" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">×</button>
                 <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100 text-center">
                     @switch(App::getLocale())
@@ -372,7 +373,7 @@
                             name="question"
                             id="newQuestion"
                             required
-                            class="w-full p-2 border border-gray-300 bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_white_20%)] rounded" />
+                            class="w-full p-2 border bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] rounded" />
                     </div>
                     <div class="mb-4">
                         <label for="newAnswer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -387,24 +388,24 @@
                             id="newAnswer"
                             rows="5"
                             required
-                            class="w-full p-2 border border-gray-300 bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_white_20%)] rounded"></textarea>
+                            class="w-full p-2 border bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] rounded"></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
                         <button
                             type="button"
                             id="cancelCreateQuestionBtn"
-                            class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">
+                            class="bg-gray-400 hover:bg-gray-500 py-2 px-4 rounded disabled:opacity-50">
                             @switch(App::getLocale())
                             @case('en') Cancel @break
                             @case('sr-Cyrl') Откажи @break
                             @default Otkaži
-                        @endswitch
-                    </button>
+                            @endswitch
+                        </button>
 
-                    <button 
-                        type="submit" 
-                        class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white py-2 px-4 rounded">
-                        @switch(App::getLocale())
+                        <button
+                            type="submit"
+                            class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] py-2 px-4 rounded">
+                            @switch(App::getLocale())
                             @case('en') Create question @break
                             @case('sr-Cyrl') Креирај питање @break
                             @default Kreiraj pitanje
@@ -433,7 +434,7 @@
                         <textarea id="renameAnswer" name="answer" class="w-full p-2 border border-gray-300 dark:bg-gray-700 rounded" rows="5" required></textarea>
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" id="cancelRenameBtn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="button" id="cancelRenameBtn" class="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
                         <button type="submit" class="bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}</button>
                     </div>
                 </form>
@@ -448,7 +449,7 @@
                     @csrf
                     @method('DELETE')
                     <div class="flex justify-center gap-4">
-                        <button type="button" id="cancelDeleteBtn" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
+                        <button type="button" id="cancelDeleteBtn" class="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded disabled:opacity-50">{{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Затвори' : 'Zatvori') }}</button>
                         <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">{{ App::getLocale() === 'en' ? 'Delete' : (App::getLocale() === 'sr-Cyrl' ? 'Обриши' : 'Obriši') }}</button>
                     </div>
                 </form>
@@ -482,7 +483,7 @@
 
         if (globalSort) {
             globalSort.addEventListener('change', () => {
-                const sortOrder = globalSort.value; 
+                const sortOrder = globalSort.value;
                 const questions = Array.from(accordionContainer.children);
                 questions.sort((a, b) => {
                     const textA = a.querySelector('span').textContent.toLowerCase();
@@ -708,7 +709,7 @@
         const helpBtn = document.getElementById('help-btn');
         if (helpBtn) {
             helpBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 toggleHelpModal();
             });
         } else {
