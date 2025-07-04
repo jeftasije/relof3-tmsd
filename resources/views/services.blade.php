@@ -87,7 +87,7 @@
                             <input type="text" x-model="form.hero_subtitle" class="w-full border px-2 rounded"
                                 style="background: var(--primary-bg); color: var(--primary-text);" />
                         </template>
-                        <span x-show="!editing" x-text="form.hero_subtitle"></span>
+                        <span x-show="!editing" x-text="form.hero_subtitle" class="text-lg text-center mx-auto block w-3/4 max-w-4xl" style="color: var(--secondary-text);"></span>
                     </p>
                 </div>
             </div>

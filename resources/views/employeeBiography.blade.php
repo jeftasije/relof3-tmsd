@@ -155,7 +155,7 @@
 
                     <a href="{{ route('employees.index') }}"
                         class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition
-          bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+          bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
 
                         {{ $locale === 'en' ? 'Back to Employees' : ($locale === 'sr-Cyrl' ? 'Назад на запослене' : 'Nazad na zaposlene') }}
                         <svg class="rtl:rotate-180 w-4 h-4 ms-2 ml-2" aria-hidden="true"

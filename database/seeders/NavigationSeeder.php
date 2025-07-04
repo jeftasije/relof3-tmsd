@@ -215,7 +215,7 @@ class NavigationSeeder extends Seeder
             'is_active' => 1
         ]);
         $oBiblioteci = Navigation::create([
-            'name' => 'O bibioteci',
+            'name' => 'O biblioteci',
             'name_en' => 'About library',
             'name_cy' => 'О библотеци',
             'parent_id' => $oNama->id,

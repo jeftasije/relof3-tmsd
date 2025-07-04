@@ -121,7 +121,7 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
         aria-hidden="true">
         <div class="bg-white dark:bg-gray-700 rounded-lg p-6 max-w-md w-full shadow-lg">
-            <p class="mb-4 text-lg font-semibold w-fit">
+            <p class="mb-4 text-lg font-semibold w-fit text-center">
                 @switch(App::getLocale())
                 @case('en') Are you sure you want to delete this comment? @break
                 @case('sr-Cyrl') Да ли сте сигурни да желите да обришете овај коментар? @break
@@ -129,7 +129,7 @@
                 @endswitch
             </p>
 
-            <div class="flex justify-center space-x-4 w-fit">
+            <div class="flex justify-center space-x-4">
                 <button
                     id="cancel-delete-btn"
                     class="text-gray-500  focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-6000">

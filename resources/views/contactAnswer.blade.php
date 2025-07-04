@@ -9,22 +9,19 @@
         </h2>
     </x-slot>
 
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-transition
+        x-init="setTimeout(() => show = false, 4000)"
+        class="mb-6 text-green-800 bg-green-100 border border-green-300 p-4 rounded fixed top-5 left-1/2 transform -translate-x-1/2 z-50 shadow-lg">
+        {{ __('contact.' . session('success')) }}
+    </div>
+    @endif
+
     <div class="py-12 bg-gray-100 dark:bg-gray-900 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-            @if(session('success'))
-            <div
-                x-data="{ show: true }"
-                x-show="show"
-                x-transition
-                @click="show = false"
-                class="fixed left-1/2 z-50 px-6 py-3 rounded-lg shadow-lg"
-                style="top: 12%; transform: translateX(-50%); background: #22c55e; color: #fff; font-weight: 600; letter-spacing: 0.03em; min-width: 220px; text-align: center;"
-                x-init="setTimeout(() => show = false, 4000)">
-                {{ session('success') }}
-            </div>
-            @endif
-
             <div class="flex justify-end">
                 <button
                     id="help-btn"
@@ -189,11 +186,11 @@
                 };
                 @endphp
                 <div x-data="{ showTranslated: false }">
-                    <div class="max-w-[90%] flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2" style="background: var(--primary-bg); color: var(--primary-text); border-color: var(--secondary-text);">
-                        <p x-show="!showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]" style="color: var(--primary-text);">
+                    <div class="max-w-[90%] flex flex-row justify-between p-4 rounded bg-gray-50 dark:bg-gray-700 mt-2">
+                        <p x-show="!showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]">
                             {{ $contact->message }}
                         </p>
-                        <p x-show="showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]" style="color: var(--primary-text);">
+                        <p x-show="showTranslated" x-transition:enter="transition-opacity duration-300" x-transition:leave="transition-opacity duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="text-gray-800 dark:text-gray-200 break-words max-w-[90%]">
                             {{ $contact->translate('message') }}
                         </p>
                     </div>

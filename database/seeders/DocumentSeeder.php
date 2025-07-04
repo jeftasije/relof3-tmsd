@@ -26,7 +26,7 @@ class DocumentSeeder extends Seeder
             ['title' => 'Izveštaj o radu za 2023 (latinica)', 'file_path' => 'documents/izvestaj_o_radu_2023_latinica.pdf', 'category' => 'Izveštaji o radu'],
             ['title' => 'Izveštaj o radu za 2023 (ćirilica)', 'file_path' => 'documents/izvestaj_o_radu_2023_ćirilica.pdf', 'category' => 'Izveštaji o radu'],
             ['title' => 'Poslovnik-o-radu-Upravnog-odbora', 'file_path' => 'documents/Poslovnik-o-radu-Upravnog-odbora.pdf', 'category' => 'Izveštaji o radu organa upravljanja'],
-            ['title' => 'Informator o radu ustanove', 'file_path' => 'documents/informator_o_radu.pdf', 'category' => 'Informator o radu'],
+            ['title' => 'Informator o radu ustanove', 'file_path' => 'https://informator.poverenik.rs/informator?org=evvj4rSTdRPuDbbdT', 'category' => 'Informator o radu'],
             ['title' => 'Procedura izbora direktora', 'file_path' => 'documents/procedura_izbora_direktora.pdf', 'category' => 'Procedura o izboru direktora'],
             ['title' => 'Kodeks etike i integriteta', 'file_path' => 'documents/kodeks_etike.pdf', 'category' => 'Druga akta koja regulišu oblasti etike i integriteta'],
         ];

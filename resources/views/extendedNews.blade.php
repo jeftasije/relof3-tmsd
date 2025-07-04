@@ -136,7 +136,7 @@
                     @endif
 
                     <div class="px-4 py-4 sm:px-6 sm:py-6 mt-2">
-                        <p class="text-base sm:text-lg whitespace-pre-line text-center font-semibold text-2xl"
+                        <p class="text-base sm:text-lg whitespace-pre-line text-center"
                             style="color: var(--secondary-text);">
                             {{ $locale === 'en'
                                 ? $news->extended->content_en ?? ($news->extended->content ?? 'No additional content.')
