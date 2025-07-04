@@ -251,14 +251,17 @@
                     </p>
 
                     <div class="flex justify-end gap-2 mt-4">
-                        <button type="button" @click="editOpen = false" class="px-4 py-2 rounded"
-                            style="background: var(--secondary-text); color: #fff;">
-                            {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
-                        </button>
-                        <button type="submit" class="px-4 py-2 rounded"
-                            style="background: var(--accent); color: #fff;">
-                            {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
-                        </button>
+<button type="button" @click="editOpen = false"
+    class="px-4 py-2 rounded bg-[var(--secondary-text)] text-white transition
+           hover:bg-[color-mix(in_srgb,_var(--secondary-text)_80%,_black_20%)]">
+    {{ $locale === 'en' ? 'Cancel' : ($locale === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
+</button>
+<button type="submit"
+    class="px-4 py-2 rounded bg-[var(--accent)] text-white transition
+           hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
+    {{ $locale === 'en' ? 'Save' : ($locale === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
+</button>
+
                     </div>
                 </form>
             </div>
