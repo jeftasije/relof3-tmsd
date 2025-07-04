@@ -7,7 +7,7 @@
             <div class="flex-col justify-center items-start">
                 <div class="relative flex items-center justify-center mb-12">
                     <h1
-                        class="text-4xl font-bold text-center"
+                        class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full"
                         style="color: var(--primary-text);"
                     >
                         {{ App::getLocale() === 'en'
@@ -21,8 +21,10 @@
                             <button
                                 id="help-btn"
                                 onclick="toggleHelpModal()"
-                                class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 group"
-                                style="color: var(--primary-text); background: var(--primary-bg);"
+                                class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                                style="color: var(--primary-text);"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -51,8 +53,7 @@
                                 : (App::getLocale() === 'sr-Cyrl'
                                     ? 'Претражи документ...'
                                     : 'Pretraži dokument...') }}"
-                            class="w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2"
-                            style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
+                            class="w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                         >
                         <div id="searchDropdown" class="absolute z-10 w-full rounded-lg mt-1 hidden"
                             style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);">
@@ -61,8 +62,7 @@
                     </div>
                     <select
                         id="globalSort"
-                        class="ml-3 rounded p-2"
-                        style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
+                        class="ml-3 rounded p-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                     >
                         <option value="title_asc">A-Z</option>
                         <option value="title_desc">Z-A</option>
@@ -143,8 +143,7 @@
                                             data-modal-toggle="renameModal"
                                             data-proc-id="{{ $procurement->id }}"
                                             data-proc-title="{{ $procurement->title }}"
-                                            class="block w-full text-left px-4 py-2"
-                                            style="background: var(--primary-bg); color: var(--primary-text);"
+                                            class="block w-full text-left px-4 py-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                         >
                                             {{ App::getLocale() === 'en' ? 'Rename'
                                                 : (App::getLocale() === 'sr-Cyrl'
@@ -158,8 +157,7 @@
                                             data-modal-toggle="deleteModal"
                                             data-proc-id="{{ $procurement->id }}"
                                             data-proc-title="{{ $procurement->title }}"
-                                            class="block w-full text-left px-4 py-2"
-                                            style="background: var(--primary-bg); color: var(--accent);"
+                                            class="block w-full text-left px-4 py-2 text-red-500 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                         >
                                             {{ App::getLocale() === 'en' ? 'Delete'
                                                 : (App::getLocale() === 'sr-Cyrl'
@@ -196,13 +194,12 @@
                                 : 'Otpremite novi dokument.') }}
                     </label>
                     <input
-                        class="block w-full text-sm rounded-lg cursor-pointer"
+                        class="block w-full text-sm rounded-lg cursor-pointer bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                         id="file_input"
                         name="file"
                         type="file"
                         accept=".pdf,.doc,.docx,.xlsx,.xls"
                         required
-                        style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
                     >
                     <p
                         class="mt-1 text-sm"
@@ -218,8 +215,7 @@
                     <div class="flex items-center mt-2">
                         <button
                             type="submit"
-                            class="px-4 py-2 rounded-lg"
-                            style="background: var(--accent); color: #fff;"
+                            class="px-4 py-2 rounded-lg bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]"
                         >
                             {{ App::getLocale() === 'en'
                                 ? 'Upload'
@@ -274,8 +270,7 @@
                                 data-modal-hide="deleteModal"
                                 id="confirmDeleteButtonProc"
                                 type="button"
-                                class="px-5 py-2.5 rounded-lg font-medium"
-                                style="background: var(--accent); color: #fff;"
+                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
                             >
                                 {{ App::getLocale() === 'en'
                                     ? 'Confirm'
@@ -286,8 +281,7 @@
                             <button
                                 data-modal-hide="deleteModal"
                                 type="button"
-                                class="px-5 py-2.5 ml-2 rounded-lg border"
-                                style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);"
+                                class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500"
                             >
                                 {{ App::getLocale() === 'en'
                                     ? 'Cancel'
@@ -319,21 +313,19 @@
                             <input
                                 type="text"
                                 id="renameInput"
-                                class="w-full p-2 rounded-lg focus:outline-none focus:ring-2"
+                                class="w-full p-2 rounded-lg focus:outline-none focus:ring-2 bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                 placeholder="{{ App::getLocale() === 'en'
                                     ? 'Enter a new name'
                                     : (App::getLocale() === 'sr-Cyrl'
                                         ? 'Унесите нови назив'
                                         : 'Unesite novi naziv') }}"
-                                style="background: var(--primary-bg); color: var(--primary-text); border: 1px solid var(--secondary-text);"
                             >
                             <div class="mt-4 text-center">
                                 <button
                                     data-modal-hide="renameModal"
                                     id="confirmRenameButton"
                                     type="button"
-                                    class="px-5 py-2.5 rounded-lg font-medium"
-                                    style="background: var(--accent); color: #fff;"
+                                    class="focus:ring-4 focus:outline-none font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2 bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]"
                                 >
                                     {{ App::getLocale() === 'en'
                                         ? 'Save'
@@ -344,9 +336,7 @@
                                 <button
                                     data-modal-hide="renameModal"
                                     type="button"
-                                    class="px-5 py-2.5 ml-2 rounded-lg border"
-                                    style="background: var(--primary-bg); color: var(--secondary-text); border-color: var(--secondary-text);"
-                                >
+                                    class="focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg borde text-sm font-medium px-5 py-2.5 hover:bg-gray-600  bg-gray-500">
                                     {{ App::getLocale() === 'en'
                                         ? 'Cancel'
                                         : (App::getLocale() === 'sr-Cyrl'
@@ -368,8 +358,7 @@
                      style="background: var(--primary-bg); color: var(--primary-text);">
                     <button
                         onclick="toggleHelpModal()"
-                        class="absolute top-2 right-2 text-2xl font-bold"
-                        style="color: var(--secondary-text);"
+                        class="absolute top-2 right-2 text-2xl font-bold text-gray-500 hover:text-red-500"
                     >×</button>
                     <h2 class="mb-4 text-xl font-bold text-center"
                         style="color: var(--primary-text);"
@@ -439,7 +428,7 @@
 
                     matchingProcs.forEach(proc => {
                         const li = document.createElement('li');
-                        li.className = 'p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer';
+                        li.className = 'p-2 bg-[var(--primary-bg)] hover:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)] cursor-pointer';
                         li.textContent = proc.querySelector('a').textContent;
                         li.dataset.procId = proc.dataset.procId;
                         li.addEventListener('click', () => {
