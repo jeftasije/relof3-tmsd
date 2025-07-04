@@ -66,7 +66,9 @@
                 </h1>
                 @auth
                     <button @click="$store.modals.openHelp()"
-                        class="absolute right-0 flex items-center gap-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]">
+                        class="absolute right-0 flex items-center gap-2 px-2 py-1 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -90,7 +92,7 @@
             <div class="flex justify-end mb-6">
                 @auth
                     <button @click="$store.modals.openAddNews()"
-                        class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+                        class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -150,9 +152,7 @@
                                     {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
                                 </label>
                                 <input type="file" name="image" id="image" accept="image/*"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
-                                    style="background: var(--primary-bg); color: var(--primary-text);" />
-
+                                    class="block w-full text-sm rounded-lg cursor-pointer bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]" />
                                 <label class="block mb-2" style="color: var(--secondary-text) !important;"
                                     for="author">
                                     {{ App::getLocale() === 'en' ? 'Author' : (App::getLocale() === 'sr-Cyrl' ? 'Аутор' : 'Autor') }}
@@ -198,7 +198,7 @@
                                 {{ App::getLocale() === 'en' ? 'Cancel' : (App::getLocale() === 'sr-Cyrl' ? 'Откажи' : 'Otkaži') }}
                             </button>
                             <button type="submit"
-                                class="px-4 py-2 rounded bg-[var(--accent)] text-white transition
+                                class="px-4 py-2 rounded bg-[var(--accent)] transition
             hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>

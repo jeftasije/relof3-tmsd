@@ -38,17 +38,38 @@
 
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="flex flex-col items-center w-full mb-12 gap-2">
-                <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl mb-2 text-center"
-                    style="color: var(--primary-text); font-family: var(--font-title);">
-                    <template x-if="editing">
-                        <input type="text" x-model="form.title"
-                            class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
-                            style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
-                    </template>
-                    <span x-show="!editing" x-text="form.title"></span>
-                </h1>
-                
-                <div class="flex flex-row items-center gap-3 justify-center w-full">
+                <div class="relative flex items-center justify-center w-full">
+                    <h1 class="font-extrabold text-3xl sm:text-4xl md:text-5xl text-center"
+                        style="color: var(--primary-text); font-family: var(--font-title);">
+                        <template x-if="editing">
+                            <input type="text" x-model="form.title"
+                                class="text-3xl sm:text-4xl md:text-5xl font-extrabold w-full border px-2 rounded text-center"
+                                style="background: var(--primary-bg); color: var(--primary-text); font-family: var(--font-title);" />
+                        </template>
+                        <span x-show="!editing" x-text="form.title"></span>
+                    </h1>
+                    @auth
+                    <div class="absolute right-0">
+                        <button id="help-btn" onclick="toggleHelpModal()"
+                            class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style="color: var(--primary-text);" aria-label="Pomoć">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 17l0 .01" />
+                                <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                            </svg>
+                            <span class="ml-3 hidden sm:inline">
+                                {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
+                            </span>
+                        </button>
+                    </div>
+                    @endauth
+                </div>
+                <div class="flex flex-row items-center justify-center w-full">
                     <template x-if="editing">
                         <input type="text" x-model="form.description"
                             class="text-lg w-full max-w-xl border px-2 rounded text-center"
@@ -56,26 +77,9 @@
                     </template>
                     <span x-show="!editing" class="text-lg text-center mx-auto block w-3/4 max-w-4xl"
                         style="color: var(--secondary-text);" x-text="form.description"></span>
-                    @auth
-                    @auth
-                    <button id="help-btn" onclick="toggleHelpModal()"
-                        class="flex items-center p-2 text-base font-normal rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700"
-                        style="color: var(--primary-text); margin-bottom: 0;" aria-label="Pomoć">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M12 17l0 .01" />
-                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                        </svg>
-                        <span class="ml-3 hidden sm:inline">
-                            {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
-                        </span>
-                    </button>
-                    @endauth
-                    @endauth
                 </div>
             </div>
+
 
             <div class="mb-8"></div>
             <div class="relative flex flex-col sm:flex-row sm:items-center mb-6 sm:justify-between">
@@ -374,7 +378,7 @@
     </div>
 
     <div id="helpModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <div class="rounded-lg shadow-lg w-full max-w-md p-6 relative" style="background: var(--primary-bg); color: var(--primary-text);">
             <button onclick="toggleHelpModal()"
                 class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl font-bold">
                 &times;
@@ -382,7 +386,7 @@
             <h2 class="text-xl font-bold mb-4" style="color: var(--primary-text); text-align:center;">
                 {{ App::getLocale() === 'en' ? 'Help' : (App::getLocale() === 'sr-Cyrl' ? 'Помоћ' : 'Pomoć') }}
             </h2>
-            <p class="space-y-2 text-sm leading-relaxed" style="color: var(--primary-text)">
+            <p class="space-y-2 text-sm leading-relaxed" style="color: var(--secondary-text);">
                 {!! App::getLocale() === 'en'
                 ? '
                 Clicking on the button <strong>\"Edit\"</strong> will open a field for editing instructions on how the user can submit a complaint.

@@ -74,6 +74,8 @@
     "validation.logo_light_max": "Light logo ne sme biti veći od 2MB.",
     "validation.logo_dark_image": "Dark logo mora biti slika.",
     "validation.logo_dark_max": "Dark logo ne sme biti veći od 2MB.",
+    "validation.header_title_required": "Naslov je obavezan",
+    "validation.header_subtitle_required": "Podnaslov je obavezan",
     "homepage_title": "Narodna biblioteka \"Dositej Obradović\"",
     "homepage_subtitle": "Novi Pazar",
     "homepage_news_title": "Vesti",

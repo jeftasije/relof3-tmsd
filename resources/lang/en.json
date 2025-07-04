@@ -74,6 +74,8 @@
     "validation.logo_light_max": "Light logo may not be larger than 2MB.",
     "validation.logo_dark_image": "Dark logo must be an image.",
     "validation.logo_dark_max": "Dark logo may not be larger than 2MB.",
+    "validation.header_title_required": "The title is required.",
+    "validation.header_subtitle_required": "The subtitle is required.",
     "homepage_title": "Public Library \"Dositej Obradović\"",
     "homepage_subtitle": "Novi Pazar",
     "homepage_news_title": "News",

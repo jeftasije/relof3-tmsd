@@ -58,13 +58,15 @@
         class="w-full flex items-start justify-center p-2 px-4 sm:px-6 lg:px-8" x-data>
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="flex items-center mb-2 sm:mb-4 md:mb-6 relative">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full"
-                    style="color: var(--primary-text) !important;">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center w-full" style="color: var(--primary-text);">
                     {{ $text['title'] }}
                 </h1>
                 @auth
                     <button @click="$store.modals.openHelp()"
-                        class="absolute right-0 flex items-center gap-2 px-2 py-1 text-base font-semibold rounded transition hover:text-[var(--accent)] focus:outline-none shadow-none bg-transparent border-none text-[var(--secondary-text)]">
+                        class="flex items-center p-2 text-base font-medium transition duration-150 ease-in-out
+                                rounded-xl border-2 border-[var(--secondary-text)] hover:border-[var(--primary-bg)] shadow-md
+                                bg-[var(--primary-bg)] hover:bg-gray-100 dark:hover:bg-gray-800"
+                            style="color: var(--primary-text);">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -88,7 +90,7 @@
             <div class="flex justify-end mb-6">
                 @auth
                     <button @click="$store.modals.openAddEmployee()"
-                        class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+                        class="flex items-center gap-1 font-semibold py-2 px-4 rounded-lg shadow bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -154,7 +156,7 @@
                                     {{ App::getLocale() === 'en' ? 'Upload Image' : (App::getLocale() === 'sr-Cyrl' ? 'Додај слику' : 'Dodaj sliku') }}
                                 </label>
                                 <input type="file" name="image" id="image" accept="image/*"
-                                    class="w-full p-2 mb-4 border border-gray-300 rounded"
+                                    class="block w-full text-sm rounded-lg cursor-pointer bg-[color-mix(in_srgb,_var(--primary-bg)_95%,_black_5%)] dark:bg-[color-mix(in_srgb,_var(--primary-bg)_80%,_black_20%)]"
                                     style="background: var(--primary-bg); color: var(--primary-text);" />
                             </div>
                             <div>
@@ -201,7 +203,7 @@
                         </button>
 
                             <button type="submit"
-                                class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)] text-white">
+                                class="px-4 py-2 rounded bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_80%,_black_20%)]">
 
                                 {{ App::getLocale() === 'en' ? 'Save' : (App::getLocale() === 'sr-Cyrl' ? 'Сачувај' : 'Sačuvaj') }}
                             </button>
