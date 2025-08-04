@@ -1,0 +1,21 @@
+{
+    "news_visible": true,
+    "contact_visible": true,
+    "cobiss_visible": true,
+    "our_team_visible": true,
+    "component_order": [
+        "hero",
+        "our_team",
+        "news",
+        "cobiss",
+        "contact"
+    ],
+    "visible_employees": [
+        "1",
+        "2",
+        "4"
+    ],
+    "our_team_is_selected": true,
+    "hero_image": "images\/herosection.jpg",
+    "contact_image": "images\/contactHomepage.png"
+}
